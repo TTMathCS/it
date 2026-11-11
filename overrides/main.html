@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{#- The reader's text size and reading mode (javascripts/reader.js) are set here, before the page is drawn,
+    so the text does not jump when the page opens. Same file on cs, math and cryptography. -#}
+{% block extrahead %}
+  {{ super() }}
+  <script>try{var r=JSON.parse(localStorage.getItem("akadian-reader"))||{};if(r.scale)document.documentElement.style.setProperty("--reader-scale",r.scale);if(r.focus)document.documentElement.classList.add("reader-mode")}catch(e){}</script>
+  {#- Light or dark, the same on every akadian.ca site (Mars-Requirements site/theme.md; Jim, 5 Nov 2026): the choice is one cookie
+      for all of akadian.ca (Mars-Home theme.js writes it on www), so it is set here before the page is drawn; with none, dark
+      (Jim, 5 Nov 2026: dark by default until the visitor picks light). Pressing the sun/moon (or Light/Dark under Aa) writes the cookie for every site. -#}
+  <script>(function(){var P={{ (config.theme.palette or []) | tojson }},d=document.documentElement,m=document.cookie.match(/(?:^|;\s*)theme=(light|dark)\b/);
+  var t=m?m[1]:"dark";
+  function pal(t){for(var i=0;i<P.length;i++)if((P[i].scheme==="slate")===(t==="dark"))return{index:i,color:{media:P[i].media,scheme:P[i].scheme,primary:P[i].primary,accent:P[i].accent}}}
+  var p=pal(t);if(p&&window.__md_set)__md_set("__palette",p);d.setAttribute("data-theme",t);d.style.colorScheme=t;
+  function keep(t){var ak=/(^|\.)akadian\.ca$/.test(location.hostname);document.cookie="theme="+t+"; path=/; max-age=31536000; samesite=lax"+(location.protocol==="https:"?"; secure":"")+(ak?"; domain=akadian.ca":"")}
+  var ch=null;try{ch=new BroadcastChannel("akadian-theme");ch.onmessage=function(e){var i=document.querySelector("input[name='__palette'][data-md-color-scheme='"+(e.data==="light"?"default":"slate")+"']");if(i&&!i.checked)i.click()}}catch(e){}
+  document.addEventListener("visibilitychange",function(){if(document.hidden)return;var m=document.cookie.match(/(?:^|;\s*)theme=(light|dark)\b/);if(!m)return;var i=document.querySelector("input[name='__palette'][data-md-color-scheme='"+(m[1]==="light"?"default":"slate")+"']");if(i&&!i.checked)i.click()});
+  document.addEventListener("change",function(e){var i=e.target;if(!i||i.name!=="__palette")return;var t=i.getAttribute("data-md-color-scheme")==="slate"?"dark":"light";d.setAttribute("data-theme",t);d.style.colorScheme=t;keep(t);if(ch)try{ch.postMessage(t)}catch(x){}});
+  })();</script>
+{% endblock %}

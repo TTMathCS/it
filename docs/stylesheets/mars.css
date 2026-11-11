@@ -1,0 +1,387 @@
+/* The look of akadian.ca (myarcadia/Mars-Home): Arcadia City under its dome, the brand's colours and fonts.
+   Two schemes, chosen with the header toggle and remembered: Mars night (slate) and Mars dawn (default). */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/cormorant-garamond/CormorantGaramond-SemiBoldItalic-Latin.woff2") format("woff2");
+}
+
+:root {
+  --md-text-font: "IBM Plex Sans";
+  --md-code-font: "IBM Plex Mono";
+  --mars-display: "Saira Condensed", "Arial Narrow", system-ui, sans-serif;
+  --mars-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+}
+
+/* Mars night: the homepage's own colours */
+[data-md-color-scheme="slate"] {
+  color-scheme: dark;
+  --mars-bg: #1d130e;
+  --mars-bg-fade: rgba(29, 19, 14, 0.5);
+  --mars-bg-soft: rgba(29, 19, 14, 0.82);
+  --mars-panel: #271913;
+  --mars-rust: #eea66f;
+  --mars-photo: url("../images/21-starlit-city.webp");
+
+  --md-default-bg-color: var(--mars-bg);
+  --md-default-bg-color--light: rgba(29, 19, 14, 0.7);
+  --md-default-bg-color--lighter: rgba(29, 19, 14, 0.3);
+  --md-default-bg-color--lightest: rgba(29, 19, 14, 0.12);
+  --md-default-fg-color: #fbf1e4;
+  --md-default-fg-color--light: #e8d2ba;
+  --md-default-fg-color--lighter: rgba(251, 241, 228, 0.32);
+  --md-default-fg-color--lightest: rgba(251, 241, 228, 0.26);
+  --md-typeset-color: #fbf1e4;
+  --md-typeset-a-color: #9cc9ea;
+  --md-accent-fg-color: var(--mars-rust);
+  --md-accent-fg-color--transparent: rgba(238, 166, 111, 0.12);
+  --md-code-bg-color: var(--mars-panel);
+  --md-code-fg-color: #fbf1e4;
+  --md-typeset-table-color: rgba(251, 241, 228, 0.26);
+  --md-typeset-table-color--light: rgba(251, 241, 228, 0.08);
+
+}
+
+/* Mars dawn: the dusty pink-tan of the morning sky over the dome */
+[data-md-color-scheme="default"] {
+  color-scheme: light;
+  --mars-bg: #efdecb;
+  --mars-bg-fade: rgba(239, 222, 203, 0.45);
+  --mars-bg-soft: rgba(239, 222, 203, 0.86);
+  --mars-panel: #e6cfb6;
+  --mars-rust: #a9471c;
+  --mars-photo: url("../images/27-dawn-after-storm.webp");
+
+  --md-default-bg-color: var(--mars-bg);
+  --md-default-fg-color: #2b1a12;
+  --md-default-fg-color--light: #6b4a36;
+  --md-default-fg-color--lighter: rgba(43, 26, 18, 0.34);
+  --md-default-fg-color--lightest: rgba(43, 26, 18, 0.14);
+  --md-typeset-color: #2b1a12;
+  --md-typeset-a-color: #1f5a8c;
+  --md-accent-fg-color: var(--mars-rust);
+  --md-accent-fg-color--transparent: rgba(169, 71, 28, 0.1);
+  --md-code-bg-color: #e8d5bf;
+  --md-code-fg-color: #2b1a12;
+  --md-typeset-table-color: rgba(43, 26, 18, 0.16);
+  --md-typeset-table-color--light: rgba(43, 26, 18, 0.05);
+
+}
+
+/* both: the bar stays a dark band, like the homepage's top bar over its picture */
+[data-md-color-scheme] {
+  --md-primary-fg-color: #251811;
+  --md-primary-fg-color--light: #5b3624;
+  --md-primary-fg-color--dark: #1d130e;
+  --md-primary-bg-color: #fbf1e4;
+  --md-primary-bg-color--light: rgba(251, 241, 228, 0.7);
+  --md-accent-bg-color: #251811;
+  --md-footer-bg-color: #1d130e;
+  --md-footer-bg-color--dark: #0a0605;
+  --md-footer-fg-color: #fbf1e4;
+  --md-footer-fg-color--light: #e8d2ba;
+  --md-footer-fg-color--lighter: rgba(251, 241, 228, 0.45);
+}
+
+.md-header {
+  background: rgba(29, 19, 14, 0.82);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(251, 241, 228, 0.16);
+}
+
+.md-header__title {
+  font-family: var(--mars-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* the site name links to this site's first page: Mars orange and underlined under the pointer (the header is dark in both schemes) */
+/* hover: a solid line draws under the name and a back arrow slides in, so it reads as "go home" */
+.md-header__title .home-link { color: inherit; cursor: pointer; text-decoration: none; padding-bottom: 0.1em;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 2px no-repeat;
+  transition: color 0.15s, background-size 0.25s; }
+.md-header__title .home-link::before { content: "\2190"; display: inline-block; width: 0; opacity: 0;
+  overflow: hidden; vertical-align: bottom; transition: width 0.25s, opacity 0.25s; }
+.md-header__title .home-link:hover, .md-header__title .home-link:focus-visible { color: #eea66f; background-size: 100% 2px; }
+.md-header__title .home-link:hover::before, .md-header__title .home-link:focus-visible::before { width: 1.2em; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .md-header__title .home-link, .md-header__title .home-link::before { transition: none; } }
+
+/* every page opens under the dome: the picture fades into the page colour */
+.md-container {
+  background:
+    linear-gradient(180deg, var(--mars-bg-fade) 0, var(--md-default-bg-color) 24rem),
+    var(--mars-photo) center top / 100% auto no-repeat,
+    var(--md-default-bg-color);
+}
+
+/* the homepage: Arcadia City under the stars, full width (the owner's
+   AI-made picture from akadian.ca, images/README.md), the title at its foot.
+   The other pages keep the city picture behind their text */
+.mars-hero {
+  --mars-hero-photo: url("../images/21-starlit-city.webp");
+  /* a full-width banner that never crops the picture (Jim 1 Nov 2026: "banner", "show all the contents, not trimmed",
+     "fit the screen"): the whole picture sits on the right at the banner's height, a soft blurred copy of it fills
+     the rest of the width, and the title sits on the left over the blur */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  --mars-hero-h: clamp(16rem, 30vw, 27rem);
+  height: var(--mars-hero-h);
+  background: #07080c;
+}
+
+.mars-hero::before {
+  content: "";
+  position: absolute;
+  inset: -2rem;
+  z-index: -2;
+  background: var(--mars-hero-photo) center / cover no-repeat;
+  filter: blur(26px) brightness(0.5) saturate(1.1);
+}
+
+.mars-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  aspect-ratio: 16 / 9;
+  background: var(--mars-hero-photo) center / contain no-repeat;
+  /* the left edge melts into the blur */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14%);
+}
+
+.mars-hero__inner {
+  width: 100%;
+  padding: 0 0.8rem 2.2rem;
+}
+
+.mars-hero__title {
+  margin: 0;
+  font-family: var(--mars-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  line-height: 1;
+  color: #fbf1e4;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+}
+
+[data-md-color-scheme="default"] .mars-hero__title {
+  color: #2b1a12;
+  text-shadow: 0 1px 14px rgba(239, 222, 203, 0.7);
+}
+
+/* over the dark blur the title and lead are light in both colour schemes */
+.mars-hero .mars-hero__inner { padding-top: 0; padding-bottom: 0; }
+/* the text stays in the blurred strip left of the picture (picture width = height x 16/9) */
+.mars-hero .mars-hero__title,
+.mars-hero .mars-hero__lead { max-width: max(16rem, calc(100vw - var(--mars-hero-h) * 16 / 9 - 2.4rem)); }
+.mars-hero .mars-pill { color: #fbf1e4; border-color: rgba(251, 241, 228, 0.55); background: rgba(10, 8, 6, 0.35); }
+.mars-hero .mars-pill:hover { color: #fff; border-color: #eea66f; }
+.mars-hero__title, [data-md-color-scheme="default"] .mars-hero__title { color: #fbf1e4; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6); }
+
+.mars-hero__lead {
+  max-width: 36rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #ecdccb;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+
+.mars-hero__go {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+}
+
+.mars-cta,
+.mars-pill {
+  font-family: var(--mars-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+}
+
+.md-typeset .mars-cta,
+.mars-cta {
+  color: #1a100c;
+  background: #eea66f;
+  box-shadow: 0 6px 24px rgba(238, 166, 111, 0.3);
+}
+
+.mars-pill {
+  color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lighter);
+  background: var(--md-default-bg-color--lighter);
+}
+
+.mars-cta:hover { color: #1a100c; box-shadow: 0 8px 30px rgba(238, 166, 111, 0.5); }
+.mars-pill:hover { color: var(--md-default-fg-color); border-color: var(--md-typeset-a-color); }
+.mars-cta:focus-visible,
+.mars-pill:focus-visible { outline: 2px solid var(--md-typeset-a-color); outline-offset: 3px; }
+
+/* headings in the homepage's condensed face */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-family: var(--mars-display);
+  color: var(--md-default-fg-color);
+  letter-spacing: 0.01em;
+}
+
+.md-typeset h1 { font-weight: 700; }
+.md-typeset h2 { font-weight: 600; border-bottom: 1px solid var(--md-default-fg-color--lightest); padding-bottom: 0.2em; }
+
+.md-typeset table:not([class]) {
+  background: var(--md-default-bg-color);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--mars-panel);
+  font-family: var(--mars-display);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* wider page; the right-hand contents panel lives in the left one (toc.integrate) */
+.md-grid {
+  max-width: 80rem;
+}
+
+/* left panel: the 11 categories read as headings, the pages under them as items */
+@media screen and (min-width: 76.25em) {
+  .md-nav--primary > .md-nav__list > .md-nav__item--section {
+    margin-top: 1em;
+    padding-top: .6em;
+    border-top: 1px solid var(--md-default-fg-color--lightest);
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+    color: var(--mars-rust);
+    font-family: var(--mars-display);
+    font-weight: 700;
+    font-size: .74rem;
+    letter-spacing: .04em;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--section > .md-nav > .md-nav__list {
+    margin-left: .2rem;
+    padding-left: .5rem;
+    border-left: 2px solid var(--md-default-fg-color--lightest);
+  }
+}
+
+@media screen and (max-width: 44.9375em) {
+  /* on a phone: the whole picture across the width, the title on the plain page under it */
+  .mars-hero { flex-direction: column; align-items: stretch; height: auto; background: var(--md-default-bg-color); }
+  .mars-hero::before { display: none; }
+  .mars-hero::after { order: -1; position: static; display: block; width: 100%; aspect-ratio: 16 / 9; -webkit-mask-image: none; mask-image: none; }
+  .mars-hero .mars-hero__inner { padding: 1rem 0.8rem 1.6rem; }
+  .mars-hero .mars-hero__title, .mars-hero .mars-hero__lead { max-width: none; }
+  .mars-hero .mars-pill { color: var(--md-default-fg-color); border-color: var(--md-default-fg-color--lighter); background: var(--md-default-bg-color--lighter); }
+  .mars-hero__title, [data-md-color-scheme="default"] .mars-hero__title { color: var(--md-default-fg-color); text-shadow: none; }
+  .mars-hero__lead { color: var(--md-default-fg-color); text-shadow: none; }
+  /* on a phone the whole picture sits above the title, so the whole drawing stays in view and the words are on the plain page */
+  /* phones: the picture is only a faint tint at the top, so body text stays on the plain page colour (#3) */
+  .md-container {
+    background:
+      linear-gradient(180deg, var(--mars-bg-soft) 0, var(--md-default-bg-color) 9rem),
+      var(--mars-photo) center top / 200% auto no-repeat,
+      var(--md-default-bg-color);
+  }
+}
+
+/* the header reads "Akadian – <site>": the Akadian logo, as on akadian.ca, is the way back there (Jim, 2 Nov 2026;
+   extra.homepage, overrides/partials/logo.html) */
+.md-header__button.md-logo {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0 0 0 0.2rem;
+  padding: 0.4rem 0 0.4rem 0.4rem;
+  font-family: var(--mars-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--md-primary-bg-color);
+  opacity: 1;
+}
+
+.md-header__button.md-logo::after {
+  content: "–";
+  margin-left: 0.35em;
+  color: #cdb096;
+}
+
+.md-header__button.md-logo { align-items: center; }
+.md-logo img { display: block; height: 1.4rem; width: auto; transition: filter 0.2s; }
+
+.md-header__button.md-logo:hover,
+.md-header__button.md-logo:focus-visible {
+  opacity: 1;
+}
+
+.md-logo:hover img,
+.md-logo:focus-visible img {
+  filter: drop-shadow(0 0 8px rgba(238, 166, 111, 0.55));
+}
+
+.md-header__inner .md-header__title {
+  margin-left: 0.35em;
+}
+
+/* the drawer on phones shows the same "Mars" link above the menu */
+.md-nav__button.md-logo {
+  font-family: var(--mars-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+@media screen and (max-width: 76.234375em) {
+  .md-header__button[for="__drawer"] {
+    order: -1;
+  }
+}
+
+
+/* the small quiet label on the AI-made banner, as on akadian.ca */
+.ai-tag { position: absolute; bottom: 12px; right: 12px; z-index: 1; pointer-events: none; font: 500 10px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(241, 228, 211, 0.82); background: rgba(18, 11, 9, 0.5); border: 1px solid rgba(251, 241, 228, 0.26); border-radius: 999px; padding: 4px 7px 3px; }
+
+/* Mars night: every word bright against the brown (Jim, 5 Nov 2026: "when it is getting dark, all fonts need to be jump
+   out and really bright"; "akadian ... very bright like stars"; "when during day background is bright, the fonts ...
+   don't need to be so bright"). Only the slate scheme; Mars dawn keeps its ink. On #1d130e: ink #fffaf3 17.6:1, the
+   lighter ink #f6e7d4 15:1, links #b4dcf7 12.6:1. Mars-Requirements site/theme.md */
+[data-md-color-scheme="slate"] {
+  --md-default-fg-color: #fffaf3;
+  --md-default-fg-color--light: #f6e7d4;
+  --md-default-fg-color--lighter: rgba(255, 250, 243, 0.45);
+  --md-typeset-color: #fffaf3;
+  --md-typeset-a-color: #b4dcf7;
+  --md-code-fg-color: #fffaf3;
+  --md-primary-bg-color: #fffaf3;
+  --md-primary-bg-color--light: rgba(255, 250, 243, 0.85);
+  --md-footer-fg-color: #fffaf3;
+  --md-footer-fg-color--light: #f6e7d4;
+  --md-footer-fg-color--lighter: rgba(255, 250, 243, 0.7);
+}
+/* the Akadian name in gold, like a star, with a warm halo, as on akadian.ca (Jim, 5 Nov 2026: "golden for all the rest pages") */
+[data-md-color-scheme="slate"] .md-logo img {
+  content: url("../assets/akadian-logo-gold.png");
+  filter: drop-shadow(0 0 7px rgba(255, 212, 120, 0.6)) drop-shadow(0 0 22px rgba(255, 176, 64, 0.38));
+}
+[data-md-color-scheme="slate"] .md-logo:hover img,
+[data-md-color-scheme="slate"] .md-logo:focus-visible img { filter: drop-shadow(0 0 8px rgba(238, 166, 111, 0.6)); }
+[data-md-color-scheme="slate"] .md-header__button.md-logo::after { color: #ffd87e; }

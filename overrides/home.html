@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block hero %}
+<section class="mars-hero">
+  <span class="ai-tag">AI-created</span>
+  <div class="md-grid mars-hero__inner">
+    <p class="mars-hero__title">IT</p>
+    <p class="mars-hero__lead">Courses on the systems that run modern IT, sorted by category: databases, data engineering, programming, cloud and more. Each idea explained, every example run on a real system, and practice questions with worked answers.</p>
+    <p class="mars-hero__go">
+      <a class="mars-cta" href="{{ 'books/index.html' | url }}">All courses</a>
+      <a class="mars-pill" href="{{ 'databases/sql/index.html' | url }}">SQL</a>
+      <a class="mars-pill" href="{{ 'databases/sql/fast-track.html' | url }}">SQL interview fast track</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

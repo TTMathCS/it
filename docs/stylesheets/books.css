@@ -1,0 +1,4 @@
+/* the book chapters: small drawings sit in a row at their natural size, as on math.akadian.ca */
+.md-typeset .pattern-row { margin: 1rem 0; }
+.md-typeset .pattern-row svg { display: block; width: 100%; max-width: 30rem; height: auto; }
+.md-typeset .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.2rem 0; }

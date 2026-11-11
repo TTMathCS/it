@@ -1,0 +1,30 @@
+/* it.akadian.ca: the SQL course's result tables and the "ran on" line under every example (tools/sqlrun.py writes them) */
+.md-typeset .sql-tested {
+  margin: 0.4rem 0 0.2rem;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--light);
+  opacity: 0.85;
+}
+.md-typeset .sql-tested::before { content: "✓ "; color: #8fc79a; }
+.md-typeset .sql-error::before { content: "✗ "; color: #ef8f7c; }
+.md-typeset .sql-noerror::before { content: "! "; color: #e9c46a; font-weight: 700; }
+.md-typeset .sql-tested code { font-size: 0.95em; }
+
+/* result tables: compact, monospaced numbers, scroll sideways on phones instead of squeezing */
+.md-typeset .sql-tested + .md-typeset__scrollwrap .md-typeset__table table,
+.md-typeset .sql-tested ~ .md-typeset__scrollwrap table:not([class]) {
+  font-size: 0.72rem;
+}
+.md-typeset .md-typeset__table table:not([class]) td,
+.md-typeset .md-typeset__table table:not([class]) th { padding: 0.35em 0.9em; }
+.md-typeset table:not([class]) td { font-variant-numeric: tabular-nums; }
+
+/* the "wrong answer" boxes in interview tips */
+.md-typeset .admonition.failure,
+.md-typeset details.failure { border-color: #ef8f7c; }
+
+/* the course and category lists on the front pages */
+.md-typeset .it-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.8rem; margin: 1rem 0; }
+.md-typeset .it-cats > div { border: 1px solid var(--md-default-fg-color--lightest); border-radius: 0.4rem; padding: 0.6rem 0.9rem; background: var(--md-default-bg-color--light); }
+.md-typeset .it-cats h3 { margin: 0.2rem 0 0.4rem; font-size: 0.9rem; }
+.md-typeset .it-cats p { margin: 0.2rem 0; font-size: 0.75rem; }

@@ -1,0 +1,224 @@
+/* Reading aids, the same file on cs.akadian.ca, math.akadian.ca and cryptography.akadian.ca (copy it to all three).
+   Goes with javascripts/reader.js and the small script in overrides/main.html. */
+
+/* Text: a little bigger than the theme's default, with more space between lines. --reader-scale is the
+   reader's own choice (A− / A+), 1 = this size. Boxes, tables and tabs follow the text instead of fixed sizes. */
+:root { --reader-scale: 1; }
+.md-typeset { font-size: calc(0.88rem * var(--reader-scale)); line-height: 1.75; }
+.md-typeset .admonition, .md-typeset details,
+.md-typeset table:not([class]), .md-typeset .tabbed-labels,
+.md-typeset .footnote { font-size: 0.86em; }
+.md-typeset .uoft { zoom: var(--reader-scale); }
+.md-typeset p, .md-typeset li { overflow-wrap: break-word; }
+
+/* --- level: Beginner, Intermediate, Expert, the page's own one filled in --- */
+.md-typeset .reader-level { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; margin: -.6rem 0 1.2rem; font-size: .66rem; line-height: 1.3; }
+.reader-level span { padding: .12rem .5rem; border-radius: 999px; white-space: nowrap; }
+.reader-level .reader-level-name { padding-left: 0; color: var(--md-default-fg-color--light); }
+.reader-level .reader-level-off { color: var(--md-default-fg-color--lighter); border: 1px solid var(--md-default-fg-color--lightest); }
+.reader-level .reader-level-on { color: var(--md-primary-bg-color, #fff); background: var(--md-accent-fg-color); border: 1px solid var(--md-accent-fg-color); font-weight: 600; }
+
+/* --- top bar: where you are, Previous / Next --- */
+.reader-top {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .8rem;
+  margin: 0 0 1rem; padding: 0 0 .55rem; border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  font-size: .68rem; line-height: 1.4;
+}
+.reader-crumbs { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .35rem; min-width: 0; color: var(--md-default-fg-color--light); }
+.reader-crumbs a { color: inherit; text-decoration: none; }
+.reader-crumbs a:hover { color: var(--md-typeset-a-color); text-decoration: underline; }
+.reader-sep { opacity: .6; }
+.reader-here { color: var(--md-default-fg-color); font-weight: 600; }
+.reader-pn { display: flex; gap: .4rem; margin-left: auto; }
+.reader-pn a, .reader-pn .reader-off {
+  display: inline-block; padding: .3rem .7rem; border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 999px; text-decoration: none; color: var(--md-default-fg-color); white-space: nowrap;
+}
+.reader-pn a:hover, .reader-pn a:focus-visible { border-color: var(--md-typeset-a-color); color: var(--md-typeset-a-color); }
+.reader-pn .reader-off { opacity: .35; }
+
+/* --- parts: "Part 2 of 5" and the progress bar --- */
+.reader-parts { margin: -.4rem 0 1.4rem; }
+.reader-parts__label { margin: 0 0 .45rem !important; font-size: .68rem; color: var(--md-default-fg-color--light); }
+.reader-parts__label strong { color: var(--md-default-fg-color); }
+.md-typeset ol.reader-parts__bar { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.md-typeset ol.reader-parts__bar > li { display: block; flex: 1 1 0; margin: 0; padding: 0; }
+.md-typeset ol.reader-parts__bar > li::before { content: none; }
+.reader-parts__bar a {
+  display: block; height: 8px; border-radius: 4px; background: var(--md-default-fg-color--lightest);
+  transition: transform .15s ease;
+}
+.reader-parts__bar li.is-done a { background: var(--md-typeset-a-color); opacity: .55; }
+.reader-parts__bar li.is-here a { background: var(--md-typeset-a-color); }
+.reader-parts__bar a:hover, .reader-parts__bar a:focus-visible { transform: scaleY(1.6); }
+.md-typeset .reader-resume { display: inline-block; margin-top: .6rem; font-size: .72rem; font-weight: 600; }
+.md-typeset .reader-parts__title { margin: .9rem 0 0; font-size: 1.1em; font-weight: 600; }
+
+/* --- previous / next part at the bottom --- */
+.reader-partnav { display: flex; justify-content: space-between; gap: .8rem; margin: 2.4rem 0 .6rem; padding-top: 1.2rem; border-top: 1px solid var(--md-default-fg-color--lightest); }
+.reader-partnav > * { flex: 1 1 0; min-width: 0; }
+.md-typeset .reader-partnav a {
+  display: flex; flex-direction: column; gap: .15rem; padding: .75rem 1rem; border-radius: .4rem;
+  border: 1px solid var(--md-default-fg-color--lightest); text-decoration: none; color: var(--md-default-fg-color);
+}
+.md-typeset .reader-partnav a:hover, .md-typeset .reader-partnav a:focus-visible { border-color: var(--md-typeset-a-color); }
+.reader-partnav small { font-size: .68rem; color: var(--md-default-fg-color--light); }
+.reader-partnav span { font-weight: 600; }
+.reader-partnav__next, .reader-partnav__end { text-align: right; }
+.md-typeset .reader-partnav a.reader-partnav__next { align-items: flex-end; background: var(--md-default-fg-color--lightest); }
+.md-typeset .reader-finished { margin: 0 0 .5rem; font-weight: 600; color: var(--md-typeset-a-color); }
+/* on a page read in parts the bottom bar above takes the place of the theme's own previous / next */
+.reader-paged .md-footer__inner { display: none; }
+
+/* "On this page": sections in other parts are a little quieter */
+.md-nav--secondary .reader-toc-away > .md-nav__link { opacity: .62; }
+/* finished chapters in the menu */
+.md-nav__link.reader-done .md-ellipsis::after { content: " ✓"; color: var(--md-typeset-a-color); font-weight: 700; }
+
+/* --- the Aa button and its panel --- */
+.reader-btn { font: 700 .8rem/1 var(--md-text-font-family, inherit); color: currentColor; background: none; border: 0; cursor: pointer; letter-spacing: -.02em; }
+.reader-panel {
+  position: fixed; z-index: 10; top: 3rem; right: .8rem; width: min(19rem, calc(100vw - 1.6rem));
+  padding: .8rem .9rem .9rem; border-radius: .5rem; font-size: .7rem; line-height: 1.4;
+  background: var(--md-default-bg-color); color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lightest); box-shadow: 0 .4rem 1.6rem rgba(0, 0, 0, .28);
+}
+.reader-panel[hidden] { display: none; }
+.reader-panel__title { margin: 0 0 .5rem; font-weight: 700; font-size: .78rem; }
+.reader-row { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .45rem 0; border-top: 1px solid var(--md-default-fg-color--lightest); }
+.reader-row small { display: block; color: var(--md-default-fg-color--light); font-size: .62rem; }
+.reader-seg { display: inline-flex; align-items: center; border: 1px solid var(--md-default-fg-color--lighter); border-radius: .35rem; overflow: hidden; }
+.reader-seg button, .reader-seg output { font: inherit; padding: .35rem .6rem; border: 0; background: none; color: inherit; cursor: pointer; min-width: 2.2rem; text-align: center; }
+.reader-seg output { cursor: default; min-width: 3rem; font-variant-numeric: tabular-nums; }
+.reader-seg button + button, .reader-seg output + button, .reader-seg button + output { border-left: 1px solid var(--md-default-fg-color--lighter); }
+.reader-seg button[aria-pressed="true"] { background: var(--md-typeset-a-color); color: var(--md-default-bg-color); }
+.reader-seg button:disabled { opacity: .35; cursor: default; }
+.reader-switch { position: relative; width: 2.3rem; height: 1.3rem; border-radius: 1rem; border: 0; cursor: pointer; background: var(--md-default-fg-color--lighter); flex: none; }
+.reader-switch::after { content: ""; position: absolute; top: .15rem; left: .15rem; width: 1rem; height: 1rem; border-radius: 50%; background: var(--md-default-bg-color); transition: left .15s ease; }
+.reader-switch[aria-checked="true"] { background: var(--md-typeset-a-color); }
+.reader-switch[aria-checked="true"]::after { left: 1.15rem; }
+.reader-reset { margin-top: .5rem; padding: 0; font: inherit; color: var(--md-typeset-a-color); background: none; border: 0; cursor: pointer; text-decoration: underline; }
+.reader-panel button:focus-visible { outline: 2px solid var(--md-typeset-a-color); outline-offset: 1px; }
+
+/* --- reading mode: no menus, one narrow column --- */
+.reader-exit { display: none; }
+.reader-mode .reader-exit {
+  display: block; position: fixed; z-index: 4; left: 50%; transform: translateX(-50%); bottom: .8rem; padding: .45rem .8rem; border-radius: 999px;
+  font: 600 .64rem/1 var(--md-text-font-family, inherit); cursor: pointer; opacity: .8;
+  color: var(--md-default-fg-color); background: var(--md-default-bg-color); border: 1px solid var(--md-default-fg-color--lighter);
+}
+.reader-mode .reader-exit:hover { opacity: 1; }
+.reader-mode .md-tabs { display: none; }
+@media screen and (min-width: 60em) {
+  .reader-mode .md-sidebar { display: none; }
+  .reader-mode .md-content { max-width: none; }
+  .reader-mode .md-content__inner { max-width: 36em; margin-left: auto !important; margin-right: auto !important; }
+}
+
+@media screen and (max-width: 44.9375em) {
+  .reader-top { font-size: .64rem; }
+  .md-typeset .reader-level { gap: .2rem; font-size: .6rem; }
+  .reader-level span { padding: .1rem .35rem; }
+  .reader-pn a, .reader-pn .reader-off { padding: .3rem .6rem; }
+  .reader-partnav { flex-direction: column; }
+  .reader-partnav > span:empty { display: none; }
+  .reader-panel { top: 2.8rem; }
+  /* the light / dark switch is in the Aa panel, so the phone header keeps room for the site's name */
+  .md-header__option[data-md-component="palette"] { display: none; }
+}
+@media print {
+  .reader-top, .reader-level, .reader-parts, .reader-partnav, .reader-btn, .reader-exit { display: none !important; }
+}
+
+/* phone width: nothing may push the page sideways. KaTeX's hidden copy for screen readers is placed relative to
+   the formula, so a wide formula in a table scrolls inside the table, not the page (as on cryptography). */
+.md-typeset .katex { position: relative; }
+.md-typeset math[display="block"] { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+.md-typeset .uoft .step, .md-typeset .uoft .block { max-width: 100%; overflow-x: auto; }
+
+/* --- homepage Start band: the beginner lessons, first thing under the title (index.md on each site) --- */
+.md-typeset .start-band {
+  margin: 0 0 2rem; padding: 1.1rem 1.2rem 1.2rem; border-radius: .8rem;
+  border: 2px solid var(--md-accent-fg-color);
+  background: color-mix(in srgb, var(--md-accent-fg-color) 9%, var(--md-default-bg-color));
+}
+.md-typeset .start-band > p:first-child { margin: 0 0 .2rem; font-size: 1.15em; font-weight: 700; }
+.md-typeset .start-band > p:first-child + p { margin: 0 0 .9rem; color: var(--md-default-fg-color--light); }
+.md-typeset .start-band ol {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem;
+  margin: 0 0 1rem; padding: 0; list-style: none; counter-reset: sb;
+}
+.md-typeset .start-band ol li { margin: 0; counter-increment: sb; }
+.md-typeset .start-band ol li a {
+  display: flex; flex-direction: column; gap: .1rem; height: 100%; box-sizing: border-box;
+  padding: .6rem .75rem .65rem 2.6rem; position: relative; border-radius: .55rem; text-decoration: none;
+  color: var(--md-default-fg-color); background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest); line-height: 1.35;
+}
+.md-typeset .start-band ol li a::before {
+  content: counter(sb); position: absolute; left: .7rem; top: .62rem; width: 1.4rem; height: 1.4rem;
+  border-radius: 50%; display: grid; place-items: center; font-size: .8em; font-weight: 700;
+  color: #1a100c; background: #eea66f;
+}
+.md-typeset .start-band ol li a:hover, .md-typeset .start-band ol li a:focus-visible { border-color: var(--md-accent-fg-color); }
+.md-typeset .start-band ol li a strong { font-weight: 700; }
+.md-typeset .start-band ol li a em { font-style: normal; font-size: .86em; color: var(--md-default-fg-color--light); }
+.md-typeset .start-band > p:last-child { margin: 0; }
+.md-typeset .start-band > p:last-child a {
+  display: inline-block; padding: .55rem 1.2rem; border-radius: 999px; font-weight: 700; text-decoration: none;
+  color: #1a100c; background: #eea66f;
+}
+@media screen and (max-width: 59.9375em) { .md-typeset .start-band ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media screen and (max-width: 33em) {
+  .md-typeset .start-band { padding: .9rem .8rem 1rem; }
+  .md-typeset .start-band ol { grid-template-columns: 1fr; gap: .4rem; }
+  .md-typeset .start-band ol li a { padding: .5rem .7rem .5rem 2.4rem; }
+}
+
+/* --- homepage level cards: Beginner, Intermediate, Expert (index.md on each site) --- */
+.md-typeset .level-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 0 0 .9rem; }
+.md-typeset .level-card {
+  display: flex; flex-direction: column; padding: 1rem 1rem 1.1rem; border-radius: .8rem;
+  border: 1px solid var(--md-default-fg-color--lightest); border-top: .35rem solid var(--lc, #eea66f);
+  background: color-mix(in srgb, var(--lc, #eea66f) 7%, var(--md-default-bg-color));
+}
+.md-typeset .level-card--1 { --lc: #6fb38a; }
+.md-typeset .level-card--2 { --lc: #e0a03f; }
+.md-typeset .level-card--3 { --lc: #c4572c; }
+.md-typeset .level-card > p { margin: 0 0 .7rem; }
+.md-typeset .level-card > p:first-child { margin: 0 0 .15rem; font-size: 1.35em; font-weight: 800; line-height: 1.2; }
+.md-typeset .level-card > p:nth-child(2) { color: var(--md-default-fg-color--light); font-size: .92em; }
+.md-typeset .level-card ul { margin: 0 0 .9rem; padding: 0; list-style: none; flex: 1; }
+.md-typeset .level-card ul li { margin: 0 0 .3rem; padding-left: 1.1rem; position: relative; font-size: .92em; }
+.md-typeset .level-card ul li::before { content: "›"; position: absolute; left: .2rem; color: var(--lc); font-weight: 800; }
+.md-typeset .level-card > p:last-child { margin: 0; }
+.md-typeset .level-card > p:last-child a {
+  display: inline-block; padding: .5rem 1.1rem; border-radius: 999px; font-weight: 700; text-decoration: none;
+  color: #1a100c; background: var(--lc);
+}
+.md-typeset .level-check-link { margin: 0 0 2rem; font-size: 1.02em; }
+.md-typeset .level-check-link a { font-weight: 700; }
+@media screen and (max-width: 59.9375em) { .md-typeset .level-cards { grid-template-columns: 1fr; } }
+
+/* --- level check page: a few questions, result shown in the page; nothing is saved or sent --- */
+.md-typeset .lcq { margin: 0 0 1rem; padding: .8rem 1rem; border: 1px solid var(--md-default-fg-color--lightest); border-radius: .7rem; }
+.md-typeset .lcq legend { font-weight: 700; padding: 0 .3rem; }
+.md-typeset .lcq label { display: flex; gap: .55rem; align-items: baseline; padding: .35rem .2rem; cursor: pointer; border-radius: .4rem; }
+.md-typeset .lcq label:hover { background: var(--md-default-fg-color--lightest); }
+.md-typeset .lc-result { margin: 1rem 0 2rem; }
+.md-typeset .lc-result[hidden], .md-typeset .lc-out[hidden] { display: none; }
+
+/* the line that says what the menu tick means, and the one-time note when a page is first finished (8 Nov 2026) */
+.md-nav .reader-legend { margin: .5rem .6rem .2rem; font-size: .62rem; line-height: 1.4; opacity: .7; }
+.md-typeset .reader-ticknote { margin: 1rem 0 .5rem; font-size: .9em; font-weight: 600; color: var(--md-typeset-a-color); }
+
+/* Books fold in the side menu on wide screens (reader.js): a book is a row with an arrow, its chapters open below */
+.md-nav__item.reader-book > .md-nav__link { margin-top: .35em; }
+.md-nav__item.reader-book.md-nav__item--active > .md-nav__link > a.md-nav__link,
+.md-nav__item.reader-book.md-nav__item--active > a.md-nav__link,
+.md-nav__item.reader-book.md-nav__item--active > label.md-nav__link { color: var(--md-typeset-a-color); font-weight: 700; }
+.md-nav__item.reader-book > .md-nav > .md-nav__list { padding-left: .6rem; }
+.reader-bookcount { margin-left: .4em; font-size: .85em; font-weight: 400; opacity: .7; white-space: nowrap; }
+/* the tick legend sits under the first list with a tick; hide it while that list's book or part is closed,
+   or it holds open an empty gap under the closed part */
+.md-nav__item:not(.md-nav__item--section) > .md-nav__toggle:not(:checked) ~ .md-nav > .reader-legend { display: none; }

@@ -1,0 +1,131 @@
+site_name: IT
+site_url: https://it.akadian.ca/
+site_description: Courses on the systems of modern IT, by category, starting with SQL from beginner to expert; every example run on a real database
+repo_url: https://github.com/TTMathCS/it
+edit_uri: edit/main/docs/
+copyright: 'Part of <a href="https://www.akadian.ca/">Mars – your new home</a>'
+# notes for the repo, not pages
+exclude_docs: |
+  README.md
+use_directory_urls: false
+
+theme:
+  name: material
+  custom_dir: overrides
+  favicon: assets/akadian-icon.png   # the Akadian A, as on akadian.ca
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/white-balance-sunny
+        name: Light colours
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Dark colours
+  font: false
+
+extra_css:
+  - fonts/fonts.css
+  - stylesheets/mars.css
+  - stylesheets/books.css
+  - stylesheets/reader.css
+  - stylesheets/it.css
+
+extra:
+  homepage: https://www.akadian.ca/
+
+extra_javascript:
+  - https://www.akadian.ca/home-music.js?site   # the song from www.akadian.ca: it goes on here while it plays (Mars-Home home-music.js)
+  - https://www.akadian.ca/schools.js   # the Mars Schools row: links to every other school site; its one list is the Mars Schools section of Mars-Requirements site/menu.md (Mars-Home schools.js, written by Mars-Build tools/menu.py)
+  - javascripts/mars-link.js
+  - javascripts/home-link.js
+  - javascripts/levels.js
+  - javascripts/reader.js
+
+markdown_extensions:
+  - toc:
+      permalink: true
+      title: On this page
+  - tables
+  - admonition
+  - pymdownx.details
+  - md_in_html
+  - attr_list
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+# With --strict, a broken link or #anchor stops the build
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+
+# The Books menu is written by tools/nav.py from the category folders (python3 tools/nav.py); do not edit between the marks.
+nav:
+  - Home: index.md
+  - Start: start/index.md
+  # books: start
+  - Books:
+      - books/index.md
+      - "Databases":
+          - databases/index.md
+          - "SQL":
+              - databases/sql/index.md
+              - databases/sql/fast-track.md
+              - databases/sql/cheat-sheet.md
+              - databases/sql/sample-database.md
+              - databases/sql/01-Tables-Rows-and-Keys.md
+              - databases/sql/02-Select-Where-Order-By-Limit.md
+              - databases/sql/03-The-Order-a-Query-Runs-In.md
+              - databases/sql/04-Expressions-Case-Numbers-Dates-Cast.md
+              - databases/sql/05-Text-Functions-and-Pattern-Matching.md
+              - databases/sql/06-Null-and-Three-Valued-Logic.md
+              - databases/sql/07-Aggregation-Group-By-Having.md
+              - databases/sql/08-Joins-Inner-Left-Right-Full-Cross.md
+              - databases/sql/09-Self-Semi-and-Anti-Joins.md
+              - databases/sql/10-Subqueries.md
+              - databases/sql/11-CTEs-and-Recursive-CTEs.md
+              - databases/sql/12-Set-Operations.md
+              - databases/sql/13-Window-Functions-Ranking.md
+              - databases/sql/14-Window-Functions-Lag-Lead-Running-Totals.md
+              - databases/sql/15-Classic-Interview-Patterns.md
+              - databases/sql/16-Dates-and-Time-Series.md
+              - databases/sql/17-Insert-Update-Delete-Merge.md
+              - databases/sql/18-Create-Table-Types-Constraints.md
+              - databases/sql/19-Data-Modelling.md
+              - databases/sql/20-Transactions-and-Isolation.md
+              - databases/sql/21-Views-and-Materialized-Views.md
+              - databases/sql/22-Duplicates-and-Incremental-Loads.md
+              - databases/sql/23-Data-Quality-Checks.md
+              - databases/sql/24-JSON-and-Arrays.md
+              - databases/sql/25-Indexes-and-Explain.md
+              - databases/sql/26-Making-Slow-Queries-Fast.md
+              - databases/sql/27-Grouping-Sets-Rollup-Cube-Lateral.md
+              - databases/sql/28-Dialect-Differences.md
+              - databases/sql/29-Safe-SQL.md
+              - databases/sql/30-Practice-Set-A.md
+              - databases/sql/31-Practice-Set-B.md
+              - databases/sql/32-Mock-Tests.md
+              - databases/sql/glossary.md
+  # books: end
