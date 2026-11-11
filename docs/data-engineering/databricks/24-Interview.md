@@ -135,7 +135,7 @@ made a mistake.
     warehouse for BI. That meant two copies, two security models, extra pipelines and stale reports. A lakehouse
     keeps one copy in open formats and serves BI, data engineering and ML from it.
 
-    **Learn more:** Chapter 1.
+    **Learn more:** [Chapter 1](01-What-Is-Databricks.md).
 
 **Q2. What are the control plane and the compute plane?**
 
@@ -148,7 +148,7 @@ made a mistake.
     **Why:** this comes up in security and networking questions ("where does our data get processed?") and explains
     why serverless starts faster: the machines are already in a pool Databricks manages.
 
-    **Learn more:** Chapter 1, Chapter 6.
+    **Learn more:** [Chapter 1](01-What-Is-Databricks.md), [Chapter 6](06-Compute.md).
 
 **Q3. What is Delta Lake in one sentence, and is it the default?**
 
@@ -179,7 +179,7 @@ made a mistake.
     Streaming supports only `Trigger.AvailableNow()` and `Trigger.Once()` (Databricks recommends `AvailableNow`).
     A continuously running stream needs classic compute or a pipeline.
 
-    **Learn more:** Chapter 6.
+    **Learn more:** [Chapter 6](06-Compute.md).
 
 **Q5. What is the difference between standard and dedicated access mode?**
 
@@ -192,7 +192,7 @@ made a mistake.
     **Why:** an interviewer wants to hear that you pick the mode from the workload, and that you know the old names
     still appear in older code and blog posts.
 
-    **Learn more:** Chapter 6.
+    **Learn more:** [Chapter 6](06-Compute.md).
 
 **Q6. What is Photon, and when does it not help?**
 
@@ -210,7 +210,7 @@ made a mistake.
     **Why:** "turn on Photon" is not a fix for every slow job. If the time goes into a Python UDF, a skewed join or
     reading millions of tiny files, a faster executor does not remove the cause.
 
-    **Learn more:** Chapter 6, Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
 
 **Q7. Managed or external table in Unity Catalog: what is the difference, and which is the default?**
 
@@ -228,7 +228,7 @@ made a mistake.
     **Why:** choose external only when the files must live at a specific path for another system, and remember that
     many automatic features (predictive optimization, automatic liquid clustering) are for managed tables only.
 
-    **Learn more:** Chapter 5, Chapter 20.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), Chapter 20.
 
 **Q8. Explain account, workspace, metastore, catalog and schema.**
 
@@ -242,7 +242,7 @@ made a mistake.
     **Why:** the medallion layers usually map onto this namespace: one catalog per environment or domain, and
     schemas `bronze`, `silver`, `gold` inside it (24.5).
 
-    **Learn more:** Chapter 2, Chapter 5.
+    **Learn more:** Chapter 2, [Chapter 5](05-Unity-Catalog.md).
 
 **Q9. What is Lakeflow? Give the old names too.**
 
@@ -302,7 +302,7 @@ made a mistake.
     example: `AUTO CDC` is part of Lakeflow pipelines and is not supported by open-source Spark Declarative
     Pipelines.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 ## 24.3 Spark internals
 
@@ -336,7 +336,7 @@ made a mistake.
     columns and pick join strategies. The practical trap: an error in a transformation (for example a bad cast in
     ANSI mode) only appears when an action runs, sometimes many cells later.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q14. What is a narrow versus a wide transformation? How do you spot a shuffle in a plan?**
 
@@ -374,7 +374,7 @@ made a mistake.
     crosses the network. The `4` in `hashpartitioning(customer_id#1, 4)` is the local test setting of
     `spark.sql.shuffle.partitions`.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q15. What are a job, a stage and a task?**
 
@@ -387,7 +387,7 @@ made a mistake.
     **Why:** this vocabulary is how you read the Spark UI. "The job is slow" becomes "stage 7 has 200 tasks and three
     of them take 20 minutes", which points straight at skew (Q21).
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q16. What decides how many partitions a DataFrame has?**
 
@@ -403,7 +403,7 @@ made a mistake.
     when writing, many small files. One streaming catch: you cannot change `spark.sql.shuffle.partitions` between
     restarts from the same checkpoint.
 
-    **Learn more:** Chapter 3, Chapter 22.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md), Chapter 22.
 
 **Q17. `repartition` or `coalesce`: what is the difference?**
 
@@ -432,7 +432,7 @@ made a mistake.
     coalesce can make the computation run on fewer nodes than you want (one node for `numPartitions=1`), because the
     upstream work is no longer parallel. `repartition` adds a shuffle but keeps the upstream stages parallel.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q18. What join strategies does Spark use, and how does it choose?**
 
@@ -583,7 +583,7 @@ made a mistake.
     **Why:** the same applies to `toPandas()`, and to loops that call `collect()` on each item. A driver
     out-of-memory error is almost always caused by code, not by data size alone (Q127).
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q24. Why are Python UDFs slow, and what are the alternatives?**
 
@@ -611,7 +611,7 @@ made a mistake.
     **Why:** this is why the DataFrame API and SQL perform the same: both become the same plan. It also explains why
     a filter written after a join can still be applied before it.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q26. What runs on the driver and what runs on the executors?**
 
@@ -623,7 +623,7 @@ made a mistake.
     **Why:** two classic bugs follow from this. A `print` inside `foreach` prints to the executor logs, not your
     notebook. A Python list appended to inside a UDF stays empty on the driver.
 
-    **Learn more:** Chapter 3.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
 **Q27. What is the difference between partition pruning and data skipping?**
 
@@ -1114,7 +1114,7 @@ made a mistake.
     **Why:** if bronze casts `amount` to `DECIMAL` and a source starts sending `"12.50 CAD"`, the row fails or the
     value becomes NULL and is lost. Kept as text, it can be fixed in silver later.
 
-    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), Chapter 8.
+    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q48. The source system keeps all its data. Why keep a bronze copy at all?**
 
@@ -1166,7 +1166,7 @@ made a mistake.
     processing with batch-like cost. The trap: a streaming read of a table that receives updates or deletes fails
     (Q82).
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 11.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 11](11-Structured-Streaming.md).
 
 **Q52. What does the gold layer contain, and how is it modeled?**
 
@@ -1192,7 +1192,7 @@ made a mistake.
 
     **Why:** the layout makes privileges simple: grant on the schema and every current and future table inherits it.
 
-    **Learn more:** Chapter 5, [Chapter 7](07-Medallion-Architecture.md).
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), [Chapter 7](07-Medallion-Architecture.md).
 
 **Q54. What are common medallion anti-patterns?**
 
@@ -1268,7 +1268,7 @@ made a mistake.
 
     **Why:** the interviewer is checking that you separate *event time* from *processing time*.
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 11.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 11](11-Structured-Streaming.md).
 
 **Q59. What are SCD Type 1 and Type 2, and where do they live?**
 
@@ -1326,7 +1326,7 @@ made a mistake.
 
     **Why:** inside a Lakeflow pipeline (formerly Delta Live Tables) you do not set the schema or checkpoint location; the pipeline manages them.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q62. Auto Loader or `COPY INTO`?**
 
@@ -1343,7 +1343,7 @@ made a mistake.
     **Why:** the older rule of thumb "COPY INTO for thousands of files, Auto Loader for millions" still shows up in
     interviews. Say that the current docs point SQL users to streaming tables, and that both are idempotent.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q63. Directory listing or file notification mode?**
 
@@ -1357,7 +1357,7 @@ made a mistake.
     **Why:** neither mode guarantees the order in which files are processed. Design for out-of-order files
     (sequence by an event time or version in the data, not by arrival).
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q64. How does Auto Loader infer a schema?**
 
@@ -1370,7 +1370,7 @@ made a mistake.
     **Why:** all-strings in bronze is deliberate: it avoids failures when a value does not fit an inferred type.
     Types are applied in silver.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q65. A new column appears in the source files. What does Auto Loader do?**
 
@@ -1388,7 +1388,7 @@ made a mistake.
     **Why:** the failure in `addNewColumns` is by design. Databricks recommends running the stream in a Lakeflow Job (formerly Databricks Workflows)
     with retries so it restarts automatically and picks up the new schema.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q66. What is the rescued data column?**
 
@@ -1401,7 +1401,7 @@ made a mistake.
     changed. With the rescued data column, type mismatches do not make `DROPMALFORMED` drop records or `FAILFAST`
     fail; only truly corrupt records (malformed JSON or CSV) do.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q67. What are schema hints?**
 
@@ -1413,7 +1413,7 @@ made a mistake.
     **Why:** hints give you types for important columns without giving up inference and evolution for the rest.
     Note that `addNewColumns` is not allowed when you provide a full schema, but works with schema hints.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q68. What is in an ingestion stream's checkpoint, and what happens if you delete it?**
 
@@ -1427,7 +1427,7 @@ made a mistake.
     **Why:** a common incident (Q136). Treat checkpoint paths as part of the table's identity: put them in config,
     never change them casually, never share them between streams.
 
-    **Learn more:** Chapter 8, Chapter 11.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md), [Chapter 11](11-Structured-Streaming.md).
 
 **Q69. What is the `_metadata` column?**
 
@@ -1440,7 +1440,7 @@ made a mistake.
     **Why:** storing the source file and its modification time in bronze makes debugging ("which file brought this
     bad row?") and targeted reprocessing possible.
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q70. How do SQL users ingest files incrementally?**
 
@@ -1459,7 +1459,7 @@ made a mistake.
     **Why:** a standalone streaming table created in Databricks SQL is refreshed by a pipeline that Databricks
     creates and manages for you (pipeline type `MV/ST`).
 
-    **Learn more:** Chapter 8, Chapter 13.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md), Chapter 13.
 
 **Q71. How do you ingest from Kafka?**
 
@@ -1483,7 +1483,7 @@ made a mistake.
     **Why:** `(topic, partition, offset)` uniquely identifies a message, which is useful for deduplication. Kafka
     retention is limited, which is why bronze must be kept (Q48).
 
-    **Learn more:** Chapter 8, Chapter 11.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md), [Chapter 11](11-Structured-Streaming.md).
 
 ## 24.7 Structured Streaming
 
@@ -1502,7 +1502,7 @@ made a mistake.
     streaming, you choose a trigger and an output mode, and stateful queries need a watermark so that state does not
     grow forever (Q77).
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q73. Which triggers exist, and which one would you pick?**
 
@@ -1522,7 +1522,7 @@ made a mistake.
     **Why:** the default trigger checks for new data every few milliseconds, which can generate a high volume of
     cloud storage API calls and an unexpected bill. Always set a trigger that matches the latency requirement.
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q74. Why run a streaming query with `availableNow` from a daily job instead of writing a batch job?**
 
@@ -1536,7 +1536,7 @@ made a mistake.
     **Why:** this is the standard answer to "we only need fresh data once a day": incremental, idempotent and cheap.
     Databricks also recommends `AvailableNow` for incremental batch loading from Kafka.
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q75. What is in a checkpoint, and when do you need a new one?**
 
@@ -1553,7 +1553,7 @@ made a mistake.
     **Why:** deleting a checkpoint or pointing the query at a new location makes the next run start fresh, which
     reprocesses everything the source still holds (Q136).
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q76. Show that a checkpoint gives exactly-once loading of files.**
 
@@ -1606,7 +1606,7 @@ made a mistake.
     other streams or batch jobs writing to the table. Exactly-once is about processing; it does not remove
     duplicates that already exist in the source data (Q81).
 
-    **Learn more:** Chapter 11, Chapter 8.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q77. What is a watermark? Walk through what happens to late events.**
 
@@ -1659,7 +1659,7 @@ made a mistake.
     output in append mode; a shorter one does the opposite. If late corrections matter for correctness, land every
     event in bronze and recompute the affected windows in batch (design 24.13).
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q78. Append, update or complete output mode: what is the difference?**
 
@@ -1678,7 +1678,7 @@ made a mistake.
     **Why:** append is the safe default for sinks that cannot update rows, at the cost of latency. Complete mode
     keeps all state forever, so it only suits small result sets. Stream-stream joins support append mode only.
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q79. What is `foreachBatch`, and what guarantee does it give?**
 
@@ -1728,7 +1728,7 @@ made a mistake.
     so the orchestrator retries the whole batch. To write one stream to several tables, Databricks recommends
     several streaming writers, because writing multiple sinks in one `foreachBatch` serializes them.
 
-    **Learn more:** Chapter 11, [Chapter 9](09-Building-Silver.md).
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 9](09-Building-Silver.md).
 
 **Q80. What do you need to know about stream-stream joins?**
 
@@ -1743,7 +1743,7 @@ made a mistake.
     **Why:** a stream-static join (stream joined to a Delta dimension table) needs no join state and is the simpler
     choice when one side changes slowly.
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q81. Kafka sometimes delivers the same event twice. How do you deduplicate a stream?**
 
@@ -1766,7 +1766,7 @@ made a mistake.
     **Why:** the trade-off is the window: a duplicate arriving after the watermark is not caught. If duplicates can
     be days apart, `MERGE` on the event ID into silver (insert only when not matched) is the safer second line.
 
-    **Learn more:** Chapter 11, [Chapter 9](09-Building-Silver.md).
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 9](09-Building-Silver.md).
 
 **Q82. Your stream reads a Delta table, and someone runs an `UPDATE` on that source table. The stream fails. Why,
 and what are the options?**
@@ -1789,7 +1789,7 @@ and what are the options?**
     needs CDF or `skipChangeCommits`. A schema change on the source table also fails the stream; for most schema
     changes, restarting it resolves the mismatch.
 
-    **Learn more:** Chapter 11, [Chapter 4](04-Delta-Lake.md).
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 4](04-Delta-Lake.md).
 
 ## 24.8 Lakeflow pipelines (formerly Delta Live Tables)
 
@@ -1998,7 +1998,7 @@ and what are the options?**
     **Why:** for a data engineer, it means one place to grant access to bronze, silver and gold, lineage for impact
     analysis before changing a column, and system tables for audit and cost.
 
-    **Learn more:** Chapter 5.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md).
 
 **Q95. What securable objects does Unity Catalog have?**
 
@@ -2011,7 +2011,7 @@ and what are the options?**
     **Why:** storage credentials and external locations are how Unity Catalog governs access to cloud storage
     paths, instead of handing cloud keys to every cluster.
 
-    **Learn more:** Chapter 5.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md).
 
 **Q96. What privileges does a user need to read a table? How does inheritance work?**
 
@@ -2033,7 +2033,7 @@ and what are the options?**
     practices say to run production jobs as service principals and reserve direct `MODIFY` on production tables for
     them.
 
-    **Learn more:** Chapter 5, Chapter 23.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), Chapter 23.
 
 **Q97. What is the difference between `BROWSE`, `SELECT` and `MANAGE`?**
 
@@ -2046,7 +2046,7 @@ and what are the options?**
 
     **Why:** `BROWSE` is the answer to "people cannot find data, but we do not want to give everyone read access".
 
-    **Learn more:** Chapter 5.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md).
 
 **Q98. How do you restrict which rows or column values a user sees?**
 
@@ -2105,13 +2105,14 @@ and what are the options?**
 
 ??? success "Answer"
     Volumes are Unity Catalog objects that govern non-tabular files (CSV and JSON landing files, images, PDFs) in
-    cloud storage, with paths like `/Volumes/<catalog>/<schema>/<volume>/...`. Managed volumes use Databricks-managed
-    storage; external volumes add governance to an existing cloud location. Their privileges are `READ VOLUME` and
+    cloud storage, with paths like `/Volumes/<catalog>/<schema>/<volume>/...`. Managed volumes live in the schema's managed
+    storage location (usually in your own cloud account; Unity Catalog manages the files, see
+    [chapter 5](05-Unity-Catalog.md)); external volumes add governance to an existing cloud location. Their privileges are `READ VOLUME` and
     `WRITE VOLUME`. Databricks recommends volumes for governing all non-tabular data.
 
     **Why:** a landing zone for raw files is usually a volume, and Auto Loader can read from it.
 
-    **Learn more:** Chapter 5, Chapter 8.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q102. How does Unity Catalog control access to cloud storage?**
 
@@ -2123,7 +2124,7 @@ and what are the options?**
 
     **Why:** users never see the cloud keys; access is granted and audited in one place.
 
-    **Learn more:** Chapter 5.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md).
 
 **Q103. How do you share gold tables with a partner company?**
 
@@ -2651,7 +2652,7 @@ do you do?**
 
     **Why:** the interviewer wants to see that you measure first with the system tables instead of guessing.
 
-    **Learn more:** Chapter 23, Chapter 6.
+    **Learn more:** Chapter 23, [Chapter 6](06-Compute.md).
 
 **Q122. An Auto Loader stream stopped overnight after a new column appeared in the files. How should this be
 handled?**
@@ -2671,7 +2672,7 @@ handled?**
     **Why:** a stream reading a Delta table also fails when the source schema changes; for most schema changes a
     restart resolves it (Q82).
 
-    **Learn more:** Chapter 8.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q123. One stage of a join has 199 tasks that finish in seconds and one that runs for an hour. What is going on?**
 
@@ -2688,7 +2689,7 @@ handled?**
 
     **Why:** more memory or more nodes does not help; the one task still gets all the data for its key.
 
-    **Learn more:** Chapter 22, Chapter 3.
+    **Learn more:** Chapter 22, [Chapter 3](03-Apache-Spark.md).
 
 **Q124. Someone ran a `DELETE` without a `WHERE` clause on a silver table an hour ago. Recover the data.**
 
@@ -2770,7 +2771,7 @@ changed. Why?**
 
     **Why:** the driver is a single machine. Anything that scales with data volume must run on the executors.
 
-    **Learn more:** Chapter 3, Chapter 22.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md), Chapter 22.
 
 **Q128. Executors fail with out-of-memory errors, or tasks spill heavily, during a large aggregation. What do you
 do?**
@@ -2805,7 +2806,7 @@ do?**
     **Why:** state is the hidden cost of streaming. An interviewer expects you to connect "slower every day" with
     "state grows forever".
 
-    **Learn more:** Chapter 11.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md).
 
 **Q130. A stream into bronze writes thousands of tiny files per hour and the cloud storage bill went up. What do you
 change?**
@@ -2819,7 +2820,7 @@ change?**
 
     **Why:** latency costs money. Ask what freshness the consumer actually needs before choosing the trigger.
 
-    **Learn more:** Chapter 11, Chapter 8.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 8](08-Bronze-Ingestion.md).
 
 **Q131. A customer asks to have their data deleted (GDPR). Their rows are in bronze, silver and gold. How do you
 remove them for real?**
@@ -2865,7 +2866,7 @@ redesign it?**
     **Why:** this is the most common real-world surprise when people first chain streams through a medallion
     architecture.
 
-    **Learn more:** Chapter 11, Chapter 10.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), Chapter 10.
 
 **Q133. A pipeline expectation with `ON VIOLATION FAIL UPDATE` stopped the 3 a.m. run. What do you do?**
 
@@ -2938,7 +2939,7 @@ happened?**
     **Why:** if the stream started from the latest offsets instead, the opposite happens: data is skipped. Either
     way, the checkpoint is part of the table's state and must be treated like data.
 
-    **Learn more:** Chapter 11, Chapter 16.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), Chapter 16.
 
 **Q137. The finance team says the gold revenue does not match the source system. How do you investigate?**
 
@@ -3023,7 +3024,7 @@ with Informatica) to Databricks?**
     **Why:** do not claim one is always cheaper. Measure: run the job both ways and compare the cost per run in
     `system.billing.usage` (Q104).
 
-    **Learn more:** Chapter 6, Chapter 23.
+    **Learn more:** [Chapter 6](06-Compute.md), Chapter 23.
 
 **Q140. A team runs all its scheduled ETL notebooks on one large all-purpose cluster that stays on all day. What do
 you change?**
@@ -3046,7 +3047,7 @@ you change?**
     **Why:** this is the most common cost finding in real workspaces; the interviewer wants the specific levers,
     not "use smaller clusters".
 
-    **Learn more:** Chapter 6, Chapter 15.
+    **Learn more:** [Chapter 6](06-Compute.md), Chapter 15.
 
 **Q141. Photon makes the job faster. Does that mean it is cheaper?**
 
@@ -3061,7 +3062,7 @@ you change?**
     **Why:** cost per run is the metric, not run time. Compare both in the job's run history and in
     `system.billing.usage`.
 
-    **Learn more:** Chapter 6, Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
 
 **Q142. How do you right-size a classic cluster for a batch job?**
 
@@ -3084,7 +3085,7 @@ you change?**
     **Why:** right-sizing is a loop, not a one-time guess. Compute policies with T-shirt sizes make the standard
     the default for everyone.
 
-    **Learn more:** Chapter 6, Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
 
 **Q143. What does predictive optimization cost, and when would you still schedule `OPTIMIZE` yourself?**
 
@@ -3142,7 +3143,7 @@ you change?**
     uses. On Databricks, Delta is the default, and interoperability features (Iceberg reads on Delta tables, Q146,
     and the Iceberg REST catalog for managed Iceberg tables) reduce the lock-in question.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 5.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 5](05-Unity-Catalog.md).
 
 **Q146. Other teams query with an Iceberg engine. How can they read your Delta tables on Databricks?**
 
@@ -3172,7 +3173,7 @@ you change?**
     **Why:** the follow-up is usually "what do you give up?": deletion vectors on that table, and writes from
     the Iceberg side.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 5.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 5](05-Unity-Catalog.md).
 
 ## 24.13 System design 1: late-arriving events from Kafka to dashboards
 

@@ -17,7 +17,7 @@
     - SQL pipe syntax (`|>`), NULL-safe comparison (`<=>`, `IS DISTINCT FROM`) and `MATCH_RECOGNIZE`
     - the PySpark DataFrame equivalent of each shortcut (`Window` + `row_number` for `QUALIFY`, `drop`, `pivot`, `unpivot`, `exceptAll`, `eqNullSafe`, `left_anti`)
 
-    **You need:** chapter 3 (partitions and shuffles), chapter 5 (catalogs and schemas), chapter 6 (SQL warehouses), and general SQL from the [SQL course](../../databases/sql/index.md).
+    **You need:** [chapter 3](03-Apache-Spark.md) (partitions and shuffles), [chapter 5](05-Unity-Catalog.md) (catalogs and schemas), [chapter 6](06-Compute.md) (SQL warehouses), and general SQL from the [SQL course](../../databases/sql/index.md).
 
     **Levels:** sections 17.1 to 17.4 beginner, 17.5 to 17.9 and 17.11 intermediate, 17.10 and 17.12 expert.
 
@@ -42,7 +42,7 @@ You run Databricks SQL in three main places:
 | **Notebooks** | serverless compute, an all-purpose cluster, or a SQL warehouse | A SQL cell (or a `%sql` cell in a Python notebook) runs on whatever the notebook is attached to. When a notebook is attached to a SQL warehouse, only SQL and Markdown cells run; "running a cell in any other language (such as Python or R) throws an error". |
 | **Jobs, dashboards, alerts, JDBC/ODBC tools** | a SQL warehouse (or job compute for notebooks) | Scheduled SQL, AI/BI dashboards and BI tools all send SQL to a warehouse. |
 
-A **SQL warehouse** is "a compute resource that lets you query and explore data on Databricks", in three types (serverless, pro and classic); Databricks "recommends using serverless SQL warehouses when available". Chapter 6 covers the types, sizing and cost.
+A **SQL warehouse** is "a compute resource that lets you query and explore data on Databricks", in three types (serverless, pro and classic); Databricks "recommends using serverless SQL warehouses when available". [Chapter 6](06-Compute.md) covers the types, sizing and cost.
 
 The dialect is the same everywhere, but versions differ. A SQL warehouse runs the Databricks SQL engine, which Databricks updates for you. A cluster runs a specific **Databricks Runtime** (DBR) version, for example 15.4 LTS or 17.3 LTS. That is why every page of the SQL reference starts with an **"Applies to"** label. The "How to use the SQL reference" page explains how to read it:
 
@@ -253,7 +253,7 @@ Three things differ from standard SQL here:
 
 **The problem.** A warehouse used to have one namespace: `schema.table`. With Unity Catalog, a workspace sees many catalogs (`shop`, `finance`, `system`, `samples`), and the same schema name (`silver`) can exist in several of them. You need a way to say exactly which table you mean, and a way to stop typing the catalog in every query.
 
-**The three-level name** `catalog.schema.table` names one table uniquely (chapter 5 explains the hierarchy). `USE CATALOG` and `USE SCHEMA` set the defaults for shorter names.
+**The three-level name** `catalog.schema.table` names one table uniquely ([chapter 5](05-Unity-Catalog.md) explains the hierarchy). `USE CATALOG` and `USE SCHEMA` set the defaults for shorter names.
 
 *Databricks only, not run here. Syntax from [USE CATALOG](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-use-catalog).*
 ```sql
@@ -630,7 +630,7 @@ Output:
 +--------+-------------------+-------+------+--------+-----------+---------+---------------+-------+-------+-------------------+
 ```
 
-The second query keeps only one `customer_id` (the one from `c`). The star page adds three details: you can remove a **field** of a struct (`* EXCEPT (c2.b)`); naming a column twice raises `EXCEPT_OVERLAPPING_COLUMNS`; and the hidden `_metadata` column is never part of `*` (chapter 8 uses it). Before Databricks Runtime 15.0 the star clause could only appear in the SELECT list; newer versions also allow it in places such as function arguments (`array(*)`, `coalesce(TA.*)`).
+The second query keeps only one `customer_id` (the one from `c`). The star page adds three details: you can remove a **field** of a struct (`* EXCEPT (c2.b)`); naming a column twice raises `EXCEPT_OVERLAPPING_COLUMNS`; and the hidden `_metadata` column is never part of `*` ([chapter 8](08-Bronze-Ingestion.md) uses it). Before Databricks Runtime 15.0 the star clause could only appear in the SELECT list; newer versions also allow it in places such as function arguments (`array(*)`, `coalesce(TA.*)`).
 
 The DataFrame equivalent is `drop`:
 
@@ -919,7 +919,7 @@ The TVF page labels generators in `FROM` as "Applies to: Databricks SQL Databric
 ## 17.7 SORT BY, DISTRIBUTE BY, CLUSTER BY and paging
 *Level: intermediate.*
 
-These clauses come from Hive and only make sense on a distributed engine. They talk about **partitions**, the chunks of data that Spark processes in parallel (chapter 3).
+These clauses come from Hive and only make sense on a distributed engine. They talk about **partitions**, the chunks of data that Spark processes in parallel ([chapter 3](03-Apache-Spark.md)).
 
 | Clause | What it does | Total order? |
 | --- | --- | --- |

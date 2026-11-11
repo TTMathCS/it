@@ -22,8 +22,8 @@ like this topic because it shows quickly whether you understand row counts, NULL
       `array_sort`, the map functions) and the array set functions;
     - the same tasks in the PySpark DataFrame API.
 
-    **You need:** Chapter 3 (Apache Spark), [Chapter 4 (Delta Lake)](04-Delta-Lake.md) and
-    [Chapter 7 (the medallion architecture)](07-Medallion-Architecture.md). Chapter 8 shows
+    **You need:** [Chapter 3 (Apache Spark)](03-Apache-Spark.md), [Chapter 4 (Delta Lake)](04-Delta-Lake.md) and
+    [Chapter 7 (the medallion architecture)](07-Medallion-Architecture.md). [Chapter 8](08-Bronze-Ingestion.md) shows
     how the JSON files reach bronze; this chapter starts once they are there.
 
     **Levels:** sections 18.1 to 18.3 beginner, 18.4 to 18.7 intermediate, 18.8 to 18.10 expert.
@@ -348,7 +348,7 @@ SELECT substr(raw, 1, 60) AS raw_start, length(raw) AS len FROM bronze_orders_ra
 +------------------------------------------------------------+---+
 ```
 
-(On Databricks you would load files with Auto Loader or `read_files`; see Chapter 8.)
+(On Databricks you would load files with Auto Loader or `read_files`; see [Chapter 8](08-Bronze-Ingestion.md).)
 
 ### from_json: text to typed struct
 

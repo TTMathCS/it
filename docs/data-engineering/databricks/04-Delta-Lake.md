@@ -14,7 +14,7 @@
     - `VACUUM` and retention, `OPTIMIZE` and small files, deletion vectors
     - table features and protocol versions, and how Databricks Delta differs from open-source Delta
 
-    **You need:** 3. Apache Spark for data engineers (DataFrames, lazy evaluation). Generic SQL `UPDATE`/`DELETE`/`MERGE` is in the SQL course: [Insert, update, delete, merge](../../databases/sql/17-Insert-Update-Delete-Merge.md).
+    **You need:** [3. Apache Spark for data engineers](03-Apache-Spark.md) (DataFrames, lazy evaluation). Generic SQL `UPDATE`/`DELETE`/`MERGE` is in the SQL course: [Insert, update, delete, merge](../../databases/sql/17-Insert-Update-Delete-Merge.md).
 
     **Levels:** sections 4.1 to 4.4 beginner, 4.5 to 4.9 intermediate, 4.10 expert.
 
@@ -418,7 +418,7 @@ dt.toDF().orderBy("product_id").show()
 
 ### Managed and external tables, in one paragraph
 
-`products` above is a **managed** table: the catalog chose its location and owns its files. `products_ext` is an **external** table: you gave the location, and dropping the table removes only the catalog entry, not the files. On Databricks, Unity Catalog managed tables are "the default and recommended table type", and some features exist only for them, such as predictive optimization and catalog commits ([Unity Catalog managed tables for Delta Lake and Apache Iceberg](https://docs.databricks.com/aws/en/tables/managed)). For external tables, Unity Catalog manages metadata but "doesn't manage the data's lifecycle, optimization, storage location, or layout" ([Work with external tables](https://docs.databricks.com/aws/en/tables/external)). Chapter 5 covers both in depth.
+`products` above is a **managed** table: the catalog chose its location and owns its files. `products_ext` is an **external** table: you gave the location, and dropping the table removes only the catalog entry, not the files. On Databricks, Unity Catalog managed tables are "the default and recommended table type", and some features exist only for them, such as predictive optimization and catalog commits ([Unity Catalog managed tables for Delta Lake and Apache Iceberg](https://docs.databricks.com/aws/en/tables/managed)). For external tables, Unity Catalog manages metadata but "doesn't manage the data's lifecycle, optimization, storage location, or layout" ([Work with external tables](https://docs.databricks.com/aws/en/tables/external)). [Chapter 5](05-Unity-Catalog.md) covers both in depth.
 
 ```text
 >>> DESCRIBE DETAIL products  -- columns: format, name, numFiles, minReaderVersion, minWriterVersion

@@ -24,7 +24,7 @@ Supply shop that was run end to end, so every claim about reruns and restatement
       reruns, schema drift, late data, and how many layers is too many
 
     **You need:** [4. Delta Lake](04-Delta-Lake.md) (transaction log, `MERGE`, time travel) and
-    5. Unity Catalog (catalog.schema.table). 3. Apache Spark helps for
+    [5. Unity Catalog](05-Unity-Catalog.md) (catalog.schema.table). [3. Apache Spark](03-Apache-Spark.md) helps for
     the streaming parts.
 
     **Levels:** sections 7.1 to 7.3 beginner, 7.4 to 7.8 intermediate, 7.9 to 7.13 expert.
@@ -248,7 +248,7 @@ materialized in the gold layer". Section 7.11 covers when the cost is not worth 
 
 *Level: intermediate.*
 
-Unity Catalog names every table with three levels, `catalog.schema.table` (see chapter 5).
+Unity Catalog names every table with three levels, `catalog.schema.table` (see [chapter 5](05-Unity-Catalog.md)).
 The layers have to fit into those levels together with environments (development, staging, production) and teams.
 Two pages guide the choice:
 
@@ -518,7 +518,7 @@ streaming reads. Batch reads should be reserved for small datasets (for example,
 streaming read of a Delta table processes only the new commits since the last run, tracked in a checkpoint, so each
 run costs in proportion to the new data, not the whole table. With the `AvailableNow` trigger the stream processes
 everything available and stops, which gives incremental batch jobs on a schedule (see
-chapter 11).
+[chapter 11](11-Structured-Streaming.md)).
 
 The phrase "assuming all sources are append-only" matters. The Delta streaming page says a streaming read of a Delta
 table "only accepts append inputs and throws an exception if any modifications occur on the source": an `UPDATE`,
@@ -607,7 +607,7 @@ WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE SET *
 
 With that guard, an older version that arrives late is ignored, and replaying the same version changes nothing. For
 streaming aggregations, Structured Streaming uses watermarks to decide how long to wait for late events
-(chapter 11).
+([chapter 11](11-Structured-Streaming.md)).
 
 ### Change data capture and slowly changing dimensions
 
