@@ -349,7 +349,7 @@ ORDER BY line_value DESC, order_id, product_id;
 `ORDER BY 3` (the third column) also works, but it breaks silently when the column list changes; name the column.
 
 Where NULLs go in a sort differs between databases: PostgreSQL puts them last in ascending order, SQLite, MySQL and
-SQL Server first. `NULLS FIRST` and `NULLS LAST` decide it on PostgreSQL and SQLite; [chapter 6](06-Null-and-Three-Valued-Logic.md)
+SQL Server first. `NULLS FIRST` and `NULLS LAST` decide it on PostgreSQL and SQLite; [chapter 6](06-Null-and-Three-Valued-Logic.md#sorting)
 shows them.
 
 ## 2.7 LIMIT and OFFSET { #limit }
