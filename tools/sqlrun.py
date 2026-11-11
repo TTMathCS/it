@@ -27,6 +27,11 @@ if any result would change. Results are written between <!-- result --> and <!--
 import decimal, datetime, glob, os, re, sqlite3, sys
 
 import psycopg2
+import psycopg2.extras
+
+# show json / jsonb exactly as PostgreSQL prints them, not as Python dicts
+psycopg2.extras.register_default_json(loads=lambda x: x, globally=True)
+psycopg2.extras.register_default_jsonb(loads=lambda x: x, globally=True)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHOP = os.path.join(ROOT, "docs/databases/sql/shop.sql")
@@ -102,6 +107,8 @@ def show(v):
         return r[:-2] if r.endswith(".0") else r
     if isinstance(v, datetime.datetime):
         return v.isoformat(sep=" ")
+    if isinstance(v, list):  # a PostgreSQL array, printed the way PostgreSQL prints it
+        return "{" + ",".join("NULL" if x is None else show(x) for x in v) + "}"
     s = str(v).replace("|", "\\|").replace("\n", " ")
     return s if s else "*(empty text)*"
 
