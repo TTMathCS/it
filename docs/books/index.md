@@ -12,15 +12,17 @@ Courses by category. A category joins this list, and the menu, once its first co
 | --- | --- | --- |
 | [SQL](../databases/sql/index.md) | Your first SELECT | Window functions, query plans, data modelling and interview practice |
 
+## Data engineering
+
+| Course | From | To |
+| --- | --- | --- |
+| [Databricks and the medallion model](../data-engineering/databricks/index.md) | What Databricks is | Delta Lake internals, bronze/silver/gold pipelines, the Databricks SQL dialect, performance, governance and interview practice (chapters going up as they are checked) |
+
 ## Interview prep
 
 | Guide | What it covers |
 | --- | --- |
 | [Codility test prep](../interview/codility/index.md) | How the test works, a plan for 2 SQL + 1 Python, two mock tests, 52 practice tasks |
-
-## Being written
-
-- **Data engineering:** Databricks and the medallion model, from beginner to deep dive.
 
 ## Planned categories
 

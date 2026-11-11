@@ -28,3 +28,15 @@
 .md-typeset .it-cats > div { border: 1px solid var(--md-default-fg-color--lightest); border-radius: 0.4rem; padding: 0.6rem 0.9rem; background: var(--md-default-bg-color--light); }
 .md-typeset .it-cats h3 { margin: 0.2rem 0 0.4rem; font-size: 0.9rem; }
 .md-typeset .it-cats p { margin: 0.2rem 0; font-size: 0.75rem; }
+
+/* inline SVG diagrams, the same as the other school sites (Databricks course):
+   <figure class="mars-fig"><svg ...>...</svg><figcaption>...</figcaption></figure>
+   Lines and text use currentColor so they follow the light and dark themes; highlights use the accent. */
+.md-typeset figure.mars-fig { margin: 1.6em auto; text-align: center; max-width: 100%; }
+.md-typeset figure.mars-fig svg { display: block; margin: 0 auto; max-width: 100%; height: auto; overflow: visible; }
+.md-typeset figure.mars-fig svg text { font-family: var(--md-text-font-family, inherit); }
+.md-typeset figure.mars-fig figcaption { margin-top: .7em; font-size: .78rem; font-style: italic; opacity: .85; max-width: 46rem; margin-left: auto; margin-right: auto; }
+.md-typeset figure.mars-fig .acc { stroke: var(--md-accent-fg-color); }
+.md-typeset figure.mars-fig .acc-fill { fill: var(--md-accent-fg-color); }
+.md-typeset figure.mars-fig .soft { fill: currentColor; fill-opacity: .08; }
+.md-typeset figure.mars-fig .soft-acc { fill: var(--md-accent-fg-color); fill-opacity: .18; }

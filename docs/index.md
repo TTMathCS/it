@@ -27,8 +27,8 @@ system before it goes on a page, with its true result shown under it.
 [SQL, from beginner to expert](databases/sql/index.md). Later: PostgreSQL, MySQL, SQL Server, Oracle, MongoDB, Redis.
 </div>
 <div markdown>
-### Data engineering
-Databricks and the medallion model (being written). Later: Spark, Airflow, dbt, Kafka.
+### [Data engineering](data-engineering/index.md)
+[Databricks and the medallion model](data-engineering/databricks/index.md) (chapters going up as they are checked). Later: Spark, Airflow, dbt, Kafka.
 </div>
 <div markdown>
 ### [Interview prep](interview/index.md)
