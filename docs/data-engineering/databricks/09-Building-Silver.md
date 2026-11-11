@@ -23,7 +23,7 @@ probe this layer harder than any other, because it is where pipelines silently g
     - Change Data Feed: turning it on, `table_changes`, `readChangeFeed`, and propagating updates and deletes
 
     **You need:** 4. Delta Lake (transaction log, `MERGE`, time travel),
-    7. The medallion architecture and 8. Into bronze.
+    [7. The medallion architecture](07-Medallion-Architecture.md) and 8. Into bronze.
     Generic `MERGE` syntax is in the SQL course:
     [Insert, update, delete, merge](../../databases/sql/17-Insert-Update-Delete-Merge.md).
 

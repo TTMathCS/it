@@ -28,8 +28,8 @@ In an interview, say both: "Lakeflow pipelines, which used to be called Delta Li
 
 ## How to use it
 
-- **Interview in the next few days?** Read in this order: 24. The data engineer interview (skim
-  the questions to see where you are weak), 7. The medallion architecture,
+- **Interview in the next few days?** Read in this order: [24. The data engineer interview](24-Interview.md) (skim
+  the questions to see where you are weak), [7. The medallion architecture](07-Medallion-Architecture.md),
   4. Delta Lake, [9. Building silver](09-Building-Silver.md),
   3. Apache Spark, 17. Databricks SQL vs standard SQL,
   19. The function toolbox, 25. PySpark coding practice,
@@ -58,11 +58,11 @@ In an interview, say both: "Lakeflow pipelines, which used to be called Delta Li
 | Part | Chapters |
 | --- | --- |
 | **I. Foundations** | 1. What Databricks is · 2. A tour of the workspace · 3. Apache Spark for data engineers · 4. Delta Lake · 5. Unity Catalog · 6. Compute |
-| **II. The medallion architecture** | 7. The medallion architecture explained · 8. Into bronze: ingestion · [9. Building silver](09-Building-Silver.md) · 10. Building gold · 11. Structured Streaming · 12. A complete medallion project |
+| **II. The medallion architecture** | [7. The medallion architecture explained](07-Medallion-Architecture.md) · 8. Into bronze: ingestion · [9. Building silver](09-Building-Silver.md) · 10. Building gold · 11. Structured Streaming · 12. A complete medallion project |
 | **III. Lakeflow** | 13. Spark Declarative Pipelines (formerly DLT) · 14. Data quality and change data capture · 15. Lakeflow Jobs · 16. CI/CD and testing |
 | **IV. Databricks SQL** | 17. Databricks SQL vs standard SQL · 18. Nested and semi-structured data · 19. The function toolbox · 20. Tables in Databricks SQL · 21. Programming in SQL |
 | **V. Deep dive** | 22. Performance tuning · 23. Governance, sharing and operations |
-| **VI. Interview** | 24. The data engineer interview · 25. PySpark coding practice · Glossary |
+| **VI. Interview** | [24. The data engineer interview](24-Interview.md) · 25. PySpark coding practice · Glossary |
 
 Chapters without a link are still being written; they appear here as soon as they pass their checks.
 
