@@ -3005,7 +3005,7 @@ with Informatica) to Databricks?**
     workloads usually need little refactoring, but pipelines written in other languages (an SSIS package, for
     example) may need heavy refactoring.
 
-    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), Chapter 12,
+    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), [Chapter 12](12-Medallion-Project.md),
     [Chapter 17](17-Databricks-SQL-vs-Standard.md).
 
 **Q139. Serverless or classic compute: how do you decide, from a cost point of view?**

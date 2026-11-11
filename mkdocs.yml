@@ -144,6 +144,7 @@ nav:
               - data-engineering/databricks/09-Building-Silver.md
               - data-engineering/databricks/10-Building-Gold.md
               - data-engineering/databricks/11-Structured-Streaming.md
+              - data-engineering/databricks/12-Medallion-Project.md
               - data-engineering/databricks/13-Declarative-Pipelines.md
               - data-engineering/databricks/14-Data-Quality-and-CDC.md
               - data-engineering/databricks/15-Lakeflow-Jobs.md
