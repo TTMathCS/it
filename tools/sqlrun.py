@@ -13,6 +13,9 @@ A block is marked by an HTML comment on the line before its ```sql fence (indent
     <!-- sql ... same -->   must give the same rows as the block before it (a dialect variant in a tab)
     <!-- sql ... ordered --> compare row order too (automatic when the outermost query has ORDER BY)
     <!-- sql ... raw -->    runs outside a transaction (blocks that BEGIN / COMMIT themselves); always kept
+    <!-- sql ... random --> the result may change from run to run (shown on purpose); skip the storage-order check
+Every block that is rolled back is run on SQLite a second time reading tables backwards; if that changes the result,
+the query depends on luck (a tie with no tie-break, a missing ORDER BY) and the run fails.
 
 Each page starts from a fresh copy of the shop database (docs/databases/sql/shop.sql). PostgreSQL must be running on
 localhost (user postgres, no password; PGHOST/PGUSER to change). With --check nothing is written and the run fails
@@ -278,6 +281,16 @@ def process(path, check):
         count += 1
         where = f"{path}:{i}"
         ordered = "ordered" in flags or outer_order_by(body)
+        # a result must not depend on the order rows happen to be stored in: SQLite can read tables backwards
+        # (PRAGMA reverse_unordered_selects); run again that way and compare
+        if "sqlite" in use and not (keep or raw) and "random" not in flags:
+            sq = dbs["sqlite"]
+            sq.con.execute("PRAGMA reverse_unordered_selects = ON")
+            again = sq.run(body, False, False)
+            sq.con.execute("PRAGMA reverse_unordered_selects = OFF")
+            first = dict((d, r) for d, (db, r) in zip(use, results))["sqlite"]
+            if not same(first, again, ordered):
+                problems.append(f"{where}: the result depends on row storage order (ties without a tie-break?):\n  normal   {fmt(first)}\n  reversed {fmt(again)}")
         for db, r in results:
             want = "error" in flags or ("pgerror" in flags and db.name.startswith("PostgreSQL"))
             if want != (r[0] == "error"):
