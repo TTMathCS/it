@@ -2674,7 +2674,7 @@ Output (from `ex10_hash_ids.out`, trimmed):
 
 Partition 0 got ids 0 to 10, partition 1 starts at 8589934592 (2^33). The ids depend on how the data happens to be partitioned, so the same row gets a different id after a repartition or on the next run. `row_number() OVER (ORDER BY ...)` gives consecutive numbers, but a window with no `PARTITION BY` moves every row to one task, which does not scale and still renumbers on every run.
 
-For a stable surrogate key in a table, use an identity column (`GENERATED ALWAYS AS IDENTITY`, chapter 20) or a hash of the business key (`xxhash64` or `sha2` of the natural key, cast to one type first).
+For a stable surrogate key in a table, use an identity column (`GENERATED ALWAYS AS IDENTITY`, [chapter 20](20-Tables-in-Databricks-SQL.md)) or a hash of the business key (`xxhash64` or `sha2` of the natural key, cast to one type first).
 
 !!! tip "In the interview"
     **"Can you use `monotonically_increasing_id` as a surrogate key?"** Only as a unique id inside one job run. It is unique and increasing but not consecutive, and it is not stable: the value depends on the partition layout, so a rerun or a retried task can give a different id to the same row. For keys that other tables join to, use an identity column or a deterministic hash of the business key. For row hashes in SCD type 2, `coalesce` every column before `concat_ws`, or a `NULL` makes different rows hash the same.
@@ -3263,7 +3263,7 @@ Answers marked "Run here" come from `ex11_practice.py` (output in `ex11_practice
 **Q42. A colleague uses `monotonically_increasing_id()` as the surrogate key of a dimension table. What can go wrong?**
 
 ??? success "Answer"
-    The ids are unique and increasing but not consecutive (partition 1 started at 8589934592 in section 19.11), and they depend on the partition layout, so the same customer gets a different id when the job reruns or the data is repartitioned. Facts loaded earlier would point to the wrong or a missing dimension row. Use an identity column (chapter 20) or a deterministic hash of the business key.
+    The ids are unique and increasing but not consecutive (partition 1 started at 8589934592 in section 19.11), and they depend on the partition layout, so the same customer gets a different id when the job reruns or the data is repartitioned. Facts loaded earlier would point to the wrong or a missing dimension row. Use an identity column ([chapter 20](20-Tables-in-Databricks-SQL.md)) or a deterministic hash of the business key.
 
     **Why:** the page says the function "is non-deterministic, so it may return different values if called multiple times for the same row".
 

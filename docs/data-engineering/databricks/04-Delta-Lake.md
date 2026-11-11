@@ -481,7 +481,7 @@ WHEN NOT MATCHED THEN INSERT *;                                             -- v
 +-------+------------+-------------+--------------+--------------+---------------------+
 ```
 
-`MERGE` matched order 1003 (updated to `CANCELLED`) and inserted the new order 1005, in one commit. The operation metrics come straight from each commit's `commitInfo`. `MERGE` is the workhorse of silver and gold layers: deduplication, upserts, SCD Type 2 and `WHEN NOT MATCHED BY SOURCE` are covered in [chapter 9](09-Building-Silver.md) and chapter 20.
+`MERGE` matched order 1003 (updated to `CANCELLED`) and inserted the new order 1005, in one commit. The operation metrics come straight from each commit's `commitInfo`. `MERGE` is the workhorse of silver and gold layers: deduplication, upserts, SCD Type 2 and `WHEN NOT MATCHED BY SOURCE` are covered in [chapter 9](09-Building-Silver.md) and [chapter 20](20-Tables-in-Databricks-SQL.md).
 
 The same three statements in PySpark, with the `DeltaTable` API (a fresh copy of the table in `ch04_11_deltatable_api.py`, starting from the same four rows):
 
@@ -659,7 +659,7 @@ The exceptions you will meet, from the "Conflict exceptions" section of [Row-lev
 | `ConcurrentTransactionException` | Two streaming queries with the same checkpoint location wrote at the same time |
 | `ProtocolChangedException` | The protocol was upgraded, or several writers created or replaced the table at once |
 
-How to reduce conflicts: partition or cluster so concurrent jobs touch disjoint files, put explicit partition filters in `MERGE` conditions, and on Databricks use deletion vectors, which enable **row-level concurrency** on Databricks Runtime 14.3 LTS and above for unpartitioned tables: two writes to different rows of the same file no longer conflict ([Row-level concurrency](https://docs.databricks.com/aws/en/optimizations/isolation/row-level-concurrency)). By that page's conflict matrix, the two `UPDATE`s above (different rows) would then not conflict; this was not run here, because row-level concurrency is a Databricks Runtime feature.
+How to reduce conflicts: partition or cluster so concurrent jobs touch disjoint files, put explicit partition filters in `MERGE` conditions, and on Databricks use deletion vectors, which enable **row-level concurrency** on Databricks Runtime 14.3 LTS and above for unpartitioned tables (the deletion vectors page says 14.2; see [chapter 22](22-Performance-Tuning.md)): two writes to different rows of the same file no longer conflict ([Row-level concurrency](https://docs.databricks.com/aws/en/optimizations/isolation/row-level-concurrency)). By that page's conflict matrix, the two `UPDATE`s above (different rows) would then not conflict; this was not run here, because row-level concurrency is a Databricks Runtime feature.
 
 ### WriteSerializable and Serializable
 
@@ -711,7 +711,7 @@ Case 3 shows the "safe cast" rule at work: Delta tried to cast the string column
 Databricks lists four ways to let a write change the schema ([Update table schemas with schema evolution](https://docs.databricks.com/aws/en/tables/update-schema)):
 
 - `INSERT WITH SCHEMA EVOLUTION INTO ...` (Databricks Runtime 18.1 and above)
-- `MERGE WITH SCHEMA EVOLUTION INTO ...` in SQL (Databricks Runtime 15.4 LTS and above), or `.withSchemaEvolution()` in the `DeltaTable` API
+- `MERGE WITH SCHEMA EVOLUTION INTO ...` in SQL (Databricks Runtime 15.4 LTS and above per the schema evolution page; the MERGE INTO reference says 15.2, so the first version is not verified, see [chapter 9](09-Building-Silver.md)), or `.withSchemaEvolution()` in the `DeltaTable` API
 - the `mergeSchema` write option: `.option("mergeSchema", "true")`
 - the session setting `spark.databricks.delta.schema.autoMerge.enabled = true` (legacy)
 
@@ -1427,7 +1427,7 @@ With **catalog commits** (table feature `catalogManaged`, Databricks Runtime 16.
 
 ### Change data feed (pointer)
 
-Change data feed records row-level changes (insert, update preimage and postimage, delete) between versions, readable with `table_changes()` or `readChangeFeed`. Databricks now has two forms: automatic (computed at read time from row tracking, Databricks Runtime 19 and above, and "for Delta Lake, only Databricks readers can query automatic change data feed") and legacy (materialized at write time in `_change_data`, enabled per table with `delta.enableChangeDataFeed`) ([Use change data feed on Databricks](https://docs.databricks.com/aws/en/tables/features/change-data-feed)). [Chapter 9](09-Building-Silver.md) uses it to build silver incrementally; chapter 20 covers `table_changes` and `CLONE`.
+Change data feed records row-level changes (insert, update preimage and postimage, delete) between versions, readable with `table_changes()` or `readChangeFeed`. Databricks now has two forms: automatic (computed at read time from row tracking, Databricks Runtime 19 and above, and "for Delta Lake, only Databricks readers can query automatic change data feed") and legacy (materialized at write time in `_change_data`, enabled per table with `delta.enableChangeDataFeed`) ([Use change data feed on Databricks](https://docs.databricks.com/aws/en/tables/features/change-data-feed)). [Chapter 9](09-Building-Silver.md) uses it to build silver incrementally; [chapter 20](20-Tables-in-Databricks-SQL.md) covers `table_changes` and `CLONE`.
 
 ### Databricks Delta vs open-source Delta
 

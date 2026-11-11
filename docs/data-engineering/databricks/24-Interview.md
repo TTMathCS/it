@@ -228,7 +228,7 @@ made a mistake.
     **Why:** choose external only when the files must live at a specific path for another system, and remember that
     many automatic features (predictive optimization, automatic liquid clustering) are for managed tables only.
 
-    **Learn more:** [Chapter 5](05-Unity-Catalog.md), Chapter 20.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q8. Explain account, workspace, metastore, catalog and schema.**
 
@@ -749,7 +749,7 @@ made a mistake.
     **Why:** Databricks says not to use table history as a long-term backup. If you need 30 days of time travel,
     raise `deletedFileRetentionDuration` to 30 days and accept the extra storage.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 20.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q33. What is the difference between `RESTORE` and a time travel query?**
 
@@ -775,7 +775,7 @@ made a mistake.
     **Why:** `RESTORE` is all or nothing for the table. To undo a mistake that affected only some rows while keeping
     later good writes, insert or merge the missing rows back from the old version instead (Q124).
 
-    **Learn more:** Chapter 20.
+    **Learn more:** [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q34. What does `VACUUM` do, and what are the risks?**
 
@@ -938,7 +938,7 @@ made a mistake.
     when the table receives updates. CDF files live in `_change_data` and are removed by `VACUUM`, so CDF history is
     limited like time travel.
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 20.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q40. What is the difference between schema enforcement and schema evolution?**
 
@@ -1079,7 +1079,7 @@ made a mistake.
     **Why:** a shallow clone depends on the source's files, so `VACUUM` on the source can affect it (Unity Catalog
     has its own rules for managed shallow clones).
 
-    **Learn more:** Chapter 20.
+    **Learn more:** [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 ## 24.5 Medallion architecture
 
@@ -1363,7 +1363,7 @@ made a mistake.
 **Q64. How does Auto Loader infer a schema?**
 
 ??? success "Answer"
-    On first read it samples the first 50 GB or 1000 files it finds, whichever comes first, and stores the schema in
+    On first read it samples 50 GB or 1000 files, whichever comes first (the schema page says the first files found, the FAQ says the most recent; not verified which, see [chapter 8](08-Bronze-Ingestion.md)), and stores the schema in
     a `_schemas` directory under `cloudFiles.schemaLocation`. For formats without types (JSON, CSV, XML) it infers
     every column as `STRING` by default, including nested JSON fields; set `cloudFiles.inferColumnTypes` to `true` to
     infer real types. For Parquet and Avro it merges the file schemas, choosing the widest type on conflicts.
@@ -1876,7 +1876,7 @@ and what are the options?**
 
 ??? success "Answer"
     Use the quarantine pattern. The documented version computes a flag such as
-    `is_quarantined = NOT(rule1 AND rule2 ...)` on every row in a temporary table (with the rules attached through
+    `is_quarantined = NOT(rule1 AND rule2 ...)` on every row in a private table (formerly called a temporary table; with the rules attached through
     `expect_all`, so the metrics are still recorded), then defines two views on it: valid rows
     (`is_quarantined = false`) continue to silver, invalid rows (`is_quarantined = true`) go to a quarantine table
     that someone reviews. A simpler variant writes the same source into two tables, one with
@@ -2381,7 +2381,7 @@ and `SHIPPED`).
     set; with an incremental source it would delete everything not in today's batch. Databricks recommends adding a
     condition to limit the target rows touched. `WHEN MATCHED AND t.price <> s.price` avoids rewriting unchanged rows.
 
-    **Learn more:** Chapter 20.
+    **Learn more:** [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q112. Write an SCD Type 2 update with a single `MERGE`.**
 
@@ -2459,7 +2459,7 @@ and `SHIPPED`).
     **Why:** compared with `DELETE` then `INSERT`, there is no moment where the day is missing, and a failure leaves
     the old data in place. Make sure the query only produces rows that match the predicate.
 
-    **Learn more:** Chapter 20.
+    **Learn more:** [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q114. Show the ways to query an older version of a table, and how to see its changes.**
 
@@ -2478,7 +2478,7 @@ and `SHIPPED`).
 
     **Why:** neither the version nor the timestamp can be a subquery, and the retention limits from Q32 apply.
 
-    **Learn more:** Chapter 20.
+    **Learn more:** [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q115. What is SQL pipe syntax?**
 
@@ -2604,7 +2604,7 @@ without rebuilding the whole table?**
     **Why:** a streaming aggregate with a watermark would drop events this late (Q77). Late data is a business
     question first ("how late can it be, and must it count?"), then a design choice.
 
-    **Learn more:** [Chapter 10](10-Building-Gold.md), Chapter 20.
+    **Learn more:** [Chapter 10](10-Building-Gold.md), [Chapter 20](20-Tables-in-Databricks-SQL.md).
 
 **Q120. The source team changed `amount` from a number to text such as `'12.50 CAD'`. The silver load fails. What
 do you do?**
@@ -3586,7 +3586,7 @@ the rename; where the product's page does not mention the old name, it says "unk
 | `UNDROP TABLE` window | 7 days | Q124 |
 | Statistics collected by default (external tables) | First 32 columns | Q134 |
 | Liquid clustering keys | Up to 4 | Q36 |
-| Auto Loader schema inference sample | First 50 GB or 1,000 files, whichever first | Q64 |
+| Auto Loader schema inference sample | 50 GB or 1,000 files, whichever first (first vs most recent files: docs disagree) | Q64 |
 | Broadcast threshold, open-source Spark (`autoBroadcastJoinThreshold`) | 10 MB | Q18 |
 | AQE broadcast threshold on Databricks | 30 MB | Q18 |
 | `spark.sql.shuffle.partitions` default | 200 | Q16 |

@@ -21,7 +21,7 @@
 
     **Levels:** sections 17.1 to 17.4 beginner, 17.5 to 17.9 and 17.11 intermediate, 17.10 and 17.12 expert.
 
-Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in [chapter 19](19-Function-Toolbox.md); `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in chapter 20; SQL scripting, UDFs, stored procedures and row filters are in [chapter 21](21-Programming-in-SQL.md). This chapter only points to them.
+Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in [chapter 19](19-Function-Toolbox.md); `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in [chapter 20](20-Tables-in-Databricks-SQL.md); SQL scripting, UDFs, stored procedures and row filters are in [chapter 21](21-Programming-in-SQL.md). This chapter only points to them.
 
 **About the examples.** All "Run here" examples use the Red Rock Supply tables (`customers`, `products`, `orders`, `order_items`) in a schema called `silver`. On Databricks they would live in Unity Catalog as `shop.silver.orders`; locally there is no Unity Catalog, so the catalog is Spark's built-in `spark_catalog`. The scripts are in `src/ch17/` with their full output in the matching `.out` files. Error lines are shortened here to the error class and its first sentence. The `orders` table has 8 rows, and one of them (order 1008) has a `NULL` status on purpose.
 
@@ -993,7 +993,7 @@ same rows as the SQL: True
 Here the check compares the rows in order, partition numbers included, so the DataFrame produced exactly the first table above.
 
 !!! warning "Two different CLUSTER BYs"
-    `SELECT ... CLUSTER BY col` is this query clause (distribute and sort). `CREATE TABLE ... CLUSTER BY (col)` is **liquid clustering**, a table layout feature with nothing to do with query output (chapter 20 and [chapter 22](22-Performance-Tuning.md)). Interviewers sometimes ask about one to see if you confuse it with the other.
+    `SELECT ... CLUSTER BY col` is this query clause (distribute and sort). `CREATE TABLE ... CLUSTER BY (col)` is **liquid clustering**, a table layout feature with nothing to do with query output ([chapter 20](20-Tables-in-Databricks-SQL.md) and [chapter 22](22-Performance-Tuning.md)). Interviewers sometimes ask about one to see if you confuse it with the other.
 
 ### LIMIT and OFFSET
 
@@ -1625,7 +1625,7 @@ status IS DISTINCT FROM 'CANCELLED'   1001, 1002, 1003, 1005, 1006, 1007, 1008
 +--------+
 ```
 
-The first two traps are ordinary three-valued logic, the same in any SQL engine: `<>` drops the `NULL`-status order 1008, and `NOT IN` with a `NULL` in the list returns nothing (use `NOT EXISTS`, practice question 35). The third is where `<=>` earns its place: **joins and MERGE conditions on nullable keys.** `ON s.k = t.k` never matches two `NULL` keys; `ON s.k <=> t.k` does. This matters for change detection in `MERGE` (chapter 20) and for SCD comparisons (`WHEN MATCHED AND NOT (t.city <=> s.city)`).
+The first two traps are ordinary three-valued logic, the same in any SQL engine: `<>` drops the `NULL`-status order 1008, and `NOT IN` with a `NULL` in the list returns nothing (use `NOT EXISTS`, practice question 35). The third is where `<=>` earns its place: **joins and MERGE conditions on nullable keys.** `ON s.k = t.k` never matches two `NULL` keys; `ON s.k <=> t.k` does. This matters for change detection in `MERGE` ([chapter 20](20-Tables-in-Databricks-SQL.md)) and for SCD comparisons (`WHEN MATCHED AND NOT (t.city <=> s.city)`).
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 ```sql
@@ -1765,7 +1765,7 @@ The DataFrame side, for the features in this chapter that have a direct equivale
 | pipe syntax `|>` | a method chain |
 
 !!! tip "In the interview"
-    **"Name five things in Databricks SQL that standard SQL does not have."** `QUALIFY`; `GROUP BY ALL` and `ORDER BY ALL`; `SELECT * EXCEPT`; `PIVOT` / `UNPIVOT`; the `<=>` operator; `try_cast` and the other `try_` functions; parameter markers with `IDENTIFIER`; session variables; pipe syntax; `SORT BY` / `DISTRIBUTE BY` / `CLUSTER BY`; time travel on Delta tables (`VERSION AS OF`, `@v123`, chapter 20). Pick ones you have used and say what problem each solves.
+    **"Name five things in Databricks SQL that standard SQL does not have."** `QUALIFY`; `GROUP BY ALL` and `ORDER BY ALL`; `SELECT * EXCEPT`; `PIVOT` / `UNPIVOT`; the `<=>` operator; `try_cast` and the other `try_` functions; parameter markers with `IDENTIFIER`; session variables; pipe syntax; `SORT BY` / `DISTRIBUTE BY` / `CLUSTER BY`; time travel on Delta tables (`VERSION AS OF`, `@v123`, [chapter 20](20-Tables-in-Databricks-SQL.md)). Pick ones you have used and say what problem each solves.
 
 ## 17.14 Practice questions
 *Level: mixed.*
@@ -2088,7 +2088,7 @@ WHERE rnk = 1 ORDER BY customer_id;
 **Q23. What is the difference between `SELECT ... CLUSTER BY customer_id` and `CREATE TABLE ... CLUSTER BY (customer_id)`?**
 
 ??? success "Answer"
-    The first is a query clause: repartition by `customer_id` and sort within each partition (`DISTRIBUTE BY` + `SORT BY`), with no total order. The second defines **liquid clustering** for a Delta table, a storage layout that helps data skipping (chapter 20, [chapter 22](22-Performance-Tuning.md)).
+    The first is a query clause: repartition by `customer_id` and sort within each partition (`DISTRIBUTE BY` + `SORT BY`), with no total order. The second defines **liquid clustering** for a Delta table, a storage layout that helps data skipping ([chapter 20](20-Tables-in-Databricks-SQL.md), [chapter 22](22-Performance-Tuning.md)).
 
 **Q24. Show page 3 of the orders list, 3 orders per page, ordered by `order_id`. Why is this approach a poor fit for a large table?**
 
@@ -2287,7 +2287,7 @@ spark.sql(f"SELECT count(*) AS n FROM orders WHERE currency = '{cur}'")
 ??? success "Answer"
     `NULL <> 'Banff'` is `NULL`, not true, so the `WHEN MATCHED` condition fails. Use the null-safe form: `WHEN MATCHED AND NOT (t.city <=> s.city)` (or `t.city IS DISTINCT FROM s.city`).
 
-    **Why:** `<=>` never returns `NULL`: it is true for two `NULL`s and false when only one side is `NULL` (section 17.11 shows the truth table from the run). `MERGE` itself is covered in chapter 20 and the SQL course's [MERGE chapter](../../databases/sql/17-Insert-Update-Delete-Merge.md).
+    **Why:** `<=>` never returns `NULL`: it is true for two `NULL`s and false when only one side is `NULL` (section 17.11 shows the truth table from the run). `MERGE` itself is covered in [chapter 20](20-Tables-in-Databricks-SQL.md) and the SQL course's [MERGE chapter](../../databases/sql/17-Insert-Update-Delete-Merge.md).
 
 **Q37. Can you use MATCH_RECOGNIZE on a SQL warehouse? On a DBR 17.3 LTS cluster?**
 

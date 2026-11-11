@@ -517,7 +517,7 @@ To run the same job on serverless instead, drop `job_clusters` and `job_cluster_
 
 - "Records are typically available within 12 hours"; the serverless FAQ says there "could be up to a 24-hour delay".
 - Corrections arrive as `RETRACTION` and `RESTATEMENT` rows, so always `SUM(usage_quantity)` rather than reading single rows.
-- Some products share a SKU: data quality monitoring, predictive optimization and serverless workflows are all billed under the serverless jobs SKU; `billing_origin_product` tells them apart.
+- Some products share a SKU: data quality monitoring, predictive optimization and "serverless workflows" (the billing page's wording) are all billed under the serverless jobs SKU; `billing_origin_product` tells them apart.
 
 DBUs per product per day over the last 30 days:
 

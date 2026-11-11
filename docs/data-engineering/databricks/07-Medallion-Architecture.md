@@ -262,7 +262,7 @@ Combining the two gives the layout most teams use, and the one this book uses: *
 environment and domain), with a schema per layer inside it**.
 
 <figure class="mars-fig" markdown="0">
-<svg viewBox="0 0 640 290" role="img" aria-label="Left: catalogs shop_dev and shop_prod, each with bronze, silver and gold schemas. Right: the docs example, one ops catalog with bronze, silver and gold schemas and the users of each." font-family="sans-serif" font-size="13" fill="currentColor">
+<svg viewBox="0 0 640 290" role="img" aria-label="Left: catalogs shop_dev and shop, each with bronze, silver and gold schemas. Right: the docs example, one ops catalog with bronze, silver and gold schemas and the users of each." font-family="sans-serif" font-size="13" fill="currentColor">
 <text x="160" y="24" text-anchor="middle" font-weight="bold">Catalog per environment,</text>
 <text x="160" y="42" text-anchor="middle" font-weight="bold">schema per layer</text>
 <rect x="25" y="60" width="120" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -278,7 +278,7 @@ environment and domain), with a schema per layer inside it**.
 <text x="102" y="158" text-anchor="middle">silver</text>
 <text x="102" y="193" text-anchor="middle">gold</text>
 <rect x="170" y="60" width="130" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
-<text x="235" y="80" text-anchor="middle">shop_prod</text>
+<text x="235" y="80" text-anchor="middle">shop</text>
 <line x1="190" y1="90" x2="190" y2="188" stroke="currentColor"/>
 <line x1="190" y1="118" x2="205" y2="118" stroke="currentColor"/>
 <line x1="190" y1="153" x2="205" y2="153" stroke="currentColor"/>
@@ -317,7 +317,7 @@ environment and domain), with a schema per layer inside it**.
 | Layout | Example name | Strengths | Weaknesses |
 | --- | --- | --- | --- |
 | One catalog, schema per layer (docs example) | `ops.silver.customer_transactions` | Simple; matches the docs | Dev and prod need separate catalogs anyway, so most teams add an environment level |
-| Catalog per environment, schema per layer | `shop_prod.silver.orders` | Environments isolated at the catalog (the primary isolation unit); a catalog can be bound to the production workspace; code switches environment with one parameter | More catalogs to manage |
+| Catalog per environment, schema per layer | `shop.silver.orders` | Environments isolated at the catalog (the primary isolation unit); a catalog can be bound to the production workspace; code switches environment with one parameter | More catalogs to manage |
 | Catalog per environment and domain | `sales_prod.gold.daily_sales` | Domain teams own their catalogs (fits "data as a product") | Cross-domain joins span catalogs |
 | Catalog per layer, schema per domain | `silver.sales.orders` | Seen in practice; one place to grant "all of gold" | Not the pattern shown on the pages checked; environments still need a separate split |
 
@@ -334,12 +334,12 @@ on its schema. A typical policy:
 
 ```sql
 -- analysts read gold (and silver for detail), never bronze
-GRANT USE CATALOG ON CATALOG shop_prod TO `analysts`;
-GRANT USE SCHEMA, SELECT ON SCHEMA shop_prod.gold   TO `analysts`;
-GRANT USE SCHEMA, SELECT ON SCHEMA shop_prod.silver TO `analysts`;
+GRANT USE CATALOG ON CATALOG shop TO `analysts`;
+GRANT USE SCHEMA, SELECT ON SCHEMA shop.gold   TO `analysts`;
+GRANT USE SCHEMA, SELECT ON SCHEMA shop.silver TO `analysts`;
 
 -- only the pipeline's service principal writes
-GRANT USE SCHEMA, MODIFY, SELECT ON SCHEMA shop_prod.silver TO `etl-service-principal`;
+GRANT USE SCHEMA, MODIFY, SELECT ON SCHEMA shop.silver TO `etl-service-principal`;
 ```
 
 The UC best practices page backs the second part: "Reserve direct `MODIFY` access to production tables for service
@@ -349,7 +349,7 @@ the docs' intent ("not for access by analysts and data scientists") and a privac
 
 !!! tip "In the interview"
     **"How would you lay out bronze, silver and gold in Unity Catalog?"** Catalogs are the isolation unit, so I use a
-    catalog per environment, for example `shop_dev` and `shop_prod`, with `bronze`, `silver` and `gold` schemas in
+    catalog per environment, for example `shop_dev` for development and `shop` for production, with `bronze`, `silver` and `gold` schemas in
     each, the shape of the docs' `ops.bronze`/`ops.silver`/`ops.gold` example. Same table names in every catalog, so a
     job only changes the catalog parameter. Grants follow layers: analysts get `SELECT` on gold (and maybe silver),
     only service principals write to production.
@@ -389,16 +389,16 @@ from pyspark.sql import functions as F
 (spark.readStream.format("cloudFiles")
    .option("cloudFiles.format", "json")
    # where Auto Loader keeps the inferred schema and its changes over time
-   .option("cloudFiles.schemaLocation", "/Volumes/shop_prod/bronze/_meta/orders_schema")
-   .load("/Volumes/shop_prod/bronze/landing/orders/")
+   .option("cloudFiles.schemaLocation", "/Volumes/shop/bronze/_meta/orders_schema")
+   .load("/Volumes/shop/bronze/landing/orders/")
    .select("*",
            F.col("_metadata.file_name").alias("_source_file"),
            F.col("_metadata.file_modification_time").alias("_file_modified_at"),
            F.current_timestamp().alias("_ingested_at"))
    .writeStream
-   .option("checkpointLocation", "/Volumes/shop_prod/bronze/_meta/orders_checkpoint")
+   .option("checkpointLocation", "/Volumes/shop/bronze/_meta/orders_checkpoint")
    .trigger(availableNow=True)
-   .toTable("shop_prod.bronze.orders"))
+   .toTable("shop.bronze.orders"))
 ```
 
 Auto Loader records the files it has seen in its checkpoint (a RocksDB key-value store), which "ensures that data is
@@ -649,7 +649,7 @@ CREATE OR REFRESH STREAMING TABLE customers_history;
 CREATE FLOW customers_scd2 AS AUTO CDC INTO
   customers_history
 FROM
-  stream(shop_prod.bronze.customers_cdc)
+  stream(shop.bronze.customers_cdc)
 KEYS
   (customer_id)
 APPLY AS DELETE WHEN
@@ -698,7 +698,7 @@ CREATE OR REFRESH STREAMING TABLE orders_clean (
   CONSTRAINT valid_order_id  EXPECT (order_id IS NOT NULL)       ON VIOLATION DROP ROW,
   CONSTRAINT valid_amount    EXPECT (amount >= 0)                ON VIOLATION DROP ROW,
   CONSTRAINT known_currency  EXPECT (currency IN ('CAD', 'USD'))
-) AS SELECT * FROM STREAM(shop_prod.bronze.orders_parsed);
+) AS SELECT * FROM STREAM(shop.bronze.orders_parsed);
 ```
 
 The pipeline records pass and fail counts for warn and drop, so data quality becomes a monitored metric. Fail records
@@ -751,12 +751,12 @@ maintained by an automatically created serverless pipeline.
 *Databricks only, not run here. Syntax from [What is the medallion lakehouse architecture?](https://docs.databricks.com/aws/en/lakehouse/medallion) and [Use standalone materialized views](https://docs.databricks.com/aws/en/sql/mv-st/materialized).*
 
 ```sql
-CREATE OR REPLACE MATERIALIZED VIEW shop_prod.gold.daily_sales AS
+CREATE OR REPLACE MATERIALIZED VIEW shop.gold.daily_sales AS
 SELECT to_date(order_ts) AS order_date,
        currency,
        count(*)    AS orders,
        sum(amount) AS revenue
-FROM shop_prod.silver.orders
+FROM shop.silver.orders
 WHERE status <> 'CANCELLED'
 GROUP BY ALL;
 ```
@@ -1004,7 +1004,7 @@ patterns.
 This example runs the whole flow on the local Spark 4.2 + Delta 4.4.1 engine. The full script is
 `src/ch07/medallion_demo.py` and its output is `medallion_demo.out`. Local differences from Databricks:
 
-- There is no Unity Catalog, so `shop_prod.bronze.orders` becomes `bronze.orders` (schemas `bronze`, `silver`,
+- There is no Unity Catalog, so `shop.bronze.orders` becomes `bronze.orders` (schemas `bronze`, `silver`,
   `gold` in the local catalog).
 - There is no Auto Loader, so bronze uses the open-source Structured Streaming file source with a checkpoint, which
   also tracks which files it has read. On Databricks you would use `cloudFiles` as in 7.5.
@@ -1745,7 +1745,7 @@ that job. Every hop adds latency, storage, compute and a place for bugs (7.11).
 
     **Why:** re-reading all of bronze every run gets slower and more expensive as bronze grows forever.
 
-**Q12. Scenario: gold reads silver with `spark.readStream.table("shop_prod.silver.orders")`. The stream fails the day after silver starts using MERGE. Why, and what are the options?**
+**Q12. Scenario: gold reads silver with `spark.readStream.table("shop.silver.orders")`. The stream fails the day after silver starts using MERGE. Why, and what are the options?**
 
 ??? success "Answer"
     A streaming read of a Delta table accepts only appends; an `UPDATE`, `DELETE`, `MERGE` or overwrite on the source
@@ -1818,7 +1818,7 @@ for run in (1, 2):
 *Databricks only, not run here. Syntax from [MERGE INTO](https://docs.databricks.com/aws/en/sql/language-manual/delta-merge-into).*
 
 ```sql
-MERGE INTO shop_prod.silver.orders t
+MERGE INTO shop.silver.orders t
 USING latest_batch s ON t.order_id = s.order_id
 WHEN MATCHED THEN UPDATE SET *
 WHEN NOT MATCHED THEN INSERT *;
@@ -1949,7 +1949,7 @@ WHEN NOT MATCHED THEN INSERT *;
 **Q28. How would you organize dev and prod medallion tables in Unity Catalog?**
 
 ??? success "Answer"
-    A catalog per environment (`shop_dev`, `shop_prod`), with `bronze`, `silver` and `gold` schemas inside each, and the
+    A catalog per environment (`shop_dev` for development, `shop` for production), with `bronze`, `silver` and `gold` schemas inside each, and the
     same table names, so code changes environment through one catalog parameter. Bind the production catalog to the
     production workspace if isolation requires it; production writes by service principals only.
 
@@ -1962,8 +1962,8 @@ WHEN NOT MATCHED THEN INSERT *;
     *Databricks only, not run here. Syntax from [GRANT](https://docs.databricks.com/aws/en/sql/language-manual/security-grant).*
 
     ```sql
-    GRANT USE CATALOG ON CATALOG shop_prod TO `analysts`;
-    GRANT USE SCHEMA, SELECT ON SCHEMA shop_prod.gold TO `analysts`;
+    GRANT USE CATALOG ON CATALOG shop TO `analysts`;
+    GRANT USE SCHEMA, SELECT ON SCHEMA shop.gold TO `analysts`;
     ```
 
     **Why:** `SELECT` granted on a schema is inherited by its tables (and future tables), and reading also requires
@@ -2050,10 +2050,10 @@ WHEN NOT MATCHED THEN INSERT *;
 *Databricks only, not run here. Syntax from [Ingest data as semi-structured variant type](https://docs.databricks.com/aws/en/ingestion/variant).*
 
 ```python
-(spark.read.json("/Volumes/shop_prod/bronze/landing/orders/")
+(spark.read.json("/Volumes/shop/bronze/landing/orders/")
    .dropDuplicates(["order_id"])
    .write.mode("append")
-   .saveAsTable("shop_prod.silver.orders"))
+   .saveAsTable("shop.silver.orders"))
 ```
 
 ??? success "Answer"

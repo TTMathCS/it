@@ -1503,7 +1503,7 @@ after ignore: 6
 after overwrite: 3
 ```
 
-Two scenario facts follow. A job that appends is **not idempotent**: rerun it after a partial failure and you get duplicates (here, 6 rows from 3). And a plain-Parquet overwrite deletes first, so a failure in the middle can leave the folder empty or half-written. Delta tables fix the second problem with atomic commits and give you `MERGE` and `INSERT ... REPLACE WHERE` for the first ([chapter 4](04-Delta-Lake.md), chapter 20).
+Two scenario facts follow. A job that appends is **not idempotent**: rerun it after a partial failure and you get duplicates (here, 6 rows from 3). And a plain-Parquet overwrite deletes first, so a failure in the middle can leave the folder empty or half-written. Delta tables fix the second problem with atomic commits and give you `MERGE` and `INSERT ... REPLACE WHERE` for the first ([chapter 4](04-Delta-Lake.md), [chapter 20](20-Tables-in-Databricks-SQL.md)).
 
 **Files per write.** Each partition writes its own file (per folder, with `partitionBy`): the 1-partition DataFrame wrote 1 file, and after `repartition(3)` the same rows wrote 3 files.
 
@@ -1997,7 +1997,7 @@ def band(amount):
 **Q39. A nightly job writes `df.write.parquet(path)`. It worked for a month, and tonight's retry after a failure ended with `[PATH_ALREADY_EXISTS]`. Why, and what are the options?**
 
 ??? success "Answer"
-    The default save mode is `errorifexists`: the failed run had already created the folder, so the retry refuses to write (the section 3.13 run shows the same error). Options: `mode("overwrite")` if the job rewrites the whole output (idempotent, but in plain Parquet the old data is deleted first, not atomically), `mode("append")` only if duplicates are handled, or better, a Delta table with an atomic overwrite, `INSERT ... REPLACE WHERE` for one day, or `MERGE` on a key (chapter 20).
+    The default save mode is `errorifexists`: the failed run had already created the folder, so the retry refuses to write (the section 3.13 run shows the same error). Options: `mode("overwrite")` if the job rewrites the whole output (idempotent, but in plain Parquet the old data is deleted first, not atomically), `mode("append")` only if duplicates are handled, or better, a Delta table with an atomic overwrite, `INSERT ... REPLACE WHERE` for one day, or `MERGE` on a key ([chapter 20](20-Tables-in-Databricks-SQL.md)).
 
 **Q40. What is Spark Connect, how is Databricks Connect related to it, and what changes for your code?**
 

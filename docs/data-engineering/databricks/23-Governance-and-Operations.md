@@ -730,12 +730,12 @@ lakehouse where everything is one `SELECT` away, separation has to be built into
 say "Use your single-region metastore for all software development lifecycle scopes and business units, for
 example, dev, test, prod". Catalogs then carry the separation: "Often, this means that catalogs correspond to an
 environment scope, team, business unit, or some combination of these." Red Rock uses `shop_dev`, `shop_staging`
-and `shop_prod`, each with the same `bronze`, `silver`, `gold` schemas, so code only changes the catalog name, set
+and `shop` (production), each with the same `bronze`, `silver`, `gold` schemas, so code only changes the catalog name, set
 per target by the bundle (Declarative Automation Bundles, formerly Databricks Asset Bundles, per the
 [bundles page](https://docs.databricks.com/aws/en/dev-tools/bundles/); [Chapter 16](16-CICD-and-Testing.md)).
 
 **Binding.** "When work environments and data both have the same isolation requirements, you can bind a catalog to
-a specific workspace." With `shop_prod` bound to the production workspace, "Access from an unbound workspace is
+a specific workspace." With `shop` bound to the production workspace, "Access from an unbound workspace is
 denied, even for users with explicit privilege grants on the catalog"
 ([Workspace-catalog binding](https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control/workspace-catalog-binding);
 the CLI commands are in [Chapter 5, section 5.9](05-Unity-Catalog.md)). A binding can also be read-only, which is
@@ -769,7 +769,7 @@ own `shop_dev`. Staging is written by the CI service principal running the same 
 <rect x="435" y="42" width="180" height="155" rx="6" fill="none" stroke="currentColor"/>
 <text x="525" y="62" text-anchor="middle" font-weight="bold">prod workspace</text>
 <rect x="445" y="72" width="160" height="44" rx="4" fill="none" stroke="currentColor" stroke-dasharray="4 3"/>
-<text x="525" y="90" text-anchor="middle">catalog shop_prod</text>
+<text x="525" y="90" text-anchor="middle">catalog shop</text>
 <text x="525" y="108" text-anchor="middle">bronze silver gold</text>
 <text x="525" y="140" text-anchor="middle">prod service principal</text>
 <text x="525" y="158" text-anchor="middle">only writer; humans read</text>
@@ -800,7 +800,7 @@ customers, or mask before copying.
 
 !!! tip "In the interview"
     **"How do you keep prod safe?"** Four layers. Separate catalogs per environment (`shop_dev`, `shop_staging`,
-    `shop_prod`) in one metastore, with the prod catalog bound to the prod workspace. Production is written only by
+    `shop`) in one metastore, with the prod catalog bound to the prod workspace. Production is written only by
     service principals through CI/CD (Declarative Automation Bundles, formerly Databricks Asset Bundles), and humans
     get read access, so nobody can run a manual `UPDATE` there. Groups own production objects, not individuals.
     And recovery is ready: table history and `RESTORE` for bad writes, alerts on failed jobs, and a tested backup
@@ -917,7 +917,7 @@ tables".
 WITH latest_rows AS (
   SELECT *, ROW_NUMBER() OVER (PARTITION BY table_id ORDER BY event_time DESC) AS rn
   FROM system.data_quality_monitoring.table_results
-  WHERE catalog_name = 'shop_prod' AND schema_name = 'silver'
+  WHERE catalog_name = 'shop' AND schema_name = 'silver'
 )
 SELECT table_name, status, freshness.status AS freshness, completeness.status AS completeness
 FROM latest_rows
@@ -1004,7 +1004,7 @@ is enabled by default; sharing outside the account needs OpenSharing enabled on 
 
 ```sql
 CREATE SHARE IF NOT EXISTS red_rock_partner COMMENT "Daily revenue for our logistics partner";
-ALTER SHARE red_rock_partner ADD TABLE shop_prod.gold.daily_revenue
+ALTER SHARE red_rock_partner ADD TABLE shop.gold.daily_revenue
   AS gold.daily_revenue WITHOUT HISTORY;
 CREATE RECIPIENT IF NOT EXISTS trailhead_logistics USING ID '<sharing-identifier>';
 GRANT SELECT ON SHARE red_rock_partner TO RECIPIENT trailhead_logistics;
@@ -1065,7 +1065,7 @@ Two ways to serve Iceberg clients (Spark, Flink, Trino and others through the Ic
 *Databricks only, not run here. Syntax from [Read Delta Lake tables with Iceberg clients](https://docs.databricks.com/aws/en/delta/uniform).*
 
 ```sql
-ALTER TABLE shop_prod.gold.daily_revenue SET TBLPROPERTIES(
+ALTER TABLE shop.gold.daily_revenue SET TBLPROPERTIES(
   'delta.columnMapping.mode' = 'name',
   'delta.enableIcebergCompatV2' = 'true',
   'delta.universalFormat.enabledFormats' = 'iceberg');
@@ -1103,13 +1103,13 @@ a source table for disaster recovery") and a clone with long retention propertie
 
 ```sql
 -- monthly archive of silver orders, with ten years of time travel on the copy
-CREATE OR REPLACE TABLE shop_backup.silver.orders CLONE shop_prod.silver.orders
+CREATE OR REPLACE TABLE shop_backup.silver.orders CLONE shop.silver.orders
 TBLPROPERTIES (
   delta.logRetentionDuration = '3650 days',
   delta.deletedFileRetentionDuration = '3650 days'
 );
 -- the exact table version a model or a report was built from
-CREATE TABLE shop_backup.silver.orders_v15 CLONE shop_prod.silver.orders VERSION AS OF 15;
+CREATE TABLE shop_backup.silver.orders_v15 CLONE shop.silver.orders VERSION AS OF 15;
 ```
 
 The same page notes what a clone does not copy: Unity Catalog tags, and the source's history ("A cloned table has
@@ -1373,7 +1373,7 @@ it fails. What are the fixes?**
     materialized views too.
 
 **Q11. Scenario: a developer created `shop_dev.silver.customers` as a Unity Catalog shallow clone of
-`shop_prod.silver.customers` last month. You erase customer 7 in prod, purge and vacuum after 7 days. Is her data
+`shop.silver.customers` last month. You erase customer 7 in prod, purge and vacuum after 7 days. Is her data
 gone from storage?**
 
 ??? success "Answer"
@@ -1504,7 +1504,7 @@ is wrong?**
     **Why:** use anomaly detection for broad, rule-free coverage; data profiling for deep statistics on a few key
     tables.
 
-**Q21. Anomaly detection flags `shop_prod.silver.orders` as "incomplete" this morning. What does that mean and what
+**Q21. Anomaly detection flags `shop.silver.orders` as "incomplete" this morning. What does that mean and what
 do you check?**
 
 ??? success "Answer"
@@ -1573,8 +1573,8 @@ alerts?**
 
 ??? success "Answer"
     One metastore in the region, as Databricks recommends for all SDLC scopes. Three catalogs, `shop_dev`,
-    `shop_staging`, `shop_prod`, each with `bronze`, `silver`, `gold`. Three workspaces, with each catalog bound to
-    its workspace (`shop_prod` only to the prod workspace; optionally read-only binding of prod into dev).
+    `shop_staging`, `shop` (production), each with `bronze`, `silver`, `gold`. Three workspaces, with each catalog bound to
+    its workspace (`shop` only to the prod workspace; optionally read-only binding of prod into dev).
     Production written only by a service principal deployed through CI/CD with Declarative Automation Bundles
     (formerly Databricks Asset Bundles) whose targets change only the catalog and identity; groups own production
     objects; developers get read access to prod gold at most; dev uses sampled or masked data rather than clones of
@@ -1593,7 +1593,7 @@ alerts?**
 
     **Why:** prevention is a policy; a budget is a smoke alarm.
 
-**Q29. Write the SQL to share `shop_prod.gold.daily_revenue` with a partner on another Databricks account, without
+**Q29. Write the SQL to share `shop.gold.daily_revenue` with a partner on another Databricks account, without
 history.**
 
 ??? success "Answer"
@@ -1601,7 +1601,7 @@ history.**
 
     ```sql
     CREATE SHARE IF NOT EXISTS red_rock_partner;
-    ALTER SHARE red_rock_partner ADD TABLE shop_prod.gold.daily_revenue
+    ALTER SHARE red_rock_partner ADD TABLE shop.gold.daily_revenue
       AS gold.daily_revenue WITHOUT HISTORY;
     CREATE RECIPIENT IF NOT EXISTS trailhead_logistics USING ID '<sharing-identifier>';
     GRANT SELECT ON SHARE red_rock_partner TO RECIPIENT trailhead_logistics;
@@ -1637,7 +1637,7 @@ history.**
 
     **Why:** every federated query also loads the source database, which the owners of that database will not like.
 
-**Q32. An external team wants to read `shop_prod.gold.daily_revenue` with an Iceberg client. The table has deletion
+**Q32. An external team wants to read `shop.gold.daily_revenue` with an Iceberg client. The table has deletion
 vectors. What happens when you enable Iceberg reads?**
 
 ??? success "Answer"

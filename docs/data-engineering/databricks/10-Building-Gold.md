@@ -1758,7 +1758,8 @@ key column or eliminating a join that doesn't change the result"
 A dashboard query that left-joins `dim_customer` but uses no customer column can skip the join entirely. `RELY`
 optimizations "require pro or serverless SQL warehouses, or serverless compute". Primary and foreign keys are
 "available for Unity Catalog and Delta Lake tables in Databricks Runtime 13.3 LTS and above", GA in 15.2 and above
-([Constraints on Databricks](https://docs.databricks.com/aws/en/tables/constraints)).
+([Constraints on Databricks](https://docs.databricks.com/aws/en/tables/constraints)); the ADD CONSTRAINT reference still
+shows a Public Preview banner ([chapter 20](20-Tables-in-Databricks-SQL.md)).
 
 *Databricks only, not run here. Syntax from [Constraints on Databricks](https://docs.databricks.com/aws/en/tables/constraints) and [Optimize queries with RELY](https://docs.databricks.com/aws/en/sql/user/queries/query-optimization-constraints).*
 
@@ -1798,7 +1799,7 @@ the same metastore simply get `SELECT` on `shop.gold`.
 **Sharing outside the organization: OpenSharing.** "OpenSharing is the secure data sharing platform in Databricks
 that lets you share data and AI assets with users outside your organization, regardless of whether they use
 Databricks" ([What is OpenSharing?](https://docs.databricks.com/aws/en/opensharing/)). It is the new name of Delta
-Sharing: a Databricks blog post of November 5, 2026 says "Delta Sharing has evolved into OpenSharing" and that
+Sharing: a Databricks blog post of Nov 5, 2026 says "Delta Sharing has evolved into OpenSharing" and that
 "Existing Delta Sharing setups keep working"
 ([From Delta Sharing to
 OpenSharing](https://www.databricks.com/blog/delta-sharing-opensharing-what-changed-whats-next)).
@@ -2799,7 +2800,7 @@ How do you investigate?**
 - [What is Photon?](https://docs.databricks.com/aws/en/compute/photon) (last updated Sep 11, 2026)
 - [Use liquid clustering for tables](https://docs.databricks.com/aws/en/delta/clustering) (last updated Nov 2, 2026)
 - [What is OpenSharing?](https://docs.databricks.com/aws/en/opensharing/) (last updated Oct 27, 2026)
-- [From Delta Sharing to OpenSharing: what changed, what's next](https://www.databricks.com/blog/delta-sharing-opensharing-what-changed-whats-next) (Databricks blog, November 5, 2026)
+- [From Delta Sharing to OpenSharing: what changed, what's next](https://www.databricks.com/blog/delta-sharing-opensharing-what-changed-whats-next) (Databricks blog, Nov 5, 2026)
 - [Create shares for OpenSharing](https://docs.databricks.com/aws/en/opensharing/create-share) (last updated Oct 29, 2026)
 - [ALTER SHARE](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-alter-share) (last updated Sep 11, 2026)
 - [CREATE RECIPIENT](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-ddl-create-recipient) (last updated Sep 11, 2026)

@@ -99,7 +99,7 @@ Inside the metastore, every data and AI asset has a three-part name, `catalog.sc
 
 `shop.silver.orders` is the `orders` table in the `silver` schema of the `shop` catalog. That is the layout this
 book uses for Red Rock Supply: catalog `shop`, schemas `bronze`, `silver` and `gold`.
-[Chapter 7](07-Medallion-Architecture.md) adds an environment level (`shop_dev`, `shop_prod`); the shape is the
+[Chapter 7](07-Medallion-Architecture.md) adds an environment level (`shop_dev` for development, `shop` for production); the shape is the
 same.
 
 Names follow a few rules from the requirements page: object names cannot exceed 255 characters; a period, a space,
@@ -1366,7 +1366,7 @@ Because one metastore serves every workspace in a region, "all catalogs are acce
 workspace attached to the same metastore". **Workspace-catalog binding** restricts a catalog to chosen workspaces,
 optionally read-only, and "Access from an unbound workspace is denied, even for users with explicit privilege
 grants on the catalog" ([Workspace-catalog binding](https://docs.databricks.com/aws/en/data-governance/unity-catalog/access-control/workspace-catalog-binding)).
-That answers Red Rock's third question: bind `shop` (or `shop_prod`) to the production workspace, and a developer
+That answers Red Rock's third question: bind `shop` (the production catalog) to the production workspace, and a developer
 with `SELECT` cannot read it from the development workspace. Other points from the page:
 
 - The default workspace catalog of a new workspace is bound to that workspace only.
@@ -1501,7 +1501,7 @@ root it returns the status `DBFS_ROOT_LOCATION` and the page recommends a `DEEP 
 *Level: expert.*
 
 This is the complete design, with the four questions of 5.1 answered. It uses one catalog `shop` to keep names
-short; with environments, repeat it per catalog (`shop_dev`, `shop_prod`) as in
+short; with environments, repeat it per catalog (`shop_dev`, `shop`) as in
 [chapter 7](07-Medallion-Architecture.md) and bind the production catalog to the production workspace.
 
 **Principals** (all account-level):
@@ -1974,10 +1974,10 @@ DROP FUNCTION shop.silver.ca_only;
     **Why:** System tables reference, "Grant access to system tables". The information schema is the exception and
     needs no `SELECT` grant.
 
-**Q35. A developer with `SELECT` on `shop_prod.gold.daily_sales` gets an error querying it from the development workspace, but the same query works in production. Why?**
+**Q35. A developer with `SELECT` on `shop.gold.daily_sales` gets an error querying it from the development workspace, but the same query works in production. Why?**
 
 ??? success "Answer"
-    `shop_prod` is bound to the production workspace. Workspace-catalog binding overrides grants: access from an
+    `shop` is bound to the production workspace. Workspace-catalog binding overrides grants: access from an
     unbound workspace is denied even with explicit privileges.
 
     **Why:** "Workspace binding supersedes individual privilege grants" (securable objects reference).

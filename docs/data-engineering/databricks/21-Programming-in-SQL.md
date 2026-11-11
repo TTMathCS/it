@@ -116,7 +116,7 @@ Output (the same two rows again when the script runs a second time, see `ex01_sc
 +----------+--------+------+-------+
 ```
 
-On Databricks you would more often write this as one `INSERT INTO ... REPLACE WHERE order_date = ...` or a `MERGE` (see chapter 20); the script form is shown because it is the shape every multi-step load takes.
+On Databricks you would more often write this as one `INSERT INTO ... REPLACE WHERE order_date = ...` or a `MERGE` (see [chapter 20](20-Tables-in-Databricks-SQL.md)); the script form is shown because it is the shape every multi-step load takes.
 
 ### Result sets
 
@@ -1886,7 +1886,7 @@ END
 
     Delete-then-insert per day makes each pass idempotent. `coalesce(status, '')` keeps the order with a `NULL` status (a plain `status <> 'CANCELLED'` would drop it, because `NULL <> 'CANCELLED'` is not true).
 
-    **Why:** an interviewer will then ask "can you do it without a loop?". Yes: one `DELETE ... WHERE order_date BETWEEN ...` and one `INSERT ... GROUP BY` (or `INSERT ... REPLACE WHERE`, chapter 20) does the whole range in one pass. Loop per day only when each day is big or should commit separately.
+    **Why:** an interviewer will then ask "can you do it without a loop?". Yes: one `DELETE ... WHERE order_date BETWEEN ...` and one `INSERT ... GROUP BY` (or `INSERT ... REPLACE WHERE`, [chapter 20](20-Tables-in-Databricks-SQL.md)) does the whole range in one pass. Loop per day only when each day is big or should commit separately.
 
 **Q9. This loop is meant to add up shipped CAD amounts and stop at order 1006. What does it print, and why does it not stop where intended?**
 

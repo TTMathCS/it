@@ -1475,7 +1475,9 @@ says Ava lived in Calgary until May. The as-of query for March 15 would return t
     what `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) does with `SEQUENCE BY` and `STORED AS SCD TYPE 2` in Lakeflow
     pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)); see [chapter 14](14-Data-Quality-and-CDC.md) and
     [The AUTO CDC APIs](https://docs.databricks.com/aws/en/ldp/cdc). That page also says the `AUTO CDC` APIs are not
-    supported by open-source Apache Spark Declarative Pipelines, so it cannot be run here.
+    supported by open-source Apache Spark Declarative Pipelines, so it cannot be run here. (Open-source Spark 4.2.0
+    added a narrower Auto CDC flow for SCD Type 1 only, per its release notes; SCD Type 2 stays Databricks-only.
+    See [chapter 13](13-Declarative-Pipelines.md).)
 
 !!! tip "In the interview"
     **"Write an SCD Type 2 MERGE."** Stage the source as a union: every row with `merge_key = customer_id`, plus a

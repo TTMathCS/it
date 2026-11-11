@@ -192,7 +192,7 @@ inactivity). See [chapter 6](06-Compute.md#62-serverless-vs-classic-compute) and
 `DEEP CLONE` (or plain `CLONE`) copies a Delta table's data and metadata; `SHALLOW CLONE` copies only the metadata and
 points at the source's files. Clones are used for test copies, experiments and backups. See
 [chapter 23](23-Governance-and-Operations.md#2310-backup-clones-and-disaster-recovery) and
-chapter 20.
+[chapter 20](20-Tables-in-Databricks-SQL.md).
 
 ### Column mapping
 
@@ -442,7 +442,7 @@ source still holds. If the source has expired old data (a Kafka topic with short
 ### Generated column
 
 A Delta column whose value is computed from other columns of the same row with `GENERATED ALWAYS AS (expression)`,
-for example a date derived from a timestamp. See chapter 20 and
+for example a date derived from a timestamp. See [chapter 20](20-Tables-in-Databricks-SQL.md) and
 [chapter 4](04-Delta-Lake.md#protocol-versions-and-table-features).
 
 ### Genie Agents

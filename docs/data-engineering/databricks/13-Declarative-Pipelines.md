@@ -39,7 +39,7 @@ The documentation section itself is titled **Spark Declarative Pipelines on Lake
 The Python rename is not only cosmetic. In the old `dlt` module, `@dlt.table` made a streaming table or a materialized view depending on whether the function returned a streaming or a batch DataFrame. In the new module, `@dp.table` is for streaming tables and `@dp.materialized_view` is for materialized views, and `@view` became `@temporary_view`.
 
 !!! tip "In the interview"
-    **"Have you used Delta Live Tables?"** Answer with both names: "Yes, Delta Live Tables, which Databricks now calls Lakeflow pipelines or Spark Declarative Pipelines. Old DLT code still runs without migration; the new Python module is `pyspark.pipelines`, imported as `dp`, with `@dp.table` for streaming tables and `@dp.materialized_view` for materialized views. The core engine is now open source in Apache Spark as Spark Declarative Pipelines, and Databricks adds features such as AUTO CDC, expectations and the event log on top."
+    **"Have you used Delta Live Tables?"** Answer with both names: "Yes, Delta Live Tables, which Databricks now calls Lakeflow pipelines or Spark Declarative Pipelines. Old DLT code still runs without migration; the new Python module is `pyspark.pipelines`, imported as `dp`, with `@dp.table` for streaming tables and `@dp.materialized_view` for materialized views. The core engine is now open source in Apache Spark as Spark Declarative Pipelines, and Databricks adds features such as the full AUTO CDC APIs (open-source Spark 4.2 has only a narrower SCD Type 1 Auto CDC flow), expectations and the event log on top."
 
 ## 13.2 Declarative versus procedural
 
@@ -71,7 +71,7 @@ It places "Apache Spark and Lakeflow Jobs" on the procedural side and pipelines 
 Choose procedural code when, in the words of the same page, "fine-grained control over execution logic is required", when "transformations involve complex business rules that are difficult to express declaratively", or when "performance optimizations necessitate manual tuning". A typical example is a `foreachBatch` that writes one micro-batch to three systems with custom error handling.
 
 !!! tip "In the interview"
-    **"Why would you use DLT instead of a Structured Streaming job scheduled by Workflows?"** "With Delta Live Tables, now Lakeflow pipelines, I declare tables and their queries; the pipeline builds the dependency graph, manages checkpoints, retries failures at task, flow and pipeline level, and gives me data quality expectations, AUTO CDC and an event log. With plain Structured Streaming plus Lakeflow Jobs (formerly Workflows) I write and order every stream, checkpoint and retry myself, which is more work but gives full control. I pick the pipeline for standard ingest-clean-aggregate work and hand-written code for unusual sinks or logic the declarative model cannot express."
+    **"Why would you use DLT instead of a Structured Streaming job scheduled by Workflows?"** "With Delta Live Tables, now Lakeflow pipelines, I declare tables and their queries; the pipeline builds the dependency graph, manages checkpoints, retries failures at task, flow and pipeline level, and gives me data quality expectations, AUTO CDC and an event log. With plain Structured Streaming plus Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu) I write and order every stream, checkpoint and retry myself, which is more work but gives full control. I pick the pipeline for standard ingest-clean-aggregate work and hand-written code for unusual sinks or logic the declarative model cannot express."
 
 ## 13.3 The building blocks
 
@@ -1253,7 +1253,7 @@ def tmp(): return spark.read.table("silver_orders")
 ??? success "Answer"
     Gain with Lakeflow pipelines (formerly DLT): the dependency graph is inferred from the code, checkpoints are managed per flow, retries go from task to flow to pipeline, plus expectations, AUTO CDC (formerly APPLY CHANGES), an event log, lineage, materialized views with incremental refresh on serverless, and full/selective refresh from the UI.
 
-    Lose: fine control. Procedural code with Lakeflow Jobs (formerly Workflows) lets you write any `foreachBatch` logic, choose checkpoint locations, and order steps exactly. Dataset functions in a pipeline must only return a DataFrame, `pivot()` is not supported, and tables belong to one pipeline.
+    Lose: fine control. Procedural code with Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu) lets you write any `foreachBatch` logic, choose checkpoint locations, and order steps exactly. Dataset functions in a pipeline must only return a DataFrame, `pivot()` is not supported, and tables belong to one pipeline.
 
     **Why:** The "Procedural vs. declarative" page puts Spark plus Lakeflow Jobs on the procedural side ("Full control over execution") and pipelines on the declarative side ("Execution handled by system").
 
@@ -1517,7 +1517,7 @@ def gold_daily_sales():
 **Q31. What does Databricks add on top of open-source Spark Declarative Pipelines?**
 
 ??? success "Answer"
-    Per the Databricks comparison page: AUTO CDC (SCD Type 1 and 2, and from snapshots), data quality expectations, a queryable event log, update flows and `foreachBatch` sinks, and continuous mode; plus the platform around it (serverless compute and incremental refresh of materialized views, Auto Loader, Unity Catalog, the editor and monitoring UI). Shared: streaming tables, materialized views, temporary views, append flows, sinks, automatic orchestration. Note that the Apache Spark 4.3.0 guide now documents an open-source Auto CDC flow, so this line is moving.
+    Per the Databricks comparison page: AUTO CDC (SCD Type 1 and 2, and from snapshots), data quality expectations, a queryable event log, update flows and `foreachBatch` sinks, and continuous mode; plus the platform around it (serverless compute and incremental refresh of materialized views, Auto Loader, Unity Catalog, the editor and monitoring UI). Shared: streaming tables, materialized views, temporary views, append flows, sinks, automatic orchestration. Note that open-source Spark 4.2.0 added a narrower Auto CDC flow for SCD Type 1 upserts ([Spark 4.2.0 release notes](https://spark.apache.org/releases/spark-release-4-2-0.html)), which the Apache Spark 4.3.0 guide also documents, so this line is moving; the Databricks page still lists AUTO CDC as Databricks-only.
 
     **Why:** "Code written with the open-source `pipelines` module runs without modification on Databricks", but not the other way around.
 
