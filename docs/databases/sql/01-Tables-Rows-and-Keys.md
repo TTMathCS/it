@@ -1,4 +1,371 @@
 # 1. Tables, rows and keys
 
-!!! info "Being written"
-    This chapter is being written and will be here soon (November 2026).
+*Before the first query, the shape of the data. A relational database keeps everything in tables; every row in a
+table is one thing of the same kind, and keys tie the tables together. This chapter names the parts, shows the
+database refusing bad rows, and gives the words interviewers use: primary key, foreign key, one-to-many,
+many-to-many, DDL and DML.*
+
+!!! abstract "In this chapter"
+    **You will learn:**
+
+    - tables, rows and columns, and why a table has no built-in order
+    - primary keys, including a key made of two columns
+    - foreign keys, and how they stop an order for a customer who does not exist
+    - one-to-many, many-to-many and a table that points at itself
+    - why a name is not a key
+    - the families of SQL statements: DDL, DML, DQL, DCL, TCL
+
+    **You need:** nothing. The [sample database](sample-database.md) page shows every row used here.
+
+## 1.1 Tables, rows and columns { #tables }
+
+A **table** holds one kind of thing. In the shop, `customers` holds customers and `products` holds products. Each
+**row** is one of those things, and each **column** is one fact about it, with a **type**: a whole number, a piece
+of text, a date, a price.
+
+<!-- sql -->
+```sql
+SELECT customer_id, name, city, country, signup_date
+FROM customers
+ORDER BY customer_id
+LIMIT 4;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+| customer_id | name | city | country | signup_date |
+| --- | --- | --- | --- | --- |
+| 1 | Ana Silva | Toronto | Canada | 2025-11-03 |
+| 2 | Ben Okafor | Lagos | Nigeria | 2025-12-10 |
+| 3 | Chen Wei | Shanghai | China | 2026-01-05 |
+| 4 | Dana Kim | Seoul | South Korea | 2026-01-05 |
+<!-- /result -->
+
+Every row of a table has the same columns. A fact that does not apply, or is not known, is stored as **NULL**, the
+marker for "no value": customer 5's city is NULL. [Chapter 6](06-Null-and-Three-Valued-Logic.md) is all about it.
+
+The words change from book to book. Rows are also called **records** or **tuples**, columns are **fields** or
+**attributes**, and a table is a **relation** (that is where "relational" comes from). They mean the same things.
+
+## 1.2 A table has no order { #no-order }
+
+A table is a **set** of rows, not a list. The database may store and return them in any order it finds fast, and
+the order can change after an update, an index, or an upgrade. The only way to get rows in an order is to ask for
+it with `ORDER BY` ([chapter 2](02-Select-Where-Order-By-Limit.md)).
+
+!!! tip "Interview tip"
+    "Return the first three customers" has no answer until someone says first by what. If a test question says
+    "sorted by", the checker will usually compare the order too; if it says nothing, sort anyway (by the key) so your
+    answer does not depend on luck. Every query in this course that shows more than one row has an `ORDER BY` for
+    that reason.
+
+## 1.3 Primary keys { #primary-key }
+
+A **primary key** is the column (or columns) that tells one row from every other row. It must be **unique** and it
+can never be NULL. In `customers` it is `customer_id`, declared in the table's definition:
+
+```sql
+CREATE TABLE customers (
+  customer_id INTEGER PRIMARY KEY,
+  name        VARCHAR(50) NOT NULL,
+  ...
+);
+```
+
+The database enforces it. Adding a second customer number 1 fails on both databases:
+
+<!-- sql error -->
+```sql
+INSERT INTO customers (customer_id, name, country, signup_date)
+VALUES (1, 'Another Ana', 'Canada', '2026-04-10');
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>duplicate key value violates unique constraint "customers_pkey"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>UNIQUE constraint failed: customers.customer_id</code></p>
+<!-- /result -->
+
+The PostgreSQL message names the constraint, `customers_pkey`, a name it made up from the table. (The example is
+rolled back after it runs, as every example that changes data in this course is, so the shop stays as it was.)
+
+### A key of two columns { #composite-key }
+
+In `order_items`, one row is one product in one order. Neither column is unique on its own: order 101 has two
+products, and product 2 is in many orders. The pair is unique, so the pair is the key:
+
+```sql
+CREATE TABLE order_items (
+  order_id   INTEGER NOT NULL REFERENCES orders (order_id),
+  product_id INTEGER NOT NULL REFERENCES products (product_id),
+  quantity   INTEGER NOT NULL,
+  unit_price NUMERIC(8,2) NOT NULL,
+  PRIMARY KEY (order_id, product_id)
+);
+```
+
+A key made of several columns is a **composite key**. It means "the same product cannot appear twice in one order";
+buying three notebooks is one row with `quantity` 3. Trying to add product 1 to order 101 a second time fails:
+
+<!-- sql error -->
+```sql
+INSERT INTO order_items VALUES (101, 1, 1, 24.50);
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>duplicate key value violates unique constraint "order_items_pkey"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>UNIQUE constraint failed: order_items.order_id, order_items.product_id</code></p>
+<!-- /result -->
+
+`logins` has no primary key at all, and that is how it ended up holding the same login twice (customer 2 on
+2 March). A table without a key can hold duplicates; finding and removing them is a favourite test question
+([chapter 15](15-Classic-Interview-Patterns.md) and [chapter 22](22-Duplicates-and-Incremental-Loads.md)).
+
+## 1.4 Foreign keys { #foreign-key }
+
+`orders.customer_id` says which customer placed the order. It is a **foreign key**: a column whose values must be
+the primary key of a row in another table.
+
+```sql
+CREATE TABLE orders (
+  order_id    INTEGER PRIMARY KEY,
+  customer_id INTEGER REFERENCES customers (customer_id),
+  ...
+);
+```
+
+An order for customer 99, who does not exist, is refused:
+
+<!-- sql error -->
+```sql
+INSERT INTO orders VALUES (121, 99, '2026-04-06', 'shipped');
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>insert or update on table "orders" violates foreign key constraint "orders_customer_id_fkey"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>FOREIGN KEY constraint failed</code></p>
+<!-- /result -->
+
+!!! warning "SQLite checks foreign keys only when asked"
+    SQLite ignores `REFERENCES` unless the connection first runs `PRAGMA foreign_keys = ON;`, and it is off by
+    default in the `sqlite3` program and in most libraries. The examples in this course run with it on, which is why
+    SQLite refused the row above. PostgreSQL, MySQL (InnoDB) and SQL Server check them by default.
+
+A foreign key can be NULL unless the column says `NOT NULL`. Order 108 was placed by a guest, so its `customer_id`
+is NULL, which the key allows:
+
+<!-- sql -->
+```sql
+SELECT order_id, customer_id, order_date, status
+FROM orders
+WHERE order_id BETWEEN 107 AND 109
+ORDER BY order_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| order_id | customer_id | order_date | status |
+| --- | --- | --- | --- |
+| 107 | 5 | 2026-02-02 | shipped |
+| 108 | *NULL* | 2026-02-10 | shipped |
+| 109 | 6 | 2026-02-14 | shipped |
+<!-- /result -->
+
+That one NULL is behind many wrong answers later: it vanishes from inner joins ([chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md))
+and it breaks `NOT IN` ([chapter 9](09-Self-Semi-and-Anti-Joins.md#anti)).
+
+The key also works the other way: you cannot delete customer 1 while orders still point at them.
+
+<!-- sql error -->
+```sql
+DELETE FROM customers WHERE customer_id = 1;
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>update or delete on table "customers" violates foreign key constraint "orders_customer_id_fkey" on table "orders"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>FOREIGN KEY constraint failed</code></p>
+<!-- /result -->
+
+A foreign key can instead say what should happen, with `ON DELETE CASCADE` (delete the orders too) or `ON DELETE
+SET NULL`; [chapter 18](18-Create-Table-Types-Constraints.md) shows both.
+
+## 1.5 How tables relate { #relationships }
+
+Three shapes cover almost every database.
+
+**One-to-many.** One customer has many orders; each order has at most one customer. The foreign key sits on the
+"many" side: `orders.customer_id`.
+
+**Many-to-many.** An order has many products and a product is in many orders. No single foreign key can say that, so
+a third table sits between them, one row per pair: `order_items`. It is called a **junction** (or bridge, or link)
+table, and it often carries facts about the pair, here the quantity and the price paid.
+
+**A table that points at itself.** Each employee's `manager_id` is another employee's `employee_id`:
+
+<!-- sql -->
+```sql
+SELECT employee_id, name, department, manager_id
+FROM employees
+WHERE department IN ('Management', 'Sales')
+ORDER BY employee_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+| employee_id | name | department | manager_id |
+| --- | --- | --- | --- |
+| 1 | Maya Rossi | Management | *NULL* |
+| 6 | Omar Aziz | Sales | 1 |
+| 7 | Nina Berg | Sales | 6 |
+| 8 | Raj Patel | Sales | 6 |
+| 9 | Zoe Martin | Sales | 6 |
+<!-- /result -->
+
+Maya Rossi has no manager (NULL); Omar Aziz reports to her (1); Nina, Raj and Zoe report to Omar (6). Questions such
+as "employees who earn more than their manager" join this table to itself ([chapter 9](09-Self-Semi-and-Anti-Joins.md)),
+and "everyone below Maya, at any depth" needs a recursive query ([chapter 11](11-CTEs-and-Recursive-CTEs.md#recursive)).
+
+## 1.6 A name is not a key { #name-not-key }
+
+Two different customers are called Ana Silva:
+
+<!-- sql -->
+```sql
+SELECT customer_id, name, email, city
+FROM customers
+WHERE name = 'Ana Silva'
+ORDER BY customer_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+| customer_id | name | email | city |
+| --- | --- | --- | --- |
+| 1 | Ana Silva | ana@example.com | Toronto |
+| 10 | Ana Silva | ana.silva@example.com | Lisbon |
+<!-- /result -->
+
+Names repeat, change, and get typed differently. That is why tables use a made-up number as the key, a **surrogate
+key**, rather than a fact about the thing (a **natural key**, such as an email or a tax number). Natural keys still
+matter: they are what a data engineer matches on when loading data from another system, and they usually get a
+`UNIQUE` constraint of their own.
+
+!!! failure "The usual wrong answer"
+    "Orders per customer" grouped by `name` adds up both Ana Silvas as one person. Group by `customer_id` and show the
+    name beside it. [Chapter 7](07-Aggregation-Group-By-Having.md#group-by-key) runs both queries and shows the
+    difference.
+
+## 1.7 The families of SQL statements { #statement-families }
+
+Interviewers sometimes ask for these names.
+
+| Family | Stands for | Statements | Chapters |
+| --- | --- | --- | --- |
+| DQL | data query language | `SELECT` | 2 to 16 |
+| DML | data manipulation language | `INSERT`, `UPDATE`, `DELETE`, `MERGE` | [17](17-Insert-Update-Delete-Merge.md) |
+| DDL | data definition language | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` | [18](18-Create-Table-Types-Constraints.md) |
+| TCL | transaction control language | `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT` | [20](20-Transactions-and-Isolation.md) |
+| DCL | data control language | `GRANT`, `REVOKE` | [29](29-Safe-SQL.md) |
+
+Many books count `SELECT` as part of DML; both uses are common. `TRUNCATE` is listed under DDL because it empties
+the whole table at once rather than deleting rows one by one; how it behaves inside a transaction depends on the
+database.
+
+SQL keywords are not case-sensitive: `select`, `SELECT` and `Select` are the same. This course writes keywords in
+capitals so they stand out. Text inside quotes **is** case-sensitive in a comparison on PostgreSQL and SQLite
+(`'ana silva'` does not equal `'Ana Silva'`); [chapter 5](05-Text-Functions-and-Pattern-Matching.md) covers this.
+
+## 1.8 Summary { #summary }
+
+- A table holds one kind of thing; a row is one of them; a column is one fact with a type. NULL means "no value".
+- Rows have no order. Only `ORDER BY` gives one.
+- A primary key is unique and never NULL; it can be one column or several (composite).
+- A foreign key must match a primary key in another table, or be NULL. SQLite enforces it only with
+  `PRAGMA foreign_keys = ON`.
+- One-to-many puts the foreign key on the many side; many-to-many needs a junction table; a table can point at
+  itself.
+- Names are not keys. Group and join by ids.
+
+## Practice { #practice }
+
+**1.1** Name the primary key of each of the six shop tables. Which table has none, and what has that allowed?
+
+??? success "Answer"
+    `customers`: `customer_id`. `products`: `product_id`. `orders`: `order_id`. `order_items`: the pair
+    `order_id, product_id`. `employees`: `employee_id`. `logins` has none, and it holds a duplicate row (customer 2,
+    2 March 2026). The [sample database](sample-database.md#tables) page lists them.
+
+**1.2** Show every line of order 117: the product id, quantity and price paid, by product id.
+
+??? success "Answer"
+    <!-- sql -->
+    ```sql
+    SELECT product_id, quantity, unit_price
+    FROM order_items
+    WHERE order_id = 117
+    ORDER BY product_id;
+    ```
+
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | product_id | quantity | unit_price |
+    | --- | --- | --- |
+    | 2 | 5 | 3.25 |
+    | 3 | 1 | 18.00 |
+    | 4 | 1 | 8.75 |
+    <!-- /result -->
+
+    Three rows, one per product. The order's key appears in all three; together with `product_id` it is unique.
+
+**1.3** Will this run? `INSERT INTO order_items VALUES (120, 99, 1, 5.00);` Say why before you try it.
+
+??? success "Answer"
+    No: there is no product 99, and `order_items.product_id` is a foreign key to `products`.
+
+    <!-- sql error -->
+    ```sql
+    INSERT INTO order_items VALUES (120, 99, 1, 5.00);
+    ```
+
+    <!-- result -->
+    <p class="sql-tested sql-error">PostgreSQL 16: error: <code>insert or update on table "order_items" violates foreign key constraint "order_items_product_id_fkey"</code></p>
+    <p class="sql-tested sql-error">SQLite 3.53: error: <code>FOREIGN KEY constraint failed</code></p>
+    <!-- /result -->
+
+**1.4** Which relationship shape is each of these: customers and logins; products and orders; employees and their
+managers?
+
+??? success "Answer"
+    Customers and logins: one-to-many (one customer, many logins; the foreign key is `logins.customer_id`). Products
+    and orders: many-to-many, through the junction table `order_items`. Employees and managers: one-to-many inside one
+    table (one manager, many reports), through `employees.manager_id`.
+
+**1.5** Show the employees who report to Tom Becker (employee 2): id, name, salary, by id.
+
+??? success "Answer"
+    <!-- sql -->
+    ```sql
+    SELECT employee_id, name, salary
+    FROM employees
+    WHERE manager_id = 2
+    ORDER BY employee_id;
+    ```
+
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | employee_id | name | salary |
+    | --- | --- | --- |
+    | 3 | Priya Nair | 120000 |
+    | 4 | Sam Lee | 120000 |
+    | 5 | Lucia Gomez | 95000 |
+    <!-- /result -->
+
+    Finding them by Tom's name instead of his id needs a join of the table with itself, the subject of
+    [chapter 9](09-Self-Semi-and-Anti-Joins.md).
+
+**Next:** [2. SELECT, WHERE, ORDER BY, LIMIT](02-Select-Where-Order-By-Limit.md).
