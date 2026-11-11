@@ -22,7 +22,7 @@ probe this layer harder than any other, because it is where pipelines silently g
     - SCD Type 1 and SCD Type 2 with `MERGE`, over several real loads
     - Change Data Feed: turning it on, `table_changes`, `readChangeFeed`, and propagating updates and deletes
 
-    **You need:** 4. Delta Lake (transaction log, `MERGE`, time travel),
+    **You need:** [4. Delta Lake](04-Delta-Lake.md) (transaction log, `MERGE`, time travel),
     [7. The medallion architecture](07-Medallion-Architecture.md) and 8. Into bronze.
     Generic `MERGE` syntax is in the SQL course:
     [Insert, update, delete, merge](../../databases/sql/17-Insert-Update-Delete-Merge.md).
@@ -692,7 +692,7 @@ not edit silver by hand.
     whose amount is `NULL`: both conditions are `NULL`, so the row goes nowhere (Q8 shows a run). Build the list of
     errors first and split on its size, or wrap each condition in `coalesce(..., false)`.
 
-In Lakeflow pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)) the same idea is expressed with expectations, and Databricks
+In Lakeflow pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) the same idea is expressed with expectations, and Databricks
 documents a quarantine pattern for them; see chapter 14 and
 [Manage data quality with pipeline expectations](https://docs.databricks.com/aws/en/ldp/expectations).
 
@@ -700,7 +700,7 @@ documents a quarantine pattern for them; see chapter 14 and
     **"How do you handle bad records?"** I never silently drop them. Each record is checked against rules; valid
     ones go to silver, invalid ones go to a quarantine table with every failed rule, the raw values, the source file
     and the ingest time. I reconcile counts (bronze = silver + quarantine) on every run and alert when the quarantine
-    rate jumps. In a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)) I would use expectations for the same thing.
+    rate jumps. In a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) I would use expectations for the same thing.
 
 ## 9.6 Deduplication
 
@@ -1063,7 +1063,7 @@ an SCD Type 2 table when the `ON` clause is too loose.
     **"How do you stop late data from overwriting newer data?"** I deduplicate the batch to the latest event per key
     by event time, then `MERGE` with `WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE`. Strictly greater, so
     a rerun is a no-op. If I need history or must slot a late event between existing versions, I use SCD Type 2, or
-    `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) with `SEQUENCE BY` in a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)).
+    `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) with `SEQUENCE BY` in a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)).
 
 ## 9.8 Idempotency: prove a rerun changes nothing
 
@@ -1473,7 +1473,7 @@ says Ava lived in Calgary until May. The as-of query for March 15 would return t
     This `MERGE` assumes changes arrive in order per customer. A late change dated between two existing versions is
     ignored (the guard rejects it), not slotted into history. Deletes are not handled. Handling both correctly is
     what `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) does with `SEQUENCE BY` and `STORED AS SCD TYPE 2` in Lakeflow
-    pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)); see chapter 14 and
+    pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)); see chapter 14 and
     [The AUTO CDC APIs](https://docs.databricks.com/aws/en/ldp/cdc). That page also says the `AUTO CDC` APIs are not
     supported by open-source Apache Spark Declarative Pipelines, so it cannot be run here.
 
@@ -1483,7 +1483,7 @@ says Ava lived in Calgary until May. The as-of query for March 15 would return t
     t.is_current`; when matched and changed, set `is_current = false, valid_to = s.updated_at`; when not matched,
     insert with `valid_from = s.updated_at, valid_to = NULL, is_current = true`. Detect changes with `<=>`, guard with
     `s.updated_at > t.valid_from`, and deduplicate the source first. In a Lakeflow pipeline ([formerly Delta Live
-    Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)) I would use `AUTO CDC ... STORED AS SCD TYPE 2` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) instead.
+    Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) I would use `AUTO CDC ... STORED AS SCD TYPE 2` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) instead.
 
 ## 9.11 Change Data Feed: passing changes on from silver
 
@@ -1751,7 +1751,7 @@ with column mapping, a feed query cannot span a non-additive schema change such 
     silver table (or use automatic change data feed on Databricks Runtime 19 and above), stream it with
     `readChangeFeed`, and in `foreachBatch` drop `update_preimage` rows, keep the latest change per key by
     `_commit_version`, and `MERGE` into gold with a `DELETE` branch for `delete` rows. Or let a Lakeflow pipeline
-    ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)) do it with `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) or a materialized view.
+    ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) do it with `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) or a materialized view.
 
 ## 9.12 Practice questions
 
@@ -2197,7 +2197,7 @@ What does the section 9.10 `MERGE` do with it, and what would handle it properly
     It ignores it: the guard `s.updated_at > t.valid_from` is false against the current (April) row, and no `NULL`-key
     copy is staged. History stays consistent but misses that version. Inserting it between existing versions means
     splitting an existing interval, which the simple pattern does not do. `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) with
-    `SEQUENCE BY` in a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)) is Databricks' tool for out-of-order CDC into
+    `SEQUENCE BY` in a Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) is Databricks' tool for out-of-order CDC into
     SCD Type 2.
 
 **Q34. How do you turn on Change Data Feed for a new and for an existing table, and what columns does it add?**
@@ -2258,7 +2258,7 @@ customer is back. Why, and how do you prevent it?**
     has nothing to compare with. Prevent it with soft deletes (keep the key with a deletion flag and timestamp so the
     guard rejects older records), a table of deleted keys checked by the load, or `AUTO CDC` ([formerly
     `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) handling deletes in a Lakeflow pipeline
-    ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)). Section 9.11 reproduced the
+    ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)). Section 9.11 reproduced the
     resurrection.
 
 **Q39. A new stream with `readChangeFeed` on a large silver table starts by emitting millions of `insert` rows,
@@ -2278,7 +2278,7 @@ orders are updated (status changes) and occasionally deleted. Outline an increme
     and above), stream it with `readChangeFeed` and `availableNow`, and in `foreachBatch` find the affected keys
     (order dates or orders), then recompute only those days in gold with a `MERGE` or `INSERT ... REPLACE WHERE`.
     Keep every step idempotent. Alternatives: a materialized view, which handles upstream changes by recomputing, or a
-    Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/where-is-dlt)). Chapter 10 builds the gold side.
+    Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)). Chapter 10 builds the gold side.
 
     **Why:** a plain stream from silver fails on updates, and full recomputation grows with the table; the feed gives
     only the changed rows.
@@ -2301,7 +2301,7 @@ orders are updated (status changes) and occasionally deleted. Outline an increme
 - [table_changes table-valued function](https://docs.databricks.com/aws/en/sql/language-manual/functions/table_changes) (last updated Oct 15, 2026)
 - [Table properties reference](https://docs.databricks.com/aws/en/delta/table-properties) (last updated Nov 5, 2026)
 - [The AUTO CDC APIs: Simplify change data capture with pipelines](https://docs.databricks.com/aws/en/ldp/cdc) (last updated Nov 9, 2026)
-- [What happened to Delta Live Tables (DLT)?](https://docs.databricks.com/aws/en/ldp/where-is-dlt) (last updated Sep 11, 2026)
+- [What happened to Delta Live Tables (DLT)?](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt) (last updated Sep 11, 2026)
 - [Manage data quality with pipeline expectations](https://docs.databricks.com/aws/en/ldp/expectations) (last updated Oct 26, 2026)
 - [pyspark.sql.DataFrame.dropDuplicates](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.dropDuplicates.html) (Apache Spark docs; no date shown)
 - [Delta Lake docs source: Table deletes, updates, and merges (SCD Type 2 example)](https://github.com/delta-io/delta/blob/master/docs/src/content/docs/delta-update.mdx) (delta.io documentation source on GitHub; no date shown; docs.delta.io itself was not reachable)

@@ -161,7 +161,7 @@ made a mistake.
     **Why:** "Delta is just Parquet" is a common wrong answer. The data files are Parquet; the transaction log
     (`_delta_log`) is what makes commits atomic and enables time travel, `MERGE` and schema enforcement.
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q4. Name the main kinds of compute and say when you would use each.**
 
@@ -673,7 +673,7 @@ made a mistake.
     log, so readers never see them; `VACUUM` later deletes them. Time travel is just "rebuild the state as of an
     older version", which is why it needs both the old log entries and the old data files.
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q30. How does Delta Lake provide each of the ACID properties?**
 
@@ -692,7 +692,7 @@ made a mistake.
     **Why:** there are no locks, so readers never block writers and deadlock cannot happen. The cost is that two
     conflicting writers cannot both win (Q31).
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q31. Two jobs write to the same Delta table at the same time. What happens?**
 
@@ -714,7 +714,7 @@ made a mistake.
     **Why:** the interviewer is checking you know Delta uses optimistic concurrency, not locks, and that "add a
     retry" is only part of the answer.
 
-    **Learn more:** Chapter 4, Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
 
 **Q32. What is time travel, and what limits how far back you can go?**
 
@@ -748,7 +748,7 @@ made a mistake.
     **Why:** Databricks says not to use table history as a long-term backup. If you need 30 days of time travel,
     raise `deletedFileRetentionDuration` to 30 days and accept the extra storage.
 
-    **Learn more:** Chapter 4, Chapter 20.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 20.
 
 **Q33. What is the difference between `RESTORE` and a time travel query?**
 
@@ -803,7 +803,7 @@ made a mistake.
     directories starting with `_` or `.`, so never keep a streaming checkpoint in the table folder unless it is named
     like `_checkpoints`. And on Unity Catalog managed tables predictive optimization runs `VACUUM` for you.
 
-    **Learn more:** Chapter 4, Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
 
 **Q35. What does `OPTIMIZE` do?**
 
@@ -977,7 +977,7 @@ made a mistake.
     **Why:** enforcement protects silver and gold from surprise columns; evolution is a deliberate choice. Note that
     any schema change ends streams that read the table; they must be restarted.
 
-    **Learn more:** Chapter 4, [Chapter 9](09-Building-Silver.md).
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 9](09-Building-Silver.md).
 
 **Q41. A column must change from `INT` to `BIGINT`. How do you do it without rewriting the table?**
 
@@ -992,7 +992,7 @@ made a mistake.
     read the table, which matters if other engines read it. A change that is not widening (for example `STRING` to
     `INT`) still needs a rewrite with `overwriteSchema`.
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q42. How do you rename or drop a column on a Delta table?**
 
@@ -1004,7 +1004,7 @@ made a mistake.
     **Why:** a dropped column with column mapping is a "soft delete": the old values remain in the files until
     `REORG TABLE ... APPLY (PURGE)` rewrites them. That matters for sensitive data.
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q43. A `MERGE` fails with "multiple source rows matched". Why, and how do you fix it?**
 
@@ -1789,7 +1789,7 @@ and what are the options?**
     needs CDF or `skipChangeCommits`. A schema change on the source table also fails the stream; for most schema
     changes, restarting it resolves the mismatch.
 
-    **Learn more:** Chapter 11, Chapter 4.
+    **Learn more:** Chapter 11, [Chapter 4](04-Delta-Lake.md).
 
 ## 24.8 Lakeflow pipelines (formerly Delta Live Tables)
 
@@ -2197,7 +2197,7 @@ and `SHIPPED`).
     for bronze. The `:` operator works on a `VARIANT` or on a `STRING` holding JSON; if the path does not exist, the
     result is NULL, not an error.
 
-    **Learn more:** Chapter 18.
+    **Learn more:** [Chapter 18](18-Semi-Structured-Data.md).
 
 **Q106. Keep only the latest row per order without a subquery.**
 
@@ -2224,7 +2224,7 @@ and `SHIPPED`).
     **Why:** use `row_number()` (exactly one row) rather than `rank()` (ties keep several rows). If two events can
     share a timestamp, add a tie-breaker to `ORDER BY` so reruns pick the same row.
 
-    **Learn more:** Chapter 17, [SQL course: ranking](../../databases/sql/13-Window-Functions-Ranking.md).
+    **Learn more:** [Chapter 17](17-Databricks-SQL-vs-Standard.md), [SQL course: ranking](../../databases/sql/13-Window-Functions-Ranking.md).
 
 **Q107. Compute line totals, filter items and sum quantities inside an array column without exploding it.**
 
@@ -2255,7 +2255,7 @@ and `SHIPPED`).
     **Why:** this keeps one row per order (no explode followed by a `GROUP BY` to put rows back together) and replaces
     Python UDFs over arrays (Q24).
 
-    **Learn more:** Chapter 18.
+    **Learn more:** [Chapter 18](18-Semi-Structured-Data.md).
 
 **Q108. Turn the `items` array into one row per item.**
 
@@ -2285,7 +2285,7 @@ and `SHIPPED`).
     `LATERAL VIEW OUTER`) keeps them with NULLs. That difference is a common "find the bug" question when order counts
     drop after flattening.
 
-    **Learn more:** Chapter 18.
+    **Learn more:** [Chapter 18](18-Semi-Structured-Data.md).
 
 **Q109. Select all columns except two, and group by every non-aggregated column without listing them.**
 
@@ -2317,7 +2317,7 @@ and `SHIPPED`).
     **Why:** look at customer 7: `n = 2` and `119.80`, because this table still has both events of order 1001. A sum
     over undeduplicated data double-counts. That is the kind of detail an interviewer hopes you notice.
 
-    **Learn more:** Chapter 17.
+    **Learn more:** [Chapter 17](17-Databricks-SQL-vs-Standard.md).
 
 **Q110. For each order, return the latest status and count the `PLACED` events, in one `GROUP BY`.**
 
@@ -2502,7 +2502,7 @@ and `SHIPPED`).
     **Why:** it reads in the order the data flows, which some teams find clearer for long transformations. It is
     optional; standard SQL gives the same result.
 
-    **Learn more:** Chapter 17.
+    **Learn more:** [Chapter 17](17-Databricks-SQL-vs-Standard.md).
 
 ## 24.11 Scenarios and troubleshooting
 
@@ -2584,7 +2584,7 @@ happened, and what do you do?**
 
     **Why:** tiny files also raise cloud storage API costs, especially with the default streaming trigger (Q73).
 
-    **Learn more:** Chapter 22, Chapter 4.
+    **Learn more:** Chapter 22, [Chapter 4](04-Delta-Lake.md).
 
 **Q119. An order from yesterday arrives today. Yesterday's revenue in gold is now wrong. How do you correct it
 without rebuilding the whole table?**
@@ -2634,7 +2634,7 @@ do you do?**
 
     **Why:** do not "fix" it by changing the silver column to `STRING`; that pushes the problem to every consumer.
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 4.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 4](04-Delta-Lake.md).
 
 **Q121. The monthly Databricks bill doubled. How do you find out why?**
 
@@ -2718,7 +2718,7 @@ handled?**
     **Why:** time travel only works within the retention window and only if `VACUUM` has not removed the files.
     Mention that, and that `RESTORE` is not a substitute for backups of very old data.
 
-    **Learn more:** Chapter 4.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md).
 
 **Q125. A streaming `MERGE` into silver suddenly fails with "multiple source rows matched". Nothing in the code
 changed. Why?**
@@ -2754,7 +2754,7 @@ changed. Why?**
     **Why:** a metadata change, such as `ALTER TABLE` or a write that changes the schema, can make all concurrent
     writes fail, including `INSERT`s. Schedule schema changes outside load windows.
 
-    **Learn more:** Chapter 4, Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
 
 **Q127. A notebook crashes with a driver out-of-memory error. What do you check?**
 
@@ -2850,7 +2850,7 @@ remove them for real?**
     **Why:** the interviewer checks that you know time travel retains deleted data until `VACUUM`, and that
     deletes ripple into streaming consumers.
 
-    **Learn more:** Chapter 4, Chapter 23.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 23.
 
 **Q132. The silver table is updated with `MERGE` every hour. A gold stream reading silver keeps failing. How do you
 redesign it?**
@@ -3003,7 +3003,7 @@ with Informatica) to Databricks?**
     example) may need heavy refactoring.
 
     **Learn more:** [Chapter 7](07-Medallion-Architecture.md), Chapter 12,
-    Chapter 17.
+    [Chapter 17](17-Databricks-SQL-vs-Standard.md).
 
 **Q139. Serverless or classic compute: how do you decide, from a cost point of view?**
 
@@ -3103,7 +3103,7 @@ you change?**
     kept for old files. On managed tables, hand-written maintenance jobs that repeat the same work are usually
     redundant.
 
-    **Learn more:** Chapter 22, Chapter 4.
+    **Learn more:** Chapter 22, [Chapter 4](04-Delta-Lake.md).
 
 **Q144. How do you show each team what it spends on Databricks?**
 
@@ -3142,7 +3142,7 @@ you change?**
     uses. On Databricks, Delta is the default, and interoperability features (Iceberg reads on Delta tables, Q146,
     and the Iceberg REST catalog for managed Iceberg tables) reduce the lock-in question.
 
-    **Learn more:** Chapter 4, Chapter 5.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 5.
 
 **Q146. Other teams query with an Iceberg engine. How can they read your Delta tables on Databricks?**
 
@@ -3172,7 +3172,7 @@ you change?**
     **Why:** the follow-up is usually "what do you give up?": deletion vectors on that table, and writes from
     the Iceberg side.
 
-    **Learn more:** Chapter 4, Chapter 5.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 5.
 
 ## 24.13 System design 1: late-arriving events from Kafka to dashboards
 

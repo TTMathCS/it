@@ -23,7 +23,7 @@ Supply shop that was run end to end, so every claim about reruns and restatement
     - short answers to the questions interviewers push on: where deduplication and business logic belong, backfills,
       reruns, schema drift, late data, and how many layers is too many
 
-    **You need:** 4. Delta Lake (transaction log, `MERGE`, time travel) and
+    **You need:** [4. Delta Lake](04-Delta-Lake.md) (transaction log, `MERGE`, time travel) and
     5. Unity Catalog (catalog.schema.table). 3. Apache Spark helps for
     the streaming parts.
 
@@ -583,7 +583,7 @@ failure, two systems both send the same customer. Silver removes them, in two pl
 
 - **Within the batch:** keep one row per business key, usually the newest, with
   `QUALIFY row_number() OVER (PARTITION BY key ORDER BY updated_at DESC) = 1` (`QUALIFY` is covered in
-  chapter 17; window functions in the
+  [chapter 17](17-Databricks-SQL-vs-Standard.md); window functions in the
   [SQL course](../../databases/sql/13-Window-Functions-Ranking.md)).
 - **Against the table:** `MERGE` on the business key, so a row already in silver is updated or skipped, not added again.
 

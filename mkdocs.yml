@@ -133,8 +133,11 @@ nav:
           - data-engineering/index.md
           - "Databricks and the medallion model":
               - data-engineering/databricks/index.md
+              - data-engineering/databricks/04-Delta-Lake.md
               - data-engineering/databricks/07-Medallion-Architecture.md
               - data-engineering/databricks/09-Building-Silver.md
+              - data-engineering/databricks/17-Databricks-SQL-vs-Standard.md
+              - data-engineering/databricks/18-Semi-Structured-Data.md
               - data-engineering/databricks/24-Interview.md
       - "Interview prep":
           - interview/index.md
