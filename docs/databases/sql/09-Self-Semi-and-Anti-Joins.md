@@ -332,6 +332,13 @@ ORDER BY c.customer_id;
     NULL", shows the interviewer you know the trap. A column that is nullable today (even if it holds no NULLs yet)
     is enough reason. `IN` (without NOT) has no such problem: a NULL in the list just never matches.
 
+!!! warning "Speed on SQLite"
+    On PostgreSQL, `NOT EXISTS` and `LEFT JOIN ... IS NULL` run equally fast. On SQLite, `NOT EXISTS` runs its
+    subquery once per outer row: with no index on the inner column (`orders.customer_id`), 50,000 customers against
+    200,000 orders did not finish in 30 seconds, while `LEFT JOIN ... IS NULL` took about a tenth of a second
+    ([chapter 26](26-Making-Slow-Queries-Fast.md#anti-join) has the timings). On SQLite with large tables, prefer the
+    `LEFT JOIN` form.
+
 | Way | Safe with NULLs | Notes |
 | --- | --- | --- |
 | `NOT EXISTS` | yes | The standard choice. Easy to add conditions inside. |

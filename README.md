@@ -17,6 +17,7 @@ docs/javascripts/, stylesheets/  the shared reader files (same as the other scho
 tools/nav.py                  rewrites the Books menu from the folders; the category list is at its top
 tools/sqlrun.py               runs every marked SQL example on PostgreSQL and SQLite and writes the real result
 tools/txdemo.py               runs the two-session transaction timelines (chapter 20) and writes what happened
+tools/sqltime.py              times different forms of the same query on large tables (chapter 26); takes minutes
 ```
 
 ## Categories

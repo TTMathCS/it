@@ -138,6 +138,10 @@ WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id);
 <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both (1 row).</p>
 <!-- /result -->
 
+On SQLite with no index on `orders.customer_id`, `NOT EXISTS` runs once per customer and can time out on a big
+table; `LEFT JOIN orders o ON o.customer_id = c.customer_id WHERE o.order_id IS NULL` stays fast on both
+([26.4](26-Making-Slow-Queries-Fast.md#anti-join)).
+
 ## Subqueries and CTEs (ch. [10](10-Subqueries.md), [11](11-CTEs-and-Recursive-CTEs.md)) { #cte }
 
 <!-- sql -->
@@ -256,7 +260,7 @@ phrases to patterns and chapters.
 | Mistake | Fix |
 | --- | --- |
 | `WHERE col = NULL` | `WHERE col IS NULL` |
-| `NOT IN (subquery)` where the subquery can return NULL | `NOT EXISTS` |
+| `NOT IN (subquery)` where the subquery can return NULL | `NOT EXISTS`, or `LEFT JOIN ... IS NULL` on SQLite |
 | Filtering the right table of a LEFT JOIN in WHERE | Move the condition into ON |
 | `SUM` after joining to a "many" table | Aggregate first, then join |
 | `7 / 2` expecting 3.5 | `7 * 1.0 / 2` |

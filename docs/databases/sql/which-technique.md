@@ -93,13 +93,15 @@ version:
 - A **correlated subquery** in `SELECT` or `WHERE` ("the average of this row's own department") can run once per
   row. A **window function** (`AVG(...) OVER (PARTITION BY ...)`) or a join to a grouped CTE reads the table once.
   On a large table, prefer the window or the join.
-- **`NOT EXISTS`** and **`LEFT JOIN ... IS NULL`** are both fine on modern databases; `NOT IN` is the one to avoid,
-  for correctness first.
+- **`NOT EXISTS`** and **`LEFT JOIN ... IS NULL`** are equally fast on PostgreSQL. On SQLite, `NOT EXISTS` runs once
+  per row and did not finish within 30 seconds on a large table without an index on the inner column; `LEFT JOIN ... IS NULL` stayed
+  fast. `NOT IN` is the one to avoid, for correctness first (one NULL empties the result).
 - A **self join on a date range** ("orders within 7 days of each other") grows with the square of the rows per key;
   `LAG` / `LEAD` grows with the rows.
-- **`ORDER BY ... LIMIT`** to find a maximum sorts everything unless an index helps; `MAX()` or a window does not.
+- **The greatest row per group:** `GROUP BY ... MAX` for the value, `ROW_NUMBER` for the whole row; both stay fast.
+  A correlated `= (SELECT MAX ...)` did not finish in 30 seconds on 200,000 rows.
 
-[Chapter 26](26-Making-Slow-Queries-Fast.md) times these forms on a large table.
+[Chapter 26](26-Making-Slow-Queries-Fast.md) times these forms on large tables, on both databases.
 
 **Next:** practise the recognition on [practice set A](30-Practice-Set-A.md), then the test-style tasks in the
 [Codility test prep](../../interview/codility/index.md) guide.
