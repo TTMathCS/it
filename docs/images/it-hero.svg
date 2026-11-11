@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+<defs><radialGradient id="sky" cx="60%" cy="30%" r="85%"><stop offset="0" stop-color="#3a1c12"/><stop offset="0.6" stop-color="#1a0d09"/><stop offset="1" stop-color="#07080c"/></radialGradient><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#eea66f"/></marker></defs>
+<rect width="1600" height="900" fill="url(#sky)"/>
+<line x1="40" y1="0" x2="40" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="120" y1="0" x2="120" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="200" y1="0" x2="200" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="280" y1="0" x2="280" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="360" y1="0" x2="360" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="440" y1="0" x2="440" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="520" y1="0" x2="520" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="600" y1="0" x2="600" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="680" y1="0" x2="680" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="760" y1="0" x2="760" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="840" y1="0" x2="840" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="920" y1="0" x2="920" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1000" y1="0" x2="1000" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1080" y1="0" x2="1080" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1160" y1="0" x2="1160" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1240" y1="0" x2="1240" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1320" y1="0" x2="1320" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1400" y1="0" x2="1400" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1480" y1="0" x2="1480" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="1560" y1="0" x2="1560" y2="900" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="30" x2="1600" y2="30" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="110" x2="1600" y2="110" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="190" x2="1600" y2="190" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="270" x2="1600" y2="270" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="350" x2="1600" y2="350" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="430" x2="1600" y2="430" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="510" x2="1600" y2="510" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="590" x2="1600" y2="590" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="670" x2="1600" y2="670" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="750" x2="1600" y2="750" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<line x1="0" y1="830" x2="1600" y2="830" stroke="#f4e6d4" stroke-opacity="0.045"/>
+<text x="110" y="92" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="600" text-anchor="start" fill="#eea66f" fill-opacity="1">MEDALLION PIPELINE</text>
+<rect x="110" y="130" width="250" height="62" rx="12" fill="#140b08" fill-opacity="0.9" stroke="#f4e6d4" stroke-opacity="0.35" stroke-width="2"/>
+<text x="235" y="169" font-family="IBM Plex Sans, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="#f4e6d4" fill-opacity="1">Rover telemetry</text>
+<line x1="366" y1="161" x2="476" y2="215" stroke="#eea66f" stroke-width="4" stroke-linecap="round" marker-end="url(#arr)"/>
+<rect x="110" y="216" width="250" height="62" rx="12" fill="#140b08" fill-opacity="0.9" stroke="#f4e6d4" stroke-opacity="0.35" stroke-width="2"/>
+<text x="235" y="255" font-family="IBM Plex Sans, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="#f4e6d4" fill-opacity="1">Orbiter images</text>
+<line x1="366" y1="247" x2="476" y2="255" stroke="#eea66f" stroke-width="4" stroke-linecap="round" marker-end="url(#arr)"/>
+<rect x="110" y="302" width="250" height="62" rx="12" fill="#140b08" fill-opacity="0.9" stroke="#f4e6d4" stroke-opacity="0.35" stroke-width="2"/>
+<text x="235" y="341" font-family="IBM Plex Sans, sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="#f4e6d4" fill-opacity="1">Weather station</text>
+<line x1="366" y1="333" x2="476" y2="295" stroke="#eea66f" stroke-width="4" stroke-linecap="round" marker-end="url(#arr)"/>
+<path d="M490.0,180 v150 a100.0,22 0 0 0 200,0 v-150" fill="#c98a55" fill-opacity="0.22" stroke="#c98a55" stroke-width="3"/>
+<ellipse cx="590" cy="180" rx="100.0" ry="22" fill="#c98a55" fill-opacity="0.45" stroke="#c98a55" stroke-width="3"/>
+<path d="M490.0,230.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#c98a55" stroke-opacity="0.5" stroke-width="2"/>
+<path d="M490.0,280.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#c98a55" stroke-opacity="0.5" stroke-width="2"/>
+<text x="590" y="400" font-family="IBM Plex Sans, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#c98a55" fill-opacity="1">Bronze</text>
+<text x="590" y="432" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="400" text-anchor="middle" fill="#f4e6d4" fill-opacity="0.75">raw, as it came</text>
+<path d="M830.0,180 v150 a100.0,22 0 0 0 200,0 v-150" fill="#d4d7dc" fill-opacity="0.22" stroke="#d4d7dc" stroke-width="3"/>
+<ellipse cx="930" cy="180" rx="100.0" ry="22" fill="#d4d7dc" fill-opacity="0.45" stroke="#d4d7dc" stroke-width="3"/>
+<path d="M830.0,230.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#d4d7dc" stroke-opacity="0.5" stroke-width="2"/>
+<path d="M830.0,280.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#d4d7dc" stroke-opacity="0.5" stroke-width="2"/>
+<text x="930" y="400" font-family="IBM Plex Sans, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#d4d7dc" fill-opacity="1">Silver</text>
+<text x="930" y="432" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="400" text-anchor="middle" fill="#f4e6d4" fill-opacity="0.75">cleaned, joined</text>
+<line x1="702" y1="255" x2="812" y2="255" stroke="#eea66f" stroke-width="4" stroke-linecap="round" marker-end="url(#arr)"/>
+<path d="M1170.0,180 v150 a100.0,22 0 0 0 200,0 v-150" fill="#f0c35a" fill-opacity="0.22" stroke="#f0c35a" stroke-width="3"/>
+<ellipse cx="1270" cy="180" rx="100.0" ry="22" fill="#f0c35a" fill-opacity="0.45" stroke="#f0c35a" stroke-width="3"/>
+<path d="M1170.0,230.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#f0c35a" stroke-opacity="0.5" stroke-width="2"/>
+<path d="M1170.0,280.0 a100.0,22 0 0 0 200,0" fill="none" stroke="#f0c35a" stroke-opacity="0.5" stroke-width="2"/>
+<text x="1270" y="400" font-family="IBM Plex Sans, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#f0c35a" fill-opacity="1">Gold</text>
+<text x="1270" y="432" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="400" text-anchor="middle" fill="#f4e6d4" fill-opacity="0.75">ready to query</text>
+<line x1="1042" y1="255" x2="1152" y2="255" stroke="#eea66f" stroke-width="4" stroke-linecap="round" marker-end="url(#arr)"/>
+<rect x="110" y="540" width="700" height="300" rx="16" fill="#120a07" fill-opacity="0.92" stroke="#f4e6d4" stroke-opacity="0.25" stroke-width="2"/>
+<circle cx="142" cy="570" r="7" fill="#e2685a" fill-opacity="0.8"/>
+<circle cx="168" cy="570" r="7" fill="#e8b84a" fill-opacity="0.8"/>
+<circle cx="194" cy="570" r="7" fill="#7cbf6a" fill-opacity="0.8"/>
+<text x="790" y="576" font-family="IBM Plex Mono, monospace" font-size="18" font-weight="400" text-anchor="end" fill="#f4e6d4" fill-opacity="0.5">gold.rovers</text>
+<text x="150" y="640" font-family="IBM Plex Mono, monospace" font-size="30" xml:space="preserve"><tspan fill="#9cc9ea">SELECT </tspan><tspan fill="#f4e6d4">name, agency, landed</tspan></text>
+<text x="150" y="690" font-family="IBM Plex Mono, monospace" font-size="30" xml:space="preserve"><tspan fill="#9cc9ea">FROM </tspan><tspan fill="#f4e6d4">rovers</tspan></text>
+<text x="150" y="740" font-family="IBM Plex Mono, monospace" font-size="30" xml:space="preserve"><tspan fill="#9cc9ea">WHERE </tspan><tspan fill="#f4e6d4">landed &gt;= </tspan><tspan fill="#eea66f">2004</tspan></text>
+<text x="150" y="790" font-family="IBM Plex Mono, monospace" font-size="30" xml:space="preserve"><tspan fill="#9cc9ea">ORDER BY </tspan><tspan fill="#f4e6d4">landed, name;</tspan></text>
+<rect x="880" y="540" width="550" height="288" rx="16" fill="#120a07" fill-opacity="0.92" stroke="#f4e6d4" stroke-opacity="0.25" stroke-width="2"/>
+<text x="910" y="582" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="600" text-anchor="start" fill="#eea66f" fill-opacity="1">name</text>
+<text x="1140" y="582" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="600" text-anchor="start" fill="#eea66f" fill-opacity="1">agency</text>
+<text x="1280" y="582" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="600" text-anchor="start" fill="#eea66f" fill-opacity="1">landed</text>
+<line x1="900" y1="596" x2="1410" y2="596" stroke="#eea66f" stroke-opacity="0.6" stroke-width="2"/>
+<text x="910" y="630" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">Opportunity</text>
+<text x="1140" y="630" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">NASA</text>
+<text x="1280" y="630" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">2004</text>
+<text x="910" y="674" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">Spirit</text>
+<text x="1140" y="674" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">NASA</text>
+<text x="1280" y="674" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">2004</text>
+<text x="910" y="718" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">Curiosity</text>
+<text x="1140" y="718" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">NASA</text>
+<text x="1280" y="718" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">2012</text>
+<text x="910" y="762" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">Perseverance</text>
+<text x="1140" y="762" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">NASA</text>
+<text x="1280" y="762" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">2021</text>
+<text x="910" y="806" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">Zhurong</text>
+<text x="1140" y="806" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">CNSA</text>
+<text x="1280" y="806" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.9">2021</text>
+<text x="884" y="864" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="400" text-anchor="start" fill="#f4e6d4" fill-opacity="0.55">5 rows</text>
+</svg>

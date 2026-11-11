@@ -118,11 +118,10 @@
     var(--md-default-bg-color);
 }
 
-/* the homepage: Arcadia City under the stars, full width (the owner's
-   AI-made picture from akadian.ca, images/README.md), the title at its foot.
-   The other pages keep the city picture behind their text */
+/* the homepage: the IT banner (a medallion pipeline and a SQL query with its real result, drawn by
+   tools/hero/make_svg.py, images/README.md). The other pages keep the city picture behind their text */
 .mars-hero {
-  --mars-hero-photo: url("../images/21-starlit-city.webp");
+  --mars-hero-photo: url("../images/it-hero.webp");
   /* a full-width banner that never crops the picture (Jim 1 Nov 2026: "banner", "show all the contents, not trimmed",
      "fit the screen"): the whole picture sits on the right at the banner's height, a soft blurred copy of it fills
      the rest of the width, and the title sits on the left over the blur */
@@ -282,6 +281,18 @@
     padding-left: .5rem;
     border-left: 2px solid var(--md-default-fg-color--lightest);
   }
+}
+
+/* on a tablet the drawing is too busy to sit behind the words: the phone layout, picture above the title */
+@media screen and (min-width: 45em) and (max-width: 63.9375em) {
+  .mars-hero { flex-direction: column; align-items: stretch; height: auto; background: var(--md-default-bg-color); }
+  .mars-hero::before { display: none; }
+  .mars-hero::after { order: -1; position: static; display: block; width: 100%; aspect-ratio: 16 / 9; -webkit-mask-image: none; mask-image: none; }
+  .mars-hero .mars-hero__inner { padding: 1rem 0.8rem 1.6rem; }
+  .mars-hero .mars-hero__title, .mars-hero .mars-hero__lead { max-width: 36rem; }
+  .mars-hero .mars-pill { color: var(--md-default-fg-color); border-color: var(--md-default-fg-color--lighter); background: var(--md-default-bg-color--lighter); }
+  .mars-hero__title, [data-md-color-scheme="default"] .mars-hero__title { color: var(--md-default-fg-color); text-shadow: none; }
+  .mars-hero__lead { color: var(--md-default-fg-color); text-shadow: none; }
 }
 
 @media screen and (max-width: 44.9375em) {
