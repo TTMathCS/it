@@ -222,7 +222,9 @@ The column counts and types must line up.
 ## Text (ch. [5](05-Text-Functions-and-Pattern-Matching.md)) { #text }
 
 Both: `UPPER`, `LOWER`, `TRIM`, `LENGTH`, `REPLACE`, `SUBSTR(s, start, len)`, `s1 || s2`. PostgreSQL also has
-`split_part`, `position`, `left`, `right`, `regexp_replace`, `string_agg`; SQLite has `instr` and `group_concat`.
+`split_part`, `strpos`, `left`, `right`, `regexp_replace`; SQLite has `instr`. Both have
+`STRING_AGG(x, ', ' ORDER BY x)` (SQLite from 3.44; older SQLite: `group_concat`). `LIKE` ignores case on SQLite
+only: write `LOWER(x) LIKE '...'` for the same rows on both.
 
 ## Changing data (ch. [17](17-Insert-Update-Delete-Merge.md)) { #change }
 
@@ -233,6 +235,21 @@ DELETE FROM t WHERE a = 2;
 INSERT INTO t (a, b) VALUES (1, 'x')
   ON CONFLICT (a) DO UPDATE SET b = excluded.b;        -- upsert: PostgreSQL and SQLite
 ```
+
+## Answering a test task { #test-output }
+
+A checker compares your rows with its own. On Codility's practice SQL tasks (checked 11 Nov 2026) the column
+**order** matters and the column names do not. So:
+
+1. Return **exactly** the columns asked for, in the order asked, and nothing else (no `SELECT *`, no helper column).
+2. When the task gives an order, `ORDER BY` it, and add a **tie-breaker** (usually the key) so the order is unique.
+3. Match the requested format: rounding (`ROUND(x, 2)`), text such as `'YYYY-MM'`, 0 instead of NULL when asked
+   (`COALESCE`).
+4. Check the edge cases the hidden tests will have: NULLs, ties, empty groups, duplicates, an empty table.
+5. Write it so it runs on PostgreSQL; it will then almost always run on SQLite too ([chapter 3](03-The-Order-a-Query-Runs-In.md#differences)).
+
+Not sure which technique a task wants? [Which technique does this wording ask for?](which-technique.md) maps task
+phrases to patterns and chapters.
 
 ## The usual mistakes { #mistakes }
 

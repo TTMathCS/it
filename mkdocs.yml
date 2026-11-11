@@ -94,6 +94,7 @@ nav:
               - databases/sql/index.md
               - databases/sql/fast-track.md
               - databases/sql/cheat-sheet.md
+              - databases/sql/which-technique.md
               - databases/sql/sample-database.md
               - databases/sql/01-Tables-Rows-and-Keys.md
               - databases/sql/02-Select-Where-Order-By-Limit.md
