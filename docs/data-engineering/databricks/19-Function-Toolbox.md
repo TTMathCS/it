@@ -458,7 +458,7 @@ Output (SQL and PySpark agree, from `ex02_parse_tz.out`):
 ```
 
 !!! warning "A NULL from a try_ function is a data quality signal, not a fix"
-    The `try_` functions stop the job from failing, but order 1006 now has no timestamp. Count those rows (`count_if(order_ts_clean IS NULL)`) and send them to a quarantine table or an expectation (chapter 14), instead of letting them disappear from daily totals. Also note the order of the `coalesce`: `dd/MM/yyyy` and `MM/dd/yyyy` both parse `02/03/2026`, so a column that mixes them cannot be fixed by guessing. Ask the source which format it sends.
+    The `try_` functions stop the job from failing, but order 1006 now has no timestamp. Count those rows (`count_if(order_ts_clean IS NULL)`) and send them to a quarantine table or an expectation ([chapter 14](14-Data-Quality-and-CDC.md)), instead of letting them disappear from daily totals. Also note the order of the `coalesce`: `dd/MM/yyyy` and `MM/dd/yyyy` both parse `02/03/2026`, so a column that mixes them cannot be fixed by guessing. Ask the source which format it sends.
 
 ### Datetime patterns and their traps
 
@@ -2611,7 +2611,7 @@ Output (from `ex10_hash_ids.out`; the PySpark row hashes for the four customers 
 
 Three different rows, one text and one hash. A customer whose city changes from `'Calgary'` to `NULL` while another field shifts into its place would look unchanged. The multi-argument `xxhash64(a, b, c)` collided too: in this run, a `NULL` argument did not change the hash, so its position was lost. The fix is to make `NULL` visible and positional, as `safe_text` does: `coalesce` each column to a marker that cannot occur in the data, then hash. Also pick a separator that cannot occur in the values, or `'a||' + 'b'` and `'a' + '||b'` produce the same text.
 
-On Databricks, Lakeflow pipelines (formerly Delta Live Tables) can track history for you with `AUTO CDC` (formerly `APPLY CHANGES`), see chapter 14. A hand-written `MERGE` with a row hash is the portable version ([chapter 9](09-Building-Silver.md)).
+On Databricks, Lakeflow pipelines (formerly Delta Live Tables) can track history for you with `AUTO CDC` (formerly `APPLY CHANGES`), see [chapter 14](14-Data-Quality-and-CDC.md). A hand-written `MERGE` with a row hash is the portable version ([chapter 9](09-Building-Silver.md)).
 
 ### uuid
 

@@ -1232,7 +1232,7 @@ ON COLUMN email_col;
 
 Any table in `shop.silver` whose column is tagged `pii = email` is masked for everyone except `support`, including
 tables created next month. The row filters and column masks page adds that ABAC policies "can be defined by
-higher-level admins, so table owners can't override or remove them". Chapter 23 covers tags and ABAC in
+higher-level admins, so table owners can't override or remove them". [Chapter 23](23-Governance-and-Operations.md) covers tags and ABAC in
 depth.
 
 !!! tip "In the interview"

@@ -143,10 +143,14 @@ nav:
               - data-engineering/databricks/08-Bronze-Ingestion.md
               - data-engineering/databricks/09-Building-Silver.md
               - data-engineering/databricks/11-Structured-Streaming.md
+              - data-engineering/databricks/13-Declarative-Pipelines.md
+              - data-engineering/databricks/14-Data-Quality-and-CDC.md
+              - data-engineering/databricks/15-Lakeflow-Jobs.md
               - data-engineering/databricks/17-Databricks-SQL-vs-Standard.md
               - data-engineering/databricks/18-Semi-Structured-Data.md
               - data-engineering/databricks/19-Function-Toolbox.md
               - data-engineering/databricks/22-Performance-Tuning.md
+              - data-engineering/databricks/23-Governance-and-Operations.md
               - data-engineering/databricks/24-Interview.md
               - data-engineering/databricks/25-PySpark-Practice.md
       - "Interview prep":

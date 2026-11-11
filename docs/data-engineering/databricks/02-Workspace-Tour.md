@@ -45,7 +45,7 @@ quoted exactly:
 
 | Group on the page | Sidebar items | What a data engineer does there |
 | --- | --- | --- |
-| Top of the sidebar | Workspace, Recents, Catalog, Jobs & Pipelines, Compute, Discover, Marketplace | **Workspace** opens the workspace browser (2.2). **Catalog** opens Catalog Explorer (2.4). **Jobs & Pipelines** holds jobs and pipelines (chapters 13 and 15). **Compute** lists compute resources ([chapter 6](06-Compute.md)). **Discover** shows curated assets "organized by business domains" ([Workspace UI](https://docs.databricks.com/aws/en/workspace/), Nov 3, 2026). What Recents and Marketplace show is not described on these pages. |
+| Top of the sidebar | Workspace, Recents, Catalog, Jobs & Pipelines, Compute, Discover, Marketplace | **Workspace** opens the workspace browser (2.2). **Catalog** opens Catalog Explorer (2.4). **Jobs & Pipelines** holds jobs and pipelines (chapters [13](13-Declarative-Pipelines.md) and [15](15-Lakeflow-Jobs.md)). **Compute** lists compute resources ([chapter 6](06-Compute.md)). **Discover** shows curated assets "organized by business domains" ([Workspace UI](https://docs.databricks.com/aws/en/workspace/), Nov 3, 2026). What Recents and Marketplace show is not described on these pages. |
 | Analytics | Dashboards, Genie Agents, Alerts, Visual Data Prep | Mostly for analysts; a data engineer feeds them gold tables. |
 | Lakehouse | SQL Editor, Queries, Query History, SQL Warehouses | Write SQL against a SQL warehouse, find past runs (2.4). |
 | Data Engineering | Runs, Data Ingestion | Listed without a description; what each opens is unknown from the pages checked. |
@@ -579,7 +579,7 @@ version treated the whole value as one string, which matches no status, so it co
 
 When the notebook runs as a job task, widgets are also how it receives parameters: "You can also use widgets to
 create job and task parameters" ([Serverless compute
-limitations](https://docs.databricks.com/aws/en/compute/serverless/limitations)). Chapter 15
+limitations](https://docs.databricks.com/aws/en/compute/serverless/limitations)). [Chapter 15](15-Lakeflow-Jobs.md)
 shows job parameters in detail.
 
 ## 2.7 dbutils
@@ -693,7 +693,7 @@ Inside a job, one task can hand a small value to a later task: `dbutils.jobs.tas
 one task, `dbutils.jobs.taskValues.get(taskKey=..., key=..., default=..., debugValue=...)` in a later one. Values must
 be representable as JSON, at most 48 KiB, up to 250 per job run; outside a job, `get` raises a `TypeError` unless you
 pass `debugValue` ([Databricks Utilities reference](https://docs.databricks.com/aws/en/dev-tools/databricks-utils)).
-Chapter 15 uses them.
+[Chapter 15](15-Lakeflow-Jobs.md) uses them.
 
 ### dbutils outside Databricks
 
@@ -861,7 +861,7 @@ Put together, a production layout for the daily orders load:
 - `notebooks/load_orders.ipynb` (or a `.py` file): reads widgets or job parameters, imports from `src/`, writes to
   `shop.silver.orders`. No `display()` calls that matter for the result.
 - A Lakeflow job (or a Lakeflow pipeline, formerly [Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt), for the declarative parts) defined in a bundle,
-  with retries, alerts and a service principal as the run identity (chapter 15).
+  with retries, alerts and a service principal as the run identity ([chapter 15](15-Lakeflow-Jobs.md)).
 
 Why not schedule the exploration notebook as it is? It mixes scratch cells, state and outputs, `%run` chains hide
 its dependencies, and nothing in it is unit tested. The job should also run on serverless or job compute rather

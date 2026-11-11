@@ -1464,7 +1464,7 @@ Where managed connectors sit relative to `AUTO CDC` (formerly `APPLY CHANGES`, p
 [The AUTO CDC APIs](https://docs.databricks.com/aws/en/ldp/cdc)): a database connector delivers the
 changes for you; when you receive CDC files yourself (for example from a tool that writes change records to cloud
 storage), you ingest them with Auto Loader into bronze and apply them with `AUTO CDC` in a Lakeflow pipeline
-(chapter 14).
+(chapter [14](14-Data-Quality-and-CDC.md)).
 
 !!! tip "In the interview"
     **"How would you replicate a PostgreSQL orders table into the lakehouse?"** If Lakeflow Connect's PostgreSQL

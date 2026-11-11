@@ -664,7 +664,7 @@ STORED AS
 
 Hand-written SCD Type 1 and Type 2 with `MERGE` (run here) are in [chapter 9](09-Building-Silver.md); `AUTO CDC` in
 detail, including `AUTO CDC FROM SNAPSHOT` for sources that only send full snapshots, is in
-chapter 14. The generic SCD theory is in the
+[chapter 14](14-Data-Quality-and-CDC.md). The generic SCD theory is in the
 [SQL course data modelling chapter](../../databases/sql/19-Data-Modelling.md).
 
 !!! tip "In the interview"

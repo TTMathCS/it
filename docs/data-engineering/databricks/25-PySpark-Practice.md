@@ -3689,7 +3689,7 @@ Expected output:
 Data engineering interviews increasingly include a "this feed is dirty, make it safe" task. The tools are the
 same functions as before, applied to every column at once and producing a report instead of a result table. In a
 Lakeflow pipeline ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) the same
-rules would be written as expectations (14. Data quality and CDC); here they are
+rules would be written as expectations ([14. Data quality and CDC](14-Data-Quality-and-CDC.md)); here they are
 plain DataFrame code.
 
 Tasks 50 and 51 use this raw batch:
@@ -4249,7 +4249,7 @@ Expected output (the dimension after the merge):
     restricting the match to `is_current`, which would also update historical rows. Lakeflow pipelines
     ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) can do SCD Type 2
     declaratively with `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc))
-    (14. Data quality and CDC); the generic SCD concepts are in the SQL course
+    ([14. Data quality and CDC](14-Data-Quality-and-CDC.md)); the generic SCD concepts are in the SQL course
     ([Data modelling](../../databases/sql/19-Data-Modelling.md)).
 
 !!! tip "In the interview"

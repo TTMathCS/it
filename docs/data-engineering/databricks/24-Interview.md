@@ -259,7 +259,7 @@ made a mistake.
     **Why:** interviewers who learned the platform a few years ago will say DLT and Workflows. Answer with both names
     once and move on.
 
-    **Learn more:** Chapter 13, Chapter 15.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md), [Chapter 15](15-Lakeflow-Jobs.md).
 
 **Q10. What is predictive optimization?**
 
@@ -287,7 +287,7 @@ made a mistake.
     **Why:** open formats avoid lock-in and let one copy serve several tools. In a design answer, it is the reason
     you do not need to export data for a partner.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 **Q12. What does Databricks add on top of open-source Apache Spark? Give concrete examples.**
 
@@ -299,8 +299,9 @@ made a mistake.
     Databricks, AQE uses `spark.databricks.adaptive.autoBroadcastJoinThreshold`, documented at 30 MB.
 
     **Why:** shows you know which knowledge transfers to any Spark platform and which is Databricks-specific. A good
-    example: `AUTO CDC` is part of Lakeflow pipelines and is not supported by open-source Spark Declarative
-    Pipelines.
+    example: expectations are part of Lakeflow pipelines and not of open-source Spark Declarative Pipelines; the
+    Databricks docs say the same of `AUTO CDC`, although open-source Spark 4.2 added an Auto CDC flow for SCD Type 1
+    ([chapter 13](13-Declarative-Pipelines.md)).
 
     **Learn more:** [Chapter 3](03-Apache-Spark.md).
 
@@ -1236,7 +1237,7 @@ made a mistake.
 
     **Why:** the quarantine pattern keeps bad rows visible and fixable; a dropped row is a silent data loss.
 
-    **Learn more:** Chapter 14.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q57. How do you deduplicate when building silver?**
 
@@ -1283,7 +1284,7 @@ made a mistake.
 
     **Why:** the follow-up is "how do you build Type 2 with one `MERGE`?" (Q112) or "with `AUTO CDC`?" (Q88).
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 14.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q60. How do you keep a medallion pipeline's cost under control?**
 
@@ -1296,7 +1297,7 @@ made a mistake.
 
     **Why:** "make it real-time" is rarely free. Ask how fresh the dashboard really needs to be.
 
-    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), Chapter 23.
+    **Learn more:** [Chapter 7](07-Medallion-Architecture.md), [Chapter 23](23-Governance-and-Operations.md).
 
 ## 24.6 Ingestion
 
@@ -1459,7 +1460,7 @@ made a mistake.
     **Why:** a standalone streaming table created in Databricks SQL is refreshed by a pipeline that Databricks
     creates and manages for you (pipeline type `MV/ST`).
 
-    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md), Chapter 13.
+    **Learn more:** [Chapter 8](08-Bronze-Ingestion.md), [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q71. How do you ingest from Kafka?**
 
@@ -1807,13 +1808,14 @@ and what are the options?**
     materialized views, and automatic table maintenance. All pipeline tables are Delta tables.
 
     They are built on open-source Apache Spark Declarative Pipelines and add Databricks features on top; for
-    example, the `AUTO CDC` APIs are not supported by the open-source version. In Python, import
+    example, the Databricks docs say the `AUTO CDC` APIs are not supported by the open-source version (open-source
+    Spark 4.2 added a narrower Auto CDC flow for SCD Type 1; see chapter 13). In Python, import
     `from pyspark import pipelines as dp` (older code uses `import dlt`).
 
     **Why:** the trade-off is control. A pipeline owns its tables (a table defined by one pipeline cannot be updated
     by another), and some low-level stream settings are managed for you.
 
-    **Learn more:** Chapter 13.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q84. Streaming table, materialized view or view: how do you choose?**
 
@@ -1828,7 +1830,7 @@ and what are the options?**
     processed, so if you change its query, existing rows keep the old logic until a full refresh. A materialized
     view is always correct at refresh time, even for late or out-of-order data, but may cost more per refresh.
 
-    **Learn more:** Chapter 13.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q85. What is a flow?**
 
@@ -1841,7 +1843,7 @@ and what are the options?**
     **Why:** multiple flows into one target is how you add a new source to an existing table without a full
     refresh.
 
-    **Learn more:** Chapter 13.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q86. What are expectations, and what are the three actions on a failing record?**
 
@@ -1868,7 +1870,7 @@ and what are the options?**
     other tables. Grouping several expectations with `expect_all`, `expect_all_or_drop` and `expect_all_or_fail` is
     Python-only.
 
-    **Learn more:** Chapter 14.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q87. Expectations can drop bad rows, but how do you keep them for later inspection?**
 
@@ -1882,7 +1884,7 @@ and what are the options?**
 
     **Why:** dropping is invisible data loss; quarantining makes bad data a work item with an owner.
 
-    **Learn more:** Chapter 14.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q88. What is `AUTO CDC`, and how do you build an SCD Type 2 table with it?**
 
@@ -1911,7 +1913,7 @@ and what are the options?**
     `STRUCT(event_ts, id)`. `AUTO CDC` requires serverless pipelines or the Pro or Advanced edition. To stream from
     an `AUTO CDC` target downstream, read its change feed.
 
-    **Learn more:** Chapter 14.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q89. The source database has no CDC feed, only daily full extracts. What do you use?**
 
@@ -1924,7 +1926,7 @@ and what are the options?**
     **Why:** hand-written snapshot diffing (a full outer join of yesterday and today) is error-prone with deletes and
     reappearing keys; the API handles those cases.
 
-    **Learn more:** Chapter 14.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q90. Triggered or continuous pipeline mode?**
 
@@ -1939,7 +1941,7 @@ and what are the options?**
     **Why:** standalone materialized views and streaming tables (created in Databricks SQL) always refresh in
     triggered mode.
 
-    **Learn more:** Chapter 13, Chapter 15.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md), [Chapter 15](15-Lakeflow-Jobs.md).
 
 **Q91. What is the difference between a refresh, a full refresh and resetting checkpoints?**
 
@@ -1955,7 +1957,7 @@ and what are the options?**
     recommends a full refresh only when the sources still contain the data needed to rebuild the table. This is the
     strongest argument for keeping bronze.
 
-    **Learn more:** Chapter 13.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q92. You changed the query of a streaming table (for example `lower(name)` to `upper(name)`). What happens to existing rows?**
 
@@ -1968,7 +1970,7 @@ and what are the options?**
     **Why:** the Databricks docs give the same kind of example (add `UPPER()` to a field, and only rows processed
     after the change are uppercase), and it tests whether you understand "process each record once".
 
-    **Learn more:** Chapter 13.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q93. How do you build a materialized view outside a pipeline, and who refreshes it?**
 
@@ -1981,7 +1983,7 @@ and what are the options?**
     **Why:** standalone objects are good for a few gold aggregates owned by analysts; a full Lakeflow pipeline (formerly Delta Live Tables) is
     better when many datasets depend on each other and need one schedule, one owner and one set of tests.
 
-    **Learn more:** Chapter 10, Chapter 13.
+    **Learn more:** Chapter 10, [Chapter 13](13-Declarative-Pipelines.md).
 
 ## 24.9 Unity Catalog and governance
 
@@ -2033,7 +2035,7 @@ and what are the options?**
     practices say to run production jobs as service principals and reserve direct `MODIFY` on production tables for
     them.
 
-    **Learn more:** [Chapter 5](05-Unity-Catalog.md), Chapter 23.
+    **Learn more:** [Chapter 5](05-Unity-Catalog.md), [Chapter 23](23-Governance-and-Operations.md).
 
 **Q97. What is the difference between `BROWSE`, `SELECT` and `MANAGE`?**
 
@@ -2073,7 +2075,7 @@ and what are the options?**
     perform better, prefers simple `CASE` expressions over mapping tables or subqueries, and warns that Databricks
     cannot optimize away columns passed as UDF arguments, so complex UDFs slow queries.
 
-    **Learn more:** Chapter 21, Chapter 23.
+    **Learn more:** Chapter 21, [Chapter 23](23-Governance-and-Operations.md).
 
 **Q99. What lineage does Unity Catalog capture?**
 
@@ -2087,7 +2089,7 @@ and what are the options?**
 
     **Why:** lineage answers "if I change this silver column, what breaks?" before you change it.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 **Q100. How do you find out who read or changed a table last week?**
 
@@ -2099,7 +2101,7 @@ and what are the options?**
     **Why:** `DESCRIBE HISTORY` covers changes to one table; the audit log covers reads, permission changes and
     other account activity.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 **Q101. What are volumes?**
 
@@ -2137,7 +2139,7 @@ and what are the options?**
 
     **Why:** it avoids nightly exports and stale copies, and access can be revoked at any time.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 **Q104. How do you find which jobs cost the most?**
 
@@ -2162,7 +2164,7 @@ and what are the options?**
     **Why:** also tag compute (business unit, project) so costs can be attributed. Several products (for example
     predictive optimization and serverless jobs) share a SKU; `billing_origin_product` tells them apart.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 ## 24.10 Databricks SQL specifics
 
@@ -2567,7 +2569,7 @@ to rerun?**
 
     **Why:** "make every step safe to run twice" is the single most valued habit in data engineering interviews.
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 15,
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 15](15-Lakeflow-Jobs.md),
     [SQL course: duplicates and incremental loads](../../databases/sql/22-Duplicates-and-Incremental-Loads.md).
 
 **Q118. Queries on a bronze table get slower every week. The table has hundreds of thousands of tiny files. What
@@ -2652,7 +2654,7 @@ do you do?**
 
     **Why:** the interviewer wants to see that you measure first with the system tables instead of guessing.
 
-    **Learn more:** Chapter 23, [Chapter 6](06-Compute.md).
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md), [Chapter 6](06-Compute.md).
 
 **Q122. An Auto Loader stream stopped overnight after a new column appeared in the files. How should this be
 handled?**
@@ -2734,7 +2736,7 @@ changed. Why?**
     **Why:** small test data rarely contains two changes for one key in the same batch, so this bug often appears
     first in production.
 
-    **Learn more:** [Chapter 9](09-Building-Silver.md), Chapter 14.
+    **Learn more:** [Chapter 9](09-Building-Silver.md), [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q126. A nightly `MERGE` job sometimes fails with `ConcurrentAppendException`. What is happening?**
 
@@ -2851,7 +2853,7 @@ remove them for real?**
     **Why:** the interviewer checks that you know time travel retains deleted data until `VACUUM`, and that
     deletes ripple into streaming consumers.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 23.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 23](23-Governance-and-Operations.md).
 
 **Q132. The silver table is updated with `MERGE` every hour. A gold stream reading silver keeps failing. How do you
 redesign it?**
@@ -2882,7 +2884,7 @@ redesign it?**
 
     **Why:** the trade-off is freshness versus correctness. Say which tables deserve which policy.
 
-    **Learn more:** Chapter 14, Chapter 13.
+    **Learn more:** [Chapter 14](14-Data-Quality-and-CDC.md), [Chapter 13](13-Declarative-Pipelines.md).
 
 **Q134. A filter on a large table is slow even though you run `OPTIMIZE` every night. Why might data skipping not
 work?**
@@ -2919,7 +2921,7 @@ work?**
     **Why:** avoid a full refresh of a streaming table as a backfill method: it truncates the table, and data the
     source no longer retains is lost (Q91).
 
-    **Learn more:** Chapter 13, Chapter 14.
+    **Learn more:** [Chapter 13](13-Declarative-Pipelines.md), [Chapter 14](14-Data-Quality-and-CDC.md).
 
 **Q136. After a deployment, a stream reprocessed all its source data and silver is full of duplicates. What
 happened?**
@@ -2957,7 +2959,7 @@ happened?**
     **Why:** the answer shows method. Saying "I would compare the layers to find where the numbers split" is
     stronger than guessing a cause.
 
-    **Learn more:** Chapter 10, Chapter 14.
+    **Learn more:** Chapter 10, [Chapter 14](14-Data-Quality-and-CDC.md).
 
 ## 24.12 Migration, cost control and table formats
 
@@ -3024,7 +3026,7 @@ with Informatica) to Databricks?**
     **Why:** do not claim one is always cheaper. Measure: run the job both ways and compare the cost per run in
     `system.billing.usage` (Q104).
 
-    **Learn more:** [Chapter 6](06-Compute.md), Chapter 23.
+    **Learn more:** [Chapter 6](06-Compute.md), [Chapter 23](23-Governance-and-Operations.md).
 
 **Q140. A team runs all its scheduled ETL notebooks on one large all-purpose cluster that stays on all day. What do
 you change?**
@@ -3047,7 +3049,7 @@ you change?**
     **Why:** this is the most common cost finding in real workspaces; the interviewer wants the specific levers,
     not "use smaller clusters".
 
-    **Learn more:** [Chapter 6](06-Compute.md), Chapter 15.
+    **Learn more:** [Chapter 6](06-Compute.md), [Chapter 15](15-Lakeflow-Jobs.md).
 
 **Q141. Photon makes the job faster. Does that mean it is cheaper?**
 
@@ -3122,7 +3124,7 @@ you change?**
     **Why:** cost questions in interviews are really about ownership: who sees the bill, and what they can do
     about it.
 
-    **Learn more:** Chapter 23.
+    **Learn more:** [Chapter 23](23-Governance-and-Operations.md).
 
 **Q145. Delta Lake, Apache Iceberg or Apache Hudi: what is the difference?**
 

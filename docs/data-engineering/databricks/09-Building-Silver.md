@@ -693,7 +693,7 @@ not edit silver by hand.
     errors first and split on its size, or wrap each condition in `coalesce(..., false)`.
 
 In Lakeflow pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) the same idea is expressed with expectations, and Databricks
-documents a quarantine pattern for them; see chapter 14 and
+documents a quarantine pattern for them; see [chapter 14](14-Data-Quality-and-CDC.md) and
 [Manage data quality with pipeline expectations](https://docs.databricks.com/aws/en/ldp/expectations).
 
 !!! tip "In the interview"
@@ -1473,7 +1473,7 @@ says Ava lived in Calgary until May. The as-of query for March 15 would return t
     This `MERGE` assumes changes arrive in order per customer. A late change dated between two existing versions is
     ignored (the guard rejects it), not slotted into history. Deletes are not handled. Handling both correctly is
     what `AUTO CDC` ([formerly `APPLY CHANGES`](https://docs.databricks.com/aws/en/ldp/cdc)) does with `SEQUENCE BY` and `STORED AS SCD TYPE 2` in Lakeflow
-    pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)); see chapter 14 and
+    pipelines ([formerly Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)); see [chapter 14](14-Data-Quality-and-CDC.md) and
     [The AUTO CDC APIs](https://docs.databricks.com/aws/en/ldp/cdc). That page also says the `AUTO CDC` APIs are not
     supported by open-source Apache Spark Declarative Pipelines, so it cannot be run here.
 

@@ -224,10 +224,10 @@ Databricks](https://docs.databricks.com/aws/en/data-engineering/)).
   DLT?](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)). Release notes from mid-2025 use a third
   name, "Lakeflow Declarative Pipelines" ([Lakeflow pipelines release
   notes](https://docs.databricks.com/aws/en/release-notes/dlt/)), and the docs URLs contain `ldp`, so you may also
-  hear "LDP". Chapters 13 and 14.
+  hear "LDP". Chapters [13](13-Declarative-Pipelines.md) and [14](14-Data-Quality-and-CDC.md).
 - **Lakeflow Jobs**, formerly Databricks Jobs (the left menu item was "Workflows"), runs tasks (notebooks,
   pipelines, Python scripts, SQL and more) as a graph, on a schedule or when new data arrives
-  ([Lakeflow Jobs](https://docs.databricks.com/aws/en/jobs/); chapter 15). The June 2025
+  ([Lakeflow Jobs](https://docs.databricks.com/aws/en/jobs/); chapter [15](15-Lakeflow-Jobs.md)). The June 2025
   release notes record both changes: "The product known as Databricks Jobs is now Lakeflow Jobs", and "The
   **Pipelines** and **Workflows** items in the left navigation have been removed" in favor of **Jobs & Pipelines**.
 
@@ -252,7 +252,7 @@ works between Unity Catalog workspaces; the Databricks-to-Open protocol shares t
 platform" ([What is OpenSharing?](https://docs.databricks.com/aws/en/opensharing/)). The Databricks blog says
 "Delta Sharing has evolved into OpenSharing" and that "existing Delta Sharing setups keep working"
 ([From Delta Sharing to OpenSharing](https://www.databricks.com/blog/delta-sharing-opensharing-what-changed-whats-next)).
-Chapter 23.
+[Chapter 23](23-Governance-and-Operations.md).
 
 **AI/BI and machine learning, briefly.** AI/BI covers dashboards, **Genie Agents** (a natural-language chat over
 curated data; "Genie Agents were formerly known as Genie Spaces") and Unity Catalog semantics such as metric views
@@ -518,13 +518,13 @@ tools are real; the day is an illustration, and each step points to the chapter 
 
 | When | What happens | Tool | Chapter |
 | --- | --- | --- | --- |
-| Morning | A failure email arrives: last night's job failed at the silver step. Jobs can send notifications "via email, Slack, custom webhooks" ([Lakeflow Jobs](https://docs.databricks.com/aws/en/jobs/)). | Lakeflow Jobs (formerly Databricks Jobs, the Workflows menu item): run history, task output | 15 |
+| Morning | A failure email arrives: last night's job failed at the silver step. Jobs can send notifications "via email, Slack, custom webhooks" ([Lakeflow Jobs](https://docs.databricks.com/aws/en/jobs/)). | Lakeflow Jobs (formerly Databricks Jobs, the Workflows menu item): run history, task output | [15](15-Lakeflow-Jobs.md) |
 | | The cause: duplicate order events made a `MERGE` fail with "multiple source rows matched". Fix the deduplication, then repair the run: a repair re-runs "only the subset of unsuccessful tasks and any dependent tasks" ([Troubleshoot and repair job failures](https://docs.databricks.com/aws/en/jobs/repair-job-failures)). | Notebook, Delta `MERGE`, repair run | [9](09-Building-Silver.md), [7](07-Medallion-Architecture.md) |
 | Late morning | Marketing wants `customers` from a new CRM. Set up ingestion into bronze. | Lakeflow Connect or Auto Loader | [8](08-Bronze-Ingestion.md) |
-| After lunch | Add a data quality rule: drop orders with a negative `amount` and count them. | Lakeflow pipelines (formerly Delta Live Tables), expectations | 13, 14 |
+| After lunch | Add a data quality rule: drop orders with a negative `amount` and count them. | Lakeflow pipelines (formerly Delta Live Tables), expectations | [13](13-Declarative-Pipelines.md), [14](14-Data-Quality-and-CDC.md) |
 | | An analyst says the daily sales dashboard is slow. Read the query profile, check file layout and clustering. | SQL warehouse, query profile, `OPTIMIZE` | [22](22-Performance-Tuning.md) |
 | Afternoon | Code review, then deploy the changed job and pipeline from Git to production. | Git folders, Declarative Automation Bundles (formerly Databricks Asset Bundles), CLI | 16 |
-| End of day | Grant the finance group read access to `shop.gold`; check what last week's jobs cost. | Unity Catalog `GRANT`, system tables | [5](05-Unity-Catalog.md), 23 |
+| End of day | Grant the finance group read access to `shop.gold`; check what last week's jobs cost. | Unity Catalog `GRANT`, system tables | [5](05-Unity-Catalog.md), [23](23-Governance-and-Operations.md) |
 
 Most of the day is SQL and PySpark on Delta tables, organized as bronze, silver and gold. That is why this book
 spends its depth on Spark, Delta, the medallion layers and Databricks SQL.
@@ -543,7 +543,7 @@ spends its depth on Spark, Delta, the medallion layers and Databricks SQL.
 6. [17. Databricks SQL vs standard SQL](17-Databricks-SQL-vs-Standard.md): `QUALIFY`, `GROUP BY ALL` and the rest.
 7. Then [19. The function toolbox](19-Function-Toolbox.md), [25. PySpark coding practice](25-PySpark-Practice.md),
    [22. Performance tuning](22-Performance-Tuning.md), [11. Structured Streaming](11-Structured-Streaming.md), and
-   13 and 14 on pipelines.
+   [13](13-Declarative-Pipelines.md) and [14](14-Data-Quality-and-CDC.md) on pipelines.
 
 **Starting out?** Read in order. [Chapter 2](02-Workspace-Tour.md) tours the workspace. To practise on the real
 product, **Databricks Free Edition** is "a no-cost version of Databricks" in "a serverless-only, quota-limited
