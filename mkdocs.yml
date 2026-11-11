@@ -149,6 +149,7 @@ nav:
               - data-engineering/databricks/17-Databricks-SQL-vs-Standard.md
               - data-engineering/databricks/18-Semi-Structured-Data.md
               - data-engineering/databricks/19-Function-Toolbox.md
+              - data-engineering/databricks/21-Programming-in-SQL.md
               - data-engineering/databricks/22-Performance-Tuning.md
               - data-engineering/databricks/23-Governance-and-Operations.md
               - data-engineering/databricks/24-Interview.md

@@ -598,7 +598,7 @@ made a mistake.
     **Why:** an interviewer often shows a UDF that does `upper()` or parses a date and asks what you would change.
     The answer is: delete it and use the built-in.
 
-    **Learn more:** [Chapter 19](19-Function-Toolbox.md), Chapter 21.
+    **Learn more:** [Chapter 19](19-Function-Toolbox.md), [Chapter 21](21-Programming-in-SQL.md).
 
 **Q25. What happens between writing a DataFrame query and running it?**
 
@@ -2075,7 +2075,7 @@ and what are the options?**
     perform better, prefers simple `CASE` expressions over mapping tables or subqueries, and warns that Databricks
     cannot optimize away columns passed as UDF arguments, so complex UDFs slow queries.
 
-    **Learn more:** Chapter 21, [Chapter 23](23-Governance-and-Operations.md).
+    **Learn more:** [Chapter 21](21-Programming-in-SQL.md), [Chapter 23](23-Governance-and-Operations.md).
 
 **Q99. What lineage does Unity Catalog capture?**
 

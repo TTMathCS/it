@@ -563,7 +563,7 @@ A materialized view promises the same result as running its query from scratch. 
 
 You can see what happened: the **Incrementalization** column in the pipeline UI shows *Incremental*, *Full recompute* or *No change*, and the event log records the technique (`ROW_BASED`, `PARTITION_OVERWRITE`, `GROUP_AGGREGATE`, `FULL_RECOMPUTE`, `NO_OP` and others) under `event_type = 'planning_information'`. Before creating a view, `EXPLAIN CREATE MATERIALIZED VIEW` tells you whether the query can be incrementalized.
 
-You can also pin the behavior with a **refresh policy** (Beta in the reference): `AUTO` (default), `INCREMENTAL` (prefer incremental, fall back to full), `INCREMENTAL STRICT` (fail instead of a full recompute) or `FULL`.
+You can also pin the behavior with a **refresh policy** (marked "(Beta)" in the pipelines `CREATE MATERIALIZED VIEW` reference; the separate refresh policy clause page shows no label): `AUTO` (default), `INCREMENTAL` (prefer incremental, fall back to full), `INCREMENTAL STRICT` (fail instead of a full recompute) or `FULL`.
 
 *Databricks only, not run here. Syntax from [Incremental refresh for materialized views](https://docs.databricks.com/aws/en/ldp/incremental-refresh).*
 

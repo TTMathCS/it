@@ -234,6 +234,8 @@ resources:
 
 No task names a cluster, so the notebook tasks run on serverless compute; "you can either omit the `clusters` setting for a job with a notebook task, or you can specify an environment" ([Bundle configuration examples](https://docs.databricks.com/aws/en/dev-tools/bundles/examples), Oct 29, 2026).
 
+One trap in the schedule block: `pause_status: UNPAUSED` is written out here to show the field, but an explicit value wins over a development-mode deploy, which otherwise pauses schedules ("To unpause an individual job, set the `pause_status` to `UNPAUSED`", [Deployment modes](https://docs.databricks.com/aws/en/dev-tools/bundles/deployment-modes), Nov 4, 2026). In a real bundle, leave the line out (the Jobs API default is `UNPAUSED`) so a developer's copy does not run on the 02:00 schedule too; chapter 16 does this.
+
 To see the order the scheduler derives from `depends_on`, this script reads the YAML file (saved as `src/ch15/redrock_daily.job.yml`), groups the tasks into "waves" whose upstream tasks are all done, and shows that a back edge makes the graph invalid. It is a model of the documented rule, not Databricks code. The output below is the first part of `job_dag.out`.
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.* (Plain Python with PyYAML and `graphlib`; no Spark needed.)

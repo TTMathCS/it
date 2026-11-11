@@ -21,7 +21,7 @@
 
     **Levels:** sections 17.1 to 17.4 beginner, 17.5 to 17.9 and 17.11 intermediate, 17.10 and 17.12 expert.
 
-Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in [chapter 19](19-Function-Toolbox.md); `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in chapter 20; SQL scripting, UDFs, stored procedures and row filters are in chapter 21. This chapter only points to them.
+Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in [chapter 19](19-Function-Toolbox.md); `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in chapter 20; SQL scripting, UDFs, stored procedures and row filters are in [chapter 21](21-Programming-in-SQL.md). This chapter only points to them.
 
 **About the examples.** All "Run here" examples use the Red Rock Supply tables (`customers`, `products`, `orders`, `order_items`) in a schema called `silver`. On Databricks they would live in Unity Catalog as `shop.silver.orders`; locally there is no Unity Catalog, so the catalog is Spark's built-in `spark_catalog`. The scripts are in `src/ch17/` with their full output in the matching `.out` files. Error lines are shortened here to the error class and its first sentence. The `orders` table has 8 rows, and one of them (order 1008) has a `NULL` status on purpose.
 
@@ -1348,7 +1348,7 @@ Points from the DECLARE VARIABLE and SET variable pages:
 - `SET VAR (a, b) = (query)` needs a query that returns at most one row; with no rows, the variables become `NULL`.
 - `SET VAR x = DEFAULT` re-evaluates the default expression.
 - Variables cannot be used in a check constraint, a generated column, a default expression, or the body of a persisted view or SQL UDF.
-- Inside a SQL script (`BEGIN ... END`), you write `SET x = ...` without `VAR`. Scripting is in chapter 21.
+- Inside a SQL script (`BEGIN ... END`), you write `SET x = ...` without `VAR`. Scripting is in [chapter 21](21-Programming-in-SQL.md).
 
 ### EXECUTE IMMEDIATE
 
