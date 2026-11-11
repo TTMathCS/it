@@ -9,8 +9,8 @@ ran on PostgreSQL 16 and SQLite 3.53.*
     the SQL dialects are set by the employer and shown on the test's first page. What is verified: on Codility's own
     public practice SQL tasks (checked 11 Nov 2026), a task offers **SQL (PostgreSQL)** and **SQL (SQLite)**, and the
     result's column **order** matters while the column names do not. The [Codility test
-    prep](../../interview/codility/index.md) guide explains how a Codility test works and has two more mock tests
-    that include a Python task.
+    prep](../../interview/codility/index.md) guide explains how a Codility test works and has four more mock tests
+    that include a Python task, starting with [mock test 1](../../interview/codility/mock-test-1.md).
 
 !!! abstract "How to sit a mock"
     1. Give yourself **40 minutes for the two tasks** of one mock. Do not open any answer before the time is up.
