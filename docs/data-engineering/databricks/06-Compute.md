@@ -569,7 +569,7 @@ ORDER BY list_cost DESC;
 5. Compute policies that make the cheap choice the default: `dbus_per_hour` caps, `cluster_type`, worker limits, required tags.
 6. Triggered instead of always-on streaming when the business does not need second-level freshness: "Databricks recommends using Structured Streaming with the `AvailableNow` trigger for incremental workloads that do not have low latency requirements."
 7. Serverless jobs in standard performance mode for batch that is not time critical (fewer DBUs, same SKU).
-8. Photon where it measurably lowers cost per run; up-to-date runtimes; Delta tables kept compacted and clustered so jobs read less (chapter 22).
+8. Photon where it measurably lowers cost per run; up-to-date runtimes; Delta tables kept compacted and clustered so jobs read less ([chapter 22](22-Performance-Tuning.md)).
 9. Visibility: tags, usage policies, the cost dashboards, budgets with alerts, a monthly review per team.
 
 !!! tip "In the interview"

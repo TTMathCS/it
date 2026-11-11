@@ -1536,7 +1536,7 @@ its original JSON text.
 "Load data in pipelines" page recommends `CLUSTER BY` (liquid clustering) "to keep query performance good as tables
 grow without hand-tuning partitions". The `CREATE TABLE` in 8.4 ran here with a generated `_ingest_date` column as
 the clustering key. Partitioning and liquid clustering are compared in chapter
-22.
+[22](22-Performance-Tuning.md).
 
 **Retention.** Bronze grows forever unless you decide otherwise. Decide how long raw rows must stay (for replays,
 audits, legal holds), delete older rows by `_ingest_date`, and remember that `DELETE` in Delta only removes the rows

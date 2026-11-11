@@ -25,7 +25,7 @@ the two return the same columns, types and rows.*
     **You need:** [3. Apache Spark for data engineers](03-Apache-Spark.md) (DataFrames, lazy evaluation, joins
     and shuffles). The SQL side is explained in [17. Databricks SQL vs standard SQL](17-Databricks-SQL-vs-Standard.md),
     [18. Nested and semi-structured data](18-Semi-Structured-Data.md) and
-    19. The function toolbox; the silver-layer patterns behind the deduplication and merge
+    [19. The function toolbox](19-Function-Toolbox.md); the silver-layer patterns behind the deduplication and merge
     tasks are in [9. Building silver](09-Building-Silver.md).
 
     **Levels:** sections 25.1 to 25.4 beginner, 25.5 to 25.10 intermediate, 25.11 and 25.12 expert.
@@ -830,7 +830,7 @@ Input: `orders`. Expected output:
 
 `groupBy(...).agg(...)` returns one row per group. The traps are about what you count (`count("*")` counts rows,
 `count(col)` skips NULLs), where a condition goes (before the grouping or after it), and how `pivot`, `unpivot`
-and `rollup` change the shape. The functions are listed in 19. The function toolbox.
+and `rollup` change the shape. The functions are listed in [19. The function toolbox](19-Function-Toolbox.md).
 
 **Task 8. Per currency: number of orders, revenue, and average amount rounded to 2 decimals.**
 
@@ -1058,7 +1058,7 @@ Input: `order_items`, `products`, `orders`. Expected output:
     **Why it works:** after the joins there is one row per order line. `countDistinct("customer_id")` counts
     customer 1 once in Hiking although she has two Hiking orders. For very large data,
     `approx_count_distinct` trades a small error for much less memory
-    (19. The function toolbox).
+    ([19. The function toolbox](19-Function-Toolbox.md)).
 
     **Common mistakes:** `F.count("order_id")` instead of `countDistinct` gives the number of lines, which only
     equals the number of orders while every order has one line in the category; and joining `orders` to
@@ -1813,7 +1813,7 @@ Input: `order_items`, `products`. Expected output:
 
     **Common mistakes:** broadcasting a table that is not small: the whole table is sent to every executor and
     must fit in memory there. Chapter 22 covers join strategies in depth
-    (22. Performance tuning).
+    ([22. Performance tuning](22-Performance-Tuning.md)).
 
 **Task 23. Reconcile orders with payments: list the orders without a payment, the payments without an order, and
 the orders paid with a different amount. Cancelled orders need no payment; order 1008 (no status) does.**
@@ -2011,7 +2011,7 @@ Expected output:
 A window function computes a value for each row from a group of related rows (the partition), without collapsing
 them the way `groupBy` does. In PySpark you describe the window once with
 `Window.partitionBy(...).orderBy(...)` and apply functions with `.over(w)`. The ranking functions, frames and the
-`QUALIFY` clause are explained in 19. The function toolbox and, for generic SQL, in the
+`QUALIFY` clause are explained in [19. The function toolbox](19-Function-Toolbox.md) and, for generic SQL, in the
 SQL course ([Window functions and ranking](../../databases/sql/13-Window-Functions-Ranking.md)). PySpark has no
 `QUALIFY`: you add the window column, then `filter` on it.
 
@@ -3253,7 +3253,7 @@ Input: `orders_raw`. Expected output:
 Time questions are popular because they combine windows with date functions: buckets by day, week and month,
 gaps between events, calendars with missing days, sessions, and streaks. Two facts matter in all of them: the
 data here is stored in UTC (the session time zone is UTC), and `date_trunc('week', ...)` starts weeks on Monday.
-The date functions are in 19. The function toolbox.
+The date functions are in [19. The function toolbox](19-Function-Toolbox.md).
 
 **Task 44. Revenue and order count by day, by week and by month, in one result with a `grain` column.**
 
@@ -4421,7 +4421,7 @@ Expected output (the table after running the fix twice):
 *Level: expert.*
 
 These tasks are about how, not what: the result is easy, and the interviewer wants the version that scales and an
-explanation of why. Chapter 22 goes deeper into each topic (22. Performance tuning).
+explanation of why. Chapter 22 goes deeper into each topic ([22. Performance tuning](22-Performance-Tuning.md)).
 
 **Task 59. A colleague wrote a Python UDF to bucket amounts. Rewrite it with built-in functions and show that the
 results are the same.**

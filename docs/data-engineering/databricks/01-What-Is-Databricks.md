@@ -240,7 +240,7 @@ extras ([chapter 17](17-Databricks-SQL-vs-Standard.md) onward).
 compute lets you "run workloads without provisioning any compute resources in your cloud account", is "available by
 default in most workspaces", and "workspaces that have Unity Catalog enabled automatically have access to serverless
 compute" ([Connect to serverless compute](https://docs.databricks.com/aws/en/compute/serverless/)). Chapters
-2 and [6](06-Compute.md).
+[2](02-Workspace-Tour.md) and [6](06-Compute.md).
 
 **Declarative Automation Bundles**, formerly Databricks Asset Bundles, are "an infrastructure-as-code (IaC) approach
 to managing your Databricks projects": jobs, pipelines and other resources are described in YAML files next to the
@@ -522,7 +522,7 @@ tools are real; the day is an illustration, and each step points to the chapter 
 | | The cause: duplicate order events made a `MERGE` fail with "multiple source rows matched". Fix the deduplication, then repair the run: a repair re-runs "only the subset of unsuccessful tasks and any dependent tasks" ([Troubleshoot and repair job failures](https://docs.databricks.com/aws/en/jobs/repair-job-failures)). | Notebook, Delta `MERGE`, repair run | [9](09-Building-Silver.md), [7](07-Medallion-Architecture.md) |
 | Late morning | Marketing wants `customers` from a new CRM. Set up ingestion into bronze. | Lakeflow Connect or Auto Loader | [8](08-Bronze-Ingestion.md) |
 | After lunch | Add a data quality rule: drop orders with a negative `amount` and count them. | Lakeflow pipelines (formerly Delta Live Tables), expectations | 13, 14 |
-| | An analyst says the daily sales dashboard is slow. Read the query profile, check file layout and clustering. | SQL warehouse, query profile, `OPTIMIZE` | 22 |
+| | An analyst says the daily sales dashboard is slow. Read the query profile, check file layout and clustering. | SQL warehouse, query profile, `OPTIMIZE` | [22](22-Performance-Tuning.md) |
 | Afternoon | Code review, then deploy the changed job and pipeline from Git to production. | Git folders, Declarative Automation Bundles (formerly Databricks Asset Bundles), CLI | 16 |
 | End of day | Grant the finance group read access to `shop.gold`; check what last week's jobs cost. | Unity Catalog `GRANT`, system tables | [5](05-Unity-Catalog.md), 23 |
 
@@ -541,11 +541,11 @@ spends its depth on Spark, Delta, the medallion layers and Databricks SQL.
 4. [9. Building silver](09-Building-Silver.md): deduplication, late data, SCD Type 1 and 2.
 5. [3. Apache Spark](03-Apache-Spark.md): driver and executors, shuffles, joins, skew.
 6. [17. Databricks SQL vs standard SQL](17-Databricks-SQL-vs-Standard.md): `QUALIFY`, `GROUP BY ALL` and the rest.
-7. Then 19. The function toolbox, [25. PySpark coding practice](25-PySpark-Practice.md),
-   22. Performance tuning, [11. Structured Streaming](11-Structured-Streaming.md), and
+7. Then [19. The function toolbox](19-Function-Toolbox.md), [25. PySpark coding practice](25-PySpark-Practice.md),
+   [22. Performance tuning](22-Performance-Tuning.md), [11. Structured Streaming](11-Structured-Streaming.md), and
    13 and 14 on pipelines.
 
-**Starting out?** Read in order. Chapter 2 tours the workspace. To practise on the real
+**Starting out?** Read in order. [Chapter 2](02-Workspace-Tour.md) tours the workspace. To practise on the real
 product, **Databricks Free Edition** is "a no-cost version of Databricks" in "a serverless-only, quota-limited
 environment"; it "replaced the legacy Databricks Community Edition, which was retired in 2025" ([Sign up for
 Databricks Free Edition](https://docs.databricks.com/aws/en/getting-started/free-edition)).

@@ -134,6 +134,7 @@ nav:
           - "Databricks and the medallion model":
               - data-engineering/databricks/index.md
               - data-engineering/databricks/01-What-Is-Databricks.md
+              - data-engineering/databricks/02-Workspace-Tour.md
               - data-engineering/databricks/03-Apache-Spark.md
               - data-engineering/databricks/04-Delta-Lake.md
               - data-engineering/databricks/05-Unity-Catalog.md
@@ -144,6 +145,8 @@ nav:
               - data-engineering/databricks/11-Structured-Streaming.md
               - data-engineering/databricks/17-Databricks-SQL-vs-Standard.md
               - data-engineering/databricks/18-Semi-Structured-Data.md
+              - data-engineering/databricks/19-Function-Toolbox.md
+              - data-engineering/databricks/22-Performance-Tuning.md
               - data-engineering/databricks/24-Interview.md
               - data-engineering/databricks/25-PySpark-Practice.md
       - "Interview prep":

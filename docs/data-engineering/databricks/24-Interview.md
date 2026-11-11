@@ -210,7 +210,7 @@ made a mistake.
     **Why:** "turn on Photon" is not a fix for every slow job. If the time goes into a Python UDF, a skewed join or
     reading millions of tiny files, a faster executor does not remove the cause.
 
-    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q7. Managed or external table in Unity Catalog: what is the difference, and which is the default?**
 
@@ -242,7 +242,7 @@ made a mistake.
     **Why:** the medallion layers usually map onto this namespace: one catalog per environment or domain, and
     schemas `bronze`, `silver`, `gold` inside it (24.5).
 
-    **Learn more:** Chapter 2, [Chapter 5](05-Unity-Catalog.md).
+    **Learn more:** [Chapter 2](02-Workspace-Tour.md), [Chapter 5](05-Unity-Catalog.md).
 
 **Q9. What is Lakeflow? Give the old names too.**
 
@@ -254,7 +254,7 @@ made a mistake.
     - **Lakeflow pipelines** ("Spark Declarative Pipelines on Lakeflow"), formerly **Delta Live Tables (DLT)**:
       declarative pipelines of streaming tables and materialized views, built on open-source Apache Spark
       Declarative Pipelines. The Python module is `pyspark.pipelines` (formerly `import dlt`).
-    - **Lakeflow Jobs**, formerly **Databricks Workflows**: orchestration of tasks.
+    - **Lakeflow Jobs**, formerly **Databricks Jobs** (the **Workflows** menu): orchestration of tasks.
 
     **Why:** interviewers who learned the platform a few years ago will say DLT and Workflows. Answer with both names
     once and move on.
@@ -274,7 +274,7 @@ made a mistake.
     `delta.deletedFileRetentionDuration` is set below 7 days, predictive optimization keeps data files for at least
     7 days when it runs `VACUUM FULL`.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q11. Can other engines read tables managed by Databricks? Why does it matter?**
 
@@ -403,7 +403,7 @@ made a mistake.
     when writing, many small files. One streaming catch: you cannot change `spark.sql.shuffle.partitions` between
     restarts from the same checkpoint.
 
-    **Learn more:** [Chapter 3](03-Apache-Spark.md), Chapter 22.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q17. `repartition` or `coalesce`: what is the difference?**
 
@@ -472,7 +472,7 @@ made a mistake.
     whole point of a broadcast join. Also notice the `cast(customer_id#1 as bigint)`: the keys had different types,
     so Spark added a cast. Mismatched key types are worth fixing in silver.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q19. A small dimension table is not being broadcast. Why might that be?**
 
@@ -487,7 +487,7 @@ made a mistake.
     plans at runtime, because AQE may only switch after it has already shuffled both sides. So a hint is still
     worth adding when you know the data. Never broadcast something large: every executor holds a copy.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q20. What is adaptive query execution (AQE), and what can it not do?**
 
@@ -504,7 +504,7 @@ made a mistake.
     run the query, so it shows only the initial plan; the Spark UI or `DataFrame.explain()` after execution shows
     what AQE actually did.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q21. What is data skew? How do you detect it and fix it?**
 
@@ -552,7 +552,7 @@ made a mistake.
     as retired documentation, and the AQE page says AQE skew handling "usually performs better than the skew join
     hint".
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q22. `cache()` or the Databricks disk cache: what is the difference, and when would you cache?**
 
@@ -570,7 +570,7 @@ made a mistake.
     **Why:** caching everything wastes memory and can make jobs slower. Caching is also lost when a worker is
     decommissioned, for example during autoscaling.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q23. Why can `collect()` crash a job, and what do you use instead?**
 
@@ -597,7 +597,7 @@ made a mistake.
     **Why:** an interviewer often shows a UDF that does `upper()` or parses a date and asks what you would change.
     The answer is: delete it and use the built-in.
 
-    **Learn more:** Chapter 19, Chapter 21.
+    **Learn more:** [Chapter 19](19-Function-Toolbox.md), Chapter 21.
 
 **Q25. What happens between writing a DataFrame query and running it?**
 
@@ -640,7 +640,7 @@ made a mistake.
     gets no skipping, except that on managed tables predictive optimization also collects statistics on
     frequently filtered columns beyond the first 32.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q28. What is spill, and how do you reduce it?**
 
@@ -653,7 +653,7 @@ made a mistake.
     **Why:** spill is often the hidden cause of a stage that is slow but not obviously skewed. It is also a reason
     the default 200 shuffle partitions is wrong for very large inputs.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 ## 24.4 Delta Lake
 
@@ -707,14 +707,14 @@ made a mistake.
     `INSERT`s.
 
     Fixes: make the writers touch disjoint data and say so in the predicate (for example a date or region condition
-    in the `MERGE ON` clause); serialize the jobs in one Lakeflow Job (formerly Databricks Workflows); retry the failed one; on Databricks Runtime 14.3 LTS
+    in the `MERGE ON` clause); serialize the jobs in one Lakeflow Job (formerly Databricks Jobs, under the Workflows menu); retry the failed one; on Databricks Runtime 14.3 LTS
     and above, tables without partitions and with deletion vectors enabled get row-level concurrency, which detects
     conflicts per row instead of per file.
 
     **Why:** the interviewer is checking you know Delta uses optimistic concurrency, not locks, and that "add a
     retry" is only part of the answer.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q32. What is time travel, and what limits how far back you can go?**
 
@@ -803,7 +803,7 @@ made a mistake.
     directories starting with `_` or `.`, so never keep a streaming checkpoint in the table folder unless it is named
     like `_checkpoints`. And on Unity Catalog managed tables predictive optimization runs `VACUUM` for you.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q35. What does `OPTIMIZE` do?**
 
@@ -843,7 +843,7 @@ made a mistake.
     optimization decide for managed tables. `OPTIMIZE` on a table used as a streaming source does not affect the
     stream.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q36. Partitioning, Z-ordering or liquid clustering: which and why?**
 
@@ -871,7 +871,7 @@ made a mistake.
     ALTER TABLE shop.silver.orders CLUSTER BY AUTO;   -- managed tables only
     ```
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q37. How do you choose clustering keys, and what happens when you change them?**
 
@@ -887,7 +887,7 @@ made a mistake.
     **Why:** that flexibility is the main advantage over partitioning, where changing the partition column means
     rewriting the whole table.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q38. What are deletion vectors?**
 
@@ -902,7 +902,7 @@ made a mistake.
     vectors cannot read the table. And for a GDPR erasure, a soft delete is not enough: run
     `REORG TABLE ... APPLY (PURGE)` and then `VACUUM` once the retention period has passed (Q131).
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q39. What is Change Data Feed (CDF), and what does it return?**
 
@@ -1064,7 +1064,7 @@ made a mistake.
 
     **Why:** the interviewer wants a method (measure, then reduce the files touched), not a magic setting.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q45. Shallow clone or deep clone?**
 
@@ -1385,7 +1385,7 @@ made a mistake.
     | `failOnNewColumns` | Fails until you update the schema or remove the file |
     | `none` (default when you provide a schema) | Ignores new columns; no rescue unless `rescuedDataColumn` is set |
 
-    **Why:** the failure in `addNewColumns` is by design. Databricks recommends running the stream in a Lakeflow Job (formerly Databricks Workflows)
+    **Why:** the failure in `addNewColumns` is by design. Databricks recommends running the stream in a Lakeflow Job (formerly Databricks Jobs, under the Workflows menu)
     with retries so it restarts automatically and picks up the new schema.
 
     **Learn more:** [Chapter 8](08-Bronze-Ingestion.md).
@@ -2346,7 +2346,7 @@ and `SHIPPED`).
     **Why:** `max_by` is an aggregate alternative to `QUALIFY` when you need one column from the latest row together
     with other aggregates.
 
-    **Learn more:** Chapter 19.
+    **Learn more:** [Chapter 19](19-Function-Toolbox.md).
 
 **Q111. Make a target table mirror a full snapshot: update changed rows, insert new ones, delete missing ones.**
 
@@ -2530,7 +2530,7 @@ look at first, what each finding would mean, and how you would stop it from happ
     **Why:** the trap is to answer "add more nodes". Bigger compute hides skew and small files for a while and
     raises cost. Say that you would check the data and the plan first.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q117. A job failed halfway and was rerun. Now silver has duplicate rows. Why, and how do you make the load safe
 to rerun?**
@@ -2562,7 +2562,7 @@ to rerun?**
 
     Idempotent patterns: `MERGE` on the business key; `INSERT ... REPLACE WHERE` for a date slice (Q113);
     streaming with a checkpoint (Q76); `txnAppId` and `txnVersion` for batch writes that may be retried; in a
-    Lakeflow Job (formerly Databricks Workflows), repair the run so only the failed tasks run again. Then clean up the existing duplicates once,
+    Lakeflow Job (formerly Databricks Jobs, under the Workflows menu), repair the run so only the failed tasks run again. Then clean up the existing duplicates once,
     for example by rewriting the table from a `QUALIFY row_number() ... = 1` query (Q106).
 
     **Why:** "make every step safe to run twice" is the single most valued habit in data engineering interviews.
@@ -2585,7 +2585,7 @@ happened, and what do you do?**
 
     **Why:** tiny files also raise cloud storage API costs, especially with the default streaming trigger (Q73).
 
-    **Learn more:** Chapter 22, [Chapter 4](04-Delta-Lake.md).
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md), [Chapter 4](04-Delta-Lake.md).
 
 **Q119. An order from yesterday arrives today. Yesterday's revenue in gold is now wrong. How do you correct it
 without rebuilding the whole table?**
@@ -2661,7 +2661,7 @@ handled?**
     This is expected behavior in the default `addNewColumns` mode: when Auto Loader detects a new column, it
     updates the schema in the schema location (adding the column at the end) and stops the stream with an
     `UnknownFieldException`. Restarting the stream picks up the new schema. Databricks recommends running Auto
-    Loader streams in Lakeflow Jobs (formerly Databricks Workflows) configured to restart automatically after such schema changes; in a Lakeflow
+    Loader streams in Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu) configured to restart automatically after such schema changes; in a Lakeflow
     pipeline, Databricks manages the schema location and checkpoints for you.
 
     Steps: confirm the error is `UnknownFieldException`; restart (or check why the automatic retry did not
@@ -2689,7 +2689,7 @@ handled?**
 
     **Why:** more memory or more nodes does not help; the one task still gets all the data for its key.
 
-    **Learn more:** Chapter 22, [Chapter 3](03-Apache-Spark.md).
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md), [Chapter 3](03-Apache-Spark.md).
 
 **Q124. Someone ran a `DELETE` without a `WHERE` clause on a silver table an hour ago. Recover the data.**
 
@@ -2755,7 +2755,7 @@ changed. Why?**
     **Why:** a metadata change, such as `ALTER TABLE` or a write that changes the schema, can make all concurrent
     writes fail, including `INSERT`s. Schedule schema changes outside load windows.
 
-    **Learn more:** [Chapter 4](04-Delta-Lake.md), Chapter 22.
+    **Learn more:** [Chapter 4](04-Delta-Lake.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q127. A notebook crashes with a driver out-of-memory error. What do you check?**
 
@@ -2771,7 +2771,7 @@ changed. Why?**
 
     **Why:** the driver is a single machine. Anything that scales with data volume must run on the executors.
 
-    **Learn more:** [Chapter 3](03-Apache-Spark.md), Chapter 22.
+    **Learn more:** [Chapter 3](03-Apache-Spark.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q128. Executors fail with out-of-memory errors, or tasks spill heavily, during a large aggregation. What do you
 do?**
@@ -2788,7 +2788,7 @@ do?**
 
     **Why:** spill is not an error, but it is slow; an OOM is often the same problem one step further.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q129. A streaming aggregation gets slower every day, and its checkpoint keeps growing. Why?**
 
@@ -2900,7 +2900,7 @@ work?**
 
     **Why:** `OPTIMIZE` compacts files; without clustering on the filter column it does not make filters faster.
 
-    **Learn more:** Chapter 22.
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md).
 
 **Q135. You must backfill two years of history into a pipeline that already processes new data every day. How?**
 
@@ -2981,7 +2981,7 @@ with Informatica) to Databricks?**
        read with Auto Loader, or scheduled JDBC reads.
     4. **Convert the logic.** SSIS packages and Informatica mappings are not SQL code, so they are rebuilt, not
        copied: as SQL or PySpark in Lakeflow pipelines (formerly Delta Live Tables) or notebooks, orchestrated by
-       Lakeflow Jobs (formerly Databricks Workflows). Stored procedures in T-SQL or PL/SQL are converted to
+       Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu). Stored procedures in T-SQL or PL/SQL are converted to
        Databricks SQL; Databricks documents a code converter for dialects such as T-SQL and Oracle. Replace
        truncate-and-reload and row-by-row loops with set-based, incremental logic (`MERGE`, `AUTO CDC` (formerly
        `APPLY CHANGES`)).
@@ -3062,7 +3062,7 @@ you change?**
     **Why:** cost per run is the metric, not run time. Compare both in the job's run history and in
     `system.billing.usage`.
 
-    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q142. How do you right-size a classic cluster for a batch job?**
 
@@ -3085,7 +3085,7 @@ you change?**
     **Why:** right-sizing is a loop, not a one-time guess. Compute policies with T-shirt sizes make the standard
     the default for everyone.
 
-    **Learn more:** [Chapter 6](06-Compute.md), Chapter 22.
+    **Learn more:** [Chapter 6](06-Compute.md), [Chapter 22](22-Performance-Tuning.md).
 
 **Q143. What does predictive optimization cost, and when would you still schedule `OPTIMIZE` yourself?**
 
@@ -3104,7 +3104,7 @@ you change?**
     kept for old files. On managed tables, hand-written maintenance jobs that repeat the same work are usually
     redundant.
 
-    **Learn more:** Chapter 22, [Chapter 4](04-Delta-Lake.md).
+    **Learn more:** [Chapter 22](22-Performance-Tuning.md), [Chapter 4](04-Delta-Lake.md).
 
 **Q144. How do you show each team what it spends on Databricks?**
 
@@ -3421,7 +3421,7 @@ no fact rows without a dimension match (or a default "unknown" member).
 
 **6. Idempotency.** Bronze writes are checkpointed streams; `AUTO CDC` applies changes by sequence, so a change
 replayed or arriving out of order gives the same result; gold is recomputed or refreshed, not appended. The daily
-Lakeflow Job (formerly Databricks Workflows) retries failed tasks, and a repair run re-runs only what failed.
+Lakeflow Job (formerly Databricks Jobs, under the Workflows menu) retries failed tasks when task retries are configured, and a repair run re-runs only what failed.
 
 **7. Backfills.** Initial hydration with an `AUTO CDC` `once` flow, then the regular flow for ongoing changes. For
 a table with periodic full snapshots plus a CDC feed, a one-time `AUTO CDC FROM SNAPSHOT` flow can be combined with
@@ -3470,7 +3470,7 @@ equivalent as you go. That shows you understand the concepts without claiming ex
 | Cleansed layer, ODS, integration layer, conformed tables | Silver |
 | Data marts, star schemas, reporting views, cubes | Gold |
 | ETL package or mapping (SSIS, Informatica) | Pipeline: Lakeflow pipelines (formerly Delta Live Tables) or notebook tasks |
-| Scheduler (SQL Server Agent, a job scheduler) | Lakeflow Jobs (formerly Databricks Workflows) |
+| Scheduler (SQL Server Agent, a job scheduler) | Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu) |
 | Row-count and checksum reconciliation | Data quality checks and expectations |
 | Slowly changing dimension logic in procedures | SCD Type 2, `MERGE` or `AUTO CDC` (formerly `APPLY CHANGES`) |
 

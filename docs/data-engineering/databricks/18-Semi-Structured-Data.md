@@ -1880,7 +1880,7 @@ for every query"; `VARIANT` has an "Optimized encoding that outperforms JSON str
 collected" ([Model semi-structured data](https://docs.databricks.com/aws/en/semi-structured/)). The pages give no
 numbers for these differences, so neither does this chapter. Where a field is used in filters, a plain column beats
 all of them, because only plain columns (and struct fields) get the statistics that data skipping uses (see
-Chapter 22).
+[Chapter 22](22-Performance-Tuning.md)).
 
 !!! tip "In the interview"
     **"The source adds a field `loyalty_tier` next week. What happens in each layer?"** A `VARIANT` or JSON string in

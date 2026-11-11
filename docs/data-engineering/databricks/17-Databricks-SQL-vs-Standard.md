@@ -21,7 +21,7 @@
 
     **Levels:** sections 17.1 to 17.4 beginner, 17.5 to 17.9 and 17.11 intermediate, 17.10 and 17.12 expert.
 
-Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in chapter 19; `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in chapter 20; SQL scripting, UDFs, stored procedures and row filters are in chapter 21. This chapter only points to them.
+Part IV goes deeper in later chapters: semi-structured data, `VARIANT` and higher-order functions are in [chapter 18](18-Semi-Structured-Data.md); the function library (dates, strings, `try_` functions, aggregates, window frames) is in [chapter 19](19-Function-Toolbox.md); `CREATE TABLE` options, `MERGE` extras, time travel and `CLONE` are in chapter 20; SQL scripting, UDFs, stored procedures and row filters are in chapter 21. This chapter only points to them.
 
 **About the examples.** All "Run here" examples use the Red Rock Supply tables (`customers`, `products`, `orders`, `order_items`) in a schema called `silver`. On Databricks they would live in Unity Catalog as `shop.silver.orders`; locally there is no Unity Catalog, so the catalog is Spark's built-in `spark_catalog`. The scripts are in `src/ch17/` with their full output in the matching `.out` files. Error lines are shortened here to the error class and its first sentence. The `orders` table has 8 rows, and one of them (order 1008) has a `NULL` status on purpose.
 
@@ -102,7 +102,7 @@ SELECT typeof(5 - '3')          double
 SELECT size(NULL)               -1
 ```
 
-The `try_` functions return `NULL` for one expression and leave the session's mode alone (chapter 19 lists them):
+The `try_` functions return `NULL` for one expression and leave the session's mode alone ([chapter 19](19-Function-Toolbox.md) lists them):
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 ```sql
@@ -993,7 +993,7 @@ same rows as the SQL: True
 Here the check compares the rows in order, partition numbers included, so the DataFrame produced exactly the first table above.
 
 !!! warning "Two different CLUSTER BYs"
-    `SELECT ... CLUSTER BY col` is this query clause (distribute and sort). `CREATE TABLE ... CLUSTER BY (col)` is **liquid clustering**, a table layout feature with nothing to do with query output (chapter 20 and chapter 22). Interviewers sometimes ask about one to see if you confuse it with the other.
+    `SELECT ... CLUSTER BY col` is this query clause (distribute and sort). `CREATE TABLE ... CLUSTER BY (col)` is **liquid clustering**, a table layout feature with nothing to do with query output (chapter 20 and [chapter 22](22-Performance-Tuning.md)). Interviewers sometimes ask about one to see if you confuse it with the other.
 
 ### LIMIT and OFFSET
 
@@ -1147,13 +1147,13 @@ BROADCAST(c) -> BroadcastHashJoin [customer_id#3049], [customer_id#3054], Inner,
 +----+---+
 ```
 
-Hints are suggestions. The page says Databricks "is not guaranteed to use the join strategy suggested by the hint", for example when the join type does not support it. And "when a table name is occluded by an alias you must use the alias name in the hint": with `FROM customers AS c`, write `BROADCAST(c)`, not `BROADCAST(customers)`. On Databricks, adaptive query execution and Photon often choose well on their own; chapter 22 covers join strategies.
+Hints are suggestions. The page says Databricks "is not guaranteed to use the join strategy suggested by the hint", for example when the join type does not support it. And "when a table name is occluded by an alias you must use the alias name in the hint": with `FROM customers AS c`, write `BROADCAST(c)`, not `BROADCAST(customers)`. On Databricks, adaptive query execution and Photon often choose well on their own; [chapter 22](22-Performance-Tuning.md) covers join strategies.
 
 In PySpark the hint is a function around the small side, `orders.join(F.broadcast(customers), "customer_id")`, or the method `customers.hint("broadcast")`. The first form ran here and changed the plan the same way (`ex09_pyspark.out`: `SortMergeJoin` without it, `BroadcastHashJoin` with it).
 
 ### EXPLAIN
 
-`EXPLAIN [EXTENDED | CODEGEN | COST | FORMATTED] statement` shows the plan; by default only the physical plan. `EXTENDED` adds the parsed, analyzed and optimized logical plans; `FORMATTED` prints an outline plus details per node. Standard SQL has no `EXPLAIN`, and unlike PostgreSQL's `EXPLAIN ANALYZE`, Databricks `EXPLAIN` does not run the query. On Databricks you read actual runtime numbers in the query profile (chapter 22).
+`EXPLAIN [EXTENDED | CODEGEN | COST | FORMATTED] statement` shows the plan; by default only the physical plan. `EXTENDED` adds the parsed, analyzed and optimized logical plans; `FORMATTED` prints an outline plus details per node. Standard SQL has no `EXPLAIN`, and unlike PostgreSQL's `EXPLAIN ANALYZE`, Databricks `EXPLAIN` does not run the query. On Databricks you read actual runtime numbers in the query profile ([chapter 22](22-Performance-Tuning.md)).
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 ```sql
@@ -2088,7 +2088,7 @@ WHERE rnk = 1 ORDER BY customer_id;
 **Q23. What is the difference between `SELECT ... CLUSTER BY customer_id` and `CREATE TABLE ... CLUSTER BY (customer_id)`?**
 
 ??? success "Answer"
-    The first is a query clause: repartition by `customer_id` and sort within each partition (`DISTRIBUTE BY` + `SORT BY`), with no total order. The second defines **liquid clustering** for a Delta table, a storage layout that helps data skipping (chapter 20, chapter 22).
+    The first is a query clause: repartition by `customer_id` and sort within each partition (`DISTRIBUTE BY` + `SORT BY`), with no total order. The second defines **liquid clustering** for a Delta table, a storage layout that helps data skipping (chapter 20, [chapter 22](22-Performance-Tuning.md)).
 
 **Q24. Show page 3 of the orders list, 3 orders per page, ordered by `order_id`. Why is this approach a poor fit for a large table?**
 

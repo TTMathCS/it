@@ -1319,7 +1319,7 @@ OPTIMIZE order_items;          -- again
 
 `OPTIMIZE` returns one row per table with the path and a `metrics` struct (shown here without the wide table borders, path shortened); the struct starts with the number of files added and removed: `{1, 6, ...}` the first time, `{0, 0, ...}` the second. The `OPTIMIZE` commit has `add` and `remove` actions with `dataChange=false`. That flag tells streaming readers the commit only rearranged existing data, so they can skip it (the protocol describes `dataChange = false` as "only rearranges existing data or adds new statistics"). The six small files are not deleted: they are now unreferenced, and `VACUUM` removes them after the retention period.
 
-On Databricks, predictive optimization runs `OPTIMIZE` automatically on Unity Catalog managed tables, and Databricks recommends liquid clustering over partitioning or `ZORDER BY` for data layout ([Optimize data file layout](https://docs.databricks.com/aws/en/tables/operations/optimize)). File sizing, auto compaction, liquid clustering and Z-order are in chapter 22.
+On Databricks, predictive optimization runs `OPTIMIZE` automatically on Unity Catalog managed tables, and Databricks recommends liquid clustering over partitioning or `ZORDER BY` for data layout ([Optimize data file layout](https://docs.databricks.com/aws/en/tables/operations/optimize)). File sizing, auto compaction, liquid clustering and Z-order are in [chapter 22](22-Performance-Tuning.md).
 
 ### Deletion vectors
 

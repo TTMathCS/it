@@ -418,7 +418,7 @@ Auto Loader's behavior is set by `cloudFiles.schemaEvolutionMode`. The modes, fr
 | `none` (default when you provide a schema) | Does not evolve; new columns are ignored; data is not rescued unless `rescuedDataColumn` is set. |
 
 The fail-then-restart behavior of the default mode surprises people. The docs recommend running Auto Loader streams
-as Lakeflow Jobs (formerly Databricks Workflows) so they restart automatically after such a schema change. In
+as Lakeflow Jobs (formerly Databricks Jobs, under the Workflows menu) so they restart automatically after such a schema change. In
 Lakeflow pipelines (formerly Delta Live Tables), Databricks manages the schema location and checkpoints for you.
 
 ### The rescued data column
@@ -1715,7 +1715,7 @@ that job. Every hop adds latency, storage, compute and a place for bugs (7.11).
 
 ??? success "Answer"
     Bronze: with Auto Loader's default `addNewColumns` mode, the stream adds the column to the schema and stops with an
-    `UnknownFieldException`; after a restart (automatic when run as a Lakeflow Job, formerly a Databricks Workflows job, with retries) the new column is
+    `UnknownFieldException`; after a restart (automatic when run as a Lakeflow Job, formerly a Databricks job under the Workflows menu, with retries) the new column is
     loaded. With `rescue` mode the values go to `_rescued_data`; with a raw string or `VARIANT` bronze, nothing breaks
     at all.
     Silver: nothing changes, because silver selects named columns and Delta enforces its schema. The team decides
