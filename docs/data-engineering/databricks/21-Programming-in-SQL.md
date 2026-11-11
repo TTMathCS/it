@@ -1727,7 +1727,7 @@ Rules and traps from the pages:
 | Situation | Good fit | Why |
 | --- | --- | --- |
 | A few SQL steps with a parameter, a check and a log row; the team writes SQL | SQL script, or a stored procedure if others must call it | Stays in one language; runs on a SQL warehouse; a procedure can be granted with `EXECUTE` and run by name (section 21.7) |
-| Logic that needs Python libraries, API calls, files, unit tests with pytest, or complex branching | Python notebook or Python file (PySpark) | Full language, real test tooling, `spark.sql(..., args=...)` for safe SQL (chapter 16) |
+| Logic that needs Python libraries, API calls, files, unit tests with pytest, or complex branching | Python notebook or Python file (PySpark) | Full language, real test tooling, `spark.sql(..., args=...)` for safe SQL ([chapter 16](16-CICD-and-Testing.md)) |
 | Tables that depend on each other and refresh incrementally, with data quality expectations | Lakeflow pipelines (formerly Delta Live Tables; see [What happened to Delta Live Tables (DLT)?](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt)) | Declarative dependencies, incremental processing and expectations ([chapter 13](13-Declarative-Pipelines.md)) |
 | Scheduling, retries, alerts, ordering of several steps (SQL, notebooks, pipelines) | Lakeflow Jobs (formerly Databricks Jobs / Workflows) | Orchestration belongs in the job, not in a `WHILE` loop ([chapter 15](15-Lakeflow-Jobs.md)) |
 | A calculation used inside many queries and dashboards | SQL UDF in Unity Catalog | One definition, governed with `EXECUTE`; the optimizer sees the SQL body (section 21.6) |

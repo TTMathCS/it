@@ -3974,7 +3974,7 @@ Expected output:
     subtract (set semantics) finds: 1 row; exceptAll finds: 2 rows
     ```
 
-    Chapter 16 shows how such checks become PySpark unit tests (16. CI/CD and testing).
+    Chapter 16 shows how such checks become PySpark unit tests ([16. CI/CD and testing](16-CICD-and-Testing.md)).
 
 **Task 54. Produce a one-row quality report for a batch of orders: rows, NULL keys, duplicate keys, orders for
 unknown customers, and non-positive amounts. Stop the pipeline if any check fails.**

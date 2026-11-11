@@ -1180,7 +1180,7 @@ made a mistake.
     **Why:** expect a follow-up on modeling: grain of a fact table, conformed dimensions, SCD Type 2 dimensions,
     and why gold avoids huge historical detail (that stays in silver).
 
-    **Learn more:** Chapter 10, [SQL course: data modelling](../../databases/sql/19-Data-Modelling.md).
+    **Learn more:** [Chapter 10](10-Building-Gold.md), [SQL course: data modelling](../../databases/sql/19-Data-Modelling.md).
 
 **Q53. How do the layers map onto Unity Catalog?**
 
@@ -1983,7 +1983,7 @@ and what are the options?**
     **Why:** standalone objects are good for a few gold aggregates owned by analysts; a full Lakeflow pipeline (formerly Delta Live Tables) is
     better when many datasets depend on each other and need one schedule, one owner and one set of tests.
 
-    **Learn more:** Chapter 10, [Chapter 13](13-Declarative-Pipelines.md).
+    **Learn more:** [Chapter 10](10-Building-Gold.md), [Chapter 13](13-Declarative-Pipelines.md).
 
 ## 24.9 Unity Catalog and governance
 
@@ -2604,7 +2604,7 @@ without rebuilding the whole table?**
     **Why:** a streaming aggregate with a watermark would drop events this late (Q77). Late data is a business
     question first ("how late can it be, and must it count?"), then a design choice.
 
-    **Learn more:** Chapter 10, Chapter 20.
+    **Learn more:** [Chapter 10](10-Building-Gold.md), Chapter 20.
 
 **Q120. The source team changed `amount` from a number to text such as `'12.50 CAD'`. The silver load fails. What
 do you do?**
@@ -2868,7 +2868,7 @@ redesign it?**
     **Why:** this is the most common real-world surprise when people first chain streams through a medallion
     architecture.
 
-    **Learn more:** [Chapter 11](11-Structured-Streaming.md), Chapter 10.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 10](10-Building-Gold.md).
 
 **Q133. A pipeline expectation with `ON VIOLATION FAIL UPDATE` stopped the 3 a.m. run. What do you do?**
 
@@ -2941,7 +2941,7 @@ happened?**
     **Why:** if the stream started from the latest offsets instead, the opposite happens: data is skipped. Either
     way, the checkpoint is part of the table's state and must be treated like data.
 
-    **Learn more:** [Chapter 11](11-Structured-Streaming.md), Chapter 16.
+    **Learn more:** [Chapter 11](11-Structured-Streaming.md), [Chapter 16](16-CICD-and-Testing.md).
 
 **Q137. The finance team says the gold revenue does not match the source system. How do you investigate?**
 
@@ -2959,7 +2959,7 @@ happened?**
     **Why:** the answer shows method. Saying "I would compare the layers to find where the numbers split" is
     stronger than guessing a cause.
 
-    **Learn more:** Chapter 10, [Chapter 14](14-Data-Quality-and-CDC.md).
+    **Learn more:** [Chapter 10](10-Building-Gold.md), [Chapter 14](14-Data-Quality-and-CDC.md).
 
 ## 24.12 Migration, cost control and table formats
 

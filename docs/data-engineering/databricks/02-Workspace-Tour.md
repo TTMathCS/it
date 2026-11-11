@@ -369,7 +369,7 @@ _sqldf: NameError: name '_sqldf' is not defined
 ```
 
 Code you want to test outside Databricks should keep its logic in functions that take and return DataFrames, and
-leave `display` and `dbutils` to the notebook that calls them (chapter 16).
+leave `display` and `dbutils` to the notebook that calls them ([chapter 16](16-CICD-and-Testing.md)).
 
 ## 2.4 SQL editor, query history and Catalog Explorer
 
@@ -763,7 +763,7 @@ prefer to deploy only code into the workspace, you can use a production Git fold
 outside user folders and that "should be updated only by automation when PRs are merged" ([CI/CD with Databricks Git
 folders](https://docs.databricks.com/aws/en/repos/ci-cd), Sep 11, 2026). Bundles are "formerly known as Databricks
 Asset Bundles" ([What are Declarative Automation Bundles?](https://docs.databricks.com/aws/en/dev-tools/bundles/));
-chapter 16 covers them.
+[chapter 16](16-CICD-and-Testing.md) covers them.
 
 !!! tip "In the interview"
     **"How would you set up a new project in a Databricks workspace?"** One Git repository for the project. Each
@@ -813,7 +813,7 @@ For `put-secret`, the [Workspace secret
 scopes](https://docs.databricks.com/aws/en/security/secrets/workspace-secret-scopes) page lists three ways to give the
 value: the `--string-value` flag, "when prompted interactively", or standard input. The last two keep the value out of
 your shell history. The
-`databricks bundle` commands that deploy bundles are covered in chapter 16.
+`databricks bundle` commands that deploy bundles are covered in [chapter 16](16-CICD-and-Testing.md).
 
 ### Databricks Connect
 
@@ -857,7 +857,7 @@ code](https://docs.databricks.com/aws/en/notebooks/notebook-workflows) (Nov 2, 2
 Put together, a production layout for the daily orders load:
 
 - `src/red_rock/transforms.py`: functions such as `clean_orders(df)` that take and return DataFrames, with unit tests
-  run in CI (chapter 16).
+  run in CI ([chapter 16](16-CICD-and-Testing.md)).
 - `notebooks/load_orders.ipynb` (or a `.py` file): reads widgets or job parameters, imports from `src/`, writes to
   `shop.silver.orders`. No `display()` calls that matter for the result.
 - A Lakeflow job (or a Lakeflow pipeline, formerly [Delta Live Tables](https://docs.databricks.com/aws/en/ldp/concepts/where-is-dlt), for the declarative parts) defined in a bundle,

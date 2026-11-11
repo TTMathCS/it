@@ -1557,7 +1557,7 @@ For SQL that runs on a SQL warehouse (and serverless compute), Databricks shows 
 
 The page's advice: use unique temp view names, wrap UDF definitions in a function to capture values early, and avoid calling `df.columns` or `df.schema` in loops (each access is a round trip to the server).
 
-**Databricks Connect** is "a client library for the Databricks Runtime" that lets you run Spark code from an IDE or application on Databricks compute. Its page says "Databricks Connect is built on open-source Spark Connect", and for Databricks Runtime 13.3 LTS and above it "is an extension of Spark Connect with additions and modifications to support working with Databricks compute modes and Unity Catalog". General Python code runs locally; DataFrame operations and UDFs run on Databricks compute; results come back on `collect()`, `show()` or `toPandas()`. Chapter 16 uses it for testing.
+**Databricks Connect** is "a client library for the Databricks Runtime" that lets you run Spark code from an IDE or application on Databricks compute. Its page says "Databricks Connect is built on open-source Spark Connect", and for Databricks Runtime 13.3 LTS and above it "is an extension of Spark Connect with additions and modifications to support working with Databricks compute modes and Unity Catalog". General Python code runs locally; DataFrame operations and UDFs run on Databricks compute; results come back on `collect()`, `show()` or `toPandas()`. [Chapter 16](16-CICD-and-Testing.md) uses it for testing.
 
 *Databricks only, not run here. Syntax from [Tutorial: Run Python code on serverless compute](https://docs.databricks.com/aws/en/dev-tools/databricks-connect/python/tutorial-serverless).*
 ```python

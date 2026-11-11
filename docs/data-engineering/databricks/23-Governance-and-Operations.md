@@ -732,7 +732,7 @@ example, dev, test, prod". Catalogs then carry the separation: "Often, this mean
 environment scope, team, business unit, or some combination of these." Red Rock uses `shop_dev`, `shop_staging`
 and `shop_prod`, each with the same `bronze`, `silver`, `gold` schemas, so code only changes the catalog name, set
 per target by the bundle (Declarative Automation Bundles, formerly Databricks Asset Bundles, per the
-[bundles page](https://docs.databricks.com/aws/en/dev-tools/bundles/); Chapter 16).
+[bundles page](https://docs.databricks.com/aws/en/dev-tools/bundles/); [Chapter 16](16-CICD-and-Testing.md)).
 
 **Binding.** "When work environments and data both have the same isolation requirements, you can bind a catalog to
 a specific workspace." With `shop_prod` bound to the production workspace, "Access from an unbound workspace is

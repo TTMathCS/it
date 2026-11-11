@@ -142,10 +142,12 @@ nav:
               - data-engineering/databricks/07-Medallion-Architecture.md
               - data-engineering/databricks/08-Bronze-Ingestion.md
               - data-engineering/databricks/09-Building-Silver.md
+              - data-engineering/databricks/10-Building-Gold.md
               - data-engineering/databricks/11-Structured-Streaming.md
               - data-engineering/databricks/13-Declarative-Pipelines.md
               - data-engineering/databricks/14-Data-Quality-and-CDC.md
               - data-engineering/databricks/15-Lakeflow-Jobs.md
+              - data-engineering/databricks/16-CICD-and-Testing.md
               - data-engineering/databricks/17-Databricks-SQL-vs-Standard.md
               - data-engineering/databricks/18-Semi-Structured-Data.md
               - data-engineering/databricks/19-Function-Toolbox.md
@@ -154,6 +156,7 @@ nav:
               - data-engineering/databricks/23-Governance-and-Operations.md
               - data-engineering/databricks/24-Interview.md
               - data-engineering/databricks/25-PySpark-Practice.md
+              - data-engineering/databricks/glossary.md
       - "Interview prep":
           - interview/index.md
           - "Codility test prep":

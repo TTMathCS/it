@@ -58,11 +58,11 @@ In an interview, say both: "Lakeflow pipelines, which used to be called Delta Li
 | Part | Chapters |
 | --- | --- |
 | **I. Foundations** | [1. What Databricks is](01-What-Is-Databricks.md) · [2. A tour of the workspace](02-Workspace-Tour.md) · [3. Apache Spark for data engineers](03-Apache-Spark.md) · [4. Delta Lake](04-Delta-Lake.md) · [5. Unity Catalog](05-Unity-Catalog.md) · [6. Compute](06-Compute.md) |
-| **II. The medallion architecture** | [7. The medallion architecture explained](07-Medallion-Architecture.md) · [8. Into bronze: ingestion](08-Bronze-Ingestion.md) · [9. Building silver](09-Building-Silver.md) · 10. Building gold · [11. Structured Streaming](11-Structured-Streaming.md) · 12. A complete medallion project |
-| **III. Lakeflow** | [13. Spark Declarative Pipelines (formerly DLT)](13-Declarative-Pipelines.md) · [14. Data quality and change data capture](14-Data-Quality-and-CDC.md) · [15. Lakeflow Jobs](15-Lakeflow-Jobs.md) · 16. CI/CD and testing |
+| **II. The medallion architecture** | [7. The medallion architecture explained](07-Medallion-Architecture.md) · [8. Into bronze: ingestion](08-Bronze-Ingestion.md) · [9. Building silver](09-Building-Silver.md) · [10. Building gold](10-Building-Gold.md) · [11. Structured Streaming](11-Structured-Streaming.md) · 12. A complete medallion project |
+| **III. Lakeflow** | [13. Spark Declarative Pipelines (formerly DLT)](13-Declarative-Pipelines.md) · [14. Data quality and change data capture](14-Data-Quality-and-CDC.md) · [15. Lakeflow Jobs](15-Lakeflow-Jobs.md) · [16. CI/CD and testing](16-CICD-and-Testing.md) |
 | **IV. Databricks SQL** | [17. Databricks SQL vs standard SQL](17-Databricks-SQL-vs-Standard.md) · [18. Nested and semi-structured data](18-Semi-Structured-Data.md) · [19. The function toolbox](19-Function-Toolbox.md) · 20. Tables in Databricks SQL · [21. Programming in SQL](21-Programming-in-SQL.md) |
 | **V. Deep dive** | [22. Performance tuning](22-Performance-Tuning.md) · [23. Governance, sharing and operations](23-Governance-and-Operations.md) |
-| **VI. Interview** | [24. The data engineer interview](24-Interview.md) · [25. PySpark coding practice](25-PySpark-Practice.md) · Glossary |
+| **VI. Interview** | [24. The data engineer interview](24-Interview.md) · [25. PySpark coding practice](25-PySpark-Practice.md) · [Glossary](glossary.md) |
 
 Chapters without a link are still being written; they appear here as soon as they pass their checks.
 

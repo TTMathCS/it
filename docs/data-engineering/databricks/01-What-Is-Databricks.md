@@ -245,7 +245,7 @@ compute" ([Connect to serverless compute](https://docs.databricks.com/aws/en/com
 **Declarative Automation Bundles**, formerly Databricks Asset Bundles, are "an infrastructure-as-code (IaC) approach
 to managing your Databricks projects": jobs, pipelines and other resources are described in YAML files next to the
 code and deployed together to each environment ([What are Declarative Automation
-Bundles?](https://docs.databricks.com/aws/en/dev-tools/bundles/); chapter 16).
+Bundles?](https://docs.databricks.com/aws/en/dev-tools/bundles/); [chapter 16](16-CICD-and-Testing.md)).
 
 **OpenSharing**, formerly Delta Sharing, shares live data without copying it. Databricks-to-Databricks sharing
 works between Unity Catalog workspaces; the Databricks-to-Open protocol shares tables "with users on any computing
@@ -506,8 +506,9 @@ Catalog?](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)). T
     Spark Declarative Pipelines (in Apache Spark from 4.1; Lakeflow pipelines, formerly Delta Live Tables, are
     built on it), and the OpenSharing protocol (formerly Delta Sharing). Databricks-only: Photon, Auto Loader,
     Lakeflow Connect and Lakeflow Jobs (formerly Databricks Jobs, the Workflows menu item), serverless compute, SQL warehouses, and pipeline extras
-    such as `AUTO CDC` (formerly `APPLY CHANGES`) and expectations. The data stays in open formats in cloud storage,
-    which limits lock-in.
+    such as the full `AUTO CDC` APIs (formerly `APPLY CHANGES`) and expectations. Open-source Spark 4.2.0 did add a
+    narrower Auto CDC flow for SCD Type 1 (chapter 13). The data stays in open formats in cloud storage, which limits
+    lock-in.
 
 ## 1.7 A data engineer's day on Databricks
 
@@ -523,7 +524,7 @@ tools are real; the day is an illustration, and each step points to the chapter 
 | Late morning | Marketing wants `customers` from a new CRM. Set up ingestion into bronze. | Lakeflow Connect or Auto Loader | [8](08-Bronze-Ingestion.md) |
 | After lunch | Add a data quality rule: drop orders with a negative `amount` and count them. | Lakeflow pipelines (formerly Delta Live Tables), expectations | [13](13-Declarative-Pipelines.md), [14](14-Data-Quality-and-CDC.md) |
 | | An analyst says the daily sales dashboard is slow. Read the query profile, check file layout and clustering. | SQL warehouse, query profile, `OPTIMIZE` | [22](22-Performance-Tuning.md) |
-| Afternoon | Code review, then deploy the changed job and pipeline from Git to production. | Git folders, Declarative Automation Bundles (formerly Databricks Asset Bundles), CLI | 16 |
+| Afternoon | Code review, then deploy the changed job and pipeline from Git to production. | Git folders, Declarative Automation Bundles (formerly Databricks Asset Bundles), CLI | [16](16-CICD-and-Testing.md) |
 | End of day | Grant the finance group read access to `shop.gold`; check what last week's jobs cost. | Unity Catalog `GRANT`, system tables | [5](05-Unity-Catalog.md), [23](23-Governance-and-Operations.md) |
 
 Most of the day is SQL and PySpark on Delta tables, organized as bronze, silver and gold. That is why this book
@@ -743,7 +744,9 @@ Catalog grants, Auto Loader, Lakeflow pipelines, system tables) and its syntax w
     tables, materialized views, temporary views, append flows, sinks and automatic dependency resolution are in both.
 
     **Why:** interviewers like "what is open and what is not". `AUTO CDC` (formerly `APPLY CHANGES`) is the most
-    common example of a Databricks-only pipeline feature (chapter 14).
+    common example (chapter 14). The Databricks page says its `AUTO CDC` APIs are not in open-source pipelines;
+    open-source Spark 4.2.0 added a narrower Auto CDC flow for SCD Type 1 only (Spark 4.2.0 release notes,
+    chapter 13).
 
 **Q19. Is Photon part of Apache Spark?**
 
