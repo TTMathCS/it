@@ -1,6 +1,6 @@
 # Rewrites the Books menu in mkdocs.yml from the category folders in docs/ (python3 tools/nav.py).
 # A category shows up once docs/<category>/index.md exists; a course once docs/<category>/<course>/index.md exists.
-# Inside a course: index.md, then the FRONT pages it has (in this order), then the NN-Name.md chapters, then the
+# Inside a course: index.md, then the ORDER list if the course has one; otherwise the FRONT pages it has (in this order), then the NN-Name.md chapters, then the
 # BACK pages it has. Any other page in a course folder is left off the menu (and mkdocs warns about it).
 import os, re
 
@@ -24,7 +24,12 @@ CATEGORIES = [
 COURSES = {
     "sql": "SQL",
     "databricks": "Databricks and the medallion model",
-    "codility": "Codility",
+    "codility": "Codility test prep",
+}
+# a course whose pages are not numbered lists them here, in menu order (after its index.md)
+ORDER = {
+    "codility": ["cheat-sheet.md", "how-codility-works.md", "test-day-plan.md", "mock-test-1.md", "sql-practice.md",
+                 "python-practice.md", "mock-test-2.md", "common-mistakes.md", "codility-tasks.md"],
 }
 FRONT = ["fast-track.md", "cheat-sheet.md", "sample-database.md"]
 BACK = ["glossary.md"]
@@ -46,6 +51,9 @@ for cat, name in CATEGORIES:
             continue
         out += [f'          - "{title(course)}":', f"              - {cat}/{course}/index.md"]
         files = os.listdir(p)
+        if course in ORDER:
+            out += [f"              - {cat}/{course}/{f}" for f in ORDER[course] if f in files]
+            continue
         out += [f"              - {cat}/{course}/{f}" for f in FRONT if f in files]
         out += [f"              - {cat}/{course}/{f}" for f in sorted(files) if re.match(r"\d\d-.*\.md$", f)]
         out += [f"              - {cat}/{course}/{f}" for f in BACK if f in files]

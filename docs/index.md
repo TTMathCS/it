@@ -13,7 +13,8 @@ system before it goes on a page, with its true result shown under it.
 ## Start here
 
 - **Preparing for a data engineering interview?** Read the [SQL interview fast track](databases/sql/fast-track.md)
-  first. It says which chapters to read, in which order, in two days.
+  first. It says which chapters to read, in which order, in two days. Then sit the timed mock tests in the
+  [Codility test prep](interview/codility/index.md) guide.
 - **Coming back to SQL after a while?** The [one-page cheat sheet](databases/sql/cheat-sheet.md) brings most of it
   back in ten minutes.
 - **New to all of it?** Start at [chapter 1 of the SQL course](databases/sql/01-Tables-Rows-and-Keys.md).
@@ -30,8 +31,8 @@ system before it goes on a page, with its true result shown under it.
 Databricks and the medallion model (being written). Later: Spark, Airflow, dbt, Kafka.
 </div>
 <div markdown>
-### Interview prep
-Codility SQL and Python practice (being written).
+### [Interview prep](interview/index.md)
+[Codility test prep](interview/codility/index.md): two timed mock tests and 52 SQL and Python practice tasks.
 </div>
 <div markdown>
 ### Coming later

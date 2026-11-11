@@ -7,8 +7,8 @@ that are tested most, in the order that builds fastest. Each step says what to b
     A data engineering coding test often has two SQL tasks and one in Python, timed. On Codility's own practice
     page (checked 11 Nov 2026) a SQL task offers two languages: **SQL (PostgreSQL)** and **SQL (SQLite)**, and says
     the names of the result's columns do not matter but their **order** does. A real employer's test may differ:
-    its first page lists the languages allowed, so read it before you start. The Codility course under Interview
-    prep (being written) covers the test itself; this page covers the SQL.
+    its first page lists the languages allowed, so read it before you start. The [Codility test
+    prep](../../interview/codility/index.md) guide covers the test itself; this page covers the SQL.
 
     **Pick PostgreSQL if you are free to choose.** It follows the standard more closely, it has every function this
     course uses, and it reports mistakes instead of guessing. SQLite quietly accepts some wrong queries (you will

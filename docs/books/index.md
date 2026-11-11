@@ -12,10 +12,15 @@ Courses by category. A category joins this list, and the menu, once its first co
 | --- | --- | --- |
 | [SQL](../databases/sql/index.md) | Your first SELECT | Window functions, query plans, data modelling and interview practice |
 
+## Interview prep
+
+| Guide | What it covers |
+| --- | --- |
+| [Codility test prep](../interview/codility/index.md) | How the test works, a plan for 2 SQL + 1 Python, two mock tests, 52 practice tasks |
+
 ## Being written
 
 - **Data engineering:** Databricks and the medallion model, from beginner to deep dive.
-- **Interview prep:** Codility SQL and Python practice.
 
 ## Planned categories
 

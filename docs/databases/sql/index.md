@@ -47,4 +47,4 @@ differences. Results on MySQL, SQL Server and Oracle have not been tested here.
 | **V. Practice** | [30. Practice set A](30-Practice-Set-A.md) · [31. Practice set B](31-Practice-Set-B.md) · [32. Mock tests](32-Mock-Tests.md) · [Glossary](glossary.md) |
 
 Codility-style tasks on other small databases (employees, sensor readings, logins, payments, flights) are in the
-Codility course under Interview prep.
+[Codility test prep](../../interview/codility/index.md) guide under Interview prep.
