@@ -14,6 +14,9 @@ A block is marked by an HTML comment on the line before its ```sql fence (indent
     <!-- sql ... ordered --> compare row order too (automatic when the outermost query has ORDER BY)
     <!-- sql ... raw -->    runs outside a transaction (blocks that BEGIN / COMMIT themselves); always kept
     <!-- sql ... random --> the result may change from run to run (shown on purpose); skip the storage-order check
+    <!-- sql setup -->      a task's own tables (CREATE + INSERT): kept for the rest of the page, shown as "loads on ..."
+    <!-- sql ... expect --> also write this block's result table into the nearest <!-- expected --> ... <!-- /expected -->
+                            above it (the "your query should return" table of a practice task, whose answer is hidden)
 Every block that is rolled back is run on SQLite a second time reading tables backwards; if that changes the result,
 the query depends on luck (a tie with no tie-break, a missing ORDER BY) and the run fails.
 
@@ -222,6 +225,8 @@ def render(results, flags, compared):
                 out.append(f"<p class=\"sql-tested sql-noerror\">{db.name}: no error, it runs and returns {n} row{'s' if n != 1 else ''}.</p>")
         return out
     first = results[0][1]
+    if "setup" in flags:
+        return [f"<p class=\"sql-tested\">These tables load on {' and '.join(names)}.</p>"]
     if "quiet" in flags and first[1] is not None:
         n = len(first[2])
         both = ": same rows on both" if len(results) > 1 else ""
@@ -276,7 +281,7 @@ def process(path, check):
         if dbs is None:
             dbs = {"pg": PG(page), "sqlite": SQ(page)}
         use = [d for d in ("pg", "sqlite") if d in flags] or ["pg", "sqlite"]
-        keep, raw = "keep" in flags, "raw" in flags
+        keep, raw = "keep" in flags or "setup" in flags, "raw" in flags
         results = [(dbs[d], dbs[d].run(body, keep or raw, raw)) for d in use]
         count += 1
         where = f"{path}:{i}"
@@ -303,6 +308,17 @@ def process(path, check):
             if prev is None or not same(prev, results[0][1], ordered):
                 problems.append(f"{where}: 'same' block differs from the block before it:\n  before {fmt(prev)}\n  this   {fmt(results[0][1])}")
         prev = results[0][1]
+        if "expect" in flags and results[0][1][0] == "ok" and results[0][1][1] is not None:
+            a = max((n for n, l in enumerate(out) if l.strip() == "<!-- expected -->"), default=None)
+            b = next((n for n in range(a, len(out)) if out[n].strip() == "<!-- /expected -->"), None) if a is not None else None
+            if b is None:
+                problems.append(f"{where}: 'expect' block with no <!-- expected --> ... <!-- /expected --> above it")
+            else:
+                ind = out[a][:len(out[a]) - len(out[a].lstrip())]
+                want = [ind + l for l in table(results[0][1])]
+                if [l.rstrip() for l in out[a + 1:b]] != [l.rstrip() for l in want] and check:
+                    problems.append(f"{where}: expected table changed")
+                out[a + 1:b] = want
         new = [indent + "<!-- result -->"] + [(indent + l) if l else "" for l in render(results, flags, compared)] + [indent + "<!-- /result -->"]
         out.append("")
         out.extend(new)
