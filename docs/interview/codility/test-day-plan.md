@@ -41,10 +41,23 @@ Then add your own test rows (see "Write your own edge cases" in every solution o
 
 ## Which SQL dialect?
 
-If the test lets you choose, pick the one you know best. If you know both about equally, **PostgreSQL** is the
-safer choice: it has real date and number types, and it stops with an error on mistakes that SQLite silently
-accepts (such as selecting a column that is neither grouped nor aggregated). The table shows what differs. Every
-cell was checked on PostgreSQL 16 and SQLite 3.53.
+**Default: choose PostgreSQL**, if the task lets you pick. Use SQLite only if it is the one you have actually
+used and PostgreSQL is not. The reasons, all from running the answers in this guide on both:
+
+1. **PostgreSQL stops on mistakes that SQLite accepts quietly.** A column that is neither grouped nor
+   aggregated, or a `SELECT` alias used in `WHERE`, is an error in PostgreSQL, so you see it when you press Run.
+   SQLite returns *some* answer, and the hidden tests find the bug instead of you.
+2. **Dates are real dates.** In PostgreSQL `d + 1` is the next day and `d2 - d1` a number of days. In SQLite a
+   date is text: you need `date(d, '+1 day')` and `julianday()`, and `CAST('2026-03-01 10:00' AS TIMESTAMP)`
+   gives the number 2026.
+3. **The SQLite version Codility runs is not known.** Several things in SQLite exist only from a certain version
+   (window functions 3.25, `NULLS FIRST` 3.30, `FULL JOIN` and `IS DISTINCT FROM` 3.39, `STRING_AGG` 3.44).
+   They have been in PostgreSQL for many years.
+
+Two PostgreSQL habits to keep: `ROUND(x, 2)` needs a `numeric` (write `100.0 * ...` or `CAST(x AS NUMERIC)`),
+and dividing by zero is an error, so write `NULLIF(divisor, 0)`.
+
+The table shows what differs. Every cell was checked on PostgreSQL 16 and SQLite 3.53.
 
 | What you want | PostgreSQL | SQLite |
 |---|---|---|
@@ -68,6 +81,11 @@ cell was checked on PostgreSQL 16 and SQLite 3.53.
 | Column not in `GROUP BY` | error | allowed (returns an arbitrary row's value: a hidden bug) |
 | Use a `SELECT` alias in `WHERE` | error | allowed |
 | Use a `SELECT` alias in `ORDER BY` | allowed | allowed |
+| Divide by zero | error "division by zero" | `NULL` |
+| "Different, treating NULLs as equal" | `a IS DISTINCT FROM b` | the same from SQLite 3.39; before that `a IS NOT b` |
+| `FULL OUTER JOIN` | yes | from SQLite 3.39 |
+| `ORDER BY name` after a `UNION` | works | can fail with "does not match any column" (seen with a three-part `UNION ALL` of joins); give the column a name with `AS` in the first `SELECT` |
+| A list of days between two dates | `generate_series(a, b, INTERVAL '1 day')` or a recursive CTE | a recursive CTE with `date(d, '+1 day')` |
 
 The safe habits that work everywhere: `COALESCE`, `LIMIT`, `CASE WHEN`, `||`, `* 1.0` before dividing, aliases
 only in `ORDER BY`, and every non-aggregated column in `GROUP BY`.

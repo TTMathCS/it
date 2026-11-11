@@ -1,8 +1,13 @@
 # Python practice set
 
-Twenty-four tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
-that tell you how fast the answer must be. They are grouped by the technique they practise. Several are
-data-engineering flavoured (log lines, CSV rows, durations, dates, pipeline task order).
+Thirty-six tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
+that tell you how fast the answer must be. They are grouped by the technique they practise. A data engineer's
+Python task is as likely to be **data wrangling** as a classic algorithm, so both are here: about half work with
+log lines, CSV text, records, joins, dates and nested data, and the rest are the algorithm patterns of Codility's
+lessons (counting, prefix sums, sliding windows, stacks, sorting, graphs, binary search).
+
+Every solution states its **cost** (for example O(N log N)) and the **slow answer** that would fail the large
+hidden tests; where that slow answer is shown, it was run on the largest input and stopped after 5 seconds.
 
 **How to practise:** for each task, first read the limits and decide the target cost (the table in the
 [cheat sheet](cheat-sheet.md) helps), write the code, run the examples, then add your own edge cases **before**
@@ -16,7 +21,7 @@ wrong answer" was run too; its box says which case it fails or how long it took 
     The [Codility lessons](codility-tasks.md#python-the-lessons) have graded tasks for each technique below.
     Doing two or three of them on the real grader is the best rehearsal for the editor.
 
-## A. Counting with sets and dictionaries
+## A. Counting, grouping and joining with dictionaries
 
 ### 1. First repeated ID
 
@@ -63,6 +68,10 @@ def solution(A):
       for `[1, 2, 2, 1]` it returns 1, but 2 is the first value seen twice. And remembering values in a **list**
       makes each `in` check a scan, O(N²) overall: on 100,000 distinct values that is about 5 billion comparisons.
     
+    **Cost:** O(N) time, O(N) memory.
+    
+    **The slow answer:** Remembering the values in a list makes each `in` a scan: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -70,7 +79,7 @@ def solution(A):
     * edge case, negative and zero: `solution([0, -3, -3, 0])` returns `-3`;
     * edge case, all equal: `solution([9, 9, 9])` returns `9`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.006s.
+    * the largest input the limits allow: 0.008s.
     
     ??? failure "A common wrong answer: count() answers a different question"
     
@@ -143,13 +152,17 @@ def solution(A):
       smallest; the "larger code first in a tie" case shows it.
     * Read every tie rule in a task statement; hidden tests almost always include a tie.
     
+    **Cost:** O(N) time, O(D) memory for D different codes.
+    
+    **The slow answer:** Calling `A.count(x)` for every code scans the whole list each time: O(N·D).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
     * edge case, all different: `solution([30, 10, 20])` returns `10`;
     * edge case, larger code first in a tie: `solution([9, 9, 3, 3])` returns `3`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.013s.
+    * the largest input the limits allow: 0.017s.
     
     ??? failure "A common wrong answer: most_common breaks ties by first appearance"
     
@@ -161,6 +174,15 @@ def solution(A):
         ```
         
         Checked: example: got 500 want 404.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(A):
+            return sorted(set(A), key=lambda x: (-A.count(x), x))[0]
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.017s).
 
 
 
@@ -212,6 +234,10 @@ def solution(A, K):
     * The answer can reach about 5 billion for 100,000 equal values; Python integers do not overflow, but in Java or
       C you would need a 64-bit type.
     
+    **Cost:** O(N) time, O(N) memory.
+    
+    **The slow answer:** Two nested loops over all pairs: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -219,7 +245,7 @@ def solution(A, K):
     * edge case, no pair: `solution([1, 2], 10)` returns `0`;
     * edge case, negatives: `solution([-1, 1, 0, 0], 0)` returns `2`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.009s.
+    * the largest input the limits allow: 0.013s.
     
     ??? failure "A common wrong answer: a set loses repeated values"
     
@@ -250,7 +276,7 @@ def solution(A, K):
 
 ### 4. Most frequent words
 
-**Level:** Easy to medium · **Aim for:** 10 minutes
+**Level:** Medium · **Aim for:** 10 minutes
 
 `S` is text made of lower-case words separated by single spaces. Return a **list** of the `K` most frequent
 words, most frequent first; words with the same count are ordered alphabetically. If there are fewer than `K`
@@ -292,13 +318,17 @@ def solution(S, K):
       second example).
     * `S.split()` with no argument returns `[]` for an empty string; `S.split(" ")` would return `[""]`.
     
+    **Cost:** O(W + D log D) time for W words with D different ones, O(D) memory.
+    
+    **The slow answer:** Picking the best word K times with `list.count`: O(K·D·W).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
     * edge case, empty text: `solution('', 3)` returns `[]`;
     * edge case, K larger than the number of words: `solution('x y', 5)` returns `['x', 'y']`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.024s.
+    * the largest input the limits allow: 0.036s.
     
     ??? failure "A common wrong answer: most_common ignores the alphabetical tie rule"
     
@@ -310,12 +340,418 @@ def solution(S, K):
         ```
         
         Checked: example: got ['b', 'a', 'c'] want ['a', 'b', 'c'].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(S, K):
+            ws = S.split()
+            uniq = sorted(set(ws))
+            out = []
+            for _ in range(min(K, len(uniq))):
+                best = None
+                for w in uniq:
+                    if w in out:
+                        continue
+                    if best is None or ws.count(w) > ws.count(best):
+                        best = w
+                out.append(best)
+            return out
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.036s).
 
 
 
-## B. Strings and parsing
+### 5. The value that fills most of the list
 
-### 5. Longest run in a status string
+**Level:** Easy · **Aim for:** 10 minutes
+
+Return the value that occurs in **more than half** of the elements of `A`. If there is no such value, return
+`-1`.
+
+**Examples**
+
+* `solution([3, 4, 3, 2, 3, 3])` returns `3`
+* `solution([1, 2, 1, 2])` returns `-1`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* each element of `A` is an integer within the range [0..1,000,000,000].
+
+Start from:
+
+```python
+def solution(A):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from collections import Counter
+    
+    def solution(A):
+        if not A:
+            return -1
+        value, count = Counter(A).most_common(1)[0]
+        return value if count * 2 > len(A) else -1
+    ```
+    
+    **Why it works**
+    
+    * Count with a `Counter`, take the most common value, and **check it really is more than half**:
+      `count * 2 > len(A)` uses whole numbers only, so there is no rounding question. O(N) time.
+    * "More than half" excludes exactly half (edge case `[5, 5, 1, 2]`).
+    * Codility's lesson 8 shows a way with O(1) memory (keep one candidate and a counter, then check it). The
+      `Counter` answer uses O(N) memory, which these limits allow.
+    
+    **Cost:** O(N) time, O(N) memory.
+    
+    **The slow answer:** Calling `A.count(x)` for every different value: O(N²) when all differ.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `-1`;
+    * edge case, one element: `solution([7])` returns `7`;
+    * edge case, exactly half is not enough: `solution([5, 5, 1, 2])` returns `-1`;
+    * edge case, most common but not a majority: `solution([4, 4, 1, 2, 3])` returns `-1`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.008s.
+    
+    ??? failure "A common wrong answer: >= half instead of > half"
+    
+        ```python
+        from collections import Counter
+        
+        def solution(A):
+            if not A:
+                return -1
+            value, count = Counter(A).most_common(1)[0]
+            return value if count * 2 >= len(A) else -1
+        ```
+        
+        Checked: example: got 1 want -1.
+    
+    ??? failure "A common wrong answer: the most common value without the check"
+    
+        ```python
+        from collections import Counter
+        
+        def solution(A):
+            return Counter(A).most_common(1)[0][0] if A else -1
+        ```
+        
+        Checked: example: got 1 want -1.
+
+
+
+### 6. Latest version of each record
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+A change feed delivers records as tuples `(key, version, value)`, not in order. For each key keep the record with
+the **highest version**; if the same key and version arrive more than once, the one that arrives **later** in `R`
+wins. Return a list of `(key, value)` tuples, sorted by key.
+
+**Examples**
+
+* `solution([('a', 2, 'x'), ('b', 1, 'y'), ('a', 1, 'z')])` returns `[('a', 'x'), ('b', 'y')]`
+* `solution([('k', 5, 'old'), ('k', 5, 'new')])` returns `[('k', 'new')]`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* keys and values are strings of letters and digits;
+* each version is an integer within the range [0..1,000,000,000].
+
+Start from:
+
+```python
+def solution(R):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(R):
+        best = {}                                     # key -> (version, value)
+        for key, version, value in R:
+            if key not in best or version >= best[key][0]:   # >=: a later duplicate wins
+                best[key] = (version, value)
+        return [(key, best[key][1]) for key in sorted(best)]
+    ```
+    
+    **Why it works**
+    
+    * One dict, one pass: keep the best record seen so far for each key. This is how a pipeline deduplicates a
+      change feed (the SQL version is `ROW_NUMBER() OVER (PARTITION BY key ORDER BY version DESC, arrival DESC)`).
+    * `>=` and not `>`: with equal versions the record seen later replaces the earlier one, which is the tie rule.
+    * "Last one wins" alone (`best[key] = value` for every record) is only right if the feed arrives in version
+      order; the edge case "an older version arrives last" catches it.
+    
+    **Cost:** O(N + K log K) time for K different keys, O(K) memory.
+    
+    **The slow answer:** Scanning all records again for every key: O(N·K).
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `[]`;
+    * edge case, an older version arrives last: `solution([('a', 3, 'p'), ('a', 7, 'q'), ('a', 1, 'r')])` returns `[('a', 'q')]`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.062s.
+    
+    ??? failure "A common wrong answer: > lets the earlier duplicate win"
+    
+        ```python
+        def solution(R):
+            best = {}
+            for key, version, value in R:
+                if key not in best or version > best[key][0]:
+                    best[key] = (version, value)
+            return [(key, best[key][1]) for key in sorted(best)]
+        ```
+        
+        Checked: example: got [('k', 'old')] want [('k', 'new')].
+    
+    ??? failure "A common wrong answer: assuming the feed is in version order"
+    
+        ```python
+        def solution(R):
+            best = {}
+            for key, version, value in R:
+                best[key] = value
+            return sorted(best.items())
+        ```
+        
+        Checked: example: got [('a', 'z'), ('b', 'y')] want [('a', 'x'), ('b', 'y')].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(R):
+            out = []
+            for key in sorted({r[0] for r in R}):
+                cands = [(r[1], i, r[2]) for i, r in enumerate(R) if r[0] == key]
+                out.append((key, max(cands)[2]))
+            return out
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.062s).
+
+
+
+### 7. Total spent by every customer
+
+**Level:** Easy · **Aim for:** 10 minutes
+
+`C` is a list of customers `(id, name)` with unique ids and names. `O` is a list of orders `(customer_id,
+amount)`; some orders belong to customers not in `C` and must be ignored. Return a list of `(name, total)` tuples
+for **every** customer in `C`, with `total` 0 for a customer with no orders, sorted by total from highest to
+lowest, then by name.
+
+**Examples**
+
+* `solution([(1, 'ana'), (2, 'ben'), (3, 'cy')], [(1, 30), (3, 5), (1, 10), (9, 99)])` returns `[('ana', 40), ('cy', 5), ('ben', 0)]`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N`, the length of `C`, and `M`, the length of `O`, are integers within the range [0..100,000];
+* each amount is an integer within the range [1..10,000].
+
+Start from:
+
+```python
+def solution(C, O):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(C, O):
+        total = {cid: 0 for cid, _ in C}           # every customer starts at 0 (the "LEFT" part)
+        for cid, amount in O:
+            if cid in total:                       # ignore orders of unknown customers
+                total[cid] += amount
+        rows = [(name, total[cid]) for cid, name in C]
+        return sorted(rows, key=lambda r: (-r[1], r[0]))
+    ```
+    
+    **Why it works**
+    
+    * This is a SQL `LEFT JOIN ... GROUP BY` written in Python: a dict that **starts with every customer at 0** keeps
+      the customers who have no orders, and `if cid in total` drops orders that match nobody.
+    * Sorting by two keys in opposite directions: `key=lambda r: (-r[1], r[0])` (negate the number). For a text key
+      that has to go in reverse, sort twice instead: Python's sort is stable, so sort by the second key first, then
+      by the first key (that is what the reference answer does).
+    * The nested loop ("for each customer, add up its orders") is the plain answer, but it is O(N·M).
+    
+    **Cost:** O(N log N + M) time, O(N) memory.
+    
+    **The slow answer:** For each customer, a loop over all orders: O(N·M).
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, no orders: `solution([(1, 'ana'), (2, 'ben')], [])` returns `[('ana', 0), ('ben', 0)]`;
+    * edge case, no customers: `solution([], [(1, 5)])` returns `[]`;
+    * edge case, a tie on the total: `solution([(1, 'dee'), (2, 'ana')], [(1, 5), (2, 5)])` returns `[('ana', 5), ('dee', 5)]`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.147s.
+    
+    ??? failure "A common wrong answer: starting from the orders loses customers with none"
+    
+        ```python
+        def solution(C, O):
+            names = dict(C)
+            total = {}
+            for cid, amount in O:
+                if cid in names:
+                    total[cid] = total.get(cid, 0) + amount
+            return sorted(((names[c], t) for c, t in total.items()), key=lambda r: (-r[1], r[0]))
+        ```
+        
+        Checked: example: got [('ana', 40), ('cy', 5)] want [('ana', 40), ('cy', 5), ('ben', 0)].
+    
+    ??? failure "A common wrong answer: a loop over the orders for every customer (too slow)"
+    
+        ```python
+        def solution(C, O):
+            rows = [(name, sum(a for c, a in O if c == cid)) for cid, name in C]
+            return sorted(rows, key=lambda r: (-r[1], r[0]))
+        ```
+        
+        Checked: timed out after 5.0s on the large input.
+
+
+
+### 8. Top customer in each city
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Each string in `R` is one purchase, `"name,city,amount"`, where `amount` is a whole number of cents. A customer is
+a (name, city) pair, and their total is the sum of their purchases. For **each city**, find the customer with the
+highest total; if several tie, take the name that comes first alphabetically. Return a list of strings
+`"city:name"`, sorted by city.
+
+**Examples**
+
+* `solution(['ana,lima,500', 'ben,lima,300', 'ben,lima,300', 'cy,oslo,50'])` returns `['lima:ben', 'oslo:cy']`
+* `solution([])` returns `[]`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* names and cities are non-empty and contain only lower-case letters;
+* each amount is an integer within the range [0..1,000,000].
+
+Start from:
+
+```python
+def solution(R):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from collections import defaultdict
+    
+    def solution(R):
+        total = defaultdict(int)
+        for row in R:
+            name, city, amount = row.split(",")
+            total[(city, name)] += int(amount)       # int(): "300" + "300" would be "300300"
+        best = {}                                    # city -> (total, name)
+        for (city, name), t in total.items():
+            b = best.get(city)
+            if b is None or t > b[0] or (t == b[0] and name < b[1]):
+                best[city] = (t, name)
+        return [city + ":" + best[city][1] for city in sorted(best)]
+    ```
+    
+    **Why it works**
+    
+    * Two passes, the way you would do it in SQL: first **group and sum** (a `dict` keyed by `(city, name)`, like
+      `GROUP BY city, name`), then **pick the best per city** (like a `RANK() ... = 1`).
+    * The tie rule is written into the comparison: a bigger total wins, and an equal total wins only with a smaller
+      name. Another way is `min(..., key=lambda x: (-total, name))`.
+    * `int(amount)`: the split gives strings, and adding strings glues them together.
+    * Return exactly what is asked: a `list` of `str`, sorted by city. A dict or a list of tuples would fail the
+      grader even with the right content.
+    
+    **Cost:** O(N log C) time for N rows and C cities (the final sort), O(N) memory.
+    
+    **The slow answer:** Re-adding every customer's rows for every city: O(N²) in the worst case.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, a tie goes to the earlier name: `solution(['dee,rome,10', 'ana,rome,10'])` returns `['rome:ana']`;
+    * edge case, the same name in two cities is two customers: `solution(['ana,lima,5', 'ana,oslo,7', 'ben,lima,6'])` returns `['lima:ben', 'oslo:ana']`;
+    * edge case, a zero amount: `solution(['cy,oslo,0'])` returns `['oslo:cy']`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.110s.
+    
+    ??? failure "A common wrong answer: the biggest single purchase instead of the biggest total"
+    
+        ```python
+        def solution(R):
+            best = {}
+            for row in R:
+                name, city, amount = row.split(",")
+                a = int(amount)
+                if city not in best or a > best[city][0] or (a == best[city][0] and name < best[city][1]):
+                    best[city] = (a, name)
+            return [c + ":" + best[c][1] for c in sorted(best)]
+        ```
+        
+        Checked: example: got ['lima:ana', 'oslo:cy'] want ['lima:ben', 'oslo:cy'].
+    
+    ??? failure "A common wrong answer: ties go to whoever came first in the list"
+    
+        ```python
+        from collections import defaultdict
+        
+        def solution(R):
+            total = defaultdict(int)
+            for row in R:
+                name, city, amount = row.split(",")
+                total[(city, name)] += int(amount)
+            best = {}
+            for (city, name), t in total.items():
+                if city not in best or t > best[city][0]:
+                    best[city] = (t, name)
+            return [c + ":" + best[c][1] for c in sorted(best)]
+        ```
+        
+        Checked: edge: a tie goes to the earlier name: got ['rome:dee'] want ['rome:ana'].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(R):
+            rows = [r.split(",") for r in R]
+            out = []
+            for city in sorted({c for _, c, _ in rows}):
+                names = sorted({n for n, c, _ in rows if c == city})
+                totals = [(-sum(int(a) for n2, c2, a in rows if n2 == n and c2 == city), n) for n in names]
+                out.append(city + ":" + min(totals)[1])
+            return out
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.110s).
+
+
+
+## B. Strings, parsing, dates and nested data
+
+### 9. Longest run in a status string
 
 **Level:** Easy · **Aim for:** 8 minutes
 
@@ -360,6 +796,10 @@ def solution(S):
     * `itertools.groupby(S)` groups consecutive equal characters and is a neat one-liner; it is in the standard
       library, so it is allowed.
     
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** Starting a new count from every position is O(N²) on a string of one letter repeated.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -367,7 +807,7 @@ def solution(S):
     * edge case, one character: `solution('Q')` returns `1`;
     * edge case, longest run at the end: `solution('OXXOOOO')` returns `4`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.008s.
+    * the largest input the limits allow: 0.011s.
     
     ??? failure "A common wrong answer: best updated only on a change"
     
@@ -389,7 +829,7 @@ def solution(S):
 
 
 
-### 6. Run-length encoding
+### 10. Run-length encoding
 
 **Level:** Easy · **Aim for:** 8 minutes
 
@@ -437,6 +877,10 @@ def solution(S):
       in some Python versions.
     * Run lengths can have two or more digits (`z12`).
     
+    **Cost:** O(N) time, O(N) memory for the answer.
+    
+    **The slow answer:** Adding to a string with `+` inside a loop can copy the whole string each time in some Pythons; collecting the pieces in a list and joining once is always O(N).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -444,7 +888,7 @@ def solution(S):
     * edge case, one long run: `solution('zzzzzzzzzzzz')` returns `'z12'`;
     * edge case, single letter: `solution('q')` returns `'q'`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.023s.
+    * the largest input the limits allow: 0.034s.
     
     ??? failure "A common wrong answer: writes 1 after single letters"
     
@@ -459,9 +903,9 @@ def solution(S):
 
 
 
-### 7. Count log levels
+### 11. Count log levels
 
-**Level:** Easy to medium · **Aim for:** 12 minutes
+**Level:** Medium · **Aim for:** 12 minutes
 
 `S` is the text of a log file. Each non-empty line looks like `"2026-11-10 12:00:01 ERROR db timeout"`: a date,
 a time, a level, then an optional message. Lines are separated by `"\n"`; the text may end with a newline, and
@@ -508,6 +952,10 @@ def solution(S):
     * **Return the exact format asked for**: a string, comma-separated, sorted, no spaces, `""` when empty.
       An f-string and `",".join(...)` build it cleanly.
     
+    **Cost:** O(L) time for L characters of input, O(1) memory besides the counts.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -515,7 +963,7 @@ def solution(S):
     * edge case, only blank lines: `solution('\n\n')` returns `''`;
     * edge case, no message after the level: `solution('2026-01-01 00:00:00 WARN')` returns `'WARN:1'`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.006s.
+    * the largest input the limits allow: 0.008s.
     
     ??? failure "A common wrong answer: crashes on an empty line"
     
@@ -543,7 +991,7 @@ def solution(S):
 
 
 
-### 8. Add up durations
+### 12. Add up durations
 
 **Level:** Easy · **Aim for:** 10 minutes
 
@@ -589,6 +1037,10 @@ def solution(D):
     * `str(datetime.timedelta(seconds=total))` looks handy but prints `1 day, 0:00:00` after 24 hours and `2:15:30`
       without the leading zero.
     
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -596,7 +1048,7 @@ def solution(D):
     * edge case, over 99 hours: `solution(['99:59:59', '00:00:01'])` returns `'100:00:00'`;
     * edge case, seconds carry into minutes and hours: `solution(['00:59:59', '00:00:01'])` returns `'01:00:00'`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.026s.
+    * the largest input the limits allow: 0.050s.
     
     ??? failure "A common wrong answer: timedelta prints days"
     
@@ -615,9 +1067,9 @@ def solution(D):
 
 
 
-### 9. Rows with the wrong number of fields
+### 13. Rows with the wrong number of fields
 
-**Level:** Easy to medium · **Aim for:** 12 minutes
+**Level:** Medium · **Aim for:** 12 minutes
 
 `S` is a CSV file as text: lines separated by `"\n"`, fields separated by `","` (no quotes, no escaped commas).
 The text may end with a single newline, which does not start a new line. Return the list of **line numbers
@@ -663,6 +1115,10 @@ def solution(S, K):
     * Real CSV files can have quoted fields with commas inside; then use the standard `csv` module. This task says
       there are none.
     
+    **Cost:** O(L) time for L characters of input.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -670,7 +1126,7 @@ def solution(S, K):
     * edge case, empty line in the middle: `solution('a,b\n\nc,d', 2)` returns `[2]`;
     * edge case, no trailing newline: `solution('a\nb,c', 1)` returns `[2]`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.013s.
+    * the largest input the limits allow: 0.019s.
     
     ??? failure "A common wrong answer: counts the final newline as a bad row"
     
@@ -685,7 +1141,7 @@ def solution(S, K):
 
 
 
-### 10. Compare version numbers
+### 14. Compare version numbers
 
 **Level:** Easy · **Aim for:** 10 minutes
 
@@ -731,6 +1187,10 @@ def solution(A, B):
     * `itertools.zip_longest(..., fillvalue=0)` pads the shorter version with zeros, which is what "missing parts
       count as 0" means. `int("02")` is 2, which handles leading zeros.
     
+    **Cost:** O(P) time for P parts.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -760,9 +1220,9 @@ def solution(A, B):
 
 
 
-### 11. Days with no data
+### 15. Days with no data
 
-**Level:** Easy to medium · **Aim for:** 12 minutes
+**Level:** Medium · **Aim for:** 12 minutes
 
 `D` lists the dates (`"YYYY-MM-DD"`) on which a daily feed arrived, in any order, possibly with repeats. Return the
 list of **dates between the earliest and the latest date that are missing**, in increasing order, in the same
@@ -810,6 +1270,10 @@ def solution(D):
     * `min` and `max` of ISO date strings also work as text, because `YYYY-MM-DD` sorts in calendar order.
     * Building dates by hand ("day + 1, and if it is over 30...") is where bugs live.
     
+    **Cost:** O(N + R) time for R days in the range, O(N) memory.
+    
+    **The slow answer:** Checking `day in D` on the list instead of a set: O(N·R).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -818,7 +1282,7 @@ def solution(D):
     * edge case, leap year: `solution(['2024-02-28', '2024-03-01'])` returns `['2024-02-29']`;
     * edge case, over new year: `solution(['2025-12-30', '2026-01-02'])` returns `['2025-12-31', '2026-01-01']`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.031s.
+    * the largest input the limits allow: 0.046s.
     
     ??? failure "A common wrong answer: adding 1 to the day number"
     
@@ -845,14 +1309,473 @@ def solution(D):
         ```
         
         Checked: example: got ['2026-02-28', '2026-02-29', '2026-02-30', '2026-03-02'] want ['2026-02-28', '2026-03-02'].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        import datetime
+        
+        def solution(D):
+            if not D:
+                return []
+            lo, hi = min(D), max(D)
+            out = []
+            d = datetime.date.fromisoformat(lo)
+            while d.isoformat() < hi:
+                if d.isoformat() not in D:
+                    out.append(d.isoformat())
+                d = datetime.date.fromordinal(d.toordinal() + 1)
+            return out
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.046s).
+
+
+
+### 16. Longest gap between logins
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`L` lists login times `"YYYY-MM-DD HH:MM"` in no particular order; the same time can appear more than once.
+Return the longest gap, in minutes, between two logins that follow each other in time. Return 0 if there are
+fewer than two logins.
+
+**Examples**
+
+* `solution(['2026-03-01 09:00', '2026-03-01 08:30', '2026-03-01 09:05'])` returns `30`
+* `solution(['2026-03-01 23:50', '2026-03-02 00:10'])` returns `20`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* all times are valid and between 2000-01-01 00:00 and 2099-12-31 23:59.
+
+Start from:
+
+```python
+def solution(L):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from datetime import datetime
+    
+    def solution(L):
+        times = sorted(datetime.strptime(s, "%Y-%m-%d %H:%M") for s in L)
+        best = 0
+        for a, b in zip(times, times[1:]):
+            best = max(best, int((b - a).total_seconds()) // 60)
+        return best
+    ```
+    
+    **Why it works**
+    
+    * Turn each string into a `datetime`, sort, and compare neighbours. Subtracting two `datetime`s gives a
+      `timedelta`; `total_seconds() // 60` is whole minutes. Dates take care of midnight and month ends for you.
+    * Times written `YYYY-MM-DD HH:MM` also sort correctly **as text**, so sorting the strings first is fine. What
+      fails is doing arithmetic on the clock part only (`HH*60 + MM`): across midnight, 00:10 minus 23:50 is
+      negative.
+    * `datetime.fromisoformat(s)` also reads this format on any Python 3.7 or newer and is faster than `strptime`.
+      100,000 `strptime` calls took about 0.4 s here, within the limit.
+    
+    **Cost:** O(N log N) time for the sort, O(N) memory.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `0`;
+    * edge case, one login: `solution(['2026-03-01 10:00'])` returns `0`;
+    * edge case, the same time twice: `solution(['2026-03-01 10:00', '2026-03-01 10:00'])` returns `0`;
+    * edge case, across a month end: `solution(['2026-02-28 23:00', '2026-03-01 01:00'])` returns `120`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.562s.
+    
+    ??? failure "A common wrong answer: minutes of the day only (breaks at midnight)"
+    
+        ```python
+        def solution(L):
+            mins = sorted(int(s[11:13]) * 60 + int(s[14:16]) for s in L)
+            return max([b - a for a, b in zip(mins, mins[1:])] + [0])
+        ```
+        
+        Checked: example: got 1420 want 20.
+    
+    ??? failure "A common wrong answer: not sorting first"
+    
+        ```python
+        from datetime import datetime
+        
+        def solution(L):
+            times = [datetime.strptime(s, "%Y-%m-%d %H:%M") for s in L]
+            best = 0
+            for a, b in zip(times, times[1:]):
+                best = max(best, int((b - a).total_seconds()) // 60)
+            return best
+        ```
+        
+        Checked: example: got 35 want 30.
+
+
+
+### 17. Events per ISO week
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`D` is a list of dates `"YYYY-MM-DD"`, one per event. Count the events in each **ISO week** (weeks start on
+Monday, and week 1 of a year is the week that contains that year's first Thursday). Return a list of
+`(week, count)` tuples, where `week` is written `"YYYY-Www"` with the ISO year and a two-digit week number (for
+example `"2025-W01"`), sorted by week.
+
+**Examples**
+
+* `solution(['2026-03-02', '2026-03-08', '2026-03-09'])` returns `[('2026-W10', 2), ('2026-W11', 1)]`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* all dates are valid and between 2000-01-01 and 2099-12-31.
+
+Start from:
+
+```python
+def solution(D):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from collections import Counter
+    from datetime import date
+    
+    def solution(D):
+        counts = Counter()
+        for d in D:
+            year, week, _ = date.fromisoformat(d).isocalendar()   # the ISO year, not d's year
+            counts[f"{year}-W{week:02d}"] += 1
+        return sorted(counts.items())
+    ```
+    
+    **Why it works**
+    
+    * `date.isocalendar()` returns the ISO year, week number and weekday. **The ISO year is not always the calendar
+      year**: 30 December 2024 belongs to week 1 of 2025, and 1 January 2021 to week 53 of 2020. Building the label
+      from `d.year` gets exactly those days wrong.
+    * `strftime("%W")` is a different week numbering (weeks start on Monday, but week 1 starts at the first Monday,
+      and days before it are week 0). `%G-W%V` gives the ISO label, but `%Y-W%V` mixes the calendar year with the ISO
+      week. Both wrong answers below were run and fail the year-end cases.
+    * Sorting the labels as text works because they are fixed width: year first, then a two-digit week.
+    
+    **Cost:** O(N + W log W) time for W different weeks.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `[]`;
+    * edge case, 30 December 2024 is in week 1 of 2025: `solution(['2024-12-29', '2024-12-30', '2025-01-01'])` returns `[('2024-W52', 1), ('2025-W01', 2)]`;
+    * edge case, 1 January 2021 is in week 53 of 2020: `solution(['2021-01-01', '2021-01-04'])` returns `[('2020-W53', 1), ('2021-W01', 1)]`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.107s.
+    
+    ??? failure "A common wrong answer: %Y-W%V: calendar year with the ISO week"
+    
+        ```python
+        from collections import Counter
+        from datetime import date
+        
+        def solution(D):
+            c = Counter(date.fromisoformat(d).strftime("%Y-W%V") for d in D)
+            return sorted(c.items())
+        ```
+        
+        Checked: edge: 30 December 2024 is in week 1 of 2025: got [('2024-W01', 1), ('2024-W52', 1), ('2025-W01', 1)] want [('2024-W52', 1), ('2025-W01', 2)].
+    
+    ??? failure "A common wrong answer: %W is not the ISO week"
+    
+        ```python
+        from collections import Counter
+        from datetime import date
+        
+        def solution(D):
+            c = Counter(date.fromisoformat(d).strftime("%Y-W%W") for d in D)
+            return sorted(c.items())
+        ```
+        
+        Checked: example: got [('2026-W09', 2), ('2026-W10', 1)] want [('2026-W10', 2), ('2026-W11', 1)].
+
+
+
+### 18. Parse a query string
+
+**Level:** Easy · **Aim for:** 10 minutes
+
+`S` is the part of a web address after the `?`, such as `"a=1&b=2&a=3"`. Split it on `&` into parts and skip
+empty parts. In each part, the **key** is everything before the first `=` and the **value** everything after it
+(the value may itself contain `=`). A part with no `=` has the value `""`. Return a `dict` that maps each key to
+the **list** of its values, in the order they appear.
+
+**Examples**
+
+* `solution('a=1&b=2&a=3')` returns `{'a': ['1', '3'], 'b': ['2']}`
+* `solution('flag&x=')` returns `{'flag': [''], 'x': ['']}`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* the length of `S` is within the range [0..1,000,000];
+* `S` does not contain spaces.
+
+Start from:
+
+```python
+def solution(S):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(S):
+        out = {}
+        for part in S.split("&"):
+            if not part:
+                continue                                  # "&&" or a trailing "&"
+            key, _, value = part.partition("=")           # split at the FIRST "=" only
+            out.setdefault(key, []).append(value)
+        return out
+    ```
+    
+    **Why it works**
+    
+    * `str.partition("=")` splits at the **first** `=` and always returns three parts, so a missing `=` gives an
+      empty value with no special case. `split("=", 1)` also splits once, but returns one item when there is no `=`.
+    * `dict.setdefault(key, [])` returns the list for `key`, creating it the first time: the shortest way to group
+      values in a dict. `collections.defaultdict(list)` does the same, but the task asks for a plain `dict`, so you
+      would have to convert it.
+    * Repeated keys keep **all** values in order; `out[key] = value` would keep only the last one.
+    
+    **Cost:** O(L) time for L characters.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty string: `solution('')` returns `{}`;
+    * edge case, empty parts: `solution('&&a=1&')` returns `{'a': ['1']}`;
+    * edge case, = inside the value: `solution('token=ab==&q=x=y')` returns `{'token': ['ab=='], 'q': ['x=y']}`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.020s.
+    
+    ??? failure "A common wrong answer: split('=') breaks on a second ="
+    
+        ```python
+        def solution(S):
+            out = {}
+            for part in S.split("&"):
+                if part:
+                    if "=" in part:
+                        key, value = part.split("=")
+                    else:
+                        key, value = part, ""
+                    out.setdefault(key, []).append(value)
+            return out
+        ```
+        
+        Checked: edge: = inside the value: ValueError too many values to unpack (expected 2).
+    
+    ??? failure "A common wrong answer: only the last value of each key"
+    
+        ```python
+        def solution(S):
+            out = {}
+            for part in S.split("&"):
+                if part:
+                    key, _, value = part.partition("=")
+                    out[key] = [value]
+            return out
+        ```
+        
+        Checked: example: got {'a': ['3'], 'b': ['2']} want {'a': ['1', '3'], 'b': ['2']}.
+
+
+
+### 19. Sum a column of a CSV file
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`S` is the text of a CSV file: the first line holds the column names, then one line per row, each line ending
+with `"\n"`. Fields are separated by commas. A field that contains a comma or a quote is wrapped in double
+quotes, and a quote inside it is written twice (`""`). No field contains a line break, and there are no blank
+lines. Return the sum of the integers in the column named `C`; an empty field counts as 0.
+
+**Examples**
+
+* `solution('name,qty\n"Smith, Ana",3\nBen,4\n', 'qty')` returns `7`
+* `solution('qty,note\n5,"say ""hi"", ok"\n,\n', 'qty')` returns `5`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* the length of `S` is within the range [1..1,000,000];
+* column `C` exists;
+* every non-empty field of column `C` is an integer within the range [−1,000,000..1,000,000].
+
+Start from:
+
+```python
+def solution(S, C):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    import csv
+    import io
+    
+    def solution(S, C):
+        reader = csv.reader(io.StringIO(S))     # handles quotes, commas in quotes, doubled quotes
+        header = next(reader)
+        col = header.index(C)
+        total = 0
+        for row in reader:
+            if row[col] != "":
+                total += int(row[col])
+        return total
+    ```
+    
+    **Why it works**
+    
+    * Use the **`csv` module** from the standard library: it knows the quoting rules, which `line.split(",")` does
+      not. `"Smith, Ana"` is one field, and `split` makes it two, so every later column shifts by one.
+    * `io.StringIO(S)` makes a string look like a file, which is what `csv.reader` reads.
+    * Find the column **by name** from the header (`header.index(C)`) instead of assuming its position.
+    * The `csv` module is part of standard Python, so it is allowed wherever "standard library only" applies. Codility
+      says to use standard libraries unless the task says otherwise; whether pandas is installed is not known, and
+      for a task like this it is not needed.
+    
+    **Cost:** O(L) time for L characters.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, header only: `solution('a,b\n', 'b')` returns `0`;
+    * edge case, the column is not the first: `solution('note,qty\n"a,b,c",2\nx,-3\n', 'qty')` returns `-1`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.041s.
+    
+    ??? failure "A common wrong answer: split(',') breaks quoted fields"
+    
+        ```python
+        def solution(S, C):
+            lines = S.split("\n")[:-1]
+            col = lines[0].split(",").index(C)
+            total = 0
+            for line in lines[1:]:
+                v = line.split(",")[col]
+                if v != "":
+                    total += int(v)
+            return total
+        ```
+        
+        Checked: example: ValueError invalid literal for int() with base 10: ' Ana"'.
+
+
+
+### 20. Flatten a nested record
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`D` is a dictionary whose keys are non-empty strings without dots and whose values are integers or further
+dictionaries of the same kind. Return a flat `dict` that maps the **dotted path** of every integer to that
+integer: `{"a": 1, "b": {"c": 2}}` becomes `{"a": 1, "b.c": 2}`. An empty dictionary inside `D` adds nothing.
+
+**Examples**
+
+* `solution({'a': 1, 'b': {'c': 2, 'd': {'e': 3}}})` returns `{'a': 1, 'b.c': 2, 'b.d.e': 3}`
+* `solution({'x': {}})` returns `{}`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `D` holds at most 100,000 integers in total;
+* dictionaries are nested at most **5,000** levels deep.
+
+Start from:
+
+```python
+def solution(D):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(D):
+        out = {}
+        stack = [("", D)]                        # (path so far, dictionary to visit)
+        while stack:
+            prefix, d = stack.pop()
+            for key, value in d.items():
+                path = prefix + key
+                if isinstance(value, dict):
+                    stack.append((path + ".", value))
+                else:
+                    out[path] = value
+        return out
+    ```
+    
+    **Why it works**
+    
+    * The natural answer is recursive ("flatten each inner dict and add its keys"), and on ordinary data it is fine.
+      But the limits say **5,000 levels**, and Python stops at about 1,000 nested calls by default with
+      `RecursionError`. The recursive answer below was run on a 3,000-level input and failed exactly so.
+    * An **explicit stack** (a list of "work still to do") replaces the recursion: no depth limit, same result.
+      Whenever a Python task allows deep nesting or long chains, use a loop with a stack or a queue.
+      (`sys.setrecursionlimit` can be raised, but very deep recursion can then crash the whole process.)
+    * A `dict` compares equal regardless of key order, so visiting in stack order is fine.
+    
+    **Cost:** O(T) time and memory for T keys in all.
+    
+    **The slow answer:** Not slow but broken: a recursive answer hits Python's recursion limit on deep input.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution({})` returns `{}`;
+    * edge case, a key used at two levels: `solution({'a': {'a': 1}, 'b': 2})` returns `{'a.a': 1, 'b': 2}`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.007s.
+    
+    ??? failure "A common wrong answer: recursion hits Python's limit on deep input"
+    
+        ```python
+        def solution(D):
+            out = {}
+            for key, value in D.items():
+                if isinstance(value, dict):
+                    for k, v in solution(value).items():
+                        out[key + "." + k] = v
+                else:
+                    out[key] = value
+            return out
+        ```
+        
+        Checked: RecursionError on the large input.
 
 
 
 ## C. Sorting and intervals
 
-### 12. Sessions from timestamps
+### 21. Sessions from timestamps
 
-**Level:** Easy to medium · **Aim for:** 10 minutes
+**Level:** Medium · **Aim for:** 10 minutes
 
 `T` holds the times (in seconds) of one user's clicks, **in no particular order**. A new session starts when more
 than `G` seconds pass since the previous click. Return the number of sessions (0 if there are no clicks).
@@ -898,6 +1821,10 @@ def solution(T, G):
       but worth knowing.
     * The same idea in SQL is the "Count sessions" task in the SQL practice set.
     
+    **Cost:** O(N log N) time for the sort, O(N) memory.
+    
+    **The slow answer:** Checking every click against every other click: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -907,7 +1834,7 @@ def solution(T, G):
     * edge case, gap of G + 1: `solution([0, 31], 30)` returns `2`;
     * edge case, out of order, one session: `solution([30, 0, 60], 30)` returns `1`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.027s.
+    * the largest input the limits allow: 0.033s.
     
     ??? failure "A common wrong answer: not sorting first"
     
@@ -923,10 +1850,23 @@ def solution(T, G):
         ```
         
         Checked: edge: out of order, one session: got 2 want 1.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(T, G):
+            n = 0
+            for t in set(T):
+                if not any(t - G <= u < t for u in T):
+                    n += 1
+            return n
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.033s).
 
 
 
-### 13. Total busy time
+### 22. Total busy time
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -977,6 +1917,10 @@ def solution(S, E):
     * The reference answer, one entry per time unit, is only usable for tiny times: with times up to a billion it
       would need billions of entries.
     
+    **Cost:** O(N log N) time for the sort, O(N) memory.
+    
+    **The slow answer:** Marking every covered second in a set needs up to a billion entries.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -985,7 +1929,7 @@ def solution(S, E):
     * edge case, identical jobs: `solution([4, 4], [6, 6])` returns `2`;
     * edge case, jobs not in time order: `solution([10, 0], [12, 5])` returns `7`;
     * 800 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.046s.
+    * the largest input the limits allow: 0.098s.
     
     ??? failure "A common wrong answer: adding lengths double-counts overlaps"
     
@@ -1013,12 +1957,136 @@ def solution(S, E):
         ```
         
         Checked: edge: jobs not in time order: got 2 want 7.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(S, E):
+            busy = set()
+            for s, e in zip(S, E):
+                busy.update(range(s, e))
+            return len(busy)
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.098s).
+
+
+
+### 23. Merge maintenance windows
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Each element of `A` is a maintenance window `[start, end]` with `start < end`; a window covers the time from
+`start` up to `end`. Windows that overlap or **touch** (one ends exactly when the other starts) form one longer
+window. Return the merged windows as a list of `[start, end]` lists, sorted by start.
+
+**Examples**
+
+* `solution([[1, 3], [2, 6], [8, 10], [15, 18]])` returns `[[1, 6], [8, 10], [15, 18]]`
+* `solution([[5, 7], [1, 5]])` returns `[[1, 7]]`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* `0 ≤ start < end ≤ 1,000,000,000`.
+
+Start from:
+
+```python
+def solution(A):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A):
+        merged = []
+        for start, end in sorted(A):                 # by start time
+            if merged and start <= merged[-1][1]:    # overlaps or touches the last one
+                merged[-1][1] = max(merged[-1][1], end)
+            else:
+                merged.append([start, end])
+        return merged
+    ```
+    
+    **Why it works**
+    
+    * **Sort by start, then one pass.** After sorting, a window can only merge with the last merged window, so you
+      compare with `merged[-1]` and either extend it or start a new one.
+    * `max(...)` when extending: a window inside the last one (edge case) must not shrink it.
+    * `<=` makes touching windows merge, as the task says. Read that rule in every interval task; it is often the
+      only difference between two tasks.
+    * `sorted(A)` sorts the `[start, end]` lists by start, then end. The lists inside the answer are new lists, so
+      changing them does not change the caller's input, which is a good habit.
+    
+    **Cost:** O(N log N) time for the sort, O(N) memory.
+    
+    **The slow answer:** Marking every covered second needs up to a billion entries.
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `[]`;
+    * edge case, one window inside another: `solution([[1, 10], [2, 3], [4, 5]])` returns `[[1, 10]]`;
+    * edge case, not in time order: `solution([[8, 9], [1, 2], [2, 4]])` returns `[[1, 4], [8, 9]]`;
+    * edge case, identical windows: `solution([[3, 4], [3, 4]])` returns `[[3, 4]]`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.135s.
+    
+    ??? failure "A common wrong answer: not sorting first"
+    
+        ```python
+        def solution(A):
+            merged = []
+            for start, end in A:
+                if merged and start <= merged[-1][1]:
+                    merged[-1][1] = max(merged[-1][1], end)
+                else:
+                    merged.append([start, end])
+            return merged
+        ```
+        
+        Checked: example: got [[5, 7]] want [[1, 7]].
+    
+    ??? failure "A common wrong answer: end = the new end, without max()"
+    
+        ```python
+        def solution(A):
+            merged = []
+            for start, end in sorted(A):
+                if merged and start <= merged[-1][1]:
+                    merged[-1][1] = end
+                else:
+                    merged.append([start, end])
+            return merged
+        ```
+        
+        Checked: edge: one window inside another: got [[1, 3], [4, 5]] want [[1, 10]].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(A):
+            covered = set()
+            for s, e in A:
+                covered.update(range(s, e))
+            out = []
+            for t in sorted(covered):
+                if out and out[-1][1] == t:
+                    out[-1][1] = t + 1
+                else:
+                    out.append([t, t + 1])
+            return out
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.135s).
 
 
 
 ## D. Prefix sums, sliding windows and two pointers
 
-### 14. Best K consecutive days
+### 24. Best K consecutive days
 
 **Level:** Easy · **Aim for:** 10 minutes
 
@@ -1062,13 +2130,17 @@ def solution(A, K):
     * Summing each slice from scratch is correct but does up to 2.5 billion additions when `N` is 100,000 and `K`
       is 50,000.
     
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** Re-adding every window from scratch: O(N·K).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
     * edge case, K equals N: `solution([1, 2, 3], 3)` returns `6`;
     * edge case, all negative: `solution([-1, -1, -1], 2)` returns `-2`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.004s.
+    * the largest input the limits allow: 0.006s.
     
     ??? failure "A common wrong answer: best starts at 0"
     
@@ -1096,9 +2168,185 @@ def solution(A, K):
 
 
 
-### 15. Many range totals
+### 25. Biggest rise in a sensor reading
 
-**Level:** Easy to medium · **Aim for:** 12 minutes
+**Level:** Easy · **Aim for:** 10 minutes
+
+`A[i]` is a sensor reading at minute `i`. Return the biggest rise `A[j] − A[i]` with `i < j`. If the reading never
+rises (or there are fewer than two readings), return 0.
+
+**Examples**
+
+* `solution([7, 1, 5, 3, 6, 4])` returns `5`
+* `solution([9, 8, 2])` returns `0`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* each element of `A` is an integer within the range [−1,000,000..1,000,000].
+
+Start from:
+
+```python
+def solution(A):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A):
+        best = 0
+        low = None                      # lowest reading so far
+        for x in A:
+            if low is not None:
+                best = max(best, x - low)
+            if low is None or x < low:
+                low = x
+        return best
+    ```
+    
+    **Why it works**
+    
+    * Walk once and remember the **lowest reading so far**. The best rise ending at minute `j` is `A[j]` minus that
+      low; the answer is the best of those. O(N) time, O(1) memory. This is the idea of Codility's lesson 9
+      ("maximum slice").
+    * `max(A) - min(A)` ignores the order: in `[5, 9, 1]` it gives 8, but the 1 comes after the 9.
+    * Starting `best` at 0 makes "never rises" return 0 with no special case.
+    
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** Trying every pair: O(N²).
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([])` returns `0`;
+    * edge case, one reading: `solution([4])` returns `0`;
+    * edge case, the lowest value comes last: `solution([5, 9, 1])` returns `4`;
+    * edge case, negative readings: `solution([-5, -9, -2])` returns `7`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.009s.
+    
+    ??? failure "A common wrong answer: max(A) - min(A) ignores the order"
+    
+        ```python
+        def solution(A):
+            return max(A) - min(A) if A else 0
+        ```
+        
+        Checked: example: got 6 want 5.
+    
+    ??? failure "A common wrong answer: every pair (right, too slow)"
+    
+        ```python
+        def solution(A):
+            best = 0
+            for i in range(len(A)):
+                for j in range(i + 1, len(A)):
+                    best = max(best, A[j] - A[i])
+            return best
+        ```
+        
+        Checked: timed out after 5.0s on the large input.
+
+
+
+### 26. Pairs within a budget
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`P` lists prices, in no particular order. Return the number of pairs of **different positions** `i < j` with
+`P[i] + P[j] ≤ K`.
+
+**Examples**
+
+* `solution([4, 1, 3, 2], 5)` returns `4`
+* `solution([5, 5], 9)` returns `0`
+
+**Write an efficient algorithm for the following assumptions:**
+
+* `N` is an integer within the range [0..100,000];
+* each element of `P` and `K` are integers within the range [0..1,000,000,000].
+
+Start from:
+
+```python
+def solution(P, K):
+    pass
+```
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(P, K):
+        p = sorted(P)
+        i, j = 0, len(p) - 1
+        pairs = 0
+        while i < j:
+            if p[i] + p[j] <= K:
+                pairs += j - i      # p[i] fits with every price from i+1 up to j
+                i += 1
+            else:
+                j -= 1              # p[j] is too big for anything left
+        return pairs
+    ```
+    
+    **Why it works**
+    
+    * **Sort, then two pointers** from both ends. If the smallest plus the largest fits, the smallest fits with
+      *every* price between them, so add `j - i` at once and move the left pointer. If it does not fit, the largest
+      price fits with nothing left, so move the right pointer. O(N log N) for the sort, then O(N).
+    * The answer can be close to 5 billion (100,000 × 99,999 / 2). Python integers do not overflow; in other languages
+      this is a trap.
+    * Equal prices are different positions, so `[2, 2, 2]` with `K = 4` has 3 pairs.
+    
+    **Cost:** O(N log N) time for the sort, then O(N).
+    
+    **The slow answer:** Trying every pair: O(N²).
+    
+    **Tested** (Python 3.13; standard library only):
+    
+    * the examples above;
+    * edge case, empty: `solution([], 10)` returns `0`;
+    * edge case, equal prices: `solution([2, 2, 2], 4)` returns `3`;
+    * edge case, one price: `solution([1], 100)` returns `0`;
+    * 500 random small inputs, each compared with a slow but obviously correct answer;
+    * the largest input the limits allow: 0.036s.
+    
+    ??? failure "A common wrong answer: counting a price paired with itself"
+    
+        ```python
+        def solution(P, K):
+            p = sorted(P)
+            i, j = 0, len(p) - 1
+            pairs = 0
+            while i <= j:
+                if p[i] + p[j] <= K:
+                    pairs += j - i + 1
+                    i += 1
+                else:
+                    j -= 1
+            return pairs
+        ```
+        
+        Checked: example: got 6 want 4.
+    
+    ??? failure "A common wrong answer: two loops (right, too slow)"
+    
+        ```python
+        def solution(P, K):
+            n = len(P)
+            return sum(1 for i in range(n) for j in range(i + 1, n) if P[i] + P[j] <= K)
+        ```
+        
+        Checked: timed out after 5.0s on the large input.
+
+
+
+### 27. Many range totals
+
+**Level:** Medium · **Aim for:** 12 minutes
 
 For each query `i`, compute the total of `A[P[i]]` to `A[Q[i]]` inclusive (`P[i] <= Q[i]`). Return the list of
 totals, one per query, in order.
@@ -1135,13 +2383,17 @@ def solution(A, P, Q):
     * Note the `+ 1`: `prefix` has one more entry than `A`, and the slice is inclusive of `Q[i]`.
     * Same idea as Codility's lesson 5 tasks; see [Codility's own tasks](codility-tasks.md).
     
+    **Cost:** O(N + M) time, O(N) memory.
+    
+    **The slow answer:** Summing each slice separately: O(N·M).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
     * edge case, whole array: `solution([1, 2], [0], [1])` returns `[3]`;
     * edge case, single element: `solution([7], [0], [0])` returns `[7]`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.007s.
+    * the largest input the limits allow: 0.011s.
     
     ??? failure "A common wrong answer: summing each slice (too slow)"
     
@@ -1166,7 +2418,7 @@ def solution(A, P, Q):
 
 
 
-### 16. Slices that sum to K
+### 28. Slices that sum to K
 
 **Level:** Medium · **Aim for:** 18 minutes
 
@@ -1214,13 +2466,17 @@ def solution(A, K):
     * A sliding window (move the left edge when the sum is too big) only works when all numbers are positive; with
       negatives it misses slices.
     
+    **Cost:** O(N) time, O(N) memory.
+    
+    **The slow answer:** Adding up every slice: O(N²) slices.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
     * edge case, empty: `solution([], 0)` returns `0`;
     * edge case, negatives: `solution([-1, -1, 1], -1)` returns `3`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.020s.
+    * the largest input the limits allow: 0.055s.
     
     ??? failure "A common wrong answer: sliding window assumes positive numbers"
     
@@ -1238,10 +2494,20 @@ def solution(A, K):
         ```
         
         Checked: example: got 3 want 5.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(A, K):
+            n = len(A)
+            return sum(1 for i in range(n) for j in range(i, n) if sum(A[i:j + 1]) == K)
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.055s).
 
 
 
-### 17. Shortest stretch reaching a target
+### 29. Shortest stretch reaching a target
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -1289,6 +2555,10 @@ def solution(A, S):
     * With negative values this shortcut breaks (compare "Slices that sum to K").
     * `best` starts at an impossible value (`len(A) + 1`) so "never found" is easy to detect.
     
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** Trying every start and end: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1296,7 +2566,7 @@ def solution(A, S):
     * edge case, one element is enough: `solution([1, 9, 1], 9)` returns `1`;
     * edge case, needs the whole array: `solution([2, 2, 2], 6)` returns `3`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.011s.
+    * the largest input the limits allow: 0.020s.
     
     ??? failure "A common wrong answer: stops at the first stretch found, not the shortest"
     
@@ -1311,10 +2581,24 @@ def solution(A, S):
         ```
         
         Checked: example: got 4 want 2.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(A, S):
+            n = len(A)
+            for length in range(1, n + 1):
+                for i in range(n - length + 1):
+                    if sum(A[i:i + length]) >= S:
+                        return length
+            return 0
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.020s).
 
 
 
-### 18. Longest stretch with at most K kinds
+### 30. Longest stretch with at most K kinds
 
 **Level:** Medium · **Aim for:** 18 minutes
 
@@ -1366,6 +2650,10 @@ def solution(A, K):
     * Keep a count per value and **delete a value when its count reaches 0**; otherwise `len(count)` keeps counting
       values that have left the window.
     
+    **Cost:** O(N) time, O(K) memory.
+    
+    **The slow answer:** Growing a window from every start: O(N²) when the whole list has K kinds or fewer.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1373,7 +2661,7 @@ def solution(A, K):
     * edge case, K larger than the number of values: `solution([1, 2, 3], 5)` returns `3`;
     * edge case, all different, K = 1: `solution([1, 2, 3], 1)` returns `1`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.018s.
+    * the largest input the limits allow: 0.028s.
     
     ??? failure "A common wrong answer: not deleting zero counts"
     
@@ -1398,7 +2686,7 @@ def solution(A, K):
 
 ## E. Stacks
 
-### 19. Deepest bracket nesting
+### 31. Deepest bracket nesting
 
 **Level:** Easy · **Aim for:** 10 minutes
 
@@ -1445,6 +2733,10 @@ def solution(S):
       Codility's Brackets task). Two checks: the counter must **never go below zero**, and it must **end at zero**.
     * Only checking that the numbers of `(` and `)` are equal accepts `")("`.
     
+    **Cost:** O(N) time, O(1) memory.
+    
+    **The slow answer:** speed is not the trap in this task; any answer that reads the input once is fast enough. The hidden tests check the rules and the edge cases.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1453,7 +2745,7 @@ def solution(S):
     * edge case, closing first: `solution(')(')` returns `-1`;
     * edge case, deep: `solution('(' * 1000 + ')' * 1000)` returns `1000`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.008s.
+    * the largest input the limits allow: 0.011s.
     
     ??? failure "A common wrong answer: only comparing the counts"
     
@@ -1469,10 +2761,30 @@ def solution(S):
         ```
         
         Checked: example: got 0 want -1.
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(S):
+            t = "".join(c for c in S if c in "()")
+            best = 0
+            while "()" in t:
+                best += 1
+                t = t.replace("()", "")
+            if t:
+                return -1
+            d = m = 0
+            for c in S:
+                d += (c == "(") - (c == ")")
+                m = max(m, d)
+            return m
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.011s).
 
 
 
-### 20. Days until a warmer reading
+### 32. Days until a warmer reading
 
 **Level:** Medium · **Aim for:** 18 minutes
 
@@ -1518,6 +2830,10 @@ def solution(T):
     * Looking ahead from every day is O(N²): on 100,000 equal temperatures (no day is ever warmer) that is about 5 billion
       comparisons.
     
+    **Cost:** O(N) time, O(N) memory: each day enters and leaves the stack once.
+    
+    **The slow answer:** Looking ahead from every day: O(N²) when no day is warmer.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1525,7 +2841,7 @@ def solution(T):
     * edge case, falling: `solution([3, 2, 1])` returns `[0, 0, 0]`;
     * edge case, rising: `solution([1, 2, 3])` returns `[1, 1, 0]`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.004s.
+    * the largest input the limits allow: 0.007s.
     
     ??? failure "A common wrong answer: looking ahead from every day (too slow)"
     
@@ -1564,7 +2880,7 @@ def solution(T):
 
 ## F. Graphs and grids
 
-### 21. Groups of linked tables
+### 33. Groups of linked tables
 
 **Level:** Medium · **Aim for:** 18 minutes
 
@@ -1620,6 +2936,10 @@ def solution(N, A, B):
     * A breadth-first search over an adjacency list (`collections.deque`) works just as well; avoid recursive
       depth-first search here for the same reason.
     
+    **Cost:** About O(N + M) time (union-find with path shortening), O(N) memory.
+    
+    **The slow answer:** Relabelling until nothing changes can take one pass per link: O(N·M) on a long chain.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1627,7 +2947,7 @@ def solution(N, A, B):
     * edge case, a table linked to itself: `solution(2, [1], [1])` returns `2`;
     * edge case, a cycle: `solution(3, [0, 1, 2], [1, 2, 0])` returns `1`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.011s.
+    * the largest input the limits allow: 0.026s.
     
     ??? failure "A common wrong answer: counting links instead of groups"
     
@@ -1640,7 +2960,7 @@ def solution(N, A, B):
 
 
 
-### 22. Count the blocks on a map
+### 34. Count the blocks on a map
 
 **Level:** Medium · **Aim for:** 20 minutes
 
@@ -1698,6 +3018,10 @@ def solution(G):
       nested calls, and Python stops at about 1,000 by default with `RecursionError`. A crash scores 0 on that
       hidden test. Use a `deque` or a list as an explicit stack.
     
+    **Cost:** O(rows × columns) time and memory.
+    
+    **The slow answer:** Not slow but broken: a recursive search on a 1,000 × 1,000 map hits Python's recursion limit.
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1705,7 +3029,7 @@ def solution(G):
     * edge case, all water: `solution(['...', '...'])` returns `0`;
     * edge case, one big block: `solution(['###', '###'])` returns `1`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.541s.
+    * the largest input the limits allow: 0.878s.
     
     ??? failure "A common wrong answer: recursive search hits the recursion limit"
     
@@ -1756,7 +3080,7 @@ def solution(G):
 
 
 
-### 23. Run order for pipeline tasks
+### 35. Run order for pipeline tasks
 
 **Level:** Hard · **Aim for:** 25 minutes
 
@@ -1817,6 +3141,10 @@ def solution(N, A, B):
     * The same rule listed twice is counted twice and released twice, so duplicates need no special care.
     * With a plain list and `min()` instead of a heap, each step scans all ready tasks: O(N²) in the worst case.
     
+    **Cost:** O((N + M) log N) time, O(N + M) memory.
+    
+    **The slow answer:** Using `min()` on a plain list of ready tasks: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -1826,7 +3154,7 @@ def solution(N, A, B):
     * edge case, a released task is smaller than one already waiting: `solution(3, [0], [1])` returns `[0, 1, 2]`;
     * edge case, a cycle among some tasks only: `solution(3, [1, 2], [2, 1])` returns `[]`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.042s.
+    * the largest input the limits allow: 0.060s.
     
     ??? failure "A common wrong answer: a FIFO queue ignores the smallest-first rule"
     
@@ -1878,12 +3206,30 @@ def solution(N, A, B):
         ```
         
         Checked: edge: a cycle among some tasks only: got [0] want [].
+    
+    ??? failure "The plain answer: right, but too slow"
+    
+        ```python
+        def solution(N, A, B):
+            done, order = set(), []
+            rules = list(zip(A, B))
+            while len(order) < N:
+                ready = [t for t in range(N) if t not in done and all(a in done for a, b in rules if b == t)]
+                if not ready:
+                    return []
+                t = min(ready)
+                done.add(t)
+                order.append(t)
+            return order
+        ```
+        
+        It gives the right answers (the random tests compare against it), but it was stopped after 5 seconds on the largest input (the answer above takes 0.060s).
 
 
 
 ## G. Binary search on the answer
 
-### 24. Smallest daily capacity
+### 36. Smallest daily capacity
 
 **Level:** Hard · **Aim for:** 25 minutes
 
@@ -1939,8 +3285,11 @@ def solution(W, D):
       switch from no to yes, and binary search finds the switch.
     * The range: the capacity must be at least the biggest file (`max(W)`) and never needs to exceed the total
       (`sum(W)`, everything in one day).
-    * Cost: about 30 greedy passes (log₂ of the range) of O(N) each. Trying capacities one by one could take a billion
-      passes. Codility's lesson 14 has tasks of this kind.
+    * Codility's lesson 14 has tasks of this kind.
+    
+    **Cost:** O(N log S) time, where S is the total weight: about 30 passes of O(N).
+    
+    **The slow answer:** Trying every capacity from the largest file up: O(N·S).
     
     **Tested** (Python 3.13; standard library only):
     
@@ -1950,7 +3299,7 @@ def solution(W, D):
     * edge case, single file: `solution([7], 1)` returns `7`;
     * edge case, files cannot be split: `solution([5, 5, 6], 2)` returns `10`;
     * 500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.092s.
+    * the largest input the limits allow: 0.140s.
     
     ??? failure "A common wrong answer: average per day is not enough"
     

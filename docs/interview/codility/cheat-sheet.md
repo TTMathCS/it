@@ -26,7 +26,7 @@ One page. Read it the day before and again in the hour before the test.
 * **Rows that must not disappear:** "every department, even with no employees" means `LEFT JOIN`, then
   `COUNT(column)` (not `COUNT(*)`) and `COALESCE(SUM(...), 0)`.
 * **NULLs:** `= NULL` is never true; use `IS NULL`. `NOT IN (subquery)` returns nothing if the subquery
-  has a NULL; prefer `NOT EXISTS`.
+  has a NULL; use `LEFT JOIN ... WHERE right.id IS NULL` (fast on both databases) or `NOT EXISTS`.
 * **Duplicates:** could the same person, day or pair appear twice? Use `DISTINCT` or group first.
 * **Integer division:** `5/2` is `2` in both PostgreSQL and SQLite. Write `5 * 1.0 / 2` for 2.5.
 * **Rounding:** in PostgreSQL, `ROUND(x, 2)` works on numeric values but fails on a float

@@ -102,7 +102,7 @@ CREATE TABLE tickets (
     * edge case: thirds round to one decimal;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.06 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.09 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -148,7 +148,7 @@ CREATE TABLE tickets (
 
 ### Task&nbsp;2: First overdraft
 
-**Level:** Medium to hard · **Aim for:** 25 minutes
+**Level:** Hard · **Aim for:** 25 minutes
 
 Every account starts at 0, and each `ledger` row adds `amount` (negative for withdrawals) at time `booked_at`;
 `(account, booked_at)` is unique. Write an SQL query that returns, for every account whose balance **ever goes
@@ -225,7 +225,7 @@ CREATE TABLE ledger (
     * edge case: rows stored out of time order;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.17 s, SQLite 3.53 0.22 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.25 s, SQLite 3.53 0.33 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -257,7 +257,7 @@ CREATE TABLE ledger (
 
 ### Task&nbsp;3: Late events
 
-**Level:** Easy to medium · **Aim for:** 25 minutes
+**Level:** Medium · **Aim for:** 25 minutes
 
 A streaming job receives events in arrival order; `T[i]` is the event time of the `i`-th event to arrive. The job
 keeps a **watermark**: the largest event time seen **before** the current event, minus `W`. An event is **late**
@@ -310,6 +310,10 @@ def solution(T, W):
     * Stream processors such as Spark Structured Streaming (used on Databricks) use watermarks in this spirit to
       decide when data is too late to change a result.
     
+    **Cost:** O(N) time, O(1) extra memory.
+    
+    **The slow answer:** Taking `max(T[:i])` for every event: O(N²).
+    
     **Tested** (Python 3.13; standard library only):
     
     * the examples above;
@@ -318,7 +322,7 @@ def solution(T, W):
     * edge case, one unit below the watermark is late: `solution([100, 94], 5)` returns `[1]`;
     * edge case, the watermark never moves back: `solution([50, 30, 46], 5)` returns `[1]`;
     * 1000 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.017s.
+    * the largest input the limits allow: 0.016s.
     
     ??? failure "A common wrong answer: <= puts on-time events in the late list"
     

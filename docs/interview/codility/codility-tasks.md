@@ -13,14 +13,17 @@ here are this guide's own short summaries, not Codility's text. Difficulty label
 
 ## SQL: Exercise 6
 
-[Exercise 6 on Codility](https://app.codility.com/programmers/trainings/6/). Each task lets you choose
-**SQL (PostgreSQL)** or **SQL (SQLite)**.
+**Codility publishes exactly three free SQL tasks**, all in
+[Exercise 6](https://app.codility.com/programmers/trainings/6/). (Checked on 11 November 2026: the other eight
+exercises and the seventeen lessons hold only programming tasks.) Each of the three lets you choose
+**SQL (PostgreSQL)** or **SQL (SQLite)**. Three is not many, so do all three, then use the
+[SQL practice set](sql-practice.md) and the sites at the end of this page for volume.
 
 | Task | Level | What it practises | Similar task in this guide |
 |---|---|---|---|
 | [SqlSum](https://app.codility.com/programmers/trainings/6/sql_sum/) | elementary | The answer format: one aggregate over a table. A warm-up to learn the editor. | [2. Busiest day](sql-practice.md) |
-| [SqlEventsDelta](https://app.codility.com/programmers/trainings/6/sql_events_delta/) | easy | Per group, compare the newest row with the one before it, and keep only groups with more than one row. Practise `ROW_NUMBER`/`LAG` per group. | [16. Latest record per customer](sql-practice.md), [17. Month-over-month revenue](sql-practice.md) |
-| [SqlWorldCup](https://app.codility.com/programmers/trainings/6/sql_world_cup/) | medium | Turn each match into points for **both** teams, keep teams that played no match with 0, then sort with tie-breakers. | [10. Balances from transfers](sql-practice.md) (one row per side), [Mock 1 task 1](mock-test-1.md) (keep empty groups) |
+| [SqlEventsDelta](https://app.codility.com/programmers/trainings/6/sql_events_delta/) | easy | Per group, compare the newest row with the one before it, and keep only groups with more than one row. Practise `ROW_NUMBER`/`LAG` per group. | [22. Latest record per customer](sql-practice.md), [23. Month-over-month revenue](sql-practice.md) |
+| [SqlWorldCup](https://app.codility.com/programmers/trainings/6/sql_world_cup/) | medium | Turn each match into points for **both** teams, keep teams that played no match with 0, then sort with tie-breakers. | [11. Balances from transfers](sql-practice.md) (one row per side), [Mock 1 task 1](mock-test-1.md) (keep empty groups) |
 
 Hints for these three, without giving the answers away:
 
@@ -63,3 +66,20 @@ Codility tasks to try on the real grader.
 | [5. Coding skills](https://app.codility.com/programmers/trainings/5/) | [ParkingBill](https://app.codility.com/programmers/trainings/5/parking_bill/) (elementary), [ThreeLetters](https://app.codility.com/programmers/trainings/5/three_letters/) (medium) | Parsing time strings and following business rules exactly: close to data engineering work. |
 | [4. Algorithmic skills](https://app.codility.com/programmers/trainings/4/) | [FirstUnique](https://app.codility.com/programmers/trainings/4/first_unique/), [StrSymmetryPoint](https://app.codility.com/programmers/trainings/4/str_symmetry_point/) (easy), [ArrayInversionCount](https://app.codility.com/programmers/trainings/4/array_inversion_count/) (medium) | Counting with a dict; a string task; an O(N log N) count. |
 | [7. Data Structures](https://app.codility.com/programmers/trainings/7/) | [ArrListLen](https://app.codility.com/programmers/trainings/7/arr_list_len/) (easy), [CountBoundedSlices](https://app.codility.com/programmers/trainings/7/count_bounded_slices/) (medium) | Following links stored in an array; a sliding window with two queues. |
+
+## Other places to practise SQL
+
+Each page below was opened on 11 November 2026 to check what it offers and which database its editor runs.
+Remember that Codility gives you PostgreSQL or SQLite: on a site with another database, functions for dates and
+text differ (see the table in the [test-day plan](test-day-plan.md#which-sql-dialect)).
+
+| Site | Database | What it has |
+|---|---|---|
+| [PostgreSQL Exercises](https://pgexercises.com/) | PostgreSQL | Free exercises on one small dataset, grouped into basic queries, joins and subqueries, changing data, aggregates (including window functions), dates, strings and recursive queries. The closest match to Codility's PostgreSQL option. |
+| [DataLemur SQL questions](https://datalemur.com/questions) | PostgreSQL 14 by default (MySQL also offered) | Interview-style questions with an online editor, easy to hard. Some questions need a paid account. For example, [Histogram of Tweets](https://datalemur.com/questions/sql-histogram-tweets) is free and practises the same "group, then count the groups" idea as task 7 of the practice set. |
+| [HackerRank SQL](https://www.hackerrank.com/domains/sql) | MySQL (default), Oracle, SQL Server or DB2; no PostgreSQL or SQLite | A long list of graded SQL challenges, easy to hard. Good for volume; expect to adjust date and text functions. |
+| [SQLZoo](https://sqlzoo.net/wiki/SQL_Tutorial) | a choice of engines | Step-by-step tutorials with small exercises, including joins, `NULL`, self joins and window functions. Good for filling a gap quickly. |
+| [SQLite Fiddle](https://sqlite.org/fiddle/) | SQLite | Not a question site: an SQLite that runs in your browser, handy for trying the tasks in this guide with no install. |
+
+LeetCode's SQL questions are also widely used for practice, but its page refused the automated check, so it is
+not linked here.

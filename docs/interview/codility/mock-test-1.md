@@ -20,7 +20,7 @@ work as you would in the real test:
 
 ### Task&nbsp;1: Department payroll
 
-**Level:** Easy to medium · **Aim for:** 20 minutes
+**Level:** Medium · **Aim for:** 20 minutes
 
 A company keeps its departments and employees in two tables (below). Write an SQL query that returns
 **one row per department, including departments that have no employees**, with three columns:
@@ -117,7 +117,7 @@ CREATE TABLE employees (
     * edge case: every employee has no department;
     * edge case: tie on total, names decide;
     * 200 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.16 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.24 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -167,7 +167,7 @@ CREATE TABLE employees (
 
 ### Task&nbsp;2: Longest login streak
 
-**Level:** Medium to hard · **Aim for:** 25 minutes
+**Level:** Hard · **Aim for:** 25 minutes
 
 The table `logins` gets one row every time a user signs in; a user may sign in several times on the same day.
 A **streak** is a run of consecutive calendar days on which the user signed in at least once.
@@ -288,7 +288,7 @@ CREATE TABLE logins (
     * edge case: streak over a leap day;
     * edge case: streak over new year;
     * 200 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.26 s, SQLite 3.53 0.34 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.30 s, SQLite 3.53 0.53 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -422,8 +422,9 @@ def solution(S, E):
     so the end must be processed first. Python sorts tuples element by element, and `-1 < 1`, so `(5, -1)` comes
     before `(5, 1)` with no extra code.
     
-    **Cost:** O(N log N) time for the sort, O(N) memory for the event list. On 100,000 random jobs it took
-    well under a second (timing below).
+    **Cost:** O(N log N) time for the sort, O(N) memory.
+    
+    **The slow answer:** Comparing every pair of visits is O(N²): about 5 billion steps for 100,000 visits.
     
     **Tested** (Python 3.13; standard library only):
     
@@ -435,7 +436,7 @@ def solution(S, E):
     * edge case, one long job covers all: `solution([0, 1, 3, 5], [100, 2, 4, 6])` returns `2`;
     * edge case, huge times: `solution([0, 999999999], [1000000000, 1000000000])` returns `2`;
     * 1500 random small inputs, each compared with a slow but obviously correct answer;
-    * the largest input the limits allow: 0.113s.
+    * the largest input the limits allow: 0.159s.
     
     ??? failure "A common wrong answer: counting a job that ends at t as still running"
     

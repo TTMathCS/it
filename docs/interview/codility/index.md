@@ -9,21 +9,67 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
     Take Codility's free **[demo test](https://app.codility.com/demo/take-sample-test/)**. It is the real
     editor, you can repeat it as often as you like, and it shows the language versions Codility uses.
 
-## How to use this guide
+## What is here
 
-| Step | Page | Time |
+| Page | What it is | Time |
 |---|---|---|
-| 1 | [Cheat sheet](cheat-sheet.md): the one page to read the day before and the hour before | 10 min |
-| 2 | [How a Codility test works](how-codility-works.md): timer, Run, hidden tests, scoring | 15 min |
-| 3 | [Plan for 2 SQL + 1 Python](test-day-plan.md): time split, reading a task, choosing the SQL dialect | 15 min |
-| 4 | [Mock test 1](mock-test-1.md): sit it timed, 80 minutes, then open the solutions | 80 min |
-| 5 | [SQL practice set](sql-practice.md): 28 tasks by pattern, easy to hard | as long as you have |
-| 6 | [Codility's own tasks](codility-tasks.md): the real grader, with links and hints | as long as you have |
-| 7 | [Python practice set](python-practice.md): 24 tasks by technique | as long as you have |
-| 8 | [Mock test 2](mock-test-2.md): a second timed rehearsal | 70 min |
-| 9 | [The 15 most common mistakes](common-mistakes.md): read before the test | 10 min |
+| [Cheat sheet](cheat-sheet.md) | The one page to read the day before and the hour before | 10 min |
+| [How a Codility test works](how-codility-works.md) | Timer, Run, hidden tests, scoring | 15 min |
+| [Plan for 2 SQL + 1 Python](test-day-plan.md) | Time split, reading a task, which SQL dialect to pick | 15 min |
+| [Mock test 1](mock-test-1.md) | Timed rehearsal, 2 SQL + 1 Python | 80 min |
+| [SQL practice set](sql-practice.md) | 37 tasks by pattern, easy to hard | as long as you have |
+| [Python practice set](python-practice.md) | 36 tasks by technique, data wrangling and algorithms | as long as you have |
+| [Mock test 2](mock-test-2.md) | Timed rehearsal | 70 min |
+| [Mock test 3](mock-test-3.md) | Timed rehearsal, harder SQL | 75 min |
+| [Mock test 4](mock-test-4.md) | The last rehearsal | 75 min |
+| [The 15 most common mistakes](common-mistakes.md) | Read before the test | 10 min |
+| [Codility's own tasks](codility-tasks.md) | All three free SQL tasks on Codility's real grader, the lessons for Python, and other sites to practise on | as long as you have |
 
-Every task here has its **solution and explanation folded away**: try it first, then open the green box.
+Every task here has its **solution and explanation folded away**: try it first, then open the green box. Every
+task is graded **Easy**, **Medium** or **Hard** and comes with its own tables, as a real test task does.
+
+## Study plans
+
+The date of the test is not known yet, so here are three plans. Pick the one that fits the time you have left.
+Sit every mock **timed**, in one go, and only then open the solutions.
+
+=== "1 day"
+
+    About five hours.
+
+    1. [Cheat sheet](cheat-sheet.md), [How a Codility test works](how-codility-works.md) and
+       [Plan for 2 SQL + 1 Python](test-day-plan.md) (40 min).
+    2. Codility's [demo test](https://app.codility.com/demo/take-sample-test/), once (30 min).
+    3. [Mock test 1](mock-test-1.md), timed (80 min), then read every solution, including the wrong answers
+       (30 min).
+    4. From the [SQL practice set](sql-practice.md), the first two tasks of groups A, B, C and D (about 90 min).
+    5. [The 15 most common mistakes](common-mistakes.md), then the cheat sheet again before you sleep.
+
+=== "3 days"
+
+    About three hours a day.
+
+    * **Day 1.** The cheat sheet, how the test works, the test-day plan, Codility's demo test. Then
+      [Mock test 1](mock-test-1.md), timed, and its solutions.
+    * **Day 2.** [SQL practice](sql-practice.md) groups A to D (the Easy and Medium tasks first), and Codility's
+      three [SQL tasks](codility-tasks.md#sql-exercise-6) on the real grader.
+    * **Day 3.** [Python practice](python-practice.md) groups A to D, then [Mock test 2](mock-test-2.md), timed.
+      Finish with [the 15 most common mistakes](common-mistakes.md) and the cheat sheet.
+
+=== "1 week"
+
+    About two hours a day.
+
+    * **Day 1.** The cheat sheet, how the test works, the test-day plan, Codility's demo test, then
+      [Mock test 1](mock-test-1.md).
+    * **Day 2.** [SQL practice](sql-practice.md) groups A and B, and Codility's SqlSum and SqlEventsDelta.
+    * **Day 3.** SQL practice groups C and D, and Codility's SqlWorldCup. Any topic that felt shaky: the matching
+      chapter of the [SQL course](../../databases/sql/index.md).
+    * **Day 4.** [Python practice](python-practice.md) groups A and B, and Codility lessons 1 to 4.
+    * **Day 5.** [Mock test 2](mock-test-2.md). Then Python practice groups C and D.
+    * **Day 6.** [Mock test 3](mock-test-3.md). Then SQL practice group E and Python groups E to G.
+    * **Day 7.** [Mock test 4](mock-test-4.md), [the 15 most common mistakes](common-mistakes.md), the cheat
+      sheet. Stop early and rest.
 
 ## How every answer was checked
 
@@ -34,7 +80,9 @@ Every task here has its **solution and explanation folded away**: try it first, 
   answer, and on a large table, timed. Every "common wrong answer" shown was run too, and the guide names the
   case it fails.
 * **Python:** each answer was run on Python 3.13 with the examples, edge cases, hundreds of random inputs
-  compared with a slow but obviously correct answer, and the largest input the limits allow, timed.
+  compared with a slow but obviously correct answer, and the largest input the limits allow, timed. Each
+  solution states its cost (for example O(N log N)) and names the slow answer that would fail the large
+  hidden tests; where that slow answer is shown, it was run and timed.
 * **The Python version Codility runs is not known from outside;** the FAQ says it is shown in the Codility
   interface. The answers here use only plain Python 3 that works on any recent version.
 
@@ -42,5 +90,11 @@ Every task here has its **solution and explanation folded away**: try it first, 
     Codility publishes free practice tasks. This guide links to them and describes them in its own words; it
     does not copy their text. All tasks written out here are original, in the same style.
 
-For the SQL itself (joins, grouping, window functions and so on), the
-[SQL course](../../databases/sql/index.md) teaches each topic from the start; this guide links to its chapters.
+## How this guide and the SQL course fit together
+
+The [SQL course](../../databases/sql/index.md) teaches each topic from the start (joins, grouping, window
+functions and so on), with exercises after each chapter and two practice sets on its sample shop database:
+[Practice set A](../../databases/sql/30-Practice-Set-A.md) and
+[Practice set B](../../databases/sql/31-Practice-Set-B.md). This guide is the **test-style** part: every task
+has its own fresh tables, an exact result to match and a time to aim for, as on Codility. Learn a topic in the
+course, then practise it here.

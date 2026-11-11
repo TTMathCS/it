@@ -1,6 +1,6 @@
 # SQL practice set
 
-Twenty-eight tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
+Thirty-seven tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
 Each gives the tables, example rows and the exact result your query should return.
 
 **How to practise:** write the query in PostgreSQL or SQLite (an online [SQLite fiddle](https://sqlite.org/fiddle/)
@@ -10,6 +10,10 @@ one fails.
 
 Every answer here was run on PostgreSQL 16 and SQLite 3.53 with the example, the listed edge cases, 150 random
 small tables checked against a separate Python answer, and a large table, timed.
+
+The [SQL course](../../databases/sql/index.md) has more practice on its own sample database:
+[Practice set A](../../databases/sql/30-Practice-Set-A.md) and [Practice set B](../../databases/sql/31-Practice-Set-B.md).
+Those follow the course's chapters; the tasks here are written the way a test task is, each with its own tables.
 
 !!! tip "Codility's own SQL tasks"
     Codility has three free SQL practice tasks with a real grader. Do them too; the page
@@ -85,7 +89,7 @@ CREATE TABLE stations (
     * edge case: one old and one new (not enough);
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.03 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.05 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -167,7 +171,7 @@ CREATE TABLE payments (
     * edge case: empty table;
     * edge case: later day wins on its own;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.04 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.06 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -254,7 +258,7 @@ CREATE TABLE visits (
     * edge case: February of another year;
     * edge case: last and first day;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.05 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.09 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -339,7 +343,7 @@ CREATE TABLE scores (
     * edge case: one row;
     * edge case: top value repeated;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.01 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.03 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -365,7 +369,7 @@ CREATE TABLE scores (
 
 ### 5. Duplicate e-mail addresses
 
-**Level:** Easy to medium · **Aim for:** 10 minutes
+**Level:** Medium · **Aim for:** 10 minutes
 
 A sign-up form saved e-mail addresses exactly as people typed them, with stray spaces at either end and random
 capital letters. Two addresses are the same if they match after removing spaces at both ends and ignoring case.
@@ -428,7 +432,7 @@ CREATE TABLE raw_signups (
     * edge case: no duplicates;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.06 s, SQLite 3.53 0.06 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.10 s, SQLite 3.53 0.11 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -454,7 +458,7 @@ CREATE TABLE raw_signups (
 
 ### 6. Orders by status, one column per status
 
-**Level:** Easy to medium · **Aim for:** 10 minutes
+**Level:** Medium · **Aim for:** 10 minutes
 
 `status` is always one of `'pending'`, `'shipped'` or `'cancelled'`. Write an SQL query that returns one row per
 `order_date` that has orders, with the number of orders in each status as three columns: `order_date`,
@@ -519,7 +523,7 @@ CREATE TABLE orders (
     * edge case: empty table;
     * edge case: only one status;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.08 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.14 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -537,9 +541,130 @@ CREATE TABLE orders (
 
 
 
+### 7. How many customers ordered how often
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Guest orders have `customer_id` `NULL`, and some orders point to customers that were deleted (their id is not in
+`customers`); count neither. Write an SQL query that returns exactly four rows: `orders_bucket` (the text
+`'0'`, `'1'`, `'2'` or `'3+'`) and `customers` (how many customers have that many orders), in that order. A
+bucket with no customers shows 0.
+
+**Tables**
+
+```sql
+CREATE TABLE customers (
+    id   INTEGER PRIMARY KEY,
+    name VARCHAR(40) NOT NULL
+);
+CREATE TABLE orders (
+    id          INTEGER PRIMARY KEY,
+    customer_id INTEGER
+);
+```
+
+**Example data**
+
+`customers`
+
+| id | name |
+|---|---|
+| 1 | Ana |
+| 2 | Ben |
+| 3 | Cy |
+| 4 | Dee |
+| 5 | Eli |
+
+`orders`
+
+| id | customer_id |
+|---|---|
+| 1 | 1 |
+| 2 | 1 |
+| 3 | 1 |
+| 4 | 2 |
+| 5 | NULL |
+| 6 | 3 |
+| 7 | 3 |
+| 8 | 1 |
+| 9 | 99 |
+
+**Your query should return**
+
+| orders_bucket | customers |
+|---|---|
+| 0 | 2 |
+| 1 | 1 |
+| 2 | 1 |
+| 3+ | 1 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    WITH n AS (                                  -- orders per customer, 0 included
+        SELECT c.id, COUNT(o.id) AS k
+        FROM customers c LEFT JOIN orders o ON o.customer_id = c.id
+        GROUP BY c.id
+    ),
+    buckets(bucket, lo, hi, pos) AS (           -- every bucket, even an empty one
+        VALUES ('0', 0, 0, 1), ('1', 1, 1, 2), ('2', 2, 2, 3), ('3+', 3, 1000000000, 4)
+    )
+    SELECT b.bucket AS orders_bucket, COUNT(n.id) AS customers
+    FROM buckets b
+    LEFT JOIN n ON n.k BETWEEN b.lo AND b.hi
+    GROUP BY b.bucket, b.pos
+    ORDER BY b.pos;
+    ```
+    
+    **Why it works**
+    
+    * Two different "missing rows" problems in one task. Customers with no orders vanish in an inner join, so `n`
+      starts from `customers` with a `LEFT JOIN` and `COUNT(o.id)` (0 for them). And a bucket nobody falls into
+      vanishes from any `GROUP BY` over customers, so the buckets are written out as a small table (`VALUES`) and the
+      counts are joined **onto** it.
+    * `COUNT(n.id)` counts matched customers only: 0 for an empty bucket. `COUNT(*)` would say 1.
+    * `pos` keeps the order `'0'`, `'1'`, `'2'`, `'3+'` without relying on how text sorts.
+    * Starting from `customers` also drops guest orders and orders of deleted customers, as asked.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: no orders at all;
+    * edge case: no customers;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.09 s, SQLite 3.53 0.20 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: starting from orders loses the 0 bucket"
+    
+        ```sql
+        SELECT CASE WHEN k >= 3 THEN '3+' ELSE CAST(k AS VARCHAR(2)) END AS orders_bucket, COUNT(*) AS customers
+        FROM (SELECT customer_id, COUNT(*) AS k FROM orders GROUP BY customer_id) x
+        GROUP BY CASE WHEN k >= 3 THEN '3+' ELSE CAST(k AS VARCHAR(2)) END
+        ORDER BY orders_bucket;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: empty buckets are missing"
+    
+        ```sql
+        SELECT CASE WHEN k >= 3 THEN '3+' ELSE CAST(k AS VARCHAR(2)) END AS orders_bucket, COUNT(*) AS customers
+        FROM (SELECT c.id, COUNT(o.id) AS k FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.id) x
+        GROUP BY CASE WHEN k >= 3 THEN '3+' ELSE CAST(k AS VARCHAR(2)) END
+        ORDER BY orders_bucket;
+        ```
+        
+        Checked: this gives a wrong result on **edge: no orders at all**.
+
+
+
 ## B. Joins and rows that must not go missing
 
-### 7. Customers who never ordered
+### 8. Customers who never ordered
 
 **Level:** Easy · **Aim for:** 10 minutes
 
@@ -621,7 +746,7 @@ CREATE TABLE orders (
     * edge case: only guest orders;
     * edge case: everyone ordered;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.09 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.16 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -646,9 +771,9 @@ CREATE TABLE orders (
 
 
 
-### 8. Paid more than their manager
+### 9. Paid more than their manager
 
-**Level:** Easy to medium · **Aim for:** 10 minutes
+**Level:** Medium · **Aim for:** 10 minutes
 
 `manager_id` is the `id` of the person's manager, or `NULL` for the top of the company. Write an SQL query that
 returns every person who earns **strictly more than their own manager**: `employee`, `employee_salary`,
@@ -714,7 +839,7 @@ CREATE TABLE staff (
     * edge case: nobody has a manager;
     * edge case: equal pay is not more;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.13 s, SQLite 3.53 0.12 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.19 s, SQLite 3.53 0.19 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -729,7 +854,7 @@ CREATE TABLE staff (
 
 
 
-### 9. Salary bands, including empty ones
+### 10. Salary bands, including empty ones
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -797,7 +922,7 @@ CREATE TABLE payroll (
     * edge case: empty table;
     * edge case: everyone in one band;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.05 s, SQLite 3.53 0.06 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.06 s, SQLite 3.53 0.09 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -824,7 +949,7 @@ CREATE TABLE payroll (
 
 
 
-### 10. Account balances from transfers
+### 11. Account balances from transfers
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -894,7 +1019,7 @@ CREATE TABLE transfers (
     * edge case: an account that only receives;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.14 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.12 s, SQLite 3.53 0.19 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -920,7 +1045,7 @@ CREATE TABLE transfers (
 
 
 
-### 11. Data quality report
+### 12. Data quality report
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -1007,7 +1132,7 @@ CREATE TABLE orders (
     * edge case: clean data;
     * edge case: no orders;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.03 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.06 s, SQLite 3.53 0.05 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1033,7 +1158,7 @@ CREATE TABLE orders (
 
 
 
-### 12. Double-booked rooms
+### 13. Double-booked rooms
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -1105,7 +1230,7 @@ CREATE TABLE bookings (
     * edge case: same dates, different rooms;
     * edge case: one stay inside another;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 20,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.03 s.
+    * a large table of 20,000 rows: PostgreSQL 16 1.82 s, SQLite 3.53 0.06 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1129,11 +1254,578 @@ CREATE TABLE bookings (
 
 
 
+### 14. Mutual followers
+
+**Level:** Easy · **Aim for:** 10 minutes
+
+Each row of `follows` says that user `follower` follows user `followee`. No row appears twice and nobody follows
+themselves. Write an SQL query that returns every pair of users who **follow each other**, once per pair, as
+`user_a` and `user_b` with `user_a < user_b`. Sort by `user_a`, then `user_b`.
+
+**Tables**
+
+```sql
+CREATE TABLE follows (
+    follower INTEGER NOT NULL,
+    followee INTEGER NOT NULL
+);
+```
+
+**Example data**
+
+`follows`
+
+| follower | followee |
+|---|---|
+| 1 | 2 |
+| 2 | 1 |
+| 1 | 3 |
+| 3 | 4 |
+| 4 | 3 |
+| 2 | 3 |
+| 5 | 1 |
+
+**Your query should return**
+
+| user_a | user_b |
+|---|---|
+| 1 | 2 |
+| 3 | 4 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    SELECT a.follower AS user_a, a.followee AS user_b
+    FROM follows a
+    JOIN follows b ON b.follower = a.followee     -- the other person ...
+                  AND b.followee = a.follower     -- ... follows back
+    WHERE a.follower < a.followee                 -- keep each pair once
+    ORDER BY user_a, user_b;
+    ```
+    
+    **Why it works**
+    
+    * A **self join**: the table is joined to itself under two names, `a` and `b`. Row `b` must be row `a` reversed,
+      so both columns are matched, crossed over.
+    * Each mutual pair matches twice: once as (1, 2) with (2, 1), and once as (2, 1) with (1, 2). `a.follower <
+      a.followee` keeps exactly one of the two, the one already in the order the task asks for.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: nobody follows back;
+    * edge case: empty table;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 100,000 rows: PostgreSQL 16 0.08 s, SQLite 3.53 0.10 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: each pair listed twice"
+    
+        ```sql
+        SELECT a.follower AS user_a, a.followee AS user_b FROM follows a
+        JOIN follows b ON b.follower = a.followee AND b.followee = a.follower
+        ORDER BY user_a, user_b;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: only one join condition"
+    
+        ```sql
+        SELECT DISTINCT a.follower AS user_a, a.followee AS user_b FROM follows a
+        JOIN follows b ON b.follower = a.followee
+        WHERE a.follower < a.followee ORDER BY user_a, user_b;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
+### 15. Customers who tried every tea
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+A shop records every purchase as one row of `purchases` (a customer can buy the same product many times). Write
+an SQL query that returns the customers who have bought **every product in the category `'Tea'`** at least once,
+as one column `customer_id`, sorted by `customer_id`. If the shop has no product in that category, return no
+rows.
+
+**Tables**
+
+```sql
+CREATE TABLE products (
+    id       INTEGER PRIMARY KEY,
+    name     VARCHAR(40) NOT NULL,
+    category VARCHAR(20) NOT NULL
+);
+CREATE TABLE purchases (
+    customer_id INTEGER NOT NULL,
+    product_id  INTEGER NOT NULL
+);
+```
+
+**Example data**
+
+`products`
+
+| id | name | category |
+|---|---|---|
+| 1 | Green | Tea |
+| 2 | Black | Tea |
+| 3 | Espresso | Coffee |
+| 4 | Mint | Tea |
+
+`purchases`
+
+| customer_id | product_id |
+|---|---|
+| 1 | 1 |
+| 1 | 2 |
+| 1 | 4 |
+| 1 | 4 |
+| 2 | 1 |
+| 2 | 1 |
+| 2 | 2 |
+| 2 | 3 |
+| 3 | 4 |
+| 3 | 3 |
+| 3 | 2 |
+| 3 | 1 |
+
+**Your query should return**
+
+| customer_id |
+|---|
+| 1 |
+| 3 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    SELECT p.customer_id
+    FROM purchases p
+    JOIN products r ON r.id = p.product_id AND r.category = 'Tea'   -- keep tea purchases only
+    GROUP BY p.customer_id
+    HAVING COUNT(DISTINCT p.product_id) =                            -- different teas bought ...
+           (SELECT COUNT(*) FROM products WHERE category = 'Tea')    -- ... equals all teas
+    ORDER BY p.customer_id;
+    ```
+    
+    **Why it works**
+    
+    * This is called **relational division**: "who has *all* of these?". The usual SQL for it is to count, per
+      customer, how many **different** items of the set they have, and compare with the size of the set.
+    * Two details make it right. Filter to tea **before** counting (here in the join), or a coffee purchase is counted
+      as one of the teas. And count `DISTINCT` products, because buying the same tea three times is still one tea.
+    * With no tea products, the join keeps no rows, so the result is empty, as the task asks.
+    * Another correct way, closer to the words "there is no tea the customer has not bought", is a double
+      `NOT EXISTS`. It is correct but harder to write under time pressure, and on SQLite without indexes it can be
+      slow (see "Customers who never ordered" in the [SQL practice set](sql-practice.md)). Counting is the safer
+      choice in a test.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: no tea products at all;
+    * edge case: one tea bought three times, two teas exist;
+    * edge case: no purchases;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.04 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: COUNT(*) counts repeat purchases"
+    
+        ```sql
+        SELECT p.customer_id FROM purchases p
+        JOIN products r ON r.id = p.product_id AND r.category = 'Tea'
+        GROUP BY p.customer_id
+        HAVING COUNT(*) = (SELECT COUNT(*) FROM products WHERE category = 'Tea')
+        ORDER BY p.customer_id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: the join does not filter to tea"
+    
+        ```sql
+        SELECT p.customer_id FROM purchases p
+        JOIN products r ON r.id = p.product_id
+        GROUP BY p.customer_id
+        HAVING COUNT(DISTINCT p.product_id) = (SELECT COUNT(*) FROM products WHERE category = 'Tea')
+        ORDER BY p.customer_id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
+### 16. Late delivery rate per carrier
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`delivered` is `NULL` while a shipment is still on its way. A delivered shipment is **late** if it arrived after
+the promised date. Write an SQL query that returns, for **every** carrier (names are unique): `name`, `delivered`
+(how many of its shipments have been delivered) and `late_pct` (the percentage of its delivered shipments that
+were late, rounded to 1 decimal place, or `NULL` if it has no delivered shipments). Sort by `name`.
+
+**Tables**
+
+```sql
+CREATE TABLE carriers (
+    id   INTEGER PRIMARY KEY,
+    name VARCHAR(40) NOT NULL
+);
+CREATE TABLE shipments (
+    id         INTEGER PRIMARY KEY,
+    carrier_id INTEGER NOT NULL,
+    promised   DATE NOT NULL,
+    delivered  DATE
+);
+```
+
+**Example data**
+
+`carriers`
+
+| id | name |
+|---|---|
+| 1 | Ace |
+| 2 | Bolt |
+| 3 | Cargo |
+| 4 | Dash |
+
+`shipments`
+
+| id | carrier_id | promised | delivered |
+|---|---|---|---|
+| 1 | 1 | 2026-03-01 | 2026-03-01 |
+| 2 | 1 | 2026-03-02 | 2026-03-04 |
+| 3 | 1 | 2026-03-05 | 2026-03-04 |
+| 4 | 2 | 2026-03-01 | 2026-03-02 |
+| 5 | 2 | 2026-03-03 | NULL |
+| 6 | 4 | 2026-03-09 | NULL |
+
+**Your query should return**
+
+| name | delivered | late_pct |
+|---|---|---|
+| Ace | 3 | 33.3 |
+| Bolt | 1 | 100.0 |
+| Cargo | 0 | NULL |
+| Dash | 0 | NULL |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    SELECT c.name,
+           COUNT(s.delivered) AS delivered,                     -- COUNT(column) skips NULLs
+           ROUND(100.0 * SUM(CASE WHEN s.delivered > s.promised THEN 1 ELSE 0 END)
+                 / NULLIF(COUNT(s.delivered), 0), 1) AS late_pct
+    FROM carriers c
+    LEFT JOIN shipments s ON s.carrier_id = c.id                -- keep carriers with no shipments
+    GROUP BY c.id, c.name
+    ORDER BY c.name;
+    ```
+    
+    **Why it works**
+    
+    * **`NULLIF(x, 0)` turns a zero into `NULL`**, and dividing by `NULL` gives `NULL` instead of an error. That is
+      exactly the `NULL` the task asks for when a carrier has nothing delivered. On PostgreSQL, dividing by zero stops
+      the whole query with "division by zero"; SQLite quietly returns `NULL`. Writing `NULLIF` works on both.
+    * **`100.0 *` first.** `100 * 1 / 3` is integer arithmetic and gives 33 on both databases; `100.0 * 1 / 3` gives
+      33.33..., which rounds to 33.3. On PostgreSQL `100.0` is a `numeric`, so `ROUND(..., 1)` works directly.
+    * **`COUNT(s.delivered)` counts only delivered shipments** (it skips `NULL`), and it is 0 for a carrier with no
+      shipments at all. `COUNT(*)` would count the undelivered ones, and would even count 1 for a carrier with no
+      shipments, because the `LEFT JOIN` gives it one row full of `NULL`s.
+    * `CASE WHEN delivered > promised` is false (not true) when `delivered` is `NULL`, so undelivered shipments add 0.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: no shipments at all;
+    * edge case: 1 late out of 8 (12.5);
+    * edge case: 2 late out of 3 (66.7);
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.05 s, SQLite 3.53 0.34 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: integer division"
+    
+        ```sql
+        SELECT c.name, COUNT(s.delivered) AS delivered,
+               ROUND(100 * SUM(CASE WHEN s.delivered > s.promised THEN 1 ELSE 0 END)
+                     / NULLIF(COUNT(s.delivered), 0), 1) AS late_pct
+        FROM carriers c LEFT JOIN shipments s ON s.carrier_id = c.id
+        GROUP BY c.id, c.name ORDER BY c.name;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: COUNT(*) counts shipments still on their way"
+    
+        ```sql
+        SELECT c.name, COUNT(*) AS delivered,
+               ROUND(100.0 * SUM(CASE WHEN s.delivered > s.promised THEN 1 ELSE 0 END) / COUNT(*), 1) AS late_pct
+        FROM carriers c LEFT JOIN shipments s ON s.carrier_id = c.id
+        GROUP BY c.id, c.name ORDER BY c.name;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: no NULLIF (PostgreSQL: division by zero)"
+    
+        ```sql
+        SELECT c.name, COUNT(s.delivered) AS delivered,
+               ROUND(100.0 * SUM(CASE WHEN s.delivered > s.promised THEN 1 ELSE 0 END) / COUNT(s.delivered), 1) AS late_pct
+        FROM carriers c LEFT JOIN shipments s ON s.carrier_id = c.id
+        GROUP BY c.id, c.name ORDER BY c.name;
+        ```
+        
+        Checked on PostgreSQL 16: this fails on **sample**.
+        
+        On PostgreSQL the whole query stops with the error "division by zero". SQLite returns `NULL` for a division by zero, so there it happens to give the right answer; write `NULLIF` anyway.
+
+
+
+### 17. What changed since yesterday
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+A nightly job saves a full copy of the products table. `yesterday` and `today` are two such copies; `price` can be
+`NULL` (not priced yet). Write an SQL query that lists every product that differs between the two copies, with
+`id` and `change`: `'added'` (only in `today`), `'removed'` (only in `yesterday`) or `'changed'` (in both, with a
+different price; a price that went from `NULL` to a number, or back, counts as changed). Sort by `id`.
+
+**Tables**
+
+```sql
+CREATE TABLE yesterday (
+    id    INTEGER PRIMARY KEY,
+    price INTEGER
+);
+CREATE TABLE today (
+    id    INTEGER PRIMARY KEY,
+    price INTEGER
+);
+```
+
+**Example data**
+
+`yesterday`
+
+| id | price |
+|---|---|
+| 1 | 10 |
+| 2 | 20 |
+| 3 | NULL |
+| 4 | 40 |
+| 5 | NULL |
+
+`today`
+
+| id | price |
+|---|---|
+| 1 | 10 |
+| 2 | 25 |
+| 3 | 30 |
+| 5 | NULL |
+| 6 | 60 |
+
+**Your query should return**
+
+| id | change |
+|---|---|
+| 2 | changed |
+| 3 | changed |
+| 4 | removed |
+| 6 | added |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    SELECT t.id AS id, 'added' AS change      -- AS id: SQLite needs the name for ORDER BY
+    FROM today t LEFT JOIN yesterday y ON y.id = t.id
+    WHERE y.id IS NULL
+    UNION ALL
+    SELECT y.id, 'removed'
+    FROM yesterday y LEFT JOIN today t ON t.id = y.id
+    WHERE t.id IS NULL
+    UNION ALL
+    SELECT t.id, 'changed'
+    FROM today t JOIN yesterday y ON y.id = t.id
+    WHERE t.price <> y.price                                -- both known and different
+       OR (t.price IS NULL) <> (y.price IS NULL)            -- exactly one of them is NULL
+    ORDER BY id;
+    ```
+    
+    **Why it works**
+    
+    * Three questions, three queries, glued with `UNION ALL`: new ids (anti-join one way), gone ids (anti-join the
+      other way), and ids in both with a different price. `ORDER BY` at the very end sorts the combined result.
+    * **The NULL trap.** `t.price <> y.price` is *unknown*, not true, when either price is `NULL`, so a price that
+      went from `NULL` to 30 would be missed. The second line catches "exactly one is NULL". PostgreSQL and newer
+      SQLite (3.39 and later) can also write `t.price IS DISTINCT FROM y.price`; the version Codility runs is not
+      known, so the long form is the safe one.
+    * **`AS id` on the first `SELECT` is there for SQLite.** Without it, SQLite 3.53 stopped this exact query with
+      "1st ORDER BY term does not match any column in the result set" (PostgreSQL ran it). Naming the columns of the
+      first `SELECT` with `AS` is the safe habit for any `UNION` with an `ORDER BY`.
+    * `FULL OUTER JOIN` does the same job in one query on PostgreSQL, but SQLite only has it from version 3.39.
+    * This "compare two snapshots" query is how a data pipeline finds the changes to load (change data capture).
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: a price became NULL;
+    * edge case: both empty;
+    * edge case: everything removed;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 100,000 rows: PostgreSQL 16 0.08 s, SQLite 3.53 0.07 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: <> misses changes to or from NULL"
+    
+        ```sql
+        SELECT t.id AS id, 'added' AS change FROM today t LEFT JOIN yesterday y ON y.id = t.id WHERE y.id IS NULL
+        UNION ALL SELECT y.id, 'removed' FROM yesterday y LEFT JOIN today t ON t.id = y.id WHERE t.id IS NULL
+        UNION ALL SELECT t.id, 'changed' FROM today t JOIN yesterday y ON y.id = t.id WHERE t.price <> y.price
+        ORDER BY id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: the removed rows are forgotten"
+    
+        ```sql
+        SELECT t.id, CASE WHEN y.id IS NULL THEN 'added' ELSE 'changed' END AS change
+        FROM today t LEFT JOIN yesterday y ON y.id = t.id
+        WHERE y.id IS NULL OR t.price <> y.price OR (t.price IS NULL) <> (y.price IS NULL)
+        ORDER BY t.id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
+### 18. Products bought together
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Each row of `order_items` is one line of an order; the same product can appear on several lines of one order.
+Write an SQL query that returns every pair of different products that appear **together in at least two
+orders**: `product_a` and `product_b` (with `product_a < product_b`) and `orders` (in how many orders both
+appear). Sort by `orders` from highest to lowest, then `product_a`, then `product_b`.
+
+**Tables**
+
+```sql
+CREATE TABLE order_items (
+    order_id INTEGER NOT NULL,
+    product  VARCHAR(20) NOT NULL
+);
+```
+
+**Example data**
+
+`order_items`
+
+| order_id | product |
+|---|---|
+| 1 | bread |
+| 1 | milk |
+| 1 | jam |
+| 2 | bread |
+| 2 | milk |
+| 2 | milk |
+| 3 | milk |
+| 3 | jam |
+| 3 | bread |
+| 4 | tea |
+| 4 | jam |
+
+**Your query should return**
+
+| product_a | product_b | orders |
+|---|---|---|
+| bread | milk | 3 |
+| bread | jam | 2 |
+| jam | milk | 2 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    SELECT a.product AS product_a, b.product AS product_b,
+           COUNT(DISTINCT a.order_id) AS orders
+    FROM order_items a
+    JOIN order_items b ON b.order_id = a.order_id
+                      AND a.product < b.product      -- each pair once, never a product with itself
+    GROUP BY a.product, b.product
+    HAVING COUNT(DISTINCT a.order_id) >= 2
+    ORDER BY orders DESC, product_a, product_b;
+    ```
+    
+    **Why it works**
+    
+    * A **self join on the order id** pairs every line of an order with every other line of the same order.
+      `a.product < b.product` keeps each pair in one direction only and drops a product paired with itself.
+    * **Repeated lines multiply rows.** An order with `tea` twice and `jam` once makes two (`jam`, `tea`) rows, so
+      `COUNT(*)` would count that order twice. `COUNT(DISTINCT a.order_id)` counts orders.
+    * This is "market basket" analysis, a common data question. On big tables the self join grows with the square of
+      the lines per order, which is fine for normal baskets.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: the same product twice in one order;
+    * edge case: no pair reaches two orders;
+    * edge case: empty table;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.86 s, SQLite 3.53 0.85 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: COUNT(*) counts repeated lines"
+    
+        ```sql
+        SELECT a.product AS product_a, b.product AS product_b, COUNT(*) AS orders
+        FROM order_items a JOIN order_items b ON b.order_id = a.order_id AND a.product < b.product
+        GROUP BY a.product, b.product HAVING COUNT(*) >= 2
+        ORDER BY orders DESC, product_a, product_b;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: <> lists every pair twice"
+    
+        ```sql
+        SELECT a.product AS product_a, b.product AS product_b, COUNT(DISTINCT a.order_id) AS orders
+        FROM order_items a JOIN order_items b ON b.order_id = a.order_id AND a.product <> b.product
+        GROUP BY a.product, b.product HAVING COUNT(DISTINCT a.order_id) >= 2
+        ORDER BY orders DESC, product_a, product_b;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
 ## C. Window functions: ranking, previous rows, running totals
 
-### 13. Running total per pipeline
+### 19. Running total per pipeline
 
-**Level:** Easy to medium · **Aim for:** 12 minutes
+**Level:** Medium · **Aim for:** 12 minutes
 
 Each pipeline loads data once a day at most; `(pipeline, load_date)` is unique. Write an SQL query that returns
 every row with a fourth column, `running_total`: the total `rows_loaded` **for that pipeline** from its first load
@@ -1201,7 +1893,7 @@ CREATE TABLE loads (
     * edge case: empty table;
     * edge case: a day with 0 rows;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 100,000 rows: PostgreSQL 16 0.12 s, SQLite 3.53 0.12 s.
+    * a large table of 100,000 rows: PostgreSQL 16 0.19 s, SQLite 3.53 0.21 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1227,7 +1919,7 @@ CREATE TABLE loads (
 
 
 
-### 14. Top earner in each department, ties included
+### 20. Top earner in each department, ties included
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -1302,7 +1994,7 @@ CREATE TABLE employees (
     * edge case: empty table;
     * edge case: whole department tied;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.15 s, SQLite 3.53 0.15 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.21 s, SQLite 3.53 0.20 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1327,7 +2019,7 @@ CREATE TABLE employees (
 
 
 
-### 15. Top two products per category
+### 21. Top two products per category
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -1402,7 +2094,7 @@ CREATE TABLE sales (
     * edge case: empty table;
     * edge case: three-way tie;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.16 s, SQLite 3.53 0.15 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.27 s, SQLite 3.53 0.23 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1428,7 +2120,7 @@ CREATE TABLE sales (
 
 
 
-### 16. Latest record per customer
+### 22. Latest record per customer
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -1503,7 +2195,7 @@ CREATE TABLE customer_updates (
     * edge case: one row per customer;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.13 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.11 s, SQLite 3.53 0.29 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1528,7 +2220,7 @@ CREATE TABLE customer_updates (
 
 
 
-### 17. Month-over-month revenue
+### 23. Month-over-month revenue
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -1617,7 +2309,7 @@ CREATE TABLE orders (
     * edge case: empty table;
     * edge case: one month only;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.09 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.06 s, SQLite 3.53 0.13 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1663,7 +2355,7 @@ CREATE TABLE orders (
 
 
 
-### 18. Share of total revenue
+### 24. Share of total revenue
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -1731,7 +2423,7 @@ CREATE TABLE category_sales (
     * edge case: thirds (rounding);
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.02 s, SQLite 3.53 0.04 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.06 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1757,7 +2449,7 @@ CREATE TABLE category_sales (
 
 
 
-### 19. New users per day
+### 25. New users per day
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -1827,7 +2519,7 @@ CREATE TABLE logins (
     * edge case: same user many times on day one;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.04 s, SQLite 3.53 0.08 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.05 s, SQLite 3.53 0.11 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1843,9 +2535,137 @@ CREATE TABLE logins (
 
 
 
+### 26. Back within 30 days
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Write an SQL query that returns the customers who, at least once, placed an order **30 days or fewer after one of
+their earlier orders** (two orders on the same day count, 0 days apart). One column, `customer_id`, each customer
+once, sorted by `customer_id`.
+
+**Tables**
+
+```sql
+CREATE TABLE orders (
+    id          INTEGER PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date  DATE NOT NULL
+);
+```
+
+**Example data**
+
+`orders`
+
+| id | customer_id | order_date |
+|---|---|---|
+| 1 | 1 | 2026-01-01 |
+| 2 | 1 | 2026-03-01 |
+| 3 | 1 | 2026-03-31 |
+| 4 | 2 | 2026-01-10 |
+| 5 | 2 | 2026-02-10 |
+| 6 | 3 | 2026-01-05 |
+| 7 | 4 | 2026-02-01 |
+| 8 | 4 | 2026-02-01 |
+
+**Your query should return**
+
+| customer_id |
+|---|
+| 1 |
+| 4 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **PostgreSQL**
+    
+    ```sql
+    SELECT DISTINCT customer_id
+    FROM (
+        SELECT customer_id, order_date,
+               LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev
+        FROM orders
+    ) x
+    WHERE order_date - prev <= 30            -- date minus date is a number of days
+    ORDER BY customer_id;
+    ```
+    
+    **SQLite**
+    
+    ```sql
+    SELECT DISTINCT customer_id
+    FROM (
+        SELECT customer_id, order_date,
+               LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS prev
+        FROM orders
+    ) x
+    WHERE julianday(order_date) - julianday(prev) <= 30
+    ORDER BY customer_id;
+    ```
+    
+    **Why it works**
+    
+    * If any two orders are 30 days apart or less, then two **consecutive** orders are too, so it is enough to
+      compare each order with the one just before it: `LAG(...) OVER (PARTITION BY customer_id ORDER BY order_date)`.
+    * The first order of each customer has `prev` = `NULL`, and `NULL <= 30` is not true, so it drops out on its own.
+    * `PARTITION BY customer_id` matters: without it, `LAG` compares with the previous order of **another** customer.
+    * Day arithmetic differs: `order_date - prev` is a whole number of days in PostgreSQL; SQLite stores dates as
+      text, so use `julianday(a) - julianday(b)`.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: exactly 30 and 31 days;
+    * edge case: orders of two customers interleaved;
+    * edge case: empty table;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.16 s, SQLite 3.53 0.26 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: LAG without PARTITION BY"
+    
+        PostgreSQL:
+        
+        ```sql
+        SELECT DISTINCT customer_id FROM (SELECT customer_id, order_date,
+               LAG(order_date) OVER (ORDER BY order_date) AS prev FROM orders) x
+        WHERE order_date - prev <= 30 ORDER BY customer_id;
+        ```
+        
+        SQLite:
+        
+        ```sql
+        SELECT DISTINCT customer_id FROM (SELECT customer_id, order_date,
+               LAG(order_date) OVER (ORDER BY order_date) AS prev FROM orders) x
+        WHERE julianday(order_date) - julianday(prev) <= 30 ORDER BY customer_id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: first and last order only"
+    
+        PostgreSQL:
+        
+        ```sql
+        SELECT customer_id FROM orders GROUP BY customer_id
+        HAVING COUNT(*) >= 2 AND MAX(order_date) - MIN(order_date) <= 30 ORDER BY customer_id;
+        ```
+        
+        SQLite:
+        
+        ```sql
+        SELECT customer_id FROM orders GROUP BY customer_id
+        HAVING COUNT(*) >= 2 AND julianday(MAX(order_date)) - julianday(MIN(order_date)) <= 30 ORDER BY customer_id;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
 ## D. Sequences, gaps and time
 
-### 20. Missing invoice numbers
+### 27. Missing invoice numbers
 
 **Level:** Medium · **Aim for:** 12 minutes
 
@@ -1914,7 +2734,7 @@ CREATE TABLE invoices (
     * edge case: single row;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.16 s, SQLite 3.53 0.11 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.23 s, SQLite 3.53 0.18 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -1930,7 +2750,7 @@ CREATE TABLE invoices (
 
 
 
-### 21. Three hot readings in a row
+### 28. Three hot readings in a row
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -2008,7 +2828,7 @@ CREATE TABLE readings (
     * edge case: exactly 30 is not above 30;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.19 s, SQLite 3.53 0.15 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.25 s, SQLite 3.53 0.26 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2035,7 +2855,7 @@ CREATE TABLE readings (
 
 
 
-### 22. Customers whose spending always went up
+### 29. Customers whose spending always went up
 
 **Level:** Medium · **Aim for:** 15 minutes
 
@@ -2107,7 +2927,7 @@ CREATE TABLE purchases (
     * edge case: one purchase is not enough;
     * edge case: a dip in the middle;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.13 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.11 s, SQLite 3.53 0.18 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2135,9 +2955,9 @@ CREATE TABLE purchases (
 
 
 
-### 23. Count sessions
+### 30. Count sessions
 
-**Level:** Medium to hard · **Aim for:** 20 minutes
+**Level:** Hard · **Aim for:** 20 minutes
 
 A **session** is a run of one user's page views in which each view comes **at most 30 minutes** after the
 previous one; a gap of more than 30 minutes starts a new session. A user may view two pages at the same second.
@@ -2231,7 +3051,7 @@ CREATE TABLE page_views (
     * edge case: same second twice;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.13 s, SQLite 3.53 0.26 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.19 s, SQLite 3.53 0.46 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2273,7 +3093,7 @@ CREATE TABLE page_views (
 
 
 
-### 24. Seven-day retention
+### 31. Seven-day retention
 
 **Level:** Hard · **Aim for:** 20 minutes
 
@@ -2371,7 +3191,7 @@ CREATE TABLE activity (
     * edge case: window crosses a leap day;
     * edge case: no activity table rows;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.03 s, SQLite 3.53 0.28 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.07 s, SQLite 3.53 0.36 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2419,7 +3239,7 @@ CREATE TABLE activity (
 
 
 
-### 25. Fill in missing meter readings
+### 32. Fill in missing meter readings
 
 **Level:** Hard · **Aim for:** 20 minutes
 
@@ -2493,7 +3313,7 @@ CREATE TABLE meter (
     * edge case: a reading of 0 is a real value;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.20 s, SQLite 3.53 0.21 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.28 s, SQLite 3.53 0.33 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2507,9 +3327,280 @@ CREATE TABLE meter (
 
 
 
+### 33. Seven-day sales with missing days
+
+**Level:** Hard · **Aim for:** 20 minutes
+
+`daily_sales` has one row per sale, so a day can have many rows, and a day with no sales has none. Write an SQL
+query that returns **every calendar day** from the first to the last day in the table, with `sale_day`, `total`
+(that day's sales, 0 if none) and `week_total` (the sum of `total` over the 7 days ending on that day; days
+before the first day count as 0). Sort by `sale_day`. Return no rows for an empty table.
+
+**Tables**
+
+```sql
+CREATE TABLE daily_sales (
+    id       INTEGER PRIMARY KEY,
+    sale_day DATE NOT NULL,
+    amount   INTEGER NOT NULL
+);
+```
+
+**Example data**
+
+`daily_sales`
+
+| id | sale_day | amount |
+|---|---|---|
+| 1 | 2026-03-01 | 5 |
+| 2 | 2026-03-01 | 3 |
+| 3 | 2026-03-02 | 4 |
+| 4 | 2026-03-05 | 10 |
+| 5 | 2026-03-08 | 1 |
+| 6 | 2026-03-09 | 2 |
+
+**Your query should return**
+
+| sale_day | total | week_total |
+|---|---|---|
+| 2026-03-01 | 8 | 8 |
+| 2026-03-02 | 4 | 12 |
+| 2026-03-03 | 0 | 12 |
+| 2026-03-04 | 0 | 12 |
+| 2026-03-05 | 10 | 22 |
+| 2026-03-06 | 0 | 22 |
+| 2026-03-07 | 0 | 22 |
+| 2026-03-08 | 1 | 15 |
+| 2026-03-09 | 2 | 13 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **PostgreSQL**
+    
+    ```sql
+    WITH RECURSIVE days(d) AS (                      -- one row per calendar day
+        SELECT MIN(sale_day) FROM daily_sales HAVING COUNT(*) > 0
+        UNION ALL
+        SELECT d + 1 FROM days WHERE d < (SELECT MAX(sale_day) FROM daily_sales)
+    ),
+    totals AS (
+        SELECT sale_day, SUM(amount) AS total FROM daily_sales GROUP BY sale_day
+    ),
+    filled AS (
+        SELECT days.d AS sale_day, COALESCE(t.total, 0) AS total
+        FROM days LEFT JOIN totals t ON t.sale_day = days.d
+    )
+    SELECT sale_day, total,
+           SUM(total) OVER (ORDER BY sale_day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS week_total
+    FROM filled
+    ORDER BY sale_day;
+    ```
+    
+    **SQLite**
+    
+    ```sql
+    WITH RECURSIVE days(d) AS (
+        SELECT MIN(sale_day) FROM daily_sales HAVING COUNT(*) > 0
+        UNION ALL
+        SELECT date(d, '+1 day') FROM days WHERE d < (SELECT MAX(sale_day) FROM daily_sales)
+    ),
+    totals AS (
+        SELECT sale_day, SUM(amount) AS total FROM daily_sales GROUP BY sale_day
+    ),
+    filled AS (
+        SELECT days.d AS sale_day, COALESCE(t.total, 0) AS total
+        FROM days LEFT JOIN totals t ON t.sale_day = days.d
+    )
+    SELECT sale_day, total,
+           SUM(total) OVER (ORDER BY sale_day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS week_total
+    FROM filled
+    ORDER BY sale_day;
+    ```
+    
+    **Why it works**
+    
+    * **Build a calendar first.** Days with no sales have no rows, so they must be made: a recursive CTE starts at the
+      first day and adds one day until the last. (PostgreSQL also has `generate_series(min, max, INTERVAL '1 day')`,
+      but the recursive CTE works on both databases.) `HAVING COUNT(*) > 0` stops an empty table from producing one
+      day that is `NULL`.
+    * **Then add up each day** (`totals`), and `LEFT JOIN` the calendar to it with `COALESCE(..., 0)`.
+    * **Only then the window.** `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` is "this row and the 6 before it". That
+      means 7 *days* only because every day now has exactly one row. On the raw table, with missing days, the same
+      window would reach back more than 7 days.
+    * Adding one day: `d + 1` on a PostgreSQL `date`; `date(d, '+1 day')` in SQLite, where dates are text.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: empty table;
+    * edge case: a single day;
+    * edge case: two days ten days apart;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.06 s, SQLite 3.53 0.11 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: window without filling the missing days"
+    
+        ```sql
+        SELECT sale_day, SUM(amount) AS total,
+               SUM(SUM(amount)) OVER (ORDER BY sale_day ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS week_total
+        FROM daily_sales GROUP BY sale_day ORDER BY sale_day;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: 7 PRECEDING is eight days"
+    
+        PostgreSQL:
+        
+        ```sql
+        WITH RECURSIVE days(d) AS (
+            SELECT MIN(sale_day) FROM daily_sales HAVING COUNT(*) > 0
+            UNION ALL SELECT d + 1 FROM days WHERE d < (SELECT MAX(sale_day) FROM daily_sales)),
+        totals AS (SELECT sale_day, SUM(amount) AS total FROM daily_sales GROUP BY sale_day),
+        filled AS (SELECT days.d AS sale_day, COALESCE(t.total, 0) AS total FROM days LEFT JOIN totals t ON t.sale_day = days.d)
+        SELECT sale_day, total, SUM(total) OVER (ORDER BY sale_day ROWS BETWEEN 7 PRECEDING AND CURRENT ROW) AS week_total
+        FROM filled ORDER BY sale_day;
+        ```
+        
+        SQLite:
+        
+        ```sql
+        WITH RECURSIVE days(d) AS (
+            SELECT MIN(sale_day) FROM daily_sales HAVING COUNT(*) > 0
+            UNION ALL SELECT date(d, '+1 day') FROM days WHERE d < (SELECT MAX(sale_day) FROM daily_sales)),
+        totals AS (SELECT sale_day, SUM(amount) AS total FROM daily_sales GROUP BY sale_day),
+        filled AS (SELECT days.d AS sale_day, COALESCE(t.total, 0) AS total FROM days LEFT JOIN totals t ON t.sale_day = days.d)
+        SELECT sale_day, total, SUM(total) OVER (ORDER BY sale_day ROWS BETWEEN 7 PRECEDING AND CURRENT ROW) AS week_total
+        FROM filled ORDER BY sale_day;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+
+
+
+### 34. Checkout funnel
+
+**Level:** Hard · **Aim for:** 20 minutes
+
+`event` is `'view'`, `'cart'` or `'buy'`. A user **reaches step 1** if they have a view; **step 2** if they have a
+cart event strictly later than their first view; **step 3** if they have a buy strictly later than their first
+cart event that counted for step 2. Write an SQL query that returns exactly three rows, `step` (1, 2, 3), `name`
+(`'view'`, `'cart'`, `'buy'`) and `users` (how many users reached that step, 0 if none), sorted by `step`.
+
+**Tables**
+
+```sql
+CREATE TABLE events (
+    id      INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    event   VARCHAR(10) NOT NULL,
+    ts      TIMESTAMP NOT NULL
+);
+```
+
+**Example data**
+
+`events`
+
+| id | user_id | event | ts |
+|---|---|---|---|
+| 1 | 1 | view | 2026-03-01 09:00:00 |
+| 2 | 1 | cart | 2026-03-01 09:05:00 |
+| 3 | 1 | buy | 2026-03-01 09:07:00 |
+| 4 | 2 | cart | 2026-03-01 08:00:00 |
+| 5 | 2 | view | 2026-03-01 08:30:00 |
+| 6 | 2 | buy | 2026-03-01 08:40:00 |
+| 7 | 3 | view | 2026-03-01 10:00:00 |
+| 8 | 3 | cart | 2026-03-01 10:01:00 |
+| 9 | 4 | buy | 2026-03-01 11:00:00 |
+
+**Your query should return**
+
+| step | name | users |
+|---|---|---|
+| 1 | view | 3 |
+| 2 | cart | 2 |
+| 3 | buy | 1 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+    
+    ```sql
+    WITH v AS (                                   -- first view per user
+        SELECT user_id, MIN(ts) AS t FROM events WHERE event = 'view' GROUP BY user_id
+    ),
+    c AS (                                        -- first cart after that view
+        SELECT e.user_id, MIN(e.ts) AS t
+        FROM events e JOIN v ON v.user_id = e.user_id AND e.ts > v.t
+        WHERE e.event = 'cart'
+        GROUP BY e.user_id
+    ),
+    b AS (                                        -- any buy after that cart
+        SELECT DISTINCT e.user_id
+        FROM events e JOIN c ON c.user_id = e.user_id AND e.ts > c.t
+        WHERE e.event = 'buy'
+    )
+    SELECT 1 AS step, 'view' AS name, COUNT(*) AS users FROM v
+    UNION ALL SELECT 2, 'cart', COUNT(*) FROM c
+    UNION ALL SELECT 3, 'buy', COUNT(*) FROM b
+    ORDER BY step;
+    ```
+    
+    **Why it works**
+    
+    * Each step is one CTE that **builds on the one before**: step 2 only looks at users already in step 1, after
+      their first view, and step 3 only at users in step 2, after their first counted cart. That is what "in order"
+      means in SQL.
+    * `COUNT(*)` over a CTE with no rows is 0, so all three rows always appear, even for an empty table. A `GROUP BY`
+      version would drop a step nobody reached.
+    * "Strictly later" is `>`. The edge case "cart at the same second as the view" is there because `>=` is the
+      common slip.
+    * Timestamps written as `'YYYY-MM-DD HH:MM:SS'` compare correctly in SQLite (as text) and in PostgreSQL (as
+      timestamps), so the same query runs on both.
+    
+    **Tested on PostgreSQL 16 and SQLite 3.53.** Every case below gave exactly the expected rows, columns and order on both:
+    
+    * the example above;
+    * edge case: cart at the same second as the view;
+    * edge case: no events;
+    * edge case: buy only before the cart;
+    * 150 random small tables, each compared with a separate Python answer;
+    * a large table of 200,000 rows: PostgreSQL 16 0.14 s, SQLite 3.53 0.16 s.
+    
+    **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
+    
+    ??? failure "A common wrong answer: counting each event type, ignoring the order"
+    
+        ```sql
+        SELECT 1 AS step, 'view' AS name, COUNT(DISTINCT user_id) AS users FROM events WHERE event = 'view'
+        UNION ALL SELECT 2, 'cart', COUNT(DISTINCT user_id) FROM events WHERE event = 'cart'
+        UNION ALL SELECT 3, 'buy', COUNT(DISTINCT user_id) FROM events WHERE event = 'buy'
+        ORDER BY step;
+        ```
+        
+        Checked: this gives a wrong result on **sample**.
+    
+    ??? failure "A common wrong answer: >= instead of >"
+    
+        ```sql
+        WITH v AS (SELECT user_id, MIN(ts) AS t FROM events WHERE event = 'view' GROUP BY user_id),
+        c AS (SELECT e.user_id, MIN(e.ts) AS t FROM events e JOIN v ON v.user_id = e.user_id AND e.ts >= v.t
+              WHERE e.event = 'cart' GROUP BY e.user_id),
+        b AS (SELECT DISTINCT e.user_id FROM events e JOIN c ON c.user_id = e.user_id AND e.ts >= c.t WHERE e.event = 'buy')
+        SELECT 1 AS step, 'view' AS name, COUNT(*) AS users FROM v
+        UNION ALL SELECT 2, 'cart', COUNT(*) FROM c UNION ALL SELECT 3, 'buy', COUNT(*) FROM b ORDER BY step;
+        ```
+        
+        Checked: this gives a wrong result on **edge: cart at the same second as the view**.
+
+
+
 ## E. Harder patterns
 
-### 26. Median order value per customer
+### 35. Median order value per customer
 
 **Level:** Hard · **Aim for:** 20 minutes
 
@@ -2583,7 +3674,7 @@ CREATE TABLE order_values (
     * edge case: repeated amounts;
     * edge case: empty table;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 200,000 rows: PostgreSQL 16 0.13 s, SQLite 3.53 0.21 s.
+    * a large table of 200,000 rows: PostgreSQL 16 0.21 s, SQLite 3.53 0.32 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2610,7 +3701,7 @@ CREATE TABLE order_values (
 
 
 
-### 27. Price in effect on the day of each sale
+### 36. Price in effect on the day of each sale
 
 **Level:** Hard · **Aim for:** 20 minutes
 
@@ -2702,7 +3793,7 @@ CREATE TABLE sales (
     * edge case: no prices at all;
     * edge case: sale on the day a price changes;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 100,000 rows: PostgreSQL 16 0.30 s, SQLite 3.53 0.25 s.
+    * a large table of 100,000 rows: PostgreSQL 16 0.49 s, SQLite 3.53 0.37 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
@@ -2730,7 +3821,7 @@ CREATE TABLE sales (
 
 
 
-### 28. Levels in the org chart
+### 37. Levels in the org chart
 
 **Level:** Hard · **Aim for:** 15 minutes
 
@@ -2808,7 +3899,7 @@ CREATE TABLE org (
     * edge case: only the head;
     * edge case: a long chain;
     * 150 random small tables, each compared with a separate Python answer;
-    * a large table of 100,000 rows: PostgreSQL 16 0.81 s, SQLite 3.53 0.16 s.
+    * a large table of 100,000 rows: PostgreSQL 16 1.30 s, SQLite 3.53 0.25 s.
     
     **Write your own edge cases before you submit.** The list above is the kind of thing hidden tests try.
     
