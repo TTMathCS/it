@@ -23,7 +23,7 @@ title: The data engineering core
 
 | Tutorial | The question it answers |
 | --- | --- |
-| 1. Joins are set math: relational algebra and NULL logic | Why does `NOT IN` return nothing when the list holds one NULL? *(being written)* |
+| [1. Joins are set math: relational algebra and NULL logic](01-Joins-Are-Set-Math.md) | Why does `NOT IN` return nothing when the list holds one NULL? |
 | 2. Why an index is fast: B-tree height by hand | How is one row out of 100 million found by reading about four pages? *(being written)* |
 | 3. How the planner guesses: row estimates and join order | Why did the planner pick a plan that ran for an hour? *(being written)* |
 | 4. When are two transactions "the same": serializability graphs | How can two people both book the last seat? *(being written)* |
