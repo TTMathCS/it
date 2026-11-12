@@ -1,0 +1,19 @@
+Pod requests cpu 500m, memory 1024Mi. Each node has cpu 4000m, memory 16384Mi.
+   node     cpu after  mem after  fit least cpu least mem Fit score Balanced  total
+   node-a       3500m     5120Mi  yes        12        68        40       71    111
+   node-b       1500m    13312Mi  yes        62        18        40       78    118
+   node-c       2500m     9216Mi  yes        37        43        40       96    136
+
+40 pods, total cpu 40250m, memory 62976Mi: they need at least 11 nodes (ceil of total / one node, per resource)
+Placed one by one on a cluster of 14 empty nodes, best total score first:
+   spread (LeastAllocated, the default) : 14 nodes in use, 0 empty; the largest free cpu on one node: 1500m
+      cpu% per node:  75  62  93  87  68  75  62  81  62  62  62  68  81  62
+   pack (MostAllocated)                 : 11 nodes in use, 3 empty; the largest free cpu on one node: 4000m
+      cpu% per node: 100 100 100  87 100 100 100  93  75  75  75   0   0   0
+
+Units: 1 core = 1000m;  1Mi = 2^20 bytes, 1M = 10^6 bytes
+   512Mi  =   536,870,912 bytes
+   512M   =   512,000,000 bytes
+   1Gi    = 1,073,741,824 bytes
+   1G     = 1,000,000,000 bytes
+   1Gi / 1G = 1.0737;  512Mi / 512M = 1.0486

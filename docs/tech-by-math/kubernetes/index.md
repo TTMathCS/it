@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. How Kubernetes places pods and counts them](08-Scheduler-and-Autoscaler.md): the scheduler's scores and the autoscaler's rule worked by hand, from Kubernetes' own source.
 
 # Kubernetes: Tech-by-Math
 

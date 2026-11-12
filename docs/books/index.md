@@ -17,7 +17,8 @@ Courses by category. A category joins this list, and the menu, once its first co
 | [Git](../tech-by-math/git/index.md) | Powers of 2 and sets | The 2025 drafts, and names from contents: hashes, the commit graph and merges |
 | [PKI and certificates](../tech-by-math/pki/index.md) | Remainders and powers | The 2025 drafts, and what a certificate proves: RSA, signatures, chains |
 | [Elasticsearch](../tech-by-math/elasticsearch/index.md) | Logarithms and fractions | The 2025 drafts, and how search finds and ranks: BM25, shards |
-| [Dremio, NiFi, Kubernetes, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
+| [Kubernetes](../tech-by-math/kubernetes/index.md) | Fractions and rounding | The 2025 drafts, and how Kubernetes places pods and counts them |
+| [Dremio, NiFi, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 
