@@ -1,0 +1,16 @@
+openssl verify (time fixed with -attime):
+   full chain, 2026-11-12                        -> leaf.pem: OK
+   full chain, name shop.example                 -> leaf.pem: OK
+   full chain, name evil.example                 -> error 62 at 0 depth lookup: hostname mismatch
+   full chain, 2027-02-01 (leaf expired)         -> error 10 at 0 depth lookup: certificate has expired
+   leaf without the intermediate                 -> error 20 at 0 depth lookup: unable to get local issuer certificate
+   one bit of the leaf's signature flipped       -> error 7 at 0 depth lookup: certificate signature failure
+   leaf signed by a key that is not the CA's     -> error 7 at 0 depth lookup: certificate signature failure
+   intermediate trusted, root unknown            -> error 2 at 1 depth lookup: unable to get issuer certificate
+   same, with -partial_chain                     -> leaf.pem: OK
+
+The leaf's signature, checked by hand with the intermediate's public key (n, e):
+   the leaf's to-be-signed part: 467 bytes; its SHA-256 beac09c4017ce7ff7efe364f883212acac5af469578597661ab588c05ab63783
+   last 32 bytes of s^e mod n:                         beac09c4017ce7ff7efe364f883212acac5af469578597661ab588c05ab63783
+   equal: True; block starts 0001ff...
+   (the cryptography package's own verify() agrees: no exception)

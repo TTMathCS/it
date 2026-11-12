@@ -15,7 +15,7 @@
 | [Apache NiFi](nifi/index.md) | The 2025 drafts (7 parts) |
 | [Kubernetes](kubernetes/index.md) | The 2025 drafts (7 parts) |
 | [Git](git/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: hashes, the commit graph and merges |
-| [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) |
+| [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: signatures and certificate chains |
 | [Computer networks](network/index.md) | The 2025 drafts (7 parts) |
 | [AI](ai/index.md) | The 2025 drafts (7 parts) |
 | [AI agents](ai-agent/index.md) | The 2025 drafts: concepts, tools and use cases |

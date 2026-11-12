@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. What a certificate proves: signatures and chains](08-What-a-Certificate-Proves.md): RSA by hand, a real signature opened up, and a certificate chain broken six ways, all run with OpenSSL.
 
 # PKI: Tech-by-Math
 

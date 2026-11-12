@@ -15,7 +15,8 @@ Courses by category. A category joins this list, and the menu, once its first co
 | [Apache Spark](../tech-by-math/spark/index.md) | Remainders and averages | The 2025 drafts, shuffles and skew, and why sums split and medians do not |
 | [Apache Kafka](../tech-by-math/kafka/index.md) | Remainders and rates | The 2025 drafts, and the log, offsets and lag |
 | [Git](../tech-by-math/git/index.md) | Powers of 2 and sets | The 2025 drafts, and names from contents: hashes, the commit graph and merges |
-| [Elasticsearch, Dremio, NiFi, Kubernetes, PKI, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
+| [PKI and certificates](../tech-by-math/pki/index.md) | Remainders and powers | The 2025 drafts, and what a certificate proves: RSA, signatures, chains |
+| [Elasticsearch, Dremio, NiFi, Kubernetes, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 

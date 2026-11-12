@@ -1,0 +1,23 @@
+n = p x q = 61 x 53 = 3233;  phi = (p-1)(q-1) = 60 x 52 = 3120;  e = 17
+
+Extended Euclid for e x d = 1 (mod phi): divide, keep the remainders
+    3120 = 183 x   17 + 9
+      17 =   1 x    9 + 8
+       9 =   1 x    8 + 1
+       8 =   8 x    1 + 0
+   back-substitution gives d = 2753;  check: e x d = 46801 = 15 x 3120 + 1
+
+Sign h = 65:   s = h^d mod n = 65^2753 mod 3233 = 588
+Verify:        s^e mod n = 588^17 mod 3233 = 65  (equals h: accepted)
+Forged s+1:    589^17 mod 3233 = 2838  (not h: rejected)
+
+Verification by square-and-multiply: e = 17 = binary 10001
+   start with 588
+   square -> 3046
+   square -> 2639
+   square -> 439
+   square -> 1974
+   x588 -> 65
+   result 65, using 5 multiplications instead of 16
+   e = 65537, the usual public exponent: 16 squarings + 1 multiplications
+   a 2048-bit exponent of all ones (worst case): 2047 squarings + 2047 multiplications
