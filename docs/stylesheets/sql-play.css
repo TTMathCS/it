@@ -1,0 +1,47 @@
+/* the SQL playground boxes (javascripts/sql-play.js) */
+.sqlplay {
+  margin: 1.2em 0 1.4em;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid var(--md-accent-fg-color);
+  border-radius: 6px;
+  padding: 0.6em 0.8em 0.7em;
+  background: var(--md-code-bg-color);
+}
+.sqlplay-head { display: flex; flex-wrap: wrap; gap: 0.2em 0.8em; align-items: baseline; margin-bottom: 0.4em; }
+.sqlplay-title { font-weight: 700; }
+.sqlplay-sub { font-size: 0.85em; opacity: 0.75; }
+.sqlplay-edit {
+  display: block; width: 100%; box-sizing: border-box; resize: vertical;
+  font-family: var(--md-code-font-family, monospace); font-size: 0.82rem; line-height: 1.45;
+  color: var(--md-code-fg-color); background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lighter); border-radius: 4px; padding: 0.55em 0.65em;
+  tab-size: 4; white-space: pre; overflow-wrap: normal; overflow-x: auto;
+}
+.sqlplay-edit:focus { outline: 2px solid var(--md-accent-fg-color); outline-offset: 0; }
+.sqlplay-bar { display: flex; flex-wrap: wrap; gap: 0.45em; align-items: center; margin-top: 0.55em; }
+.md-typeset .sqlplay .md-button, .md-typeset .sqlplay-openrow .md-button {
+  margin: 0; padding: 0.35em 1.1em; font-size: 0.78rem; cursor: pointer; border-radius: 4px;
+  color: var(--md-accent-fg-color); border: 1px solid var(--md-accent-fg-color); background: transparent;
+}
+.md-typeset .sqlplay .md-button--primary { color: var(--md-default-bg-color); background: var(--md-accent-fg-color); }
+.md-typeset .sqlplay .md-button:hover, .md-typeset .sqlplay-openrow .md-button:hover { filter: brightness(1.15); }
+.md-typeset .sqlplay .md-button:disabled { opacity: 0.5; cursor: wait; }
+.sqlplay-status { font-size: 0.8em; opacity: 0.8; }
+.sqlplay-out { margin-top: 0.5em; }
+.sqlplay-table { overflow-x: auto; max-height: 26em; overflow-y: auto; }
+.md-typeset .sqlplay-table table { margin: 0; font-size: 0.78rem; border-collapse: collapse; }
+.md-typeset .sqlplay-table table th, .md-typeset .sqlplay-table table td {
+  padding: 0.3em 0.8em !important; line-height: 1.4; border: 1px solid var(--md-default-fg-color--lightest); white-space: nowrap;
+}
+.md-typeset .sqlplay-table th { position: sticky; top: 0; background: var(--md-code-bg-color); }
+.sqlplay-null { opacity: 0.55; font-style: italic; }
+.md-typeset .sqlplay-note, .md-typeset .sqlplay-help, .md-typeset .sqlplay-tname { font-size: 0.78rem; margin: 0.35em 0; }
+.md-typeset .sqlplay-help { opacity: 0.75; margin-bottom: 0; }
+.md-typeset .sqlplay-tname { font-weight: 700; margin-top: 0.8em; }
+.md-typeset .sqlplay-error { color: #ff8a80; font-family: var(--md-code-font-family, monospace); font-size: 0.8rem; margin: 0.4em 0; white-space: pre-wrap; }
+[data-md-color-scheme="default"] .md-typeset .sqlplay-error { color: #b71c1c; }
+.md-typeset .sqlplay-good, .md-typeset .sqlplay-bad { margin: 0.5em 0 0; padding: 0.45em 0.7em; border-radius: 4px; font-size: 0.8rem; }
+.md-typeset .sqlplay-good { background: rgba(76, 175, 80, 0.16); border-left: 3px solid #4caf50; }
+.md-typeset .sqlplay-bad { background: rgba(255, 152, 0, 0.14); border-left: 3px solid #ff9800; }
+.sqlplay-openrow { margin: -0.6em 0 1em; text-align: right; }
+.md-typeset .sqlplay-openrow .md-button { padding: 0.2em 0.9em; font-size: 0.72rem; }

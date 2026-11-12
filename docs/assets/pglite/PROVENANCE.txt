@@ -1,0 +1,32 @@
+PGlite: PostgreSQL compiled to WebAssembly, used by the SQL playground (javascripts/sql-play.js).
+
+Package:    @electric-sql/pglite, version 0.5.10 (published 14 Oct 2026), pinned
+Project:    https://github.com/electric-sql/pglite (homepage https://pglite.dev), by ElectricSQL
+Licence:    Apache-2.0 (LICENSE.txt in this folder, from the package); PostgreSQL itself is under the PostgreSQL Licence
+Source:     https://registry.npmjs.org/@electric-sql/pglite/-/pglite-0.5.10.tgz
+Integrity:  sha512-tXc/25U3ulOkiRQuTFdwIv+JhBqtMdAF7Gvo6CfZZWtSB4+hgC4Wr2vwK5ngvvN5PJfAAEGIsfyCVy1JhCOBYw==
+            (the registry's published hash; the downloaded tarball was hashed again on 12 Nov 2026 and matched)
+SHA-256:    89dfe018869f30dd08a53e477f008c073d6e4770fdb1f21c66118523d43e373b (the tarball)
+Checked:    12 Nov 2026. The package has no install scripts (no preinstall/install/postinstall). The registry lists a
+            SLSA provenance attestation; its signature could NOT be verified here (the signing service's host was
+            blocked from the checking machine). The package name and repository were confirmed in the official
+            GitHub repository's packages/pglite/package.json. The JavaScript files here contain no http(s) address.
+
+Files copied unchanged from the tarball's dist/ folder (each compared byte for byte with the tarball):
+  index.js, chunk-3OMHRXTA.js, chunk-6QROZKQ5.js, chunk-7NIVBDG7.js, chunk-F4GETNPB.js, chunk-NNS5RQRF.js,
+  chunk-O56QGQDD.js, chunk-QY3QWFKW.js, pglite.wasm, pglite.data, initdb.wasm
+Nothing is loaded from any other site: the browser fetches these files from it.akadian.ca only when a Run button is
+first pressed.
+
+SHA-256 of each file here:
+fa28c6daa43aa4de73fddd7a910cd183df4ef6b26410daf3582afc1d2a61512d  index.js
+5bb49743e0a917c92828f7558be3df26f549d64c0bffc80de92f5fbb21f37a79  chunk-3OMHRXTA.js
+0dfd8153da8b7dce187964811397e468ab14f33e999cbf10ca1e067500fbd039  chunk-6QROZKQ5.js
+161f0b0ea69bcae99be2a09ddec378ca6d3d8687effdc8ee5cf6096dda843706  chunk-7NIVBDG7.js
+5ab11fd9fd74b259484f42a7855cd9569a5fe6ee1cf3c032238ac43a59511d97  chunk-F4GETNPB.js
+e04c14da71c248d5e7e02f45df665b8e2b136526ee0bef419274bb2b345a1017  chunk-NNS5RQRF.js
+a3239ef94a90d12af61de0f79e096a1f52ca484aa35aed476b02f101fed7de41  chunk-O56QGQDD.js
+bff6d3144dd6ea2689b00d9d0eea1ea2267b9cc14505fb9107b6194c1832bdea  chunk-QY3QWFKW.js
+864c7651fe2f23c38ff9e047a0b8851af0a5dbcbbb244a6a985bc254f274659e  pglite.wasm
+12384e109f1cea6edb978550d0445f8958ad4089cbbe3222d657f56e2e817d4b  pglite.data
+b33b41af366b4f7909085bb360b37587e5fa57a26113d84c21f23f9bfd63c0f8  initdb.wasm

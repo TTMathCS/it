@@ -3,6 +3,11 @@
     so the text does not jump when the page opens. Same file on cs, math and cryptography. -#}
 {% block extrahead %}
   {{ super() }}
+  {#- What a page may load (it.akadian.ca only). Scripts: this site, the shared www.akadian.ca scripts (song, Mars Schools row)
+      and WebAssembly for the SQL playground ('wasm-unsafe-eval', which PGlite needs; nothing wider). Network requests
+      (connect-src): this site, www.akadian.ca (the song's words) and api.github.com (the repo's star count in the header).
+      The SQL playground itself fetches only its own files under /assets/pglite/ and /databases/sql/shop.sql. -#}
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.akadian.ca; connect-src 'self' https://www.akadian.ca https://api.github.com; img-src 'self' data: https://www.akadian.ca; media-src 'self' https://www.akadian.ca; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://suno.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
   {%- if page and page.meta and page.meta.robots %}
   <meta name="robots" content="{{ page.meta.robots }}">
   {%- endif %}
