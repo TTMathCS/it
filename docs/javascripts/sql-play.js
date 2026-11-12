@@ -127,7 +127,22 @@
     if (typeof a === "number" && typeof b === "number") return Math.abs(a - b) < 1e-4;
     return a === b;
   }
-  function compare(got, exp) {
+  function rowKey(r) {
+    return JSON.stringify(r.map(function (v) { var n = normCell(v); return typeof n === "number" ? Math.round(n * 10000) / 10000 : n; }));
+  }
+  function compare(got, exp, unordered) {
+    if (unordered && got.cols.length === exp.cols.length && got.rows.length === exp.rows.length) {
+      // the task asks for no order: compare the rows as a set (with repeats)
+      var a = got.rows.map(rowKey).sort(), b = exp.rows.map(rowKey).sort();
+      var k = 0;
+      while (k < a.length && a[k] === b[k]) k++;
+      if (k === a.length) {
+        var nm = got.cols.filter(function (c, i) { return c !== exp.cols[i]; });
+        return nm.length ? "names" : "";
+      }
+      return "Some rows differ from the expected result (the order does not matter here). Look at the rows with " +
+        "NULLs, ties and the edges of your filters.";
+    }
     if (got.cols.length !== exp.cols.length)
       return "Your result has " + got.cols.length + " column(s); the expected result has " + exp.cols.length +
         " (" + exp.cols.join(", ") + ").";
@@ -157,7 +172,8 @@
     t.querySelectorAll("tbody tr").forEach(function (tr) {
       var r = [];
       tr.querySelectorAll("td").forEach(function (td) { r.push(td.textContent.trim()); });
-      rows.push(r);
+      // a marker comment inside an answer box can turn into an empty last row: leave it out
+      if (r.some(function (v) { return v !== ""; })) rows.push(r);
     });
     return { cols: cols, rows: rows };
   }
@@ -310,7 +326,7 @@
           verdict.appendChild(el("p", "sqlplay-bad", "Not yet: your query did not return rows."));
           return;
         }
-        var why = compare(got, opts.expected);
+        var why = compare(got, opts.expected, opts.unordered);
         if (why === "" || why === "names") {
           verdict.appendChild(el("p", "sqlplay-good", "Matches the expected result on the example rows" +
             (why === "names" ? " (values and order match; some column names differ from the task's, so use the task's names)." : ".") +
@@ -400,6 +416,8 @@
       if (!m) continue;
       var n = c.nextSibling;
       while (n && n.nodeType !== 1) n = n.nextSibling;
+      // inside an answer box the marker ends up alone in a <p>, and the code block comes after that <p>
+      if (!n && c.parentNode && c.parentNode.tagName === "P") n = c.parentNode.nextElementSibling;
       var code = n && n.querySelector && n.querySelector("pre code");
       if (!code) continue;
       var f = m[1].trim().split(/\s+/);
@@ -433,8 +451,47 @@
     });
   }
 
+  // an exercise: a <details> "Answer" whose first runnable block is followed by its real result table
+  function topLevelOrderBy(sql) {
+    var depth = 0, flat = "";
+    for (var i = 0; i < sql.length; i++) {
+      var c = sql[i];
+      if (c === "(") depth++;
+      else if (c === ")") depth--;
+      else if (depth === 0) flat += c;
+    }
+    return /\border\s+by\b/i.test(flat.replace(/--[^\n]*/g, ""));
+  }
+  function exerciseBoxes(content, marks) {
+    content.querySelectorAll("details").forEach(function (d) {
+      var sum = d.querySelector("summary");
+      if (!sum || !/^(Answer|Solution)/.test(sum.textContent.trim())) return;
+      var b = null;
+      for (var i = 0; i < marks.length; i++) if (d.contains(marks[i].div) && marks[i].pg) { b = marks[i]; break; }
+      if (!b || b.div.parentNode !== d) return;
+      var t = null;
+      for (var n = b.div.nextElementSibling; n; n = n.nextElementSibling) {
+        if (n.tagName === "TABLE") { t = n; break; }
+        if (n.querySelector && n.querySelector("table")) { t = n.querySelector("table"); break; }
+        if (n.querySelector && n.querySelector("pre code")) return;
+      }
+      if (!t) return;
+      var exp = htmlTable(t);
+      if (exp.rows.length === 1 && /no rows/.test(exp.rows[0].join(" "))) exp.rows = [];
+      var path = location.pathname.replace(/\.html$/, "");
+      var box = makeBox({ title: "Try it here", sub: "PostgreSQL in your browser, with the shop database",
+        start: "-- Your answer here. Ctrl+Enter (Cmd+Enter on a Mac) runs it.\n\n", shop: true,
+        extra: function () { return prelude(b.code); }, expected: exp, unordered: !topLevelOrderBy(b.code),
+        key: "sqlplay:" + path + "#" + (d.previousElementSibling ? d.previousElementSibling.textContent.slice(0, 40) : i),
+        help: "Check compares your result with the answer's result. Every run starts from the same shop data." });
+      d.parentNode.insertBefore(box, d);
+    });
+  }
+
   function coursePage(content) {
-    sqlMarks(content).forEach(function (b) {
+    var marks = sqlMarks(content);
+    exerciseBoxes(content, marks);
+    marks.forEach(function (b) {
       if (!b.pg || b.div.closest(".sqlplay")) return;
       var btn = el("button", "md-button sqlplay-open", "Run this \u25b8");
       btn.type = "button";
