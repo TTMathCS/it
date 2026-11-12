@@ -1,0 +1,11 @@
+built in 76 s
+rows 100,000,000; table pages 442,478; index levels 4; leaf pages 273,225; internal pages 968; leaf pages 90.09% full
+index-only scan (the answer is in the index)
+  Index Only Scan using big_id on big (actual rows=1 loops=1)
+    Index Cond: (order_id = 76543210)
+    Heap Fetches: 0
+    Buffers: shared hit=5
+index scan that also visits the table, as for a wider row
+  Index Scan using big_id on big (actual rows=1 loops=1)
+    Index Cond: (order_id = 76543210)
+    Buffers: shared hit=5

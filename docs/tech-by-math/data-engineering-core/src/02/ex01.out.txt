@@ -1,0 +1,54 @@
+Part 1. The shape of the index on a bigint key, for growing tables
+       rows levels leaf pages inner pages root children rows/leaf leaf full %
+      1,000      2          3           1             3       366       81.99
+    100,000      2        274           1           274       366       89.83
+ 10,000,000      3     27,323          98            97       366       90.09
+
+Part 2. Size of one index entry (a leaf page of the 10 million row index)
+[(367, 16, 8192, 808)]
+The tree, level by level (block numbers of the pages on each level are not shown, only their count):
+  root is block 290, at level 2 (level 0 = leaves)
+
+Part 3. One lookup, with the index
+  Index Scan using orders_10000000_id on orders_10000000 (actual rows=1 loops=1)
+    Index Cond: (order_id = 7654321)
+    Buffers: shared hit=4
+
+Part 4. The same lookup when the index cannot be used (the column is wrapped in an expression)
+  Seq Scan on orders_10000000 (actual rows=1 loops=1)
+    Filter: ((order_id + 0) = 7654321)
+    Rows Removed by Filter: 9999999
+    Buffers: shared hit=16194 read=37861 written=8
+  the table has 54,055 pages of 8 kB
+
+Part 5. Low selectivity: an index on region (4 values, 25% of rows each)
+  -- WHERE region = 2
+  Aggregate (actual rows=1 loops=1)
+    Buffers: shared read=56163
+    ->  Bitmap Heap Scan on orders_10000000 (actual rows=2500000 loops=1)
+          Recheck Cond: (region = 2)
+          Heap Blocks: exact=54055
+          Buffers: shared read=56163
+          ->  Bitmap Index Scan on orders_10000000_region (actual rows=2500000 loops=1)
+                Index Cond: (region = 2)
+                Buffers: shared read=2108
+  -- WHERE region IN (1, 2, 3)
+  Aggregate (actual rows=1 loops=1)
+    Buffers: shared hit=16346 read=37709
+    ->  Seq Scan on orders_10000000 (actual rows=7500000 loops=1)
+          Filter: (region = ANY ('{1,2,3}'::integer[]))
+          Rows Removed by Filter: 2500000
+          Buffers: shared hit=16346 read=37709
+  -- WHERE order_id BETWEEN 1000 AND 1100
+  Aggregate (actual rows=1 loops=1)
+    Buffers: shared hit=5
+    ->  Index Scan using orders_10000000_id on orders_10000000 (actual rows=101 loops=1)
+          Index Cond: ((order_id >= 1000) AND (order_id <= 1100))
+          Buffers: shared hit=5
+  Planning:
+    Buffers: shared hit=8
+
+Part 6. The cost on every write: WAL records for inserting 100,000 rows into a copy with 0, 1 and 2 indexes
+  0 index(es): WAL: records=100000 bytes=7100000; table + indexes = 544 pages
+  1 index(es): WAL: records=200274 bytes=13707620; table + indexes = 820 pages
+  2 index(es): WAL: records=302619 bytes=20885268; table + indexes = 957 pages

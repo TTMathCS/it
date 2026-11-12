@@ -1,0 +1,7 @@
+E2 uuid index, 1,000,000 rows: item size 24 bytes, 261 rows on a leaf (plus the high key), 3,832 leaf pages, 20 inner pages, 3 levels
+
+E5       p  formula simulated
+     0.01%     1.8%      1.8%
+     0.10%    16.9%     17.0%
+     1.00%    84.4%     84.7%
+     5.00%   100.0%    100.0%

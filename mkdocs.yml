@@ -93,6 +93,7 @@ nav:
           - "The data engineering core":
               - tech-by-math/data-engineering-core/index.md
               - tech-by-math/data-engineering-core/01-Joins-Are-Set-Math.md
+              - tech-by-math/data-engineering-core/02-Why-an-Index-Is-Fast.md
               - tech-by-math/data-engineering-core/06-Shuffles-and-Skew.md
       - "Databases":
           - databases/index.md
