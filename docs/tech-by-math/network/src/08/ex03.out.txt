@@ -1,0 +1,13 @@
+Part 1. A connection can have at most one window in flight per round trip: rate <= window / RTT
+   window     64 KiB, RTT   1 ms: at most     524.3 Mbit/s
+   window     64 KiB, RTT  20 ms: at most      26.2 Mbit/s
+   window     64 KiB, RTT 100 ms: at most       5.2 Mbit/s
+   window   1024 KiB, RTT 100 ms: at most      83.9 Mbit/s
+   window  16384 KiB, RTT 100 ms: at most   1,342.2 Mbit/s
+   to fill 1 Gbit/s at RTT 80 ms the window must be >= bandwidth x delay = 10,000,000 bytes = 9.5 MiB
+
+Part 2. AIMD sawtooth: +1 segment per round trip, halve on a loss; one loss every 1/p segments
+   loss rate 1e-02: simulated    1.40 Mbit/s, Mathis (MSS/RTT) x sqrt(3/(2p)) =    1.43 Mbit/s
+   loss rate 1e-03: simulated    4.52 Mbit/s, Mathis (MSS/RTT) x sqrt(3/(2p)) =    4.52 Mbit/s
+   loss rate 1e-04: simulated   14.27 Mbit/s, Mathis (MSS/RTT) x sqrt(3/(2p)) =   14.31 Mbit/s
+   loss rate 1e-05: simulated   45.15 Mbit/s, Mathis (MSS/RTT) x sqrt(3/(2p)) =   45.24 Mbit/s

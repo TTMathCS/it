@@ -16,7 +16,7 @@
 | [Kubernetes](kubernetes/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: the scheduler and the autoscaler |
 | [Git](git/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: hashes, the commit graph and merges |
 | [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: signatures and certificate chains |
-| [Computer networks](network/index.md) | The 2025 drafts (7 parts) |
+| [Computer networks](network/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: addresses, routes and throughput |
 | [AI](ai/index.md) | The 2025 drafts (7 parts) |
 | [AI agents](ai-agent/index.md) | The 2025 drafts: concepts, tools and use cases |
 

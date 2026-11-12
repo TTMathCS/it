@@ -191,6 +191,7 @@ nav:
               - tech-by-math/network/05-experiments/index.md
               - tech-by-math/network/06-references/index.md
               - tech-by-math/network/07-use-cases/index.md
+              - tech-by-math/network/08-Addresses-Routes-Throughput.md
           - "AI":
               - tech-by-math/ai/index.md
               - tech-by-math/ai/01-core-model/index.md

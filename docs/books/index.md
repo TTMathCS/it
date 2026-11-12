@@ -18,7 +18,8 @@ Courses by category. A category joins this list, and the menu, once its first co
 | [PKI and certificates](../tech-by-math/pki/index.md) | Remainders and powers | The 2025 drafts, and what a certificate proves: RSA, signatures, chains |
 | [Elasticsearch](../tech-by-math/elasticsearch/index.md) | Logarithms and fractions | The 2025 drafts, and how search finds and ranks: BM25, shards |
 | [Kubernetes](../tech-by-math/kubernetes/index.md) | Fractions and rounding | The 2025 drafts, and how Kubernetes places pods and counts them |
-| [Dremio, NiFi, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
+| [Computer networks](../tech-by-math/network/index.md) | Binary numbers and square roots | The 2025 drafts, and addresses, routes and throughput: masks, shortest paths, TCP |
+| [Dremio, NiFi, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 

@@ -1,0 +1,7 @@
+16-bit words: 4500 0054 a6f2 4000 4001 0000 c0a8 0a4d c0a8 0a01
+plain sum  = 0x301e5
+fold carry = 0x01e5 + 0x3 = 0x01e8
+checksum   = ones' complement of 0x01e8 = 0xfe17
+receiver: sum with the checksum in place = 0x3fffc, folded = 0xffff (0xffff means OK)
+one bit flipped: folded sum = 0x0100 (not 0xffff: detected)
+two words swapped: folded sum = 0xffff (0xffff: NOT detected)

@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. Addresses, routes and throughput](08-Addresses-Routes-Throughput.md): subnet masks, longest-prefix match, Dijkstra's shortest paths, TCP's window and loss limits and the Internet checksum, worked by hand and checked by programs.
 
 # Network Engineering: Tech-by-Math
 
