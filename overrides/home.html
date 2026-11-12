@@ -1,5 +1,8 @@
 {% extends "main.html" %}
 
+{#- The front page's browser tab: "Math · Mars Schools", not the name twice ("Math - Math"); Jim, 11 Nov 2026. -#}
+{% block htmltitle %}<title>{{ config.site_name }} · Mars Schools</title>{% endblock %}
+
 {% block hero %}
 <section class="mars-hero">
   <span class="ai-tag">AI-created</span>
