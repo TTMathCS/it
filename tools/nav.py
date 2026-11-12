@@ -54,7 +54,7 @@ ORDER = {
                  "common-mistakes.md", "codility-tasks.md"],
 }
 FRONT = ["fast-track.md", "cheat-sheet.md", "which-technique.md", "sample-database.md"]
-BACK = ["glossary.md"]
+BACK = ["analytics-workshop.md", "glossary.md"]
 
 
 def title(folder):

@@ -120,6 +120,9 @@
     if (/^(t|true)$/i.test(s)) return "true";
     if (/^(f|false)$/i.test(s)) return "false";
     if (/^[-+]?\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+    // an interval: PostgreSQL prints "1 day 19:30:00", the course's tables "1 day, 19:30:00"; compare in seconds
+    var iv = /^(?:(-?\d+) days?,? )?(-?)(\d{1,3}):(\d\d):(\d\d)$/.exec(s);
+    if (iv) return (iv[1] ? +iv[1] * 86400 : 0) + (iv[2] ? -1 : 1) * (+iv[3] * 3600 + +iv[4] * 60 + +iv[5]);
     return s;
   }
   function same(a, b) {

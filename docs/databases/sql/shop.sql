@@ -3,7 +3,9 @@
 -- It should also load on MySQL 8 and SQL Server, but that has not been tested.
 -- Made-up data. Edge cases are there on purpose: NULL emails and cities, a guest order with no customer,
 -- a customer with no orders, a product never sold, a product with no category, tied prices and salaries,
--- an employee with no salary yet, and a duplicated login.
+-- an employee with no salary yet, and a duplicated login. Payments and page views (added 12 Nov 2026) have their
+-- own: a failed then successful payment, a split payment, a refund, a double charge, an unknown method, orders never
+-- paid, a guest visitor, a repeated page view, and gaps just under and just over 30 minutes.
 
 CREATE TABLE customers (
   customer_id INTEGER PRIMARY KEY,
@@ -48,6 +50,24 @@ CREATE TABLE employees (
 CREATE TABLE logins (
   customer_id INTEGER NOT NULL REFERENCES customers (customer_id),
   login_date  DATE NOT NULL
+);
+
+CREATE TABLE payments (
+  payment_id INTEGER PRIMARY KEY,
+  order_id   INTEGER NOT NULL REFERENCES orders (order_id),
+  paid_at    TIMESTAMP NOT NULL,
+  method     VARCHAR(10),
+  amount     NUMERIC(8,2) NOT NULL,
+  status     VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE page_views (
+  view_id     INTEGER PRIMARY KEY,
+  visitor_id  VARCHAR(10) NOT NULL,
+  customer_id INTEGER REFERENCES customers (customer_id),
+  viewed_at   TIMESTAMP NOT NULL,
+  page        VARCHAR(10) NOT NULL,
+  product_id  INTEGER REFERENCES products (product_id)
 );
 
 INSERT INTO customers VALUES
@@ -138,3 +158,49 @@ INSERT INTO logins VALUES
   (2, '2026-03-01'), (2, '2026-03-02'), (2, '2026-03-02'), (2, '2026-03-04'),
   (4, '2026-03-03'), (4, '2026-03-04'), (4, '2026-03-05'), (4, '2026-03-06'),
   (6, '2026-03-08');
+
+INSERT INTO payments VALUES
+  (1,  101, '2026-01-03 09:12:00', 'card',    34.25, 'paid'),
+  (2,  102, '2026-01-03 18:40:00', 'card',   149.00, 'failed'),
+  (3,  102, '2026-01-03 18:44:00', 'paypal', 149.00, 'paid'),
+  (4,  103, '2026-01-15 11:05:00', 'card',    33.75, 'paid'),
+  (5,  104, '2026-01-20 14:30:00', 'card',    32.00, 'paid'),
+  (6,  104, '2026-01-22 10:00:00', 'card',   -32.00, 'refunded'),
+  (7,  105, '2026-01-28 08:15:00', 'paypal',  24.50, 'paid'),
+  (8,  106, '2026-02-02 20:01:00', 'card',    40.00, 'paid'),
+  (9,  106, '2026-02-02 20:02:00', 'gift',    16.50, 'paid'),
+  (10, 107, '2026-02-02 21:30:00', NULL,      36.75, 'paid'),
+  (11, 108, '2026-02-10 12:00:00', 'card',    50.00, 'paid'),
+  (12, 109, '2026-02-14 16:45:00', 'card',    65.00, 'paid'),
+  (13, 110, '2026-02-20 09:30:00', 'card',    32.50, 'paid'),
+  (14, 111, '2026-02-21 13:13:00', 'paypal',  36.75, 'paid'),
+  (15, 112, '2026-03-01 07:55:00', 'card',   181.00, 'paid'),
+  (16, 114, '2026-03-09 19:20:00', 'card',    49.00, 'paid'),
+  (17, 115, '2026-03-18 10:10:00', 'card',    49.50, 'paid'),
+  (18, 117, '2026-03-25 15:00:00', 'paypal',  43.00, 'paid'),
+  (19, 118, '2026-04-01 08:00:00', 'card',    24.50, 'paid'),
+  (20, 119, '2026-04-02 22:10:00', 'card',    24.50, 'failed'),
+  (21, 120, '2026-04-05 12:30:00', 'card',   139.00, 'paid'),
+  (22, 120, '2026-04-05 12:30:00', 'card',   139.00, 'paid');
+
+INSERT INTO page_views VALUES
+  (1,  'v1', 1,    '2026-04-05 12:00:00', 'home',     NULL),
+  (2,  'v1', 1,    '2026-04-05 12:03:10', 'product',  6),
+  (3,  'v1', 1,    '2026-04-05 12:10:00', 'cart',     6),
+  (4,  'v1', 1,    '2026-04-05 12:29:30', 'checkout', NULL),
+  (5,  'v1', 1,    '2026-04-05 12:30:05', 'thanks',   NULL),
+  (6,  'v1', 1,    '2026-04-05 18:45:00', 'home',     NULL),
+  (7,  'v1', 1,    '2026-04-05 18:46:00', 'product',  1),
+  (8,  'v2', 2,    '2026-04-05 09:00:00', 'home',     NULL),
+  (9,  'v2', 2,    '2026-04-05 09:01:00', 'product',  5),
+  (10, 'v2', 2,    '2026-04-05 09:01:00', 'product',  5),
+  (11, 'v2', 2,    '2026-04-05 09:20:00', 'cart',     5),
+  (12, 'v2', 2,    '2026-04-05 09:55:00', 'cart',     5),
+  (13, 'v3', NULL, '2026-04-05 10:00:00', 'home',     NULL),
+  (14, 'v3', NULL, '2026-04-05 10:02:00', 'product',  5),
+  (15, 'v3', NULL, '2026-04-05 10:31:59', 'product',  4),
+  (16, 'v3', NULL, '2026-04-05 11:02:00', 'checkout', NULL),
+  (17, 'v4', 4,    '2026-04-04 23:50:00', 'home',     NULL),
+  (18, 'v4', 4,    '2026-04-05 00:10:00', 'product',  9),
+  (19, 'v4', 4,    '2026-04-05 00:12:00', 'cart',     9),
+  (20, 'v5', NULL, '2026-04-05 14:00:00', 'product',  10);

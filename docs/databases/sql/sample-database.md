@@ -1,12 +1,13 @@
 # The sample database: a small shop
 
-*Every example in this course runs on the same small, made-up shop: its customers, products, orders, staff and
-logins. It is small enough to read in full on this page, so you can check any result by eye. The odd cases that
+*Every example in this course runs on the same small, made-up shop: its customers, products, orders, staff,
+logins, payments and website visits. It is small enough to read in full on this page, so you can check any result by eye. The odd cases that
 trip people up in tests are in it on purpose: missing emails, an order with no customer, a customer with no orders,
 tied prices and salaries, and a duplicated row.*
 
 !!! abstract "On this page"
-    - the six tables and how they connect
+    - the eight tables, every column, and how they connect
+    - a playground: real PostgreSQL in your browser, loaded with this database
     - every row of every table
     - how to load it on your own computer, on PostgreSQL or SQLite, in a few minutes
     - the traps built into the data, so you know them before you meet them
@@ -21,19 +22,86 @@ tied prices and salaries, and a duplicated row.*
 | `order_items` | one product in one order, with its quantity and the price paid | `order_id` + `product_id` | 30 |
 | `employees` | a member of staff; `manager_id` points at another employee | `employee_id` | 12 |
 | `logins` | a customer signing in on a day | none (it has a duplicate) | 15 |
+| `payments` | one attempt to pay for an order (paid, failed or refunded) | `payment_id` | 22 |
+| `page_views` | one page shown to one visitor on the website | `view_id` | 20 |
 
 How they connect:
 
 ```text
 customers 1 ──< orders 1 ──< order_items >── 1 products
-    1                                   
-    └──< logins          employees 1 ──< employees (manager_id)
+  1  1                  1                      1
+  │  └──< logins        └──< payments          │
+  └──< page_views >────────────────────────────┘ (product_id, when the page shows a product)
+
+employees 1 ──< employees (manager_id)
 ```
 
 Read `1 ──<` as "one of these has many of those": one customer has many orders, one order has many items, one product
 appears in many items. `orders.customer_id` points at `customers.customer_id`, and `order_items` points at both
 `orders` and `products`. `employees.manager_id` points back into `employees`: each employee's manager is another
-employee.
+employee. `payments.order_id` points at `orders`, and `page_views` points at `customers` (when the visitor is signed in)
+and at `products` (when the page shows one).
+
+## Every column { #columns }
+
+| Table | Column | Type | Can be NULL? | Meaning |
+| --- | --- | --- | --- | --- |
+| customers | `customer_id` | INTEGER, primary key | no | the customer's number |
+| customers | `name` | VARCHAR(50) | no | full name; two customers share one |
+| customers | `email` | VARCHAR(100) | **yes** | missing for customers 3 and 8 |
+| customers | `city` | VARCHAR(50) | **yes** | missing for customer 5 |
+| customers | `country` | VARCHAR(50) | no | |
+| customers | `signup_date` | DATE | no | the day the account was opened |
+| products | `product_id` | INTEGER, primary key | no | |
+| products | `name` | VARCHAR(50) | no | |
+| products | `category` | VARCHAR(20) | **yes** | Home, Kitchen or Office; the gift card has none |
+| products | `price` | NUMERIC(8,2) | no | today's price |
+| orders | `order_id` | INTEGER, primary key | no | 101 to 120 |
+| orders | `customer_id` | INTEGER, refers to customers | **yes** | missing for the guest order 108 |
+| orders | `order_date` | DATE | no | the day the order was placed |
+| orders | `status` | VARCHAR(10) | no | shipped, pending or cancelled |
+| order_items | `order_id` | INTEGER, refers to orders | no | part of the key |
+| order_items | `product_id` | INTEGER, refers to products | no | part of the key |
+| order_items | `quantity` | INTEGER | no | |
+| order_items | `unit_price` | NUMERIC(8,2) | no | the price paid, which can differ from today's price |
+| employees | `employee_id` | INTEGER, primary key | no | |
+| employees | `name` | VARCHAR(50) | no | |
+| employees | `department` | VARCHAR(20) | no | Management, Engineering, Sales or Support |
+| employees | `manager_id` | INTEGER, refers to employees | **yes** | missing for the top manager |
+| employees | `salary` | INTEGER | **yes** | missing for the newest employee |
+| employees | `hire_date` | DATE | no | |
+| logins | `customer_id` | INTEGER, refers to customers | no | there is no key: one row is repeated |
+| logins | `login_date` | DATE | no | |
+| payments | `payment_id` | INTEGER, primary key | no | |
+| payments | `order_id` | INTEGER, refers to orders | no | an order can have several payments, or none |
+| payments | `paid_at` | TIMESTAMP | no | date and time of the attempt |
+| payments | `method` | VARCHAR(10) | **yes** | card, paypal or gift; unknown for payment 10 |
+| payments | `amount` | NUMERIC(8,2) | no | negative for a refund |
+| payments | `status` | VARCHAR(10) | no | paid, failed or refunded |
+| page_views | `view_id` | INTEGER, primary key | no | |
+| page_views | `visitor_id` | VARCHAR(10) | no | the browser's id, v1 to v5 |
+| page_views | `customer_id` | INTEGER, refers to customers | **yes** | missing while the visitor is not signed in |
+| page_views | `viewed_at` | TIMESTAMP | no | date and time the page was shown |
+| page_views | `page` | VARCHAR(10) | no | home, product, cart, checkout or thanks (the page after paying) |
+| page_views | `product_id` | INTEGER, refers to products | **yes** | only on product and cart pages |
+
+## Try it: the playground { #playground }
+
+This box runs **real PostgreSQL inside your browser**, already loaded with every table on this page. Type any query
+and press **Run** (or Ctrl+Enter, Cmd+Enter on a Mac). Each run starts again from the same data, so you cannot break
+anything: try `INSERT`, `UPDATE` or `DELETE` too. The first run on a page takes a few seconds while PostgreSQL loads
+(about 5 MB, from this site only); after that each run takes milliseconds. It is PostgreSQL 18, a newer version than
+the PostgreSQL 16 the course's printed results come from; every result in the course is the same on both.
+
+<div class="sqlplay-free" data-db="shop" data-start="SELECT o.order_id, c.name, o.order_date, o.status
+FROM orders o
+LEFT JOIN customers c ON c.customer_id = o.customer_id
+ORDER BY o.order_id;
+"></div>
+
+Every example in the course has a **Run this** button under it that opens the same kind of box with the example
+in it, and every exercise has a **Try it here** box with a **Check** button that compares your result with the
+answer's.
 
 ## Load it yourself { #load }
 
@@ -68,9 +136,8 @@ The whole database is one file, [shop.sql](shop.sql), that runs unchanged on bot
 
 === "No install"
 
-    Paste the contents of [shop.sql](shop.sql) into an online SQL playground that runs PostgreSQL or SQLite (search
-    for "PostgreSQL online playground" or "SQLite online"), run it once, then run your queries below it. Playgrounds
-    come and go, so none is linked here.
+    Use [the playground](#playground) on this page: PostgreSQL running in your browser, already loaded with
+    [shop.sql](shop.sql).
 
 ## Every row { #rows }
 
@@ -277,6 +344,97 @@ Customer 2 signed in twice on 2 March: an exact duplicate row. Customer 1 has ru
 gaps, and customer 4 signed in four days in a row: the data for "streak" questions in
 [chapter 15](15-Classic-Interview-Patterns.md).
 
+### payments
+
+<!-- sql -->
+```sql
+SELECT * FROM payments ORDER BY payment_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 22 rows.</p>
+
+| payment_id | order_id | paid_at | method | amount | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | 2026-01-03 09:12:00 | card | 34.25 | paid |
+| 2 | 102 | 2026-01-03 18:40:00 | card | 149.00 | failed |
+| 3 | 102 | 2026-01-03 18:44:00 | paypal | 149.00 | paid |
+| 4 | 103 | 2026-01-15 11:05:00 | card | 33.75 | paid |
+| 5 | 104 | 2026-01-20 14:30:00 | card | 32.00 | paid |
+| 6 | 104 | 2026-01-22 10:00:00 | card | -32.00 | refunded |
+| 7 | 105 | 2026-01-28 08:15:00 | paypal | 24.50 | paid |
+| 8 | 106 | 2026-02-02 20:01:00 | card | 40.00 | paid |
+| 9 | 106 | 2026-02-02 20:02:00 | gift | 16.50 | paid |
+| 10 | 107 | 2026-02-02 21:30:00 | *NULL* | 36.75 | paid |
+| 11 | 108 | 2026-02-10 12:00:00 | card | 50.00 | paid |
+| 12 | 109 | 2026-02-14 16:45:00 | card | 65.00 | paid |
+| 13 | 110 | 2026-02-20 09:30:00 | card | 32.50 | paid |
+| 14 | 111 | 2026-02-21 13:13:00 | paypal | 36.75 | paid |
+| 15 | 112 | 2026-03-01 07:55:00 | card | 181.00 | paid |
+| 16 | 114 | 2026-03-09 19:20:00 | card | 49.00 | paid |
+| 17 | 115 | 2026-03-18 10:10:00 | card | 49.50 | paid |
+| 18 | 117 | 2026-03-25 15:00:00 | paypal | 43.00 | paid |
+| 19 | 118 | 2026-04-01 08:00:00 | card | 24.50 | paid |
+| 20 | 119 | 2026-04-02 22:10:00 | card | 24.50 | failed |
+| 21 | 120 | 2026-04-05 12:30:00 | card | 139.00 | paid |
+| 22 | 120 | 2026-04-05 12:30:00 | card | 139.00 | paid |
+<!-- /result -->
+
+Each row is one **attempt** to pay, so an order can have several rows, or none:
+
+* Order 102 failed on a card, then was paid by PayPal four minutes later (payments 2 and 3).
+* Order 104 was paid and then **refunded** two days later, as a negative amount (payments 5 and 6); the order is
+  cancelled.
+* Order 106 was paid in two parts, by card and gift card (payments 8 and 9).
+* Payment 10 has no `method` (`NULL`): the payment service did not say.
+* Order 119 has only a **failed** payment, and orders 113 and 116 have no payment at all.
+* Order 120 was charged **twice** at the same second (payments 21 and 22): a double charge, the kind of duplicate a
+  data engineer has to find.
+
+### page_views
+
+<!-- sql -->
+```sql
+SELECT * FROM page_views ORDER BY visitor_id, viewed_at, view_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 20 rows.</p>
+
+| view_id | visitor_id | customer_id | viewed_at | page | product_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | v1 | 1 | 2026-04-05 12:00:00 | home | *NULL* |
+| 2 | v1 | 1 | 2026-04-05 12:03:10 | product | 6 |
+| 3 | v1 | 1 | 2026-04-05 12:10:00 | cart | 6 |
+| 4 | v1 | 1 | 2026-04-05 12:29:30 | checkout | *NULL* |
+| 5 | v1 | 1 | 2026-04-05 12:30:05 | thanks | *NULL* |
+| 6 | v1 | 1 | 2026-04-05 18:45:00 | home | *NULL* |
+| 7 | v1 | 1 | 2026-04-05 18:46:00 | product | 1 |
+| 8 | v2 | 2 | 2026-04-05 09:00:00 | home | *NULL* |
+| 9 | v2 | 2 | 2026-04-05 09:01:00 | product | 5 |
+| 10 | v2 | 2 | 2026-04-05 09:01:00 | product | 5 |
+| 11 | v2 | 2 | 2026-04-05 09:20:00 | cart | 5 |
+| 12 | v2 | 2 | 2026-04-05 09:55:00 | cart | 5 |
+| 13 | v3 | *NULL* | 2026-04-05 10:00:00 | home | *NULL* |
+| 14 | v3 | *NULL* | 2026-04-05 10:02:00 | product | 5 |
+| 15 | v3 | *NULL* | 2026-04-05 10:31:59 | product | 4 |
+| 16 | v3 | *NULL* | 2026-04-05 11:02:00 | checkout | *NULL* |
+| 17 | v4 | 4 | 2026-04-04 23:50:00 | home | *NULL* |
+| 18 | v4 | 4 | 2026-04-05 00:10:00 | product | 9 |
+| 19 | v4 | 4 | 2026-04-05 00:12:00 | cart | 9 |
+| 20 | v5 | *NULL* | 2026-04-05 14:00:00 | product | 10 |
+<!-- /result -->
+
+One row per page shown, on 4 and 5 April 2026. A **visitor** is one browser; `customer_id` is filled in only when
+the visitor is signed in, so `v3` and `v5` are guests. The traps:
+
+* **Sessions.** A common rule is "a gap of more than 30 minutes starts a new session". Visitor `v3` has a gap of
+  29 min 59 s (same session) and then one of 30 min 1 s (new session); `v1` comes back in the evening.
+* **Funnel.** `v1` goes home, product, cart, checkout, thanks (and the order 120 is placed at 12:30); `v2` stops at
+  the cart; `v3` reaches checkout without a cart page.
+* **A repeated event.** Views 9 and 10 are the same page, for the same visitor, at the same second.
+* **Midnight.** Visitor `v4`'s session starts on 4 April and ends on 5 April.
+
 ## The traps, in one list { #traps }
 
 | Trap | Where | Chapter |
@@ -289,6 +447,9 @@ gaps, and customer 4 signed in four days in a row: the data for "streak" questio
 | Price paid differs from today's price | orders 109, 120 | [8](08-Joins-Inner-Left-Right-Full-Cross.md) |
 | An exact duplicate row | logins | [22](22-Duplicates-and-Incremental-Loads.md) |
 | Joining orders to items multiplies rows | every order with two or more items | [8](08-Joins-Inner-Left-Right-Full-Cross.md) |
+| Several payments per order: failed, split, refunded, doubled | payments 2-3, 5-6, 8-9, 21-22 | [Analytics workshop](analytics-workshop.md) |
+| Orders with no successful payment | orders 113, 116, 119 | [Analytics workshop](analytics-workshop.md) |
+| Sessions split by a 30-minute gap, at the boundary | page_views of `v3` | [Analytics workshop](analytics-workshop.md) |
 
 !!! note "How the results on this site were made"
     Each page starts from a fresh copy of this database. Every query on the page is run on PostgreSQL 16.15 and on

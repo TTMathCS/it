@@ -23,8 +23,10 @@ differences. Results on MySQL, SQL Server and Oracle have not been tested here.
   most and puts them in the order to read them.
 - **Coming back after a while?** Read the [cheat sheet](cheat-sheet.md), then the chapters where it felt rusty.
 - **Starting out?** Read in order from chapter 1.
-- **Try everything.** Load the [sample database](sample-database.md) on your own computer (a few minutes, free), or
-  paste it into an online SQL playground, and run the examples yourself. Change them and see what happens.
+- **Try everything, right on the page.** Every example has a **Run this** button and every exercise a **Try it
+  here** box with **Check**: a real PostgreSQL running inside your browser, loaded with the
+  [sample database](sample-database.md). Change the examples and see what happens. There is a free
+  [playground](sample-database.md#playground) too, and you can still load the database on your own computer.
   How the **Run** buttons on these pages run a real PostgreSQL inside your browser, and whether that is safe, is
   explained in [WebAssembly: real programs inside a web page](../../programming/webassembly/index.md).
 
@@ -46,7 +48,7 @@ differences. Results on MySQL, SQL Server and Oracle have not been tested here.
 | **II. Interview core** | [7. Aggregation: GROUP BY and HAVING](07-Aggregation-Group-By-Having.md) · [8. Joins: inner, left, right, full, cross](08-Joins-Inner-Left-Right-Full-Cross.md) · [9. Self, semi and anti joins](09-Self-Semi-and-Anti-Joins.md) · [10. Subqueries](10-Subqueries.md) · [11. CTEs and recursive CTEs](11-CTEs-and-Recursive-CTEs.md) · [12. UNION, INTERSECT, EXCEPT](12-Set-Operations.md) · [13. Window functions: ranking](13-Window-Functions-Ranking.md) · [14. Window functions: LAG, LEAD and running totals](14-Window-Functions-Lag-Lead-Running-Totals.md) · [15. Classic interview patterns](15-Classic-Interview-Patterns.md) · [16. Dates and time series](16-Dates-and-Time-Series.md) |
 | **III. Changing data and designing tables** | [17. INSERT, UPDATE, DELETE, MERGE](17-Insert-Update-Delete-Merge.md) · [18. CREATE TABLE, types, constraints](18-Create-Table-Types-Constraints.md) · [19. Data modelling](19-Data-Modelling.md) · [20. Transactions and isolation](20-Transactions-and-Isolation.md) · [21. Views and materialized views](21-Views-and-Materialized-Views.md) · [22. Duplicates and incremental loads](22-Duplicates-and-Incremental-Loads.md) · [23. Data quality checks](23-Data-Quality-Checks.md) · [24. JSON and arrays](24-JSON-and-Arrays.md) |
 | **IV. Expert** | [25. Indexes and EXPLAIN](25-Indexes-and-Explain.md) · [26. Making slow queries fast](26-Making-Slow-Queries-Fast.md) · [27. GROUPING SETS, ROLLUP, CUBE, LATERAL](27-Grouping-Sets-Rollup-Cube-Lateral.md) · [28. Dialect differences](28-Dialect-Differences.md) · [29. Safe SQL](29-Safe-SQL.md) |
-| **V. Practice** | [30. Practice set A](30-Practice-Set-A.md) · [31. Practice set B](31-Practice-Set-B.md) · [32. Mock tests](32-Mock-Tests.md) · [Glossary](glossary.md) |
+| **V. Practice** | [30. Practice set A](30-Practice-Set-A.md) · [31. Practice set B](31-Practice-Set-B.md) · [32. Mock tests](32-Mock-Tests.md) · [Analytics workshop: payments and website visits](analytics-workshop.md) · [Glossary](glossary.md) |
 
 Codility-style tasks on other small databases (employees, sensor readings, logins, payments, flights) are in the
 [Codility test prep](../../interview/codility/index.md) guide under Interview prep.

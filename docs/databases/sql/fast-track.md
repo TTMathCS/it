@@ -19,7 +19,7 @@ that are tested most, in the order that builds fastest. Each step says what to b
 | Step | Read | Be able to |
 | --- | --- | --- |
 | 1 | [Cheat sheet](cheat-sheet.md) | Recall the shape of every clause |
-| 2 | [The sample database](sample-database.md) | Know the six tables; you will use them all day |
+| 2 | [The sample database](sample-database.md) | Know the tables; you will use them all day |
 | 3 | [3. The order a query really runs in](03-The-Order-a-Query-Runs-In.md) | Say why an alias from SELECT can't be used in WHERE |
 | 4 | [6. NULL and three-valued logic](06-Null-and-Three-Valued-Logic.md) | Explain why `NOT IN` can return nothing |
 | 5 | [7. Aggregation: GROUP BY and HAVING](07-Aggregation-Group-By-Having.md) | Pick between WHERE and HAVING; count three ways |
@@ -39,6 +39,7 @@ that are tested most, in the order that builds fastest. Each step says what to b
 | 14 | [Which technique does this wording ask for?](which-technique.md) | Turn a task's words into a technique in a minute |
 | 15 | [30. Practice set A](30-Practice-Set-A.md) | Solve each in under 10 minutes before opening the answer |
 | 16 | [32. Mock tests](32-Mock-Tests.md) | Two questions in 40 minutes, timed |
+| 17 | [Analytics workshop](analytics-workshop.md) | Aggregate before joining, reconcile, deduplicate, sessions and a funnel |
 
 If there is time left, [12. UNION and friends](12-Set-Operations.md), [22. Duplicates and incremental
 loads](22-Duplicates-and-Incremental-Loads.md) and [19. Data modelling](19-Data-Modelling.md) are the topics a data
