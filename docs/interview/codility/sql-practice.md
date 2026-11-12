@@ -1,6 +1,6 @@
 # SQL practice set
 
-Thirty-seven tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
+Forty-five tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
 Each gives the tables, example rows and the exact result your query should return.
 
 **How to practise:** write the query in PostgreSQL or SQLite (an online [SQLite fiddle](https://sqlite.org/fiddle/)
@@ -8,7 +8,7 @@ is enough), run it on the example, then write two or three edge cases of your ow
 solution. Each solution lists the edge cases it was tested on and the common wrong answers, with the case each
 one fails.
 
-Every answer here was run on PostgreSQL 16 and SQLite 3.53 with the example, the listed edge cases, 150 random
+Every answer in parts A to E was run on PostgreSQL 16 and SQLite 3.53 with the example, the listed edge cases, 150 random
 small tables checked against a separate Python answer, and a large table, timed.
 
 The [SQL course](../../databases/sql/index.md) has more practice on its own sample database:
@@ -3913,3 +3913,511 @@ CREATE TABLE org (
         Checked: this gives a wrong result on **sample**.
 
 
+
+## F. More data-engineering patterns
+
+Eight more tasks on patterns a data engineer meets every day: replayed rows, change feeds, runs of equal values,
+sessions, a type 2 history, an "Other" row and a reconciliation. Each solution was run on PostgreSQL 16 and SQLite 3.54
+with the example shown and gave exactly the expected rows, columns and order on both. They have not had the random
+and large-table tests of tasks 1 to 37, so write your own edge cases.
+
+### 38. Replayed rows in each batch
+
+**Topic:** deduplication
+
+An ingest job retries when it times out, so a later batch can carry orders that an earlier batch already loaded. `(batch_id, order_id)` is unique: one batch never holds the same order twice.
+
+For each batch return `batch_id`, `rows_loaded`, `new_rows` (orders seen for the first time in this batch) and `repeated_rows` (orders an earlier batch already had). Sort by `batch_id`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE loads (
+    batch_id INTEGER NOT NULL,
+    order_id INTEGER NOT NULL,
+    amount   INTEGER NOT NULL,
+    PRIMARY KEY (batch_id, order_id)
+);
+INSERT INTO loads VALUES (1, 101, 20), (1, 102, 35), (1, 103, 10);
+INSERT INTO loads VALUES (2, 103, 10), (2, 104, 50), (2, 105, 15), (2, 106, 40);
+INSERT INTO loads VALUES (3, 101, 20), (3, 104, 50), (3, 106, 40);
+INSERT INTO loads VALUES (4, 107, 25), (4, 108, 30), (4, 105, 15);
+```
+
+**Your query should return**
+
+| batch_id | rows_loaded | new_rows | repeated_rows |
+|---|---|---|---|
+| 1 | 3 | 3 | 0 |
+| 2 | 4 | 3 | 1 |
+| 3 | 3 | 0 | 3 |
+| 4 | 3 | 2 | 1 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH f AS (
+        SELECT order_id, MIN(batch_id) AS first_batch
+        FROM loads
+        GROUP BY order_id
+    )
+    SELECT l.batch_id,
+           COUNT(*) AS rows_loaded,
+           SUM(CASE WHEN l.batch_id = f.first_batch THEN 1 ELSE 0 END) AS new_rows,
+           SUM(CASE WHEN l.batch_id > f.first_batch THEN 1 ELSE 0 END) AS repeated_rows
+    FROM loads l
+    JOIN f ON f.order_id = l.order_id
+    GROUP BY l.batch_id
+    ORDER BY l.batch_id;
+    ```
+
+    **Why it works**
+
+    1. First find the batch where each order showed up first (`MIN(batch_id)` per order).
+    2. Join that back to every row: same batch means new, a later batch means a repeat.
+    3. Two `SUM(CASE ...)` columns count both kinds in one pass; `COUNT(DISTINCT order_id)` alone cannot tell them apart.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 39. Current accounts from a change feed
+
+**Topic:** latest row per key
+
+A source database sends every change as a row: `op` is `'I'` (insert), `'U'` (update) or `'D'` (delete), and `seq` gives the order the changes happened in. A deleted account can be inserted again later.
+
+Return the accounts that exist after all changes are applied, with `account_id` and their current `plan`. Sort by `account_id`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE changes (
+    seq        INTEGER PRIMARY KEY,
+    account_id INTEGER NOT NULL,
+    op         CHAR(1) NOT NULL,
+    plan       VARCHAR(20)
+);
+INSERT INTO changes VALUES (1, 10, 'I', 'free'), (2, 11, 'I', 'free'), (3, 12, 'I', 'pro');
+INSERT INTO changes VALUES (4, 10, 'U', 'pro'), (5, 13, 'I', 'free'), (6, 11, 'D', NULL);
+INSERT INTO changes VALUES (7, 12, 'U', 'team'), (8, 14, 'I', 'pro'), (9, 13, 'D', NULL);
+INSERT INTO changes VALUES (10, 13, 'I', 'team'), (11, 10, 'U', 'free'), (12, 14, 'D', NULL);
+```
+
+**Your query should return**
+
+| account_id | plan |
+|---|---|
+| 10 | free |
+| 12 | team |
+| 13 | team |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH ordered AS (
+        SELECT account_id, op, plan,
+               ROW_NUMBER() OVER (PARTITION BY account_id ORDER BY seq DESC) AS rn
+        FROM changes
+    )
+    SELECT account_id, plan
+    FROM ordered
+    WHERE rn = 1 AND op <> 'D'
+    ORDER BY account_id;
+    ```
+
+    **Why it works**
+
+    1. `ROW_NUMBER()` per account, newest `seq` first, picks the last change of each account.
+    2. Filter `op <> 'D'` only after picking the last change: account 13 was deleted and then came back.
+    3. Filtering deletes first (in the CTE) would wrongly keep accounts 11 and 14 with their old plan.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 40. Runs of the same machine status
+
+**Topic:** gaps and islands
+
+Each machine reports its status once an hour, with no missing hours. A dashboard wants the log shrunk into runs: one row per stretch of hours with the same status.
+
+Return `machine`, `status`, `from_hour`, `to_hour` and `hours` for every run. Sort by `machine`, then `from_hour`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE status_log (
+    machine VARCHAR(10) NOT NULL,
+    hour    INTEGER NOT NULL,
+    status  VARCHAR(10) NOT NULL,
+    PRIMARY KEY (machine, hour)
+);
+INSERT INTO status_log VALUES ('M1', 0, 'up'), ('M1', 1, 'up'), ('M1', 2, 'down'), ('M1', 3, 'down');
+INSERT INTO status_log VALUES ('M1', 4, 'up'), ('M1', 5, 'down'), ('M1', 6, 'up'), ('M1', 7, 'up');
+INSERT INTO status_log VALUES ('M2', 0, 'down'), ('M2', 1, 'up'), ('M2', 2, 'up'), ('M2', 3, 'up');
+INSERT INTO status_log VALUES ('M2', 4, 'up'), ('M2', 5, 'down'), ('M2', 6, 'down'), ('M2', 7, 'down');
+```
+
+**Your query should return**
+
+| machine | status | from_hour | to_hour | hours |
+|---|---|---|---|---|
+| M1 | up | 0 | 1 | 2 |
+| M1 | down | 2 | 3 | 2 |
+| M1 | up | 4 | 4 | 1 |
+| M1 | down | 5 | 5 | 1 |
+| M1 | up | 6 | 7 | 2 |
+| M2 | down | 0 | 0 | 1 |
+| M2 | up | 1 | 4 | 4 |
+| M2 | down | 5 | 7 | 3 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH g AS (
+        SELECT machine, hour, status,
+               ROW_NUMBER() OVER (PARTITION BY machine ORDER BY hour)
+             - ROW_NUMBER() OVER (PARTITION BY machine, status ORDER BY hour) AS grp
+        FROM status_log
+    )
+    SELECT machine, status, MIN(hour) AS from_hour, MAX(hour) AS to_hour, COUNT(*) AS hours
+    FROM g
+    GROUP BY machine, status, grp
+    ORDER BY machine, from_hour;
+    ```
+
+    **Why it works**
+
+    1. Number the rows per machine, and again per machine and status; inside one run both numbers go up together.
+    2. So their difference stays the same within a run and changes when the run breaks; it becomes a group id.
+    3. Group by machine, status and that id; a plain `GROUP BY status` would merge M1's three separate `up` runs.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 41. First day a product runs short
+
+**Topic:** running totals
+
+A warehouse logs stock moves: positive `qty` is goods in, negative is goods out. Stock starts at 0 and `(product, day)` is unique. Exactly 0 is fine; below 0 means the books are wrong somewhere.
+
+For each product whose running stock ever drops below 0, return `product`, the `first_short_day` and the `stock` on that day. Leave out products that never go below 0. Sort by `product`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE stock_moves (
+    product VARCHAR(10) NOT NULL,
+    day     INTEGER NOT NULL,
+    qty     INTEGER NOT NULL,
+    PRIMARY KEY (product, day)
+);
+INSERT INTO stock_moves VALUES ('bolt', 1, 50), ('bolt', 2, -20), ('bolt', 3, -40), ('bolt', 4, 30), ('bolt', 5, -25);
+INSERT INTO stock_moves VALUES ('nut', 1, 10), ('nut', 3, -5), ('nut', 4, -5), ('nut', 6, 20);
+INSERT INTO stock_moves VALUES ('pin', 2, -3), ('pin', 3, 10), ('pin', 5, -2);
+INSERT INTO stock_moves VALUES ('rod', 1, 5), ('rod', 2, -5), ('rod', 4, 8), ('rod', 5, -9);
+```
+
+**Your query should return**
+
+| product | first_short_day | stock |
+|---|---|---|
+| bolt | 3 | -10 |
+| pin | 2 | -3 |
+| rod | 5 | -1 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH r AS (
+        SELECT product, day,
+               SUM(qty) OVER (PARTITION BY product ORDER BY day) AS stock
+        FROM stock_moves
+    ), short AS (
+        SELECT product, day, stock,
+               ROW_NUMBER() OVER (PARTITION BY product ORDER BY day) AS rn
+        FROM r
+        WHERE stock < 0
+    )
+    SELECT product, day AS first_short_day, stock
+    FROM short
+    WHERE rn = 1
+    ORDER BY product;
+    ```
+
+    **Why it works**
+
+    1. `SUM(qty) OVER (PARTITION BY product ORDER BY day)` gives the stock after each day's move.
+    2. Keep only negative rows, then take the earliest one per product with `ROW_NUMBER()`.
+    3. `nut` drops to exactly 0 on day 4 and is left out; `rod` goes negative only after a refill, on day 5.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 42. Session table from clicks
+
+**Topic:** sessionising events
+
+`minute` is the minute of the day a user clicked. A gap of **more than 20 minutes** since that user's previous click starts a new session; a gap of exactly 20 does not. One user can click twice in the same minute.
+
+Return one row per session: `user_id`, `session_no` (1, 2, ... per user in time order), `start_minute`, `end_minute` and `clicks`. Sort by `user_id`, then `session_no`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE clicks (
+    user_id INTEGER NOT NULL,
+    minute  INTEGER NOT NULL
+);
+INSERT INTO clicks VALUES (1, 480), (1, 485), (1, 505), (1, 526), (1, 530);
+INSERT INTO clicks VALUES (1, 600), (1, 600), (1, 615);
+INSERT INTO clicks VALUES (2, 700), (2, 721), (2, 741), (2, 790);
+INSERT INTO clicks VALUES (3, 1000);
+```
+
+**Your query should return**
+
+| user_id | session_no | start_minute | end_minute | clicks |
+|---|---|---|---|---|
+| 1 | 1 | 480 | 505 | 3 |
+| 1 | 2 | 526 | 530 | 2 |
+| 1 | 3 | 600 | 615 | 3 |
+| 2 | 1 | 700 | 700 | 1 |
+| 2 | 2 | 721 | 741 | 2 |
+| 2 | 3 | 790 | 790 | 1 |
+| 3 | 1 | 1000 | 1000 | 1 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH marked AS (
+        SELECT user_id, minute,
+               CASE WHEN minute - LAG(minute) OVER (PARTITION BY user_id ORDER BY minute) <= 20
+                    THEN 0 ELSE 1 END AS new_session
+        FROM clicks
+    ), numbered AS (
+        SELECT user_id, minute,
+               SUM(new_session) OVER (PARTITION BY user_id ORDER BY minute
+                                      ROWS UNBOUNDED PRECEDING) AS session_no
+        FROM marked
+    )
+    SELECT user_id, session_no, MIN(minute) AS start_minute, MAX(minute) AS end_minute,
+           COUNT(*) AS clicks
+    FROM numbered
+    GROUP BY user_id, session_no
+    ORDER BY user_id, session_no;
+    ```
+
+    **Why it works**
+
+    1. `LAG` gives the previous click; flag 1 when there is none or the gap is over 20, else 0.
+    2. A running `SUM` of the flags numbers the sessions; `ROWS UNBOUNDED PRECEDING` keeps two clicks in the same minute from being summed together as one peer group.
+    3. Group by user and session number for the start, end and count.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 43. History table from daily snapshots
+
+**Topic:** slowly changing dimension (type 2)
+
+Each night the customer table is copied in full into `snapshots`. Storage is tight, so the team wants a type 2 history instead: one row per version of a customer's city. A customer appears in every snapshot from the day they join, and can move back to a city they lived in before.
+
+Return `customer_id`, `city`, `valid_from` and `valid_to` (the last day of that version, `NULL` for the current one). Sort by `customer_id`, then `valid_from`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE snapshots (
+    snap_day    INTEGER NOT NULL,
+    customer_id INTEGER NOT NULL,
+    city        VARCHAR(20) NOT NULL,
+    PRIMARY KEY (snap_day, customer_id)
+);
+INSERT INTO snapshots VALUES (1, 1, 'Oslo'), (2, 1, 'Oslo'), (3, 1, 'Bergen'), (4, 1, 'Bergen'), (5, 1, 'Oslo'), (6, 1, 'Oslo');
+INSERT INTO snapshots VALUES (1, 2, 'Lima'), (2, 2, 'Lima'), (3, 2, 'Lima'), (4, 2, 'Lima'), (5, 2, 'Lima'), (6, 2, 'Lima');
+INSERT INTO snapshots VALUES (4, 3, 'Pune'), (5, 3, 'Pune'), (6, 3, 'Goa');
+```
+
+**Your query should return**
+
+| customer_id | city | valid_from | valid_to |
+|---|---|---|---|
+| 1 | Oslo | 1 | 2 |
+| 1 | Bergen | 3 | 4 |
+| 1 | Oslo | 5 | NULL |
+| 2 | Lima | 1 | NULL |
+| 3 | Pune | 4 | 5 |
+| 3 | Goa | 6 | NULL |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH marked AS (
+        SELECT customer_id, snap_day, city,
+               LAG(city) OVER (PARTITION BY customer_id ORDER BY snap_day) AS prev_city
+        FROM snapshots
+    ), starts AS (
+        SELECT customer_id, city, snap_day AS valid_from
+        FROM marked
+        WHERE prev_city IS NULL OR prev_city <> city
+    )
+    SELECT customer_id, city, valid_from,
+           LEAD(valid_from) OVER (PARTITION BY customer_id ORDER BY valid_from) - 1 AS valid_to
+    FROM starts
+    ORDER BY customer_id, valid_from;
+    ```
+
+    **Why it works**
+
+    1. A version starts on a day whose city differs from the day before (`LAG`), or on the customer's first day.
+    2. `LEAD(valid_from) - 1` on those start rows closes each version the day before the next one; the last stays `NULL`.
+    3. `GROUP BY customer_id, city` with `MIN`/`MAX` fails: customer 1's two Oslo stays would merge into days 1 to 6.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 44. Top two products and the rest
+
+**Topic:** top N per group
+
+A report shows, for each category, its two best products by revenue and one `'Other'` row with everything else, so the numbers still add up to the category total. No product is called `'Other'`.
+
+Return `category`, `product` and `revenue`. A tie in revenue goes to the product whose name comes first. Add the `'Other'` row only when the category has more than two products. Sort by `category`, then the top product, the second, then `'Other'`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE sales (
+    sale_id  INTEGER PRIMARY KEY,
+    category VARCHAR(10) NOT NULL,
+    product  VARCHAR(10) NOT NULL,
+    amount   INTEGER NOT NULL
+);
+INSERT INTO sales VALUES (1, 'fruit', 'apple', 30), (2, 'fruit', 'pear', 25), (3, 'fruit', 'apple', 15);
+INSERT INTO sales VALUES (4, 'fruit', 'plum', 10), (5, 'fruit', 'kiwi', 40), (6, 'fruit', 'fig', 5);
+INSERT INTO sales VALUES (7, 'fruit', 'pear', 20), (8, 'tea', 'green', 12), (9, 'tea', 'black', 12);
+INSERT INTO sales VALUES (10, 'tea', 'mint', 7), (11, 'veg', 'leek', 9), (12, 'veg', 'kale', 11);
+```
+
+**Your query should return**
+
+| category | product | revenue |
+|---|---|---|
+| fruit | apple | 45 |
+| fruit | pear | 45 |
+| fruit | Other | 55 |
+| tea | black | 12 |
+| tea | green | 12 |
+| tea | Other | 7 |
+| veg | kale | 11 |
+| veg | leek | 9 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH p AS (
+        SELECT category, product, SUM(amount) AS revenue
+        FROM sales
+        GROUP BY category, product
+    ), r AS (
+        SELECT category, product, revenue,
+               ROW_NUMBER() OVER (PARTITION BY category ORDER BY revenue DESC, product) AS rn
+        FROM p
+    )
+    SELECT category,
+           CASE WHEN rn <= 2 THEN product ELSE 'Other' END AS product,
+           SUM(revenue) AS revenue
+    FROM r
+    GROUP BY category, CASE WHEN rn <= 2 THEN product ELSE 'Other' END
+    ORDER BY category, MIN(rn);
+    ```
+
+    **Why it works**
+
+    1. Sum the sales per product first; ranking single sales would split `apple` and `pear` into pieces.
+    2. `ROW_NUMBER()` with `product` as the tie-breaker gives exactly two winners even when revenues tie.
+    3. Grouping by the `CASE` that turns ranks 3 and up into `'Other'` folds them into one row; `ORDER BY MIN(rn)` puts it last.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 45. Source and warehouse do not match
+
+**Topic:** data-quality check
+
+After each load, a check compares the source system with the warehouse per `load_day`: the row count and the amount total must both be the same. A day can be missing on either side.
+
+Return only the days that fail: `load_day`, `source_rows`, `warehouse_rows`, `source_amount` and `warehouse_amount` (0 when a side has no rows that day). Sort by `load_day`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE source_orders (
+    order_id INTEGER PRIMARY KEY,
+    load_day INTEGER NOT NULL,
+    amount   INTEGER NOT NULL
+);
+CREATE TABLE warehouse_orders (
+    order_id INTEGER PRIMARY KEY,
+    load_day INTEGER NOT NULL,
+    amount   INTEGER NOT NULL
+);
+INSERT INTO source_orders VALUES (1, 1, 10), (2, 1, 20), (3, 2, 30), (4, 2, 40), (5, 3, 50), (6, 3, 60), (7, 4, 70);
+INSERT INTO warehouse_orders VALUES (1, 1, 10), (2, 1, 20), (3, 2, 30), (5, 3, 50), (6, 3, 66), (8, 5, 80);
+```
+
+**Your query should return**
+
+| load_day | source_rows | warehouse_rows | source_amount | warehouse_amount |
+|---|---|---|---|---|
+| 2 | 2 | 1 | 70 | 30 |
+| 3 | 2 | 2 | 110 | 116 |
+| 4 | 1 | 0 | 70 | 0 |
+| 5 | 0 | 1 | 0 | 80 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH s AS (
+        SELECT load_day, COUNT(*) AS n, SUM(amount) AS total
+        FROM source_orders GROUP BY load_day
+    ), w AS (
+        SELECT load_day, COUNT(*) AS n, SUM(amount) AS total
+        FROM warehouse_orders GROUP BY load_day
+    ), days AS (
+        SELECT load_day FROM s UNION SELECT load_day FROM w
+    )
+    SELECT d.load_day,
+           COALESCE(s.n, 0) AS source_rows, COALESCE(w.n, 0) AS warehouse_rows,
+           COALESCE(s.total, 0) AS source_amount, COALESCE(w.total, 0) AS warehouse_amount
+    FROM days d
+    LEFT JOIN s ON s.load_day = d.load_day
+    LEFT JOIN w ON w.load_day = d.load_day
+    WHERE COALESCE(s.n, 0) <> COALESCE(w.n, 0)
+       OR COALESCE(s.total, 0) <> COALESCE(w.total, 0)
+    ORDER BY d.load_day;
+    ```
+
+    **Why it works**
+
+    1. Aggregate each side per day on its own, then build the list of all days with `UNION`.
+    2. Two `LEFT JOIN`s from that list keep days found on only one side; this avoids `FULL JOIN`, which old SQLite lacks.
+    3. Day 3 has the same count but a wrong amount, so checking counts alone would miss it.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.

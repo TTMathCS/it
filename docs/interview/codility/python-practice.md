@@ -1,6 +1,6 @@
 # Python practice set
 
-Thirty-six tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
+Forty-four tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
 that tell you how fast the answer must be. They are grouped by the technique they practise. A data engineer's
 Python task is as likely to be **data wrangling** as a classic algorithm, so both are here: about half work with
 log lines, CSV text, records, joins, dates and nested data, and the rest are the algorithm patterns of Codility's
@@ -13,7 +13,7 @@ hidden tests; where that slow answer is shown, it was run on the largest input a
 [cheat sheet](cheat-sheet.md) helps), write the code, run the examples, then add your own edge cases **before**
 opening the solution.
 
-Every answer was run on Python 3.13 with the examples, the listed edge cases, 500 or more random small inputs
+Every answer in parts A to G was run on Python 3.13 with the examples, the listed edge cases, 500 or more random small inputs
 compared with a slow but obviously correct answer, and the largest input the limits allow, timed. Every "common
 wrong answer" was run too; its box says which case it fails or how long it took before it was stopped.
 
@@ -3330,3 +3330,545 @@ def solution(W, D):
         Checked: timed out after 5.0s on the large input.
 
 
+
+## H. More data-engineering tasks
+
+Eight more tasks of the kind a data engineer gets: cleaning and counting, merging sorted streams, a change feed with
+deletes, row checks, a rate limiter, the busiest hour, a quoted CSV line and a limited forward fill. Standard library
+only. Every solution passes its tests (shown inside) on Python 3.9 and 3.13.
+
+### 37. Clean e-mails, count per domain
+
+**Level:** Easy · **Aim for:** 12 minutes
+
+A sign-up form saves e-mail addresses as the user typed them. `A` is a list of those strings. Clean each one:
+remove spaces at both ends and make it lower case. A cleaned address is **valid** when it has no space inside,
+exactly one `@`, a non-empty part before the `@`, and a domain after it that has a dot which is not its first or
+last character. Ignore invalid ones, and count each valid address once even if it appears many times.
+
+Return a list of `(domain, count)` tuples: the number of different valid addresses per domain, the biggest count
+first, ties by domain name A to Z.
+
+```text
+def solution(A): -> list of (str, int)
+```
+
+**Examples**
+
+* `solution([' Ann@Mail.com', 'ann@mail.com', 'bob@mail.com ', 'x@y.org'])` returns `[('mail.com', 2), ('y.org', 1)]`
+* `solution(['no-at-sign', 'a@b', '@c.com', 'a@@c.com'])` returns `[]`
+* `solution(['a@x.io', 'b@x.io', 'c@a.io', 'd@a.io'])` returns `[('a.io', 2), ('x.io', 2)]`
+
+**Limits:** `len(A)` up to 100,000; each string up to 100 characters.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A):
+        seen = set()
+        cnt = {}
+        for s in A:
+            e = s.strip().lower()
+            if ' ' in e or e.count('@') != 1:
+                continue
+            user, dom = e.split('@')
+            if not user or '.' not in dom or dom[0] == '.' or dom[-1] == '.':
+                continue
+            if e in seen:
+                continue
+            seen.add(e)
+            cnt[dom] = cnt.get(dom, 0) + 1
+        return sorted(cnt.items(), key=lambda x: (-x[1], x[0]))
+    ```
+
+    Clean first, then dedupe on the cleaned text: `' Ann@Mail.com'` and `'ann@mail.com'` are the same person. A common
+    slip is to dedupe the raw strings and count Ann twice.
+
+    **Cost:** O(N·L) to clean N strings of length L, plus O(D log D) to sort D domains.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution([' Ann@Mail.com', 'ann@mail.com', 'bob@mail.com ', 'x@y.org']) == [('mail.com', 2), ('y.org', 1)]
+    assert solution(['no-at-sign', 'a@b', '@c.com', 'a@@c.com']) == []
+    assert solution(['a@x.io', 'b@x.io', 'c@a.io', 'd@a.io']) == [('a.io', 2), ('x.io', 2)]
+    assert solution([]) == []
+    assert solution(['a b@x.io', 'a@.io', 'a@io.', '   ']) == []
+    assert solution(['A@X.IO', 'a@x.io']) == [('x.io', 1)]
+    print('task 1: ok')
+    ```
+
+
+### 38. Merge two sorted event streams
+
+**Level:** Easy · **Aim for:** 10 minutes
+
+Two collectors send events as `(time, name)` tuples. `A` and `B` are each already sorted by time. Return one list
+with all events of both, sorted by time. When an event in `A` and an event in `B` have the same time, the one from
+`A` comes first; events from the same list keep their order. Do it in one pass, without sorting again.
+
+```text
+def solution(A, B): -> list of (int, str)
+```
+
+**Examples**
+
+* `solution([(1, 'a'), (5, 'b')], [(2, 'x'), (9, 'y')])` returns `[(1, 'a'), (2, 'x'), (5, 'b'), (9, 'y')]`
+* `solution([(3, 'a')], [(3, 'x'), (3, 'y')])` returns `[(3, 'a'), (3, 'x'), (3, 'y')]`
+* `solution([], [(1, 'x')])` returns `[(1, 'x')]`
+
+**Limits:** each list up to 1,000,000 events; times are integers.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A, B):
+        i = j = 0
+        out = []
+        while i < len(A) and j < len(B):
+            if A[i][0] <= B[j][0]:
+                out.append(A[i])
+                i += 1
+            else:
+                out.append(B[j])
+                j += 1
+        return out + A[i:] + B[j:]
+    ```
+
+    `<=` and not `<` is what puts `A` first on a tie. In real code `list(heapq.merge(A, B, key=lambda e: e[0]))` does the
+    same and keeps the same tie rule, but the interview usually wants the two pointers. Comparing whole tuples
+    (`A[i] <= B[j]`) is wrong: it breaks ties by name.
+
+    **Cost:** O(N + M) time and memory. `sorted(A + B)` is O((N+M) log (N+M)) and ignores that the input is sorted.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([(1, 'a'), (5, 'b')], [(2, 'x'), (9, 'y')]) == [(1, 'a'), (2, 'x'), (5, 'b'), (9, 'y')]
+    assert solution([(3, 'a')], [(3, 'x'), (3, 'y')]) == [(3, 'a'), (3, 'x'), (3, 'y')]
+    assert solution([], [(1, 'x')]) == [(1, 'x')]
+    assert solution([], []) == []
+    assert solution([(2, 'z')], [(2, 'a')]) == [(2, 'z'), (2, 'a')]
+    for _ in range(500):
+        A = sorted((random.randint(0, 9), random.choice('abc')) for _ in range(random.randint(0, 8)))
+        B = sorted((random.randint(0, 9), random.choice('xyz')) for _ in range(random.randint(0, 8)))
+        assert solution(A, B) == sorted(A + B, key=lambda e: e[0])   # sorted is stable, so A wins ties
+    print('task 2: ok')
+    ```
+
+
+### 39. Final table from a change feed with deletes
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+A database sends its changes as tuples `(time, op, key, value)`, where `op` is `'I'` (insert), `'U'` (update) or
+`'D'` (delete, value `None`). The tuples can arrive **out of time order**. Build the table as it is after all
+changes: for each key only its change with the latest time counts; if two changes of one key have the same time,
+the one later in `R` counts. A key whose latest change is a delete is not in the table.
+
+Return the table as a list of `(key, value)` tuples sorted by key.
+
+```text
+def solution(R): -> list of (str, str)
+```
+
+**Examples**
+
+* `solution([(1, 'I', 'a', 'x'), (2, 'U', 'a', 'y'), (1, 'I', 'b', 'z')])` returns `[('a', 'y'), ('b', 'z')]`
+* `solution([(5, 'D', 'a', None), (3, 'U', 'a', 'old')])` returns `[]`
+* `solution([(4, 'D', 'k', None), (4, 'I', 'k', 'back')])` returns `[('k', 'back')]`
+
+**Limits:** `len(R)` up to 200,000.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(R):
+        last = {}
+        for t, op, key, val in R:
+            if key not in last or t >= last[key][0]:
+                last[key] = (t, op, val)
+        return sorted((k, v[2]) for k, v in last.items() if v[1] != 'D')
+    ```
+
+    Keep the delete as a record in the dict and drop deleted keys only at the end. The common wrong answer removes the
+    key the moment a delete arrives (`last.pop(key)`); then an older update that arrives later (example 2) puts it back.
+
+    **Cost:** O(N + K log K) for K keys, O(K) memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([(1, 'I', 'a', 'x'), (2, 'U', 'a', 'y'), (1, 'I', 'b', 'z')]) == [('a', 'y'), ('b', 'z')]
+    assert solution([(5, 'D', 'a', None), (3, 'U', 'a', 'old')]) == []
+    assert solution([(4, 'D', 'k', None), (4, 'I', 'k', 'back')]) == [('k', 'back')]
+    assert solution([]) == []
+
+    def slow(R):
+        out = []
+        for k in sorted({r[2] for r in R}):
+            t, i, op, val = max((r[0], i, r[1], r[3]) for i, r in enumerate(R) if r[2] == k)
+            if op != 'D':
+                out.append((k, val))
+        return out
+
+    for _ in range(500):
+        R = []
+        for _ in range(random.randint(0, 10)):
+            op = random.choice('IUD')
+            R.append((random.randint(0, 4), op, random.choice('abc'), None if op == 'D' else random.choice('pqrs')))
+        assert solution(R) == slow(R)
+    print('task 3: ok')
+    ```
+
+
+### 40. Check every row of an upload
+
+**Level:** Medium · **Aim for:** 20 minutes
+
+`S` is a CSV text: lines split by `"\n"`, fields by `","`, no quotes. Line 1 is the header `id,date,amount`.
+Blank lines are skipped. Each other line is checked in this order, and only its **first** problem is reported:
+
+1. `'fields'`: it does not have exactly 3 fields;
+2. `'id'`: the id is not a whole number of digits `0-9` greater than 0;
+3. `'duplicate'`: the same id (as a number, so `7` and `007` are the same) was already used on an earlier line
+   whose id passed check 2;
+4. `'date'`: the date is not a real date written `YYYY-MM-DD`;
+5. `'amount'`: the amount is not digits with an optional dot and one or two more digits (`12`, `3.5`, `0.99`).
+
+Return a list of `(line number, problem)` for the bad lines, line numbers counted from 1 (the header is line 1).
+
+```text
+def solution(S): -> list of (int, str)
+```
+
+**Examples**
+
+* `solution('id,date,amount\n1,2026-01-31,9.99\n2,2026-02-30,5\n')` returns `[(3, 'date')]`
+* `solution('id,date,amount\n7,2026-03-01,1\n007,2026-03-02,2\n0,2026-03-03,3')` returns `[(3, 'duplicate'), (4, 'id')]`
+* `solution('id,date,amount\n5,2026-04-01\n\n6,2026-04-01,1.234\n8,20260401,1')` returns `[(2, 'fields'), (4, 'amount'), (5, 'date')]`
+
+**Limits:** `S` up to 1,000,000 characters.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    import re
+    from datetime import date
+
+    def solution(S):
+        out, ids = [], set()
+        for n, line in enumerate(S.split('\n')[1:], 2):
+            if line.strip() == '':
+                continue
+            f = line.split(',')
+            if len(f) != 3:
+                out.append((n, 'fields'))
+                continue
+            i, d, a = f
+            if not re.fullmatch(r'[0-9]+', i) or int(i) == 0:
+                out.append((n, 'id'))
+                continue
+            if int(i) in ids:
+                out.append((n, 'duplicate'))
+                continue
+            ids.add(int(i))
+            try:
+                ok = bool(re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', d)) and date.fromisoformat(d)
+            except ValueError:
+                ok = False
+            if not ok:
+                out.append((n, 'date'))
+            elif not re.fullmatch(r'[0-9]+(\.[0-9]{1,2})?', a):
+                out.append((n, 'amount'))
+        return out
+    ```
+
+    Two traps. `str.isdigit()` says yes to `'²'`, so the id check uses `[0-9]`. And since Python 3.11
+    `date.fromisoformat` also takes `'20260401'`, so the regex fixes the format and `fromisoformat` checks that the day
+    exists (it rejects 30 February).
+
+    **Cost:** O(len(S)) time; O(number of ids) memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution('id,date,amount\n1,2026-01-31,9.99\n2,2026-02-30,5\n') == [(3, 'date')]
+    assert solution('id,date,amount\n7,2026-03-01,1\n007,2026-03-02,2\n0,2026-03-03,3') == [(3, 'duplicate'), (4, 'id')]
+    assert solution('id,date,amount\n5,2026-04-01\n\n6,2026-04-01,1.234\n8,20260401,1') == [(2, 'fields'), (4, 'amount'), (5, 'date')]
+    assert solution('id,date,amount') == []
+    assert solution('id,date,amount\n²,2026-01-01,1') == [(2, 'id')]
+    assert solution('id,date,amount\n3,2024-02-29,.5\n4,2023-02-29,1') == [(2, 'amount'), (3, 'date')]
+    assert solution('id,date,amount\n9,2026-13-01,1\n9,2026-01-01,1') == [(2, 'date'), (3, 'duplicate')]
+    print('task 4: ok')
+    ```
+
+
+### 41. Rate limiter
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+An API lets each client make at most `K` requests in any `W` seconds. `T` is the list of one client's request
+times in seconds, sorted. A request at time `t` is **accepted** if fewer than `K` accepted requests have a time in
+`(t - W, t]`; otherwise it is rejected, and a rejected request does not count against later ones. Return the
+number of rejected requests.
+
+```text
+def solution(T, K, W): -> int
+```
+
+**Examples**
+
+* `solution([1, 2, 3, 4], 2, 3)` returns `1` (the request at 3 is rejected; at 4 the request at 1 has left the window)
+* `solution([0, 0, 0, 10], 1, 10)` returns `2`
+* `solution([], 5, 60)` returns `0`
+
+**Limits:** `len(T)` up to 1,000,000; `1 <= K <= 1,000,000`; `1 <= W <= 10^9`.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from collections import deque
+
+    def solution(T, K, W):
+        q = deque()
+        rej = 0
+        for t in T:
+            while q and q[0] <= t - W:
+                q.popleft()
+            if len(q) < K:
+                q.append(t)
+            else:
+                rej += 1
+        return rej
+    ```
+
+    The deque holds only accepted requests still in the window. Each time goes in and out at most once. The usual wrong
+    answer puts every request in the deque, so rejected ones keep blocking; in example 2 it gives the same answer, but
+    `solution([0, 5, 10], 1, 10)` must be `1` and it gives `2`.
+
+    **Cost:** O(N) time, O(K) memory. Counting back through all earlier requests for each one is O(N²).
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([1, 2, 3, 4], 2, 3) == 1
+    assert solution([0, 0, 0, 10], 1, 10) == 2
+    assert solution([], 5, 60) == 0
+    assert solution([0, 5, 10], 1, 10) == 1
+    assert solution([7, 7, 7], 3, 1) == 0
+
+    def slow(T, K, W):
+        acc, rej = [], 0
+        for t in T:
+            if sum(1 for a in acc if t - W < a <= t) < K:
+                acc.append(t)
+            else:
+                rej += 1
+        return rej
+
+    for _ in range(500):
+        T = sorted(random.randint(0, 20) for _ in range(random.randint(0, 15)))
+        K, W = random.randint(1, 4), random.randint(1, 8)
+        assert solution(T, K, W) == slow(T, K, W)
+    print('task 5: ok')
+    ```
+
+
+### 42. Busiest hour for each service
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+`L` is a list of log lines like `'2026-11-11T10:15:02 auth ERROR token expired'`: a timestamp, a space, the
+service name, a space, then anything. Lines that are empty or only spaces are skipped. For each service find the
+hour (the first 13 characters of the timestamp, like `'2026-11-11T10'`) with the most lines; if hours tie, take
+the earliest. Return a list of `(service, hour, count)` sorted by service.
+
+```text
+def solution(L): -> list of (str, str, int)
+```
+
+**Examples**
+
+* `solution(['2026-11-11T10:00:01 auth INFO ok', '2026-11-11T11:05:00 auth ERROR x', '2026-11-11T11:59:59 auth INFO y'])`
+  returns `[('auth', '2026-11-11T11', 2)]`
+* `solution(['2026-01-01T09:00:00 db INFO a', '2026-01-01T08:00:00 db INFO b', ''])` returns `[('db', '2026-01-01T08', 1)]`
+* `solution(['2026-05-05T05:00:00 web GET /', '2026-05-05T05:30:00 api GET /', '2026-05-05T05:31:00 web GET /a'])`
+  returns `[('api', '2026-05-05T05', 1), ('web', '2026-05-05T05', 2)]`
+
+**Limits:** `len(L)` up to 500,000.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from collections import Counter
+
+    def solution(L):
+        c = Counter()
+        for line in L:
+            if line.strip():
+                ts, svc = line.split()[:2]
+                c[svc, ts[:13]] += 1
+        best = {}
+        for (svc, h), n in c.items():
+            if svc not in best or (-n, h) < (-best[svc][1], best[svc][0]):
+                best[svc] = (h, n)
+        return [(s, h, n) for s, (h, n) in sorted(best.items())]
+    ```
+
+    Count by the pair (service, hour) in one pass, then keep the best hour per service. The hour strings sort the same
+    way as the times, so the earliest hour is the smallest string. `Counter.most_common(1)` breaks ties by first seen,
+    not by earliest hour, so it is wrong when the lines are out of order (example 2).
+
+    **Cost:** O(N) to count plus O(S log S) to sort S services.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution(['2026-11-11T10:00:01 auth INFO ok', '2026-11-11T11:05:00 auth ERROR x', '2026-11-11T11:59:59 auth INFO y']) == [('auth', '2026-11-11T11', 2)]
+    assert solution(['2026-01-01T09:00:00 db INFO a', '2026-01-01T08:00:00 db INFO b', '']) == [('db', '2026-01-01T08', 1)]
+    assert solution(['2026-05-05T05:00:00 web GET /', '2026-05-05T05:30:00 api GET /', '2026-05-05T05:31:00 web GET /a']) == [('api', '2026-05-05T05', 1), ('web', '2026-05-05T05', 2)]
+    assert solution([]) == []
+    assert solution(['   ', '2026-01-01T00:00:00 x']) == [('x', '2026-01-01T00', 1)]
+    print('task 6: ok')
+    ```
+
+
+### 43. Split a CSV line that has quotes
+
+**Level:** Medium · **Aim for:** 20 minutes
+
+Split one CSV line `S` into its fields **without** the `csv` module. Fields are split by commas. A field may be
+wrapped in double quotes; inside quotes a comma is part of the field and two double quotes `""` stand for one `"`.
+The quotes around a field are not part of it. You can assume the line is well formed: a quote opens only at the
+start of a field and the closing quote is followed by a comma or the end of the line. An empty `S` is one empty
+field.
+
+```text
+def solution(S): -> list of str
+```
+
+**Examples**
+
+* `solution('a,b,c')` returns `['a', 'b', 'c']`
+* `solution('1,"Smith, Ann",42')` returns `['1', 'Smith, Ann', '42']`
+* `solution('"say ""hi""",,""')` returns `['say "hi"', '', '']`
+
+**Limits:** `len(S)` up to 1,000,000.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(S):
+        out, cur, q, i = [], [], False, 0
+        while i < len(S):
+            ch = S[i]
+            if q:
+                if ch != '"':
+                    cur.append(ch)
+                elif i + 1 < len(S) and S[i + 1] == '"':
+                    cur.append('"')
+                    i += 1
+                else:
+                    q = False
+            elif ch == '"':
+                q = True
+            elif ch == ',':
+                out.append(''.join(cur))
+                cur = []
+            else:
+                cur.append(ch)
+            i += 1
+        out.append(''.join(cur))
+        return out
+    ```
+
+    One flag says whether we are inside quotes. Characters go into a list and are joined once per field; adding to a
+    string one character at a time can be O(N²). `S.split(',')` is the common wrong answer: it breaks `"Smith, Ann"`.
+
+    **Cost:** O(N) time and memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    import csv, random
+    assert solution('a,b,c') == ['a', 'b', 'c']
+    assert solution('1,"Smith, Ann",42') == ['1', 'Smith, Ann', '42']
+    assert solution('"say ""hi""",,""') == ['say "hi"', '', '']
+    assert solution('') == ['']
+    assert solution(',') == ['', '']
+    assert solution('""""') == ['"']
+    for _ in range(500):
+        fields = [''.join(random.choice('ab ,"') for _ in range(random.randint(0, 4))) for _ in range(random.randint(1, 5))]
+        line = ','.join('"' + f.replace('"', '""') + '"' if (',' in f or '"' in f or random.random() < 0.3) else f for f in fields)
+        assert solution(line) == fields
+        if line:
+            assert solution(line) == next(csv.reader([line]))
+    print('task 7: ok')
+    ```
+
+
+### 44. Fill gaps, but not too far
+
+**Level:** Easy · **Aim for:** 10 minutes
+
+A sensor reports once a minute; `A` is the list of readings, with `None` where a reading is missing. Fill each
+`None` with the last real reading before it, but only for the first `K` missing readings in a row: after `K`
+filled minutes in a row the value is too old, so the rest of that gap stays `None`. `None` values before the first
+real reading stay `None`. Return the new list (`A` itself is not changed).
+
+```text
+def solution(A, K): -> list
+```
+
+**Examples**
+
+* `solution([5, None, None, 7], 2)` returns `[5, 5, 5, 7]`
+* `solution([1, None, None, None, 2, None], 2)` returns `[1, 1, 1, None, 2, 2]`
+* `solution([None, 0, None], 1)` returns `[None, 0, 0]`
+
+**Limits:** `len(A)` up to 1,000,000; `0 <= K <= len(A)`.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A, K):
+        out, last, run = [], None, 0
+        for x in A:
+            if x is None:
+                run += 1
+                out.append(last if run <= K else None)
+            else:
+                last, run = x, 0
+                out.append(x)
+        return out
+    ```
+
+    `run` counts the missing readings since the last real one. Test with `x is None`, never `if not x`: a reading of
+    `0` is real (example 3). This is what `pandas` `ffill(limit=K)` does, written by hand.
+
+    **Cost:** O(N) time and memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution([5, None, None, 7], 2) == [5, 5, 5, 7]
+    assert solution([1, None, None, None, 2, None], 2) == [1, 1, 1, None, 2, 2]
+    assert solution([None, 0, None], 1) == [None, 0, 0]
+    assert solution([], 3) == []
+    assert solution([4, None], 0) == [4, None]
+    a = [1, None]
+    assert solution(a, 1) == [1, 1] and a == [1, None]
+    print('task 8: ok')
+    ```
