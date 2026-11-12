@@ -161,8 +161,8 @@ index order. SQLite's `SEARCH ... USING INDEX` means the same: find through the 
 
 What an index costs:
 
-- **Every write gets slower.** Each `INSERT`, `DELETE`, and `UPDATE` of an indexed column must change every index on
-  the table too. A table with ten indexes loads much more slowly than one with two.
+- **Every write gets slower.** Each `INSERT` and `DELETE` must change every index on the table, and each `UPDATE`
+  every index on the columns it changes. A table with ten indexes loads much more slowly than one with two.
 - **Space**, on disk and in memory.
 - So index the columns you filter, join and sort on often, not every column. A primary key and a `UNIQUE`
   constraint create an index automatically; a **foreign key does not** on PostgreSQL or SQLite, and the column
@@ -488,7 +488,8 @@ Both databases support both.
     | 3 | 0 | 53 | SEARCH big_orders USING COVERING INDEX big_orders_euros (<expr>=?) |
     <!-- /result -->
 
-PostgreSQL needs the extra brackets around an expression in `CREATE INDEX`; SQLite accepts them too. A partial index
+PostgreSQL needs the extra brackets around an expression in `CREATE INDEX` (a single function call such as
+`LOWER(email)` is the exception); SQLite accepts them but does not need them. A partial index
 is used only when the query's `WHERE` implies the index's (`status = 'pending'` here). A partial **unique** index
 enforces a rule on some rows only, for example "one open cart per customer":
 `CREATE UNIQUE INDEX ... (customer_id) WHERE status = 'open'`.
@@ -506,7 +507,8 @@ enforces a rule on some rows only, for example "one open cart per customer":
 Data warehouses and lakehouses mostly have no B-tree indexes. They make queries fast by reading less instead:
 **partitioning** (files split by a column such as date, so a filter on it skips whole partitions), keeping
 min/max statistics per file so files can be skipped (**data skipping**), and **clustering** rows with similar values
-into the same files. The Databricks tutorial covers its versions of these.
+into the same files. The Databricks course covers its versions of these in
+[22. Performance tuning](../../data-engineering/databricks/22-Performance-Tuning.md).
 
 ## 25.7 How joins run { #join-algorithms }
 
@@ -594,7 +596,7 @@ INDEX" in its plan).
 
     ??? note "Clustered versus non-clustered index?"
         A clustered index is the table itself stored in key order (SQL Server's clustered index, MySQL InnoDB's
-        primary key, SQLite's rowid tables); there can be one. A non-clustered (secondary) index is separate and points
+        primary key, SQLite's rowid tables); a table can have only one. A non-clustered (secondary) index is separate and points
         to the rows. PostgreSQL tables are unordered heaps and every index is secondary; `CLUSTER` reorders a table
         once but does not keep it ordered.
 
@@ -621,7 +623,8 @@ INDEX" in its plan).
     ??? note "Hash join, merge join, nested loop: when is each used?"
         Nested loop when one side is small and the other can be probed through an index. Hash join for large unsorted
         inputs joined on equality: build a hash table on the smaller side. Merge join when both inputs are already
-        sorted on the key (from indexes or earlier sorts), or for very large inputs, and it also handles range joins.
+        sorted on the key (from indexes or earlier sorts), or for very large inputs. On PostgreSQL it needs an equality
+        condition, like a hash join.
 
     ??? note "How do data warehouses speed up queries without indexes?"
         Columnar storage (read only the columns used), partition pruning (skip partitions by a filter column), min/max

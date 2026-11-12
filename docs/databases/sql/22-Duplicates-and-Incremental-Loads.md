@@ -89,7 +89,7 @@ ORDER BY customer_id;
 | 3 | 2 |
 <!-- /result -->
 
-Customer 1 has three rows (one exact copy, one older version, one newer); customer 3 has two versions.
+Customer 1 has three rows (the 1 May row twice, and a newer one from 3 May); customer 3 has two versions.
 
 ## 22.2 Keeping one row per key { #keep-newest }
 
@@ -294,7 +294,7 @@ Ana moved to Vancouver, Chen and Dana are new, Ben was not touched. Each part of
 | Part | Why |
 | --- | --- |
 | `WHERE f.updated_at > watermark` | read only what is new |
-| `ROW_NUMBER ... WHERE rn = 1` | the batch can hold several versions of one customer (Chen has two). Given two rows for one key, PostgreSQL's upsert stops with "ON CONFLICT DO UPDATE command cannot affect row a second time"; SQLite applies both, so whichever it happens to process last wins |
+| `ROW_NUMBER ... WHERE rn = 1` | the batch can hold several versions of one customer (Chen has two). Given two rows for one key, PostgreSQL's upsert stops with "ON CONFLICT DO UPDATE command cannot affect row a second time"; SQLite applies both one after the other, which the newer-wins `WHERE` below happens to sort out, except when two rows share a timestamp |
 | `ON CONFLICT (customer_id) DO UPDATE` | insert new customers, update known ones |
 | `WHERE excluded.updated_at > customers_current.updated_at` | **newer wins**: a row older than what is already loaded never overwrites it |
 | one transaction, watermark last | if anything fails, neither the data nor the watermark moves, and the next run simply tries again |

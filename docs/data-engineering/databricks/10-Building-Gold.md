@@ -501,7 +501,7 @@ dropped and reloaded on its own: either rebuild every fact that points to it in 
     the other limits: you cannot partition by an identity column, cannot `ALTER TABLE` to add, replace or change one,
     cannot update its value, and cannot declare one in a CTAS (create the table first, then `INSERT`). In Lakeflow
     pipelines, identity columns "are not supported with tables that are the target of AUTO CDC processing" and "might
-    be recomputed during updates to a materialized views", so Databricks "recommends using identity columns in
+    be recomputed during updates to a materialized views [sic]", so Databricks "recommends using identity columns in
     pipelines only with streaming tables" ([Pipeline limitations](https://docs.databricks.com/aws/en/ldp/limitations)).
 
 ### Hash keys: the same input always gives the same key
@@ -1502,7 +1502,7 @@ CREATE MATERIALIZED VIEW mv1 AS SELECT d, sum(v) FROM s GROUP BY d;
 
 !!! warning "Identity keys inside a materialized view"
     Because a materialized view may be fully recomputed at any refresh, Databricks warns that identity columns "might
-    be recomputed during updates to a materialized views" and recommends them in pipelines "only with streaming
+    be recomputed during updates to a materialized views [sic]" and recommends them in pipelines "only with streaming
     tables" ([Pipeline limitations](https://docs.databricks.com/aws/en/ldp/limitations)). A materialized view that
     builds a dimension should derive its keys with a hash, or reference a dimension table maintained elsewhere.
 
@@ -2661,7 +2661,7 @@ groups. Name three likely causes.**
 `dim_product` with an identity column. Good idea?**
 
 ??? success "Answer"
-    No. Databricks says identity columns "might be recomputed during updates to a materialized views" and recommends
+    No. Databricks says identity columns "might be recomputed during updates to a materialized views [sic]" and recommends
     them in pipelines "only with streaming tables"; they are also not supported on `AUTO CDC` (formerly
     `APPLY CHANGES`, [rename](https://docs.databricks.com/aws/en/ldp/cdc)) targets. A recomputed key would re-point every fact. Derive the key with a hash of the natural
     key instead. (Rename: [What happened to Delta Live

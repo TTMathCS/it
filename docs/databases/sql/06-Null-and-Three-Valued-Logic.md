@@ -144,7 +144,7 @@ With UNKNOWN in play, `AND`, `OR` and `NOT` follow these tables (U is UNKNOWN):
 | **U** | TRUE | U | U |
 
 `NOT TRUE` is FALSE, `NOT FALSE` is TRUE, and **`NOT UNKNOWN` is UNKNOWN**. The tables follow common sense: FALSE
-`AND` anything is FALSE whatever the unknown is, TRUE `OR` anything is TRUE, and everything else stays unknown.
+`AND` anything is FALSE whatever the unknown is, TRUE `OR` anything is TRUE, and every other combination that involves UNKNOWN stays UNKNOWN.
 
 The last rule is the trap. You might expect "not in Toronto" to return every customer that "in Toronto" did not:
 
@@ -327,8 +327,9 @@ The same rule breaks `NOT IN` when the list contains a NULL. "Customers who neve
     <!-- /result -->
 
     Ivan Petrov (9) never ordered, yet nothing comes back. The list contains the NULL from order 108, and
-    `9 NOT IN (1, 2, ..., NULL)` means `9 <> 1 AND 9 <> 2 AND ... AND 9 <> NULL`. The last part is UNKNOWN, so the
-    whole condition is UNKNOWN for every customer.
+    `9 NOT IN (1, 2, ..., NULL)` means `9 <> 1 AND 9 <> 2 AND ... AND 9 <> NULL`. The last part is UNKNOWN. For a customer who
+    ordered, another part is FALSE, so the whole condition is FALSE; for Ivan every other part is TRUE, so it is
+    UNKNOWN. Neither is TRUE, so no row comes back.
 
 Use `NOT EXISTS`, which does not have the problem, or filter the NULLs out of the list:
 
@@ -449,7 +450,7 @@ primary key can never be NULL at all. [Chapter 18](18-Create-Table-Types-Constra
 - Aggregates skip NULLs (except `COUNT(*)`); `SUM` of nothing is NULL.
 - `GROUP BY` and `DISTINCT` put all NULLs in one group.
 - NULL never matches in a join. `NOT IN` with a NULL in the list returns nothing: use `NOT EXISTS`.
-- NULLs sort last on PostgreSQL and first on SQLite; say `NULLS FIRST` or `NULLS LAST`.
+- In ascending order, NULLs sort last on PostgreSQL and first on SQLite; say `NULLS FIRST` or `NULLS LAST`.
 
 ## Practice { #practice }
 

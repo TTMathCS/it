@@ -18,8 +18,8 @@ UNION ALL does not, and the difference is both a correctness and a speed questio
 
 ## 12.1 UNION and UNION ALL { #union }
 
-`UNION ALL` puts the rows of the second query under the rows of the first. Every place a customer or an employee
-lives or works in one list, labelled:
+`UNION ALL` puts the rows of the second query under the rows of the first. Canadian customers with their city and
+Support staff with their department, in one labelled list:
 
 <!-- sql -->
 ```sql
@@ -103,8 +103,8 @@ UNION gave 8 rows, UNION ALL 10: Toronto three times became once. UNION removes 
 too, not just between them. For set operations two NULLs count as the same, so two unknown cities would also have
 become one row.
 
-`NULLS LAST` is there because the two databases put NULL at different ends: PostgreSQL sorts NULL after every value,
-SQLite before. Saying where you want it makes the result the same on both (SQLite has understood `NULLS FIRST` and
+`NULLS LAST` is there because the two databases put NULL at different ends: in ascending order PostgreSQL sorts NULL after
+every value and SQLite before (DESC flips both). Saying where you want it makes the result the same on both (SQLite has understood `NULLS FIRST` and
 `NULLS LAST` since version 3.30; MySQL and SQL Server do not have them, chapter 6).
 
 !!! tip "Interview tip: UNION ALL unless you need UNION"
@@ -164,7 +164,7 @@ under which NULL matches NULL, not with `=`. It is an anti join that can't fall 
 `MINUS` until version 21c, which added `EXCEPT`; MySQL has had both INTERSECT and EXCEPT only since 8.0.31 (2022).
 
 **Comparing two versions of a table** is the most common real use. Suppose a staging copy of `products` arrived with
-one price changed and one product missing. EXCEPT in both directions shows every difference:
+one price changed, one product missing and one new product. EXCEPT in both directions shows every difference:
 
 <!-- sql -->
 ```sql

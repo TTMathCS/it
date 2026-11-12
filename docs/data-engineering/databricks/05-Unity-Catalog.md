@@ -619,10 +619,10 @@ ALTER SCHEMA shop.silver RETAIN DROPPED TO 30 DAYS;
 
 Note the two spellings: `RETAIN DROPPED FOR` in `CREATE CATALOG`/`CREATE SCHEMA`, `RETAIN DROPPED TO` in
 `ALTER CATALOG`/`ALTER SCHEMA`. A schema-level setting overrides the catalog-level one, and the setting applies
-only to tables dropped after it is configured. Not every page mentions the setting: the object storage lifecycle
-page (Nov 5, 2026) describes the recovery window as a flat 7 days ("For 7 days after the delete"), while DROP TABLE
-(Nov 4, 2026), UNDROP (Nov 5, 2026) and the managed tables page (Nov 9, 2026, the newest) give 7 days as the
-default with the configurable period in Public Preview. This chapter follows the newer pages.
+only to tables dropped after it is configured. Not every page mentions the setting. The object storage lifecycle
+page (Nov 5, 2026) gives a flat 7 days ("For 7 days after the delete"). The DROP TABLE (Nov 4, 2026), UNDROP
+(Nov 5, 2026) and managed tables (Nov 9, 2026, the newest) pages say 7 days is the default and that changing it is
+in Public Preview. This chapter follows the newer pages.
 
 When the files actually disappear is described differently on two pages. CREATE CATALOG and CREATE SCHEMA (last
 updated Sep 16, 2026) say that after the recovery period "data files for managed tables are deleted from your cloud

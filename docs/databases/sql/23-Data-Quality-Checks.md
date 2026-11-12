@@ -144,7 +144,8 @@ anything is left.
     | 206 | 12abc |
     <!-- /result -->
 
-The portable test is rougher: it would let `'1.2.3'` or `'5-'` through. On PostgreSQL a regular expression is exact:
+The portable test is rougher: it would let `'1.2.3'`, `'5-'`, `'.'` or an empty string through, and on
+PostgreSQL the later `CAST` would then fail. On PostgreSQL a regular expression is exact:
 `amount !~ '^-?[0-9]+(\.[0-9]+)?$'`. SQLite has no regular expressions built in.
 
 ### Text that should be a date { #is-date }
@@ -451,9 +452,9 @@ ORDER BY s.order_id, s.amount;
 <!-- /result -->
 
 `CASE` stops at the first true `WHEN`, which is what makes the cast in `'amount not positive'` safe: a row whose
-amount is not a number has already been caught one line above. Two things this does not catch: 31 June passes the
-`LIKE` shape test (a real date test is in [23.4](#is-date), written per database), and both copies of order 206 are
-rejected, because nobody can tell which is right.
+amount is not a number has already been caught one line above. One thing this does not catch: 31 June passes the
+`LIKE` shape test (a real date test is in [23.4](#is-date), written per database). Note also that both copies of
+order 206 are rejected, because nobody can tell which is right.
 
 From here the load is two `INSERT ... SELECT`s in one transaction: rows with a NULL reason, cleaned and cast, into
 the real table; the others, with their reason and the load date, into the rejects table.
@@ -674,7 +675,6 @@ is valid but was not clean as sent. These are the rows a load should fix rather 
     | 202 | Shipped  |
     <!-- /result -->
 
-    On PostgreSQL the comparison is exact; on SQLite too, because `<>` compares text exactly on both (only `LIKE`
-    ignores case on SQLite, [chapter 5](05-Text-Functions-and-Pattern-Matching.md#like-case)).
+    `<>` compares text exactly on both databases (only `LIKE` ignores case on SQLite, [chapter 5](05-Text-Functions-and-Pattern-Matching.md#like-case)).
 
 **Next:** [24. JSON and arrays](24-JSON-and-Arrays.md).

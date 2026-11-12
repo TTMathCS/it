@@ -3,14 +3,14 @@
 *A subquery is a query inside another query, in brackets. It lets you use one answer to ask the next question:
 "products dearer than the average", where the average is itself a query. This chapter covers the four places a
 subquery can go (WHERE, SELECT, FROM and HAVING), the difference between a subquery that runs once and one that runs
-for every row, and two traps: a subquery that returns more rows than expected, and the difference in how PostgreSQL
-and SQLite react to it.*
+for every row, and two traps: a "one value" subquery that returns several rows (PostgreSQL stops, SQLite quietly picks
+one), and one that returns no rows at all.*
 
 !!! abstract "In this chapter"
     **You will learn:**
 
     - scalar subqueries (one value) in WHERE, SELECT and HAVING
-    - list subqueries with `IN`, and `ANY` / `ALL` (PostgreSQL only)
+    - list subqueries with `IN`, and `ANY` / `ALL` (not in SQLite)
     - correlated subqueries: "above the average **of its own group**"
     - subqueries in FROM (derived tables) and why they need a name in most databases
     - what happens when a "one value" subquery returns two rows
@@ -20,7 +20,7 @@ and SQLite react to it.*
 
 ## 10.1 One value: scalar subqueries { #scalar }
 
-A subquery that returns exactly one row with one column can be used anywhere a single value can. "Products that cost
+A subquery that returns one column and at most one row can be used anywhere a single value can. "Products that cost
 more than the average product":
 
 <!-- sql -->

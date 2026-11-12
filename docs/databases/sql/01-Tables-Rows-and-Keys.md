@@ -63,7 +63,8 @@ it with `ORDER BY` ([chapter 2](02-Select-Where-Order-By-Limit.md)).
 ## 1.3 Primary keys { #primary-key }
 
 A **primary key** is the column (or columns) that tells one row from every other row. It must be **unique** and it
-can never be NULL. In `customers` it is `customer_id`, declared in the table's definition:
+can never be NULL. (SQLite has an old exception: a primary key that is not `INTEGER PRIMARY KEY` accepts NULL
+unless the column also says `NOT NULL`.) In `customers` it is `customer_id`, declared in the table's definition:
 
 ```sql
 CREATE TABLE customers (
@@ -123,8 +124,8 @@ INSERT INTO order_items VALUES (101, 1, 1, 24.50);
 
 ## 1.4 Foreign keys { #foreign-key }
 
-`orders.customer_id` says which customer placed the order. It is a **foreign key**: a column whose values must be
-the primary key of a row in another table.
+`orders.customer_id` says which customer placed the order. It is a **foreign key**: a column whose values must
+match the primary key (or a unique column) of a row in the table it refers to, usually another table.
 
 ```sql
 CREATE TABLE orders (
@@ -283,7 +284,7 @@ capitals so they stand out. Text inside quotes **is** case-sensitive in a compar
 - A table holds one kind of thing; a row is one of them; a column is one fact with a type. NULL means "no value".
 - Rows have no order. Only `ORDER BY` gives one.
 - A primary key is unique and never NULL; it can be one column or several (composite).
-- A foreign key must match a primary key in another table, or be NULL. SQLite enforces it only with
+- A foreign key must match a key in the table it refers to, or be NULL. SQLite enforces it only with
   `PRAGMA foreign_keys = ON`.
 - One-to-many puts the foreign key on the many side; many-to-many needs a junction table; a table can point at
   itself.

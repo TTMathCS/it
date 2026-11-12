@@ -142,9 +142,9 @@ ORDER BY rn;
 <!-- /result -->
 
 `ROW_NUMBER()` numbers the rows 1, 2, 3, ... in the window's order, with no gaps and no repeats. Two people earn
-120,000 (Priya Nair and Sam Lee); `, name` breaks the tie alphabetically. Without a tie-break, which of them gets 4
-and which 5 is up to the database and may change from run to run. That is fine for "number the rows", and wrong for
-any answer that depends on who is 4th.
+120,000 (Priya Nair and Sam Lee); `, name` breaks the tie alphabetically. Without a tie-break, which of them gets 3
+and which 4 is up to the database and may change from run to run. That is fine for "number the rows", and wrong for
+any answer that depends on who is 3rd.
 
 Add **PARTITION BY** and the numbering restarts in each group:
 
@@ -462,7 +462,7 @@ ORDER BY price, product_id;
 
 - `NTILE(4)` deals the rows into 4 buckets as evenly as possible; with 11 rows the first three get 3 and the last
   gets 2. Ties can land in different buckets, so it needs a tie-break.
-- `PERCENT_RANK()` is `(rank - 1) / (rows - 1)`: 0 for the first, 1 for the last.
+- `PERCENT_RANK()` is `(rank - 1) / (rows - 1)`: 0 for the first, 1 for the last (unless the last value is tied).
 - `CUME_DIST()` is the share of rows at or below this one's value.
 
 Both return a floating-point number; PostgreSQL's `ROUND(x, 2)` doesn't accept that type, hence the `CAST(... AS

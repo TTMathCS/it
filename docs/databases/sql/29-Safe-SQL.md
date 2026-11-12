@@ -64,7 +64,8 @@ SELECT email FROM customers;
 <!-- /result -->
 
 The view runs with its **owner's** privileges, so `support` can read the columns the view shows without any right
-on the table. That is what makes views a security tool. PostgreSQL can also grant single columns, which does the
+on the table (since PostgreSQL 15, `WITH (security_invoker = true)` makes a view check the caller's
+privileges instead). That is what makes views a security tool. PostgreSQL can also grant single columns, which does the
 same without a view:
 
 <!-- sql pg error -->
@@ -124,8 +125,8 @@ SELECT COUNT(*) AS customers_visible FROM customers;
 | 3 |
 <!-- /result -->
 
-Three of ten customers are visible, with no `WHERE` in the query. The table's owner and superusers are not limited
-by policies unless `FORCE ROW LEVEL SECURITY` is set. Real policies usually compare with who is asking, for example
+Three of ten customers are visible, with no `WHERE` in the query. Superusers and roles with `BYPASSRLS` always bypass
+policies; the table's owner does too, unless `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is set. Real policies usually compare with who is asking, for example
 `USING (region = current_setting('app.region'))` or a lookup of `current_user` in a mapping table. Snowflake,
 Databricks and BigQuery have their own row filters and column masks built on the same idea.
 
@@ -172,8 +173,8 @@ ORDER BY customer_id;
 Every customer's email, for anyone who can type. Worse input can end the statement and add another (`'; DROP TABLE
 customers; --`), where the driver allows several statements at once.
 
-**The fix is a parameterized query.** The SQL text has a placeholder, and the value is sent separately; the database
-treats it only as a value, never as SQL, whatever characters it contains.
+**The fix is a parameterized query.** The SQL text has a placeholder and the value is passed separately; the driver or the
+database makes sure it is treated only as a value, never as SQL, whatever characters it contains.
 
 === "SQLite (Python sqlite3)"
 
@@ -200,7 +201,7 @@ parameterized version none.) The placeholder differs by driver (`?`, `%s`, `:nam
 **never build SQL text from input with `+`, `||`, `f"..."` or `format`**. Escaping quotes by hand is not a fix; it is
 easy to get wrong.
 
-Parameters also help performance: the database can prepare the statement once and run it many times with different
+Parameters can also help performance: with drivers that use server-side prepared statements, the database can prepare the statement once and run it many times with different
 values.
 
 ### What cannot be a parameter { #identifiers }
@@ -251,8 +252,9 @@ anything that identifies a person) is one more place it can leak from. Habits th
   PostgreSQL has `sha256()` (on `bytea`) and `md5()`; add a secret "salt" before hashing, or anyone can hash a list
   of known emails and match them.
 - **Know where deletion has to reach.** When a person asks to be deleted, every copy must go: raw files, staging,
-  history tables, backups by their schedule. A pipeline designed with a customer key and soft deletes
-  ([chapter 22](22-Duplicates-and-Incremental-Loads.md#change-detection)) makes this possible.
+  history tables, backups by their schedule. A pipeline that carries one customer key everywhere
+  ([chapter 22](22-Duplicates-and-Incremental-Loads.md#change-detection)) makes this possible: every copy can be found
+  by that key and really deleted, not only marked as deleted.
 - **Keep credentials out of code.** Connection passwords and keys go in a secret manager or environment variables
   set by the scheduler, never in a script, a notebook or a repository. Use a separate account per pipeline, so one
   can be revoked without stopping the others.
@@ -290,7 +292,7 @@ anything that identifies a person) is one more place it can leak from. Habits th
     ??? note "How does row-level security work?"
         A policy attached to a table adds a condition to every query that a given role runs on it, so the role sees (or
         changes) only matching rows, whatever its query says. Conditions usually depend on the current user or a
-        session setting. Table owners and superusers bypass it unless it is forced.
+        session setting. Superusers always bypass it; table owners do too unless it is forced.
 
     ??? note "How should a pipeline store its database password?"
         Not in code or in the repository. Use the platform's secret store (a secrets manager, a key vault, Databricks

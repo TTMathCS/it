@@ -21,7 +21,7 @@ in function names, and in one place where the same query gives different rows: `
 ## 5.1 Joining text { #concat }
 
 `||` joins two pieces of text on PostgreSQL, SQLite and Oracle (the SQL standard spelling). If either side is NULL,
-the result is NULL. `CONCAT(...)` joins any number of pieces and **skips** NULLs:
+the result is NULL (except on Oracle, which treats NULL as empty text here). `CONCAT(...)` joins any number of pieces and **skips** NULLs:
 
 <!-- sql -->
 ```sql
@@ -45,7 +45,8 @@ ORDER BY customer_id;
 Chen Wei has no email, so `||` gives NULL for the whole value while `CONCAT` just leaves the email out. Neither is
 "right"; choose on purpose, or say what a missing part should look like with `COALESCE(email, 'no email')`.
 (`CONCAT` is in PostgreSQL, MySQL and SQL Server, and in SQLite from version 3.44. In MySQL, `||` means `OR` unless
-a setting changes it, so use `CONCAT` there.)
+a setting changes it, and `CONCAT` returns NULL if any piece is NULL; `CONCAT_WS(' ', ...)` is the one that skips
+NULLs there.)
 
 ## 5.2 Length and case { #length-case }
 
@@ -98,7 +99,8 @@ ORDER BY customer_id;
 <!-- /result -->
 
 PostgreSQL also has `LEFT(text, n)` and `RIGHT(text, n)`, and the standard form `SUBSTRING(text FROM 2 FOR 3)`;
-SQLite has neither, so `SUBSTR` is the portable choice.
+SQLite has neither (it accepts `SUBSTRING(text, 2, 3)` only as another name for `SUBSTR`), so `SUBSTR` is the
+portable choice.
 
 ### Finding a character, and splitting at it { #split }
 
@@ -174,8 +176,8 @@ SELECT '[' || TRIM('   Toronto  ') || ']'   AS trimmed,
 
 Spaces at the ends are a classic reason for a join or a `GROUP BY` to miss: `'Toronto '` is not equal to
 `'Toronto'`. Trimming (and lower-casing) both sides before comparing is the first step of most data clean-ups
-([chapter 23](23-Data-Quality-Checks.md)). PostgreSQL's two-argument form is written `TRIM(LEADING '0' FROM x)` in
-standard SQL; `LTRIM(x, '0')` works on both databases here.
+([chapter 23](23-Data-Quality-Checks.md)). The standard SQL spelling is
+`TRIM(LEADING '0' FROM x)`, which PostgreSQL accepts and SQLite does not; `LTRIM(x, '0')` works on both.
 
 A handy trick: the number of times a letter appears is the length lost when you remove it.
 
@@ -379,7 +381,8 @@ part in brackets; `~` gives true or false. PostgreSQL also has `REGEXP_MATCHES`,
 version 15, `REGEXP_COUNT` and `REGEXP_LIKE`.
 
 SQLite has the syntax `x REGEXP pattern`, but no built-in function behind it: unless the program using SQLite adds
-one, it fails with "no such function: REGEXP". In a test on SQLite, use `LIKE`, `GLOB`, `INSTR` and `SUBSTR`
+one, it fails with "no such function: REGEXP" (the `sqlite3` command-line program does add one; Python's `sqlite3`
+module and most libraries do not). In a test on SQLite, use `LIKE`, `GLOB`, `INSTR` and `SUBSTR`
 instead. MySQL has `REGEXP` / `REGEXP_LIKE`; SQL Server only recently gained regular expression functions (in SQL
 Server 2025), so older versions use `LIKE` with character ranges like `[0-9]`.
 
@@ -417,7 +420,7 @@ The reverse, one string into many rows, is PostgreSQL's `STRING_TO_TABLE` or `UN
 
 | Task | PostgreSQL | SQLite | Portable |
 | --- | --- | --- | --- |
-| join text | <code>a &#124;&#124; b</code>, `CONCAT(a, b)` | <code>a &#124;&#124; b</code>, `CONCAT` (3.44+) | <code>&#124;&#124;</code> (NULL makes NULL) |
+| join text | <code>a &#124;&#124; b</code>, `CONCAT(a, b)` | <code>a &#124;&#124; b</code>, `CONCAT` (3.44+) | <code>&#124;&#124;</code> (NULL makes NULL; not MySQL or SQL Server) |
 | length | `LENGTH` | `LENGTH` | `LENGTH` (SQL Server: `LEN`) |
 | piece | `SUBSTR`, `SUBSTRING`, `LEFT`, `RIGHT` | `SUBSTR` | `SUBSTR(s, start, len)` |
 | find | `STRPOS(s, x)`, `POSITION(x IN s)` | `INSTR(s, x)` | none |

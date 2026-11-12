@@ -148,7 +148,7 @@ January has no previous month, so its change is NULL, which is the honest answer
     LAG would compare with two months back without telling you. When periods can be missing, build the full list of
     months first and LEFT JOIN the data onto it ([chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md#cross),
     [chapter 16](16-Dates-and-Time-Series.md)). Also watch for division by a previous value of 0:
-    `NULLIF(LAG(...), 0)` turns it into NULL instead of an error.
+    `NULLIF(LAG(...), 0)` turns it into NULL instead of an error in PostgreSQL (SQLite already gives NULL).
 
 ## 14.3 Running totals { #running }
 
@@ -519,7 +519,7 @@ and dates. Write it in PostgreSQL (or in SQLite, with `julianday`).
 
     For a first order, `prev_date` is NULL, the comparison is unknown, and the row is dropped, as it should be.
 
-**14.3** The running total of units sold of each product, order by order (by order id), for the notebook (product 2).
+**14.3** The running total of notebook units sold (product 2), order by order, in order-id order.
 
 ??? success "Answer"
     <!-- sql -->

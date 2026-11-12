@@ -384,7 +384,8 @@ Your query should return:
     <!-- /result -->
 
     The averages are right (`AVG` skips the NULLs), but Amir shows 4 courses and Cal, with two real grades, is let
-    in. `COUNT(pts)` instead of `COUNT(*)` would fix it.
+    in. Counting the `CASE` expression instead of `*`
+    (`COUNT(CASE grade WHEN 'A' THEN 4 ... END)`), or `COUNT(pts)` in the solution's form, would fix it.
 
 ### Task 2: Daily peaks from duplicated sensor loads { #m2-t2 }
 
@@ -504,4 +505,4 @@ Your query should return:
 | 2 or 3 | Close: usually one edge case | Reread the wrong-answer box of each task you missed, then [practice set B](31-Practice-Set-B.md) |
 | 0 or 1 | The patterns need more practice | [Which technique?](which-technique.md), then chapters 13 to 15 and [practice set A](30-Practice-Set-A.md) |
 
-**Next:** Part III starts with [17. INSERT, UPDATE, DELETE, MERGE](17-Insert-Update-Delete-Merge.md).
+**Next:** if you came by the fast track, Part III starts with [17. INSERT, UPDATE, DELETE, MERGE](17-Insert-Update-Delete-Merge.md).

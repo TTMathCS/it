@@ -736,7 +736,7 @@ change" ([What happened to Databricks Repos?](https://docs.databricks.com/aws/en
 
 A Git folder is "a visual Git client and API that integrates Git repositories within your workspace"
 ([Databricks Git folders](https://docs.databricks.com/aws/en/repos/), Sep 11, 2026). Supported providers include
-GitHub, Bitbucket, GitLab, Azure DevOps and AWS CodeCommit, cloud and self-managed ([Databricks Git folders
+GitHub, Bitbucket, GitLab, Azure DevOps and AWS CodeCommit, plus self-managed GitHub Enterprise Server, Bitbucket Server and GitLab ([Databricks Git folders
 concepts](https://docs.databricks.com/aws/en/repos/git-folders-concepts), Sep 11, 2026).
 
 The steps, from [Create and manage Git

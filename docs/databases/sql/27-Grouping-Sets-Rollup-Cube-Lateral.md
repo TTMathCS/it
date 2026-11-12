@@ -16,7 +16,7 @@ row next to it.*
 
     **You need:** [chapter 7](07-Aggregation-Group-By-Having.md) and [chapter 10](10-Subqueries.md).
 
-All examples use the shop's shipped order lines. This view gives each line its month, category and revenue, so
+The `ROLLUP`, `CUBE` and pivot examples use the shop's shipped order lines. This view gives each line its month, category and revenue, so
 that the queries below stay short:
 
 <!-- sql keep quiet -->
@@ -283,7 +283,7 @@ ORDER BY total DESC, category;
 
 `ELSE 0` shows 0 for a month with no sales; leave it out to show NULL instead. SQL Server, Oracle, Snowflake and
 Databricks have a `PIVOT` clause that writes the same thing more briefly, and PostgreSQL has `crosstab()` in the
-`tablefunc` extension; all of them still need the list of columns, because a query's columns are fixed before it
+`tablefunc` extension; most of them still need the list of columns (Snowflake's `PIVOT ... IN (ANY)` is an exception), because a query's columns are fixed before it
 runs. The reverse, **unpivot** (columns into rows), is a `UNION ALL` of one `SELECT` per column, or a join to a
 `VALUES` list.
 
@@ -379,7 +379,7 @@ the word `LATERAL`; for subqueries it is required.
 !!! question "Asked aloud: grouping and pivoting"
     ??? note "What is the difference between ROLLUP and CUBE?"
         `ROLLUP (a, b, c)` follows the hierarchy: `(a, b, c)`, `(a, b)`, `(a)`, `()`; it suits year > month > day or
-        country > city. `CUBE (a, b, c)` gives all 2^n combinations, including `(b)` and `(a, c)`; it suits
+        country > city. `CUBE (a, b, c)` gives all 2³ = 8 combinations, including `(b)` and `(a, c)`; it suits
         cross-tabulations where no column is above another. `GROUPING SETS` lists exactly the combinations wanted.
 
     ??? note "How do you tell a subtotal row from a NULL in the data?"

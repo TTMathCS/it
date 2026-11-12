@@ -45,7 +45,7 @@ ORDER BY o.order_id;
 
 `o` and `c` are **aliases**: short names for the tables, so `o.order_id` means "order_id from orders". Use them in
 every query with more than one table; they make it clear where each column comes from, and a column name that exists
-in both tables (like `customer_id`) must have one.
+in both tables (like `customer_id`) must be written with its table's alias in front.
 
 How to think about it: for each order, find the customer rows whose `customer_id` equals the order's; output one row
 per pair found. An order with **no** matching customer produces no row at all. Count the whole result:
@@ -375,8 +375,8 @@ order.
 
     Ana Silva (1) has 5 orders, not 8; Ben Okafor has 3, not 4. Every order was counted once per item.
 
-`COUNT(DISTINCT o.order_id)` mends a count, but there is no `SUM(DISTINCT ...)` that mends a sum (it would drop
-equal values that happen to repeat). The reliable cure is to **aggregate before you join**, so that each side has
+`COUNT(DISTINCT o.order_id)` mends a count, but `SUM(DISTINCT ...)` exists and does not mend a sum: it would
+also drop equal values that really do repeat. The reliable cure is to **aggregate before you join**, so that each side has
 one row per key when the join happens.
 
 The worst case is joining one table to **two** different "many" tables. Each customer's orders get paired with each
@@ -461,8 +461,8 @@ ORDER BY order_id;
 <!-- /result -->
 
 `NATURAL JOIN` goes further and joins on **every** column whose name appears in both tables. That breaks silently:
-`products` and `customers` both have a `name` column, so a natural join between tables that share `name` would match
-on it whether you meant to or not. Write the condition out.
+add a `created_at` column to both `orders` and `customers`, and `orders NATURAL JOIN customers` would match on it
+as well as on `customer_id`, so almost every row would vanish. Write the condition out.
 
 A join condition doesn't have to be `=`. Here each product is paired with the cheaper products in its category, a
 **non-equi join**:
@@ -502,7 +502,7 @@ same as the desk lamp, so `<` leaves it out; `<=` would bring it back, along wit
 | `CROSS JOIN` | every pair, no condition |
 
 - After a LEFT JOIN, conditions on the right table go in ON; in WHERE they undo the LEFT JOIN.
-- Count `COUNT(right_table.key)`, not `COUNT(*)`, after a LEFT JOIN.
+- After a LEFT JOIN, count with `COUNT(right_table.key)`, not `COUNT(*)`.
 - A join to a "many" table multiplies rows. Aggregate first, then join.
 - NULL never matches in a join condition.
 

@@ -332,8 +332,8 @@ are one level). Return `department`, `name`, `salary`, `salary_level` (1 for the
     <!-- /result -->
 
     "Salary levels" means `DENSE_RANK`: Priya Nair and Sam Lee share level 2 in Engineering, and so do Nina Berg and
-    Raj Patel in Sales. `ROW_NUMBER` would cut one of each pair, and `RANK` would give the next salary level the number
-    3 or 4. The filter on `salary_level` needs the CTE because a window result cannot be used in `WHERE` of the same
+    Raj Patel in Sales. `ROW_NUMBER` would cut one of each pair, and `RANK` would number the salary after a tie 4
+    instead of 3, so after a tie at the top (1, 1, 3) the second salary level would be missed. The filter on `salary_level` needs the CTE because a window result cannot be used in `WHERE` of the same
     query. Leaving out `WHERE salary IS NOT NULL` would matter here: PostgreSQL sorts NULL first in a descending order,
     so Leo Park would take level 1 in Support. Back to: [13. Ranking](13-Window-Functions-Ranking.md).
 

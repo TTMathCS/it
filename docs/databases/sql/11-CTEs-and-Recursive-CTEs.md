@@ -318,8 +318,8 @@ logins":
     | 2026-03-07 | 0 |
     <!-- /result -->
 
-PostgreSQL also has `generate_series(start, stop, step)` for exactly this; SQLite has a `generate_series` table only
-when an extension is loaded, so the recursive CTE is the portable way.
+PostgreSQL also has `generate_series(start, stop, step)` for exactly this; SQLite has a `generate_series` table in its
+command-line tool, but not in most programs that use SQLite as a library, so the recursive CTE is the portable way.
 
 **Walking a hierarchy.** Everyone under Maya Rossi, at every level, with their level and the chain of managers:
 
@@ -378,8 +378,9 @@ wider type.
 
 - A CTE lasts for **one statement**. To reuse it in the next query, write it again, or make a view
   ([chapter 21](21-Views-and-Materialized-Views.md)) or a temporary table.
-- A CTE is not automatically faster. PostgreSQL 12 and later usually fold a CTE into the main query like a subquery;
-  `WITH x AS MATERIALIZED (...)` forces it to be computed once and stored. For a test, write for clarity.
+- A CTE is not automatically faster. PostgreSQL 12 and later fold a CTE that is used only once into the main
+  query, like a subquery; a CTE used twice is computed once. `WITH x AS MATERIALIZED (...)` and `AS NOT MATERIALIZED`
+  override this. For a test, write for clarity.
 - Inside a CTE, ORDER BY is pointless unless paired with LIMIT; order the final SELECT.
 
 ## 11.5 Summary { #summary }

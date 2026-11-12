@@ -26,7 +26,7 @@ not an improvement. Each time is the median of three runs; a version still runni
 PostgreSQL runs without parallel workers, so both databases use one processor core.
 
 The numbers will be different on your machine; **the ratios are the point**. A rewrite that is 2 times faster here
-is about 2 times faster anywhere; one that is 500 times faster is the difference between a test passing and timing
+is usually faster elsewhere too, by a similar factor; one that is 500 times faster is the difference between a test passing and timing
 out.
 
 The method, for any slow query:
@@ -316,7 +316,8 @@ dashboard, an API, the inner side of a nested loop), this is the difference that
 ## 26.7 UNION or UNION ALL { #union }
 
 `UNION` removes duplicates, which means sorting or hashing the whole combined result; `UNION ALL` just appends.
-When the parts cannot overlap (here, orders split by amount), both return the same rows:
+When the parts cannot overlap (here, orders split by amount), both return the same rows. The timed query counts the
+rows of the combined result, `SELECT COUNT(*) FROM (... UNION ...) u`, so the answer is one row:
 
 <!-- timing union -->
 <p class="sql-tested">Timed by <code>tools/sqltime.py</code> on 11 November 2026, one 2.3 GHz Xeon core per database, tables in memory or cache; the median of three runs. Every version that finished returned the same rows on both databases.</p>

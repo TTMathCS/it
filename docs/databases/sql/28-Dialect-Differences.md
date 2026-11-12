@@ -18,7 +18,7 @@ most surprising ones, then gives the same common tasks in the other databases a 
 
 ## 28.1 PostgreSQL and SQLite: differences that change the answer { #answers }
 
-A syntax error is the kind difference: you see it at once. These are the dangerous ones, where both databases run
+A syntax error is the harmless kind of difference: you see it at once. These are the dangerous ones, where both databases run
 the query and return different results.
 
 **Division and casting.** Integer division is the same on both (`7 / 2` is 3). Casting is not:
@@ -34,8 +34,8 @@ SELECT CAST(3.99 AS INTEGER) AS cast_down,
 <p class="sql-tested sql-noerror">SQLite 3.53: no error, it runs and returns 1 row.</p>
 <!-- /result -->
 
-PostgreSQL refuses `'12abc'`; SQLite reads the leading digits (12) and, for `3.99`, cuts off the fraction. On
-PostgreSQL alone, `CAST(3.99 AS INTEGER)` is 4: it rounds.
+PostgreSQL refuses `'12abc'`, and run on its own, `CAST(3.99 AS INTEGER)` gives 4: it rounds. SQLite reads the
+leading digits (12) and cuts off the fraction (3).
 
 <!-- sql pg -->
 ```sql
@@ -243,7 +243,7 @@ this course). Check the version you use: databases add functions every year.
 | join text | `CONCAT(a, b)` (`\|\|` means OR by default) | `a + b` or `CONCAT(a, b)` | `a \|\| b` | `a \|\| b` | `a \|\| b` or `CONCAT` | `a \|\| b` or `concat` |
 | `7 / 2` | 3.5000 | 3 | 3.5 | 3.5 | 3.5 (`DIV(7, 2)` is 3) | 3.5 (`7 div 2` is 3) |
 | list in a group | `GROUP_CONCAT(x SEPARATOR ', ')` | `STRING_AGG(x, ', ')` | `LISTAGG(x, ', ')` | `LISTAGG(x, ', ')` | `STRING_AGG(x, ', ')` | `array_join(collect_list(x), ', ')` |
-| NULL-safe equal | `a <=> b` | `IS NOT DISTINCT FROM` (2022+) | `DECODE(a, b, 1, 0) = 1` | `IS NOT DISTINCT FROM` | `IS NOT DISTINCT FROM` | `a <=> b` |
+| NULL-safe equal | `a <=> b` | `IS NOT DISTINCT FROM` (2022+) | `DECODE(a, b, 1, 0) = 1` | `IS NOT DISTINCT FROM` | `IS NOT DISTINCT FROM` | `a <=> b` or `IS NOT DISTINCT FROM` |
 | quote a name | `` `name` `` | `[name]` | `"NAME"` | `"NAME"` | `` `name` `` | `` `name` `` |
 | `LIKE` and case | ignores case (default collation) | ignores case (default collation) | case-sensitive | case-sensitive; `ILIKE` | case-sensitive | case-sensitive; `ILIKE` |
 | filter a window function | subquery | subquery | subquery | `QUALIFY` | `QUALIFY` | `QUALIFY` |
@@ -262,7 +262,8 @@ silently loses its fraction there.
 | month number | `MONTH(d)` | `MONTH(d)` | `EXTRACT(MONTH FROM d)` | `MONTH(d)` | `EXTRACT(MONTH FROM d)` | `month(d)` |
 | first of month | `DATE_FORMAT(d, '%Y-%m-01')` | `DATEFROMPARTS(YEAR(d), MONTH(d), 1)` | `TRUNC(d, 'MM')` | `DATE_TRUNC('month', d)` | `DATE_TRUNC(d, MONTH)` | `date_trunc('MONTH', d)` |
 
-Note the argument order of "days between": MySQL and Databricks take (later, earlier); SQL Server and Snowflake take
+Note the argument order of "days between": MySQL and Databricks take (later, earlier), BigQuery
+(later, earlier, unit); SQL Server and Snowflake take
 (unit, earlier, later). PostgreSQL subtracts dates directly (`d2 - d1`), and SQLite uses
 `julianday(d2) - julianday(d1)`.
 
@@ -274,8 +275,9 @@ Note the argument order of "days between": MySQL and Databricks take (later, ear
 | auto-numbered id | `AUTO_INCREMENT` | `IDENTITY(1, 1)` | `GENERATED AS IDENTITY` | `AUTOINCREMENT` / `IDENTITY` | none (`GENERATE_UUID()`) | `GENERATED ALWAYS AS IDENTITY` |
 | table change inside a transaction | commits first | rolls back with it | commits first | commits first | not allowed in a transaction (except temporary tables) | one atomic write per statement |
 
-For Databricks in depth, including its own functions and how they differ from the standard, see the
-[Databricks course](../../data-engineering/databricks/index.md).
+For Databricks in depth, including its own functions and how they differ from the standard, see
+[17. Databricks SQL vs standard SQL](../../data-engineering/databricks/17-Databricks-SQL-vs-Standard.md) in the
+Databricks course.
 
 ## 28.4 Writing SQL that travels { #portable }
 

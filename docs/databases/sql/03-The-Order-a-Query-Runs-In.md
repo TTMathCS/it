@@ -33,7 +33,8 @@ The order the database **works it out** in (the logical order):
 2. WHERE            keep the rows that pass
 3. GROUP BY         put the remaining rows into groups
 4. HAVING           keep the groups that pass
-5. SELECT           compute the output columns, aggregates and window functions; give them their aliases
+5. SELECT           compute the output columns and window functions; give them their aliases
+                    (aggregates were already worked out per group in step 3)
 6. DISTINCT         remove duplicate output rows
 7. ORDER BY         sort
 8. LIMIT / OFFSET   cut
@@ -288,7 +289,7 @@ where it is guaranteed, inside the expression: `CASE WHEN quantity <> 0 THEN 10 
 | `ORDER BY` a column not in a `SELECT DISTINCT` | error | runs | sort by output columns only |
 | an aggregate in `WHERE` | error | error | `HAVING` |
 | a window function in `WHERE` | error | error | CTE, filter outside |
-| a column in `SELECT` that is neither grouped nor aggregated | error | runs | group by it or aggregate it ([chapter 7](07-Aggregation-Group-By-Having.md#select-rule)) |
+| a column in `SELECT` that is neither grouped nor aggregated | error (unless grouped by the table's primary key) | runs | group by it or aggregate it ([chapter 7](07-Aggregation-Group-By-Having.md#select-rule)) |
 
 The rule of thumb: if it is correct on PostgreSQL, it almost always runs on SQLite too. The reverse is not true. Test
 your answers on PostgreSQL when you can.

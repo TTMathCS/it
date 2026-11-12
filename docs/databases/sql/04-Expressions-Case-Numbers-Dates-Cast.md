@@ -120,7 +120,7 @@ On PostgreSQL the short form is `ROUND((10::float / 3)::numeric, 2)`; `::` is Po
 does not run on SQLite. In a test, `CAST(... AS NUMERIC)` works on both.
 
 !!! note "Halfway cases"
-    `ROUND(2.5)` gives 3 on both databases for exact numbers. PostgreSQL rounds **floating point** halves to the
+    `ROUND(2.5)` gives 3 on both databases. PostgreSQL rounds **floating point** halves to the
     nearest even number instead (`ROUND(CAST(2.5 AS DOUBLE PRECISION))` is 2), and floating point cannot store most
     decimals exactly anyway. Money and anything a test will compare to the cent should be `NUMERIC`, as the prices
     here are.
@@ -376,7 +376,7 @@ SELECT CAST(3.99 AS INTEGER) AS pos, CAST(-3.99 AS INTEGER) AS neg;
 
 PostgreSQL **rounds** (4 and -4); SQLite **cuts off** the decimals (3 and -3). SQL Server and MySQL also differ
 (SQL Server cuts off, MySQL rounds). When the question says "round", write `ROUND`; when it says "whole part", write
-`FLOOR` (for positive numbers) or PostgreSQL's `TRUNC`. Never let `CAST` decide.
+`FLOOR` (for positive numbers) or `TRUNC` (PostgreSQL, and SQLite with its maths functions). Never let `CAST` decide.
 
 Text that is not a number is the other difference:
 
@@ -553,7 +553,7 @@ first, then by name. Run it on both databases and compare the answers.
     compare with an answer computed elsewhere. `price` is `NUMERIC` on PostgreSQL, so `ROUND(..., 2)` works there
     directly; had it been floating point, it would need `CAST(... AS NUMERIC)` first.
 
-**4.2** Label each employee's salary: `high` for 120,000 and over, `medium` for 70,000 up to 120,000, `low` below
+**4.2** Label each employee's salary: `high` for 120,000 and over, `medium` from 70,000 up to (not including) 120,000, `low` below
 70,000, and `unknown` when it is missing. Return `name`, `salary`, `band`, by `employee_id`.
 
 ??? success "Answer"

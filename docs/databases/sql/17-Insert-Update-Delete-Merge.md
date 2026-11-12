@@ -252,7 +252,8 @@ WHERE c.customer_id = l.customer_id AND c.country = 'Canada';
 <!-- /result -->
 
 Foreign keys protect the rows other tables point at ([chapter 1](01-Tables-Rows-and-Keys.md#foreign-key)): deleting
-a customer who has orders fails until the orders are dealt with.
+a customer who has orders fails until the orders are dealt with (on SQLite only with `PRAGMA foreign_keys = ON`,
+chapter 1).
 
 `TRUNCATE logins` empties a table at once, faster than `DELETE` on a large table because it does not visit the rows.
 PostgreSQL has it (and can roll it back inside a transaction); SQLite does not, but optimises a plain
@@ -333,7 +334,7 @@ SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER B
 
 The lamp kept its old price; only the teapot went in. Two rules:
 
-- The columns in `ON CONFLICT (...)` must have a primary key or `UNIQUE` constraint. A name is not unique here, so
+- The columns in `ON CONFLICT (...)` must have a primary key, a `UNIQUE` constraint or a unique index. A name is not unique here, so
   this fails on both databases:
 
     <!-- sql error -->
@@ -412,8 +413,8 @@ SELECT product_id, name, price FROM products WHERE product_id IN (1, 2, 11, 12) 
 | 12 | Teapot | 27.00 |
 <!-- /result -->
 
-Each source row is matched to at most one target row on the `ON` condition, and the first `WHEN` whose condition is
-true decides what happens. Matched rows can be updated or deleted; unmatched ones inserted. If two source rows match
+Each target row may be matched by at most one source row, and the first `WHEN` whose condition is true decides
+what happens to it. Matched rows can be updated or deleted; unmatched ones inserted. If two source rows match
 the same target row, PostgreSQL stops with an error rather than guess; de-duplicate the source first
 ([chapter 22](22-Duplicates-and-Incremental-Loads.md)).
 
@@ -591,7 +592,7 @@ differs, and return each changed product's id and new price. Write it so it runs
     <!-- /result -->
 
     The mug is already 8.75, so it is not touched. On SQLite before 3.33, use the correlated-subquery form from
-    [section 17.2](#update-from).
+    [section 17.2](#update-from) (and before 3.35 drop the `RETURNING`).
 
 **17.4** Load these two products so that running the statement twice gives the same result as running it once:
 `(14, 'Coaster', 'Kitchen', 4.00)` and `(15, 'Lamp shade', 'Home', 11.00)`. If a product id is already there, keep

@@ -467,7 +467,7 @@ ORDER BY product_id;
 
 A column like `'home,office,gift'` (several values in one text, which a well-designed table would not have) is a
 common test task: one row per value. PostgreSQL splits it into an array and unnests it. SQLite has no split
-function; one portable-to-SQLite trick turns the text into a JSON array and uses `json_each`.
+function; a common trick turns the text into a JSON array and uses `json_each`.
 
 <!-- sql setup -->
 ```sql
@@ -611,7 +611,7 @@ the tables people query.
     | view | 2 | 1 |
     <!-- /result -->
 
-**24.2** For each purchase, return the event, the number of different products in it and the total units, using the
+**24.2** For each purchase, return the event, the number of items (lines) in it and the total units, using the
 items array, not the `total` field.
 
 ??? success "Answer"

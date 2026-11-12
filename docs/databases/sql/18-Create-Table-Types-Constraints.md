@@ -2,7 +2,7 @@
 
 *A table's definition decides what can go into it. Good types and constraints stop bad data at the door, so that
 every query after them can trust what it reads. This chapter covers the column types worth knowing, the five kinds
-of constraint, ids the database numbers for you, and changing a table later. It also shows the biggest difference
+of constraint (plus `DEFAULT`), ids the database numbers for you, and changing a table later. It also shows the biggest difference
 between the two databases in this course: PostgreSQL enforces types, and SQLite, unless asked, does not.*
 
 !!! abstract "In this chapter"
@@ -95,7 +95,7 @@ SELECT code, qty FROM codes;
 <p class="sql-tested sql-noerror">SQLite 3.53: no error, it runs and returns 1 row.</p>
 <!-- /result -->
 
-SQLite stored it as given. It treats a column type as a preference, called **type affinity**: an `INTEGER` column
+SQLite stores it as given. It treats a column type as a preference, called **type affinity**: an `INTEGER` column
 turns `'42'` into the number 42, but keeps `'hello'` as text, and `VARCHAR(3)` sets no length limit at all:
 
 <!-- sql sqlite -->
@@ -238,8 +238,8 @@ SELECT COUNT(*) AS rows_stored FROM pairs;
 | 2 |
 <!-- /result -->
 
-Both rows are stored. SQL Server is the exception: it allows only one NULL. PostgreSQL 15 added
-`UNIQUE NULLS NOT DISTINCT` for that behaviour.
+Both rows are stored. SQL Server allows only one NULL; Oracle also refuses the second row when some key columns
+are not NULL, as here. PostgreSQL 15 added `UNIQUE NULLS NOT DISTINCT` for that behaviour.
 
 Give constraints names (`CONSTRAINT qty_not_negative CHECK (qty >= 0)`) and the error message names them, which
 helps when a load fails at 3 a.m.
@@ -275,7 +275,8 @@ SELECT cart_id, item FROM cart_items ORDER BY item;
 | 2 | lamp |
 <!-- /result -->
 
-Cart 1's items went with it. `CASCADE` is right for things that cannot exist alone (an order's lines); for
+Cart 1's items went with it. On SQLite all of this needs `PRAGMA foreign_keys = ON` first; without it the foreign
+key is not checked at all. `CASCADE` is right for things that cannot exist alone (an order's lines); for
 anything with history, such as customers and their orders, the default refusal is safer.
 
 ## 18.5 Ids that number themselves { #identity }

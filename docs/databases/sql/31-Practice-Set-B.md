@@ -296,7 +296,8 @@ Your query should return:
 
     `LAG` must see **every** review, including the one that kept the kettle at 32.00; the filter comes after, in the
     outer query (a window cannot be filtered in its own `WHERE`). Any filter placed inside, before `LAG` runs (only
-    2026 rows, say), can make `LAG` compare with the wrong row. The
+    the rows from February on, say), can make `LAG` compare with the wrong row: the kettle's 1 February change would
+    then have no previous price and vanish. The
     mug's only row has no previous price, so `old_price IS NOT NULL` removes it. (SQLite shows the prices as `32` and
     `28.8`: it stores `NUMERIC` as plain numbers. The values are the same.)
 

@@ -303,8 +303,8 @@ UPDATE toronto_only SET city = 'Ottawa' WHERE customer_id = 9;
 <!-- /result -->
 
 Updating through views is used less than reading through them. It is worth knowing for the interview question "can
-you update a view?": *yes, a simple one, in most databases; not one with joins or aggregates; and not in SQLite
-without triggers.*
+you update a view?": *yes, a simple one, in most databases; not one with aggregates; joins only in some databases;
+and not in SQLite without triggers.*
 
 ## 21.4 Materialized views { #materialized }
 
@@ -466,7 +466,8 @@ SELECT product_id, name, units FROM product_units_table ORDER BY units DESC, pro
 
     ??? note "Can you insert or update through a view?"
         Yes for a simple view over one table, in PostgreSQL, MySQL, SQL Server and Oracle; the change goes to the base
-        table. Not for views with joins, `GROUP BY`, aggregates or `DISTINCT`, unless you write an `INSTEAD OF` trigger.
+        table. MySQL, SQL Server and Oracle also allow it through a join view when only one table's columns change.
+        Not for views with `GROUP BY`, aggregates or `DISTINCT`, unless you write an `INSTEAD OF` trigger.
         SQLite views are read-only without such a trigger. `WITH CHECK OPTION` stops writes that would fall outside the
         view's `WHERE`.
 

@@ -562,7 +562,7 @@ two conditions.)
     <!-- /result -->
 
     The first person hired in each department qualifies automatically (nobody earlier). Nobody later out-earns all
-    their predecessors in this data, because pay here falls with later hire dates.
+    their predecessors in this data: within each department, pay never goes up with a later hire date.
 
 **9.6** Customers who have bought **every** product in the Kitchen category (in any order, any status).
 

@@ -348,8 +348,8 @@ ORDER BY line_value DESC, order_id, product_id;
 
 `ORDER BY 3` (the third column) also works, but it breaks silently when the column list changes; name the column.
 
-Where NULLs go in a sort differs between databases: PostgreSQL puts them last in ascending order, SQLite, MySQL and
-SQL Server first. `NULLS FIRST` and `NULLS LAST` decide it on PostgreSQL and SQLite; [chapter 6](06-Null-and-Three-Valued-Logic.md#sorting)
+Where NULLs go in a sort differs between databases: PostgreSQL puts them last in ascending order; SQLite, MySQL and
+SQL Server put them first. `NULLS FIRST` and `NULLS LAST` decide it on PostgreSQL and SQLite; [chapter 6](06-Null-and-Three-Valued-Logic.md#sorting)
 shows them.
 
 ## 2.7 LIMIT and OFFSET { #limit }
@@ -493,7 +493,7 @@ ORDER BY price, name;
     Ana Silva (1) is Canadian but signed up in November 2025, so she is out. With `OR` instead of `IN`, the country
     test would need parentheses.
 
-**2.2** Every product line of order 117 and 109 with its value (quantity × price paid). Return `order_id`,
+**2.2** Every product line of orders 109 and 117 with its value (quantity × price paid). Return `order_id`,
 `product_id`, `line_value`, highest value first, then `order_id`, then `product_id`.
 
 ??? success "Answer"

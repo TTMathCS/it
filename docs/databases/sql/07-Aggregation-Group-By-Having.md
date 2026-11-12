@@ -42,7 +42,7 @@ FROM products;
 | 11 | 338.75 | 30.7954545454545455 | 3.25 | 149.00 |
 <!-- /result -->
 
-PostgreSQL prints the average with many decimal places; SQLite prints it as an ordinary decimal number. Round it
+PostgreSQL returns a `NUMERIC` with many decimal places; SQLite returns a floating-point number. Round it
 when you show it: `ROUND(AVG(price), 2)`.
 
 `MIN` and `MAX` work on text and dates too: the first and last in sorting order.
@@ -172,7 +172,7 @@ ORDER BY country, city;
 <!-- /result -->
 
 Eli Cohen's city is NULL, and NULLs form **one group of their own**: Israel's row has a NULL city. GROUP BY treats
-all NULLs as equal to each other, even though `NULL = NULL` is not true anywhere else (chapter 6).
+all NULLs as equal to each other, even though `NULL = NULL` is not true in a WHERE or a join (chapter 6).
 
 **An expression** can be grouped on too. Here the price band is worked out with CASE and then grouped; the SELECT
 repeats the same expression:
@@ -272,7 +272,7 @@ GROUP BY customer_id;
 <p class="sql-tested sql-error">SQLite 3.53: error: <code>misuse of aggregate: COUNT()</code></p>
 <!-- /result -->
 
-A condition on a plain column can go in either place and gives the same answer, but WHERE is the better home: it
+A condition on a grouped column can go in either place and gives the same answer, but WHERE is the better home: it
 throws rows away before the work of grouping.
 
 ## 7.6 Counting with a condition { #conditional }
@@ -352,7 +352,8 @@ FROM orders;
 | 10.0 |
 <!-- /result -->
 
-`AVG` itself is safe: it returns a decimal on both databases, even for whole numbers. The danger is only in `/`
+`AVG` itself is safe: it returns a decimal on both databases, even for whole numbers (not on SQL Server, where `AVG` of an integer column is an
+integer). The danger is only in `/`
 between two whole numbers, including `SUM(...) / COUNT(...)` written out by hand.
 
 **AVG skips NULLs**, which changes the answer when NULL means "zero":

@@ -260,7 +260,7 @@ ISOLATION LEVEL ...` as the first statement after `BEGIN`).
 
 PostgreSQL does not make readers wait. An `UPDATE` writes a new version of the row and keeps the old one until no
 transaction needs it any more. Each statement (at READ COMMITTED) or each transaction (at REPEATABLE READ and
-SERIALIZABLE) reads from a **snapshot**: the committed data as it was when it started. This is called MVCC,
+SERIALIZABLE) reads from a **snapshot**: the committed data as it was when the statement (or the transaction's first statement) started. This is called MVCC,
 multi-version concurrency control. The practical result: **readers never block writers, and writers never block
 readers.** Two writers changing the same row do wait for each other ([20.5](#lost-update)).
 
@@ -517,7 +517,7 @@ Real programs set a **busy timeout** (`PRAGMA busy_timeout = 5000;` waits up to 
 and Python's `sqlite3.connect` waits 5 seconds by default; the run above set it to 0 to show the error). Many also
 switch to **WAL mode** (`PRAGMA journal_mode = WAL;`), in which readers and the one writer do not block each other.
 A transaction that will write should start with `BEGIN IMMEDIATE`, which takes the write lock at once instead of at
-the first write, so it cannot fail halfway through. Because writes take turns, two transactions cannot both commit
+the first write, so it cannot be turned away with `database is locked` halfway through. Because writes take turns, two transactions cannot both commit
 changes based on the same old read: one of them is turned away and must roll back, so write skew cannot happen. (A
 program that reads in one transaction and writes in another can still lose an update, on SQLite as on any database;
 the fixes in [20.5](#lost-update) apply.)
@@ -611,7 +611,7 @@ Step 1, A: `BEGIN;` 2, A: `SELECT COUNT(*) FROM orders WHERE status = 'new';` re
 other transaction can ever see one change without the other, even without `BEGIN`.
 
 ??? success "Answer"
-    One `UPDATE` with a `CASE`. A single statement is always atomic, and it locks both rows in one go.
+    One `UPDATE` with a `CASE`. A single statement is always atomic: no one can see one change without the other.
 
     <!-- sql -->
     ```sql
@@ -721,7 +721,7 @@ one of them fails with "deadlock detected". Give two fixes.
 
 ??? success "Answer"
     Make both jobs lock the rows in the same order (for example ascending `id`), or change both rows in a single
-    statement (as in 20.2). Either way they can no longer wait on each other in a circle. Also add a retry on
+    statement (as in 20.2), which usually takes the locks in the same order. Also add a retry on
     SQLSTATE `40P01`, because some deadlock risk remains in any busy system.
 
 **Next:** [21. Views and materialized views](21-Views-and-Materialized-Views.md).

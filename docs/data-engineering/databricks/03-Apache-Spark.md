@@ -181,7 +181,7 @@ Row(order_id=1001, customer_id=1, order_ts=datetime.datetime(2026, 3, 1, 10, 15)
 [Row(order_id=2001, customer_id=4, status='PLACED'), Row(order_id=2002, customer_id=1, status='SHIPPED')]
 ```
 
-**RDDs, briefly.** The RDD (resilient distributed dataset) is Spark's older, lower-level API: a distributed collection of arbitrary objects with functions such as `map` and `reduceByKey`. Every DataFrame still runs on RDDs underneath, and `df.rdd` exposes them.
+**RDDs, briefly.** The RDD (resilient distributed dataset) is Spark's older, lower-level API: a distributed collection of arbitrary objects with functions such as `map` and `reduceByKey`. In classic Spark a DataFrame's physical plan still runs as RDDs underneath, and `df.rdd` exposes them (not on Spark Connect or serverless; see the warning below).
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 ```python

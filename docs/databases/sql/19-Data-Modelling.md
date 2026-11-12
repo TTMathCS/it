@@ -47,9 +47,9 @@ WHERE customer_id = 1;
 <!-- /result -->
 
 Ana's city is now stored on eight rows. When she moves, all eight must change; miss one and the table contradicts
-itself. That is an **update anomaly**. Two more come with it: an **insert anomaly** (a new customer with no orders
-has nowhere to go) and a **delete anomaly** (delete Ivan's only order line and you lose the fact that he exists,
-though here he has none to begin with). In the shop's real tables, Ana's city is stored once, in `customers`, and
+itself. That is an **update anomaly**. Two more come with it: an **insert anomaly** (a new customer with no orders,
+like Ivan, has nowhere to go) and a **delete anomaly** (delete a customer's only order line and you lose the fact
+that the customer exists). In the shop's real tables, Ana's city is stored once, in `customers`, and
 every order points to her by id.
 
 ## 19.2 Normal forms { #normal-forms }
@@ -77,7 +77,7 @@ the same is most of the skill.
 | | Transactional (OLTP) | Analytical (OLAP) |
 | --- | --- | --- |
 | Used for | running the business: take an order, update a stock level | answering questions: revenue by month and country |
-| Typical query | read or change a few rows by key, thousands a second | read millions of rows, aggregate, a few at a time |
+| Typical query | read or change a few rows by key, thousands a second | read millions of rows and aggregate them; fewer queries, each much bigger |
 | Model | normalised (3NF): many narrow tables | dimensional (star schema): few wide tables, some repetition on purpose |
 | Examples | PostgreSQL, MySQL, SQL Server, Oracle behind an application | Snowflake, BigQuery, Redshift, Databricks, Synapse |
 | History | usually only the current state | keeps history, often for years |

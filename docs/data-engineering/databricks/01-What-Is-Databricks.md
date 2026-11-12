@@ -619,7 +619,7 @@ Catalog grants, Auto Loader, Lakeflow pipelines, system tables) and its syntax w
     notes](https://docs.databricks.com/aws/en/release-notes/product/2025/june)). Old DLT code still works.
 
     **Why:** answer with both names ("Lakeflow pipelines, formerly Delta Live Tables") so the interviewer knows you
-    recognise the old name and know the current one.
+    recognize the old name and know the current one.
 
 **Q6. What are Declarative Automation Bundles, and what were they called before?**
 
