@@ -189,7 +189,7 @@ The predicted column is an average over many random throws; a real run is one th
 
 **The fullest partition.** The formula in step 4 is a theorem of Raab and Steger for truly random throws, stated for `K` much larger than `n ln n`. It is not proved here. This tutorial checks it by simulation (step 4 table) and against Spark's real hash (section 8.5). Treat it as a good estimate, slightly on the high side.
 
-**Salting gives the same answer.** The two-stage sum adds the same numbers in a different grouping. For whole numbers that is the same sum, because addition is associative and commutative. (For floating-point numbers the last digits can differ; the next tutorial in this course is about exactly which aggregates may be split this way.) `ex01` checks that the salted and plain results are equal on the 300,000 orders.
+**Salting gives the same answer.** The two-stage sum adds the same numbers in a different grouping. For whole numbers that is the same sum, because addition is associative and commutative. (For floating-point numbers the last digits can differ; [9. Why sums split and medians do not](09-Why-Sums-Split.md) is about exactly which aggregates may be split this way.) `ex01` checks that the salted and plain results are equal on the 300,000 orders.
 
 ## 8.5 See it in Spark
 
@@ -272,7 +272,7 @@ A `groupBy(...).sum(...)` does not ship every row. Its plan has two `HashAggrega
    +- *(1) HashAggregate(keys=[customer_id#2], functions=[partial_sum(amount#3)])
 ```
 
-Each map task first adds up its own rows per customer (`partial_sum`), so at most one row per customer per map task crosses the shuffle. With 4 map tasks, customer 7's 240,060 rows become at most 4 partial sums (`ex05_partial_agg.py`). The hot key still lands in one partition, but as 4 rows, not 240,060. The skew problem of this tutorial is therefore about operations that must move every row: repartitioning, joins, and aggregates whose partial state keeps every value (such as `collect_list`, whose plan shows `partial_collect_list`, or an exact median). Which aggregates can be summed in parts is the subject of the next tutorial in this course.
+Each map task first adds up its own rows per customer (`partial_sum`), so at most one row per customer per map task crosses the shuffle. With 4 map tasks, customer 7's 240,060 rows become at most 4 partial sums (`ex05_partial_agg.py`). The hot key still lands in one partition, but as 4 rows, not 240,060. The skew problem of this tutorial is therefore about operations that must move every row: repartitioning, joins, and aggregates whose partial state keeps every value (such as `collect_list`, whose plan shows `partial_collect_list`, or an exact median). Which aggregates can be summed in parts is the subject of [9. Why sums split and medians do not](09-Why-Sums-Split.md).
 
 ### NULL keys all go to one place
 

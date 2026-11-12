@@ -1,0 +1,30 @@
+Part 1. A million rows, 10 groups, 4 input partitions: what each aggregate sends through the shuffle
+   count                             :  40 rows,      1,012 bytes written to the shuffle
+   sum                               :  40 rows,      1,117 bytes written to the shuffle
+   avg                               :  40 rows,      1,297 bytes written to the shuffle
+   percentile_approx(x, 0.5, 10000)  :  40 rows,  3,348,440 bytes written to the shuffle
+   exact median                      :  40 rows,  5,999,772 bytes written to the shuffle
+   collect_list                      :  40 rows,  4,955,811 bytes written to the shuffle
+
+Part 2. The plans of a sum, an exact median and an approximate one
+   -- sum
+   *(2) HashAggregate(keys=[k#1L], functions=[sum(x#2)], output=[k#1L, sum(x)#136])
+   +- *(1) HashAggregate(keys=[k#1L], functions=[partial_sum(x#2)], output=[k#1L, sum#138])
+   -- exact median
+   ObjectHashAggregate(keys=[k#1L], functions=[percentile(x#2, 0.5, 1, 0, 0, false)], output=[k#1L, median(x)#143])
+   +- ObjectHashAggregate(keys=[k#1L], functions=[partial_percentile(x#2, 0.5, 1, 0, 0, false)], output=[k#1L, buf#145])
+   -- percentile_approx
+   ObjectHashAggregate(keys=[k#1L], functions=[percentile_approx(x#2, 0.5, 10000, 0, 0)], output=[k#1L, percentile_approx(x, 0.5, 10000)#150])
+   +- ObjectHashAggregate(keys=[k#1L], functions=[partial_percentile_approx(x#2, 0.5, 10000, 0, 0)], output=[k#1L, buf#152])
+
+Part 3. Exact against approximate median of the million x values
+   accuracy    100: answer   49830.0, its rank 498,297 of 1,000,000 (the middle is 500,000; off by 0.1703% of the rows; allowed 1/accuracy = 1.0000%)
+   accuracy   1000: answer   49979.0, its rank 499,787 of 1,000,000 (the middle is 500,000; off by 0.0213% of the rows; allowed 1/accuracy = 0.1000%)
+   accuracy  10000: answer   49999.0, its rank 499,987 of 1,000,000 (the middle is 500,000; off by 0.0013% of the rows; allowed 1/accuracy = 0.0100%)
+   exact median: 50001.0; the two middle values of the sorted data: 50001.0, 50001.0
+
+Part 4. The same doubles summed in 1, 4 and 16 partitions
+    1 partitions: 399999.70000026026
+    4 partitions: 399999.7000010521
+   16 partitions: 399999.70000000263
+   exact (as a fraction): sum of 0.1 x (i % 7 + 1) = 399999.7

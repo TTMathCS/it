@@ -1,0 +1,29 @@
+Step 1. A sum in pieces
+   partial sums [18, 40, 18], merged 76, sum of all 76
+
+Step 2. Averages
+   partition means ['6', '20', '18/5']
+   mean of the means 9.8667  (wrong)
+   (sum, count) pairs [(18, 3), (40, 2), (18, 5)] -> merged (76, 10) -> 76/10 = 7.6000;  true mean 7.6000
+
+Step 3. Medians
+   partition medians [6, 20.0, 3], median of the medians 6, true median 5.5
+   sorted values [1, 2, 3, 4, 5, 6, 7, 8, 10, 30]
+
+   adversary for A = [3, 7, 9, 12, 20] (m = 5): lower median of A + B, where B = j tiny values and 5-j huge ones
+      j = 0: lower median = 20
+      j = 1: lower median = 12
+      j = 2: lower median = 9
+      j = 3: lower median = 7
+      j = 4: lower median = 3
+
+Step 4. A summary that keeps every g-th value, with its rank
+   P1: 100 values, summary keeps 10: [(19, 10), (39, 20), (59, 30)] ...
+   P2: 100 values, summary keeps 10: [(38, 10), (78, 20), (118, 30)] ...
+   N = 200; for every kept value the true rank lies in [lo, hi]; widest interval hi - lo = 18 (bound: 2 x (g - 1) = 18)
+   median estimate from the summaries: 119 (rank between 90 and 108); its true rank 90 of 200; true median 133
+
+Step 5. Floating point addition is not associative
+   (0.1 + 0.2) + 0.3 = 0.6000000000000001
+   0.1 + (0.2 + 0.3) = 0.6
+   1e16 + 1 - 1e16 = 0.0;  1e16 - 1e16 + 1 = 1.0

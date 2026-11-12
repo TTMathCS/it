@@ -8,7 +8,7 @@
 | --- | --- |
 | [PostgreSQL](postgresql/index.md) | 4 checked tutorials: joins and NULL logic, B-tree indexes, the planner's row estimates, serializable transactions |
 | [Apache Parquet](parquet/index.md) | 1 checked tutorial: column files, compression and min/max skipping |
-| [Apache Spark](spark/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: shuffles and skew |
+| [Apache Spark](spark/index.md) | The 2025 drafts (7 parts) and 2 checked tutorials: shuffles and skew; which aggregates split (sums, medians, distinct counts) |
 | [Apache Kafka](kafka/index.md) | The 2025 drafts (7 parts) |
 | [Elasticsearch](elasticsearch/index.md) | The 2025 drafts (7 parts) |
 | [Dremio](dremio/index.md) | The 2025 drafts (7 parts) |

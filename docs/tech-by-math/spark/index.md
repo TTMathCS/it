@@ -1,6 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
 >
-> **Checked tutorial for this system:** [8. Shuffles and skew in Spark](08-Shuffles-and-Skew.md), with every number run on Spark 4.2.
+> **Checked tutorials for this system:** [8. Shuffles and skew in Spark](08-Shuffles-and-Skew.md) and [9. Why sums split and medians do not](09-Why-Sums-Split.md), with every number run on Spark 4.2.
 
 # Apache Spark: Tech-by-Math
 

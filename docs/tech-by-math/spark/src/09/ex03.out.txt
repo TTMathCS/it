@@ -1,0 +1,12 @@
+Distinct x values in the whole table (exact): 100,003
+Per group k (10 groups), all shuffles of the query added up:
+   count_distinct                 : 1,000,040 rows,  8,517,401 bytes through the shuffle; group 0 -> 100,000, group 1 -> 100,000
+   approx_count_distinct rsd 0.05 :        40 rows,     17,193 bytes through the shuffle; group 0 -> 95,546, group 1 -> 95,546
+   approx_count_distinct rsd 0.01 :        40 rows,    465,981 bytes through the shuffle; group 0 -> 100,425, group 1 -> 100,425
+   rsd 0.05: relative errors of the 10 groups: 4.45%, 4.45%, 4.45%, 4.45%, 4.45%, 4.45%, 4.45%, 4.45%, 4.45%, 4.45%;  largest 4.45%
+   rsd 0.01: relative errors of the 10 groups: 0.43%, 0.43%, 0.42%, 0.43%, 0.43%, 0.42%, 0.43%, 0.43%, 0.43%, 0.43%;  largest 0.43%
+
+The same 10 groups: percentile_approx(x, 0.5, accuracy), 25,000 rows per group in each of the 4 input partitions
+   accuracy    100:  40 rows,     74,051 bytes through the shuffle
+   accuracy   1000:  40 rows,    647,519 bytes through the shuffle
+   accuracy  10000:  40 rows,  3,348,440 bytes through the shuffle

@@ -1,0 +1,2 @@
++- HashAggregate(keys=[k#1L], functions=[stddev(x#2), avg(x#2)], output=[k#1L, stddev(x)#23, avg(x)#24])
++- HashAggregate(keys=[k#1L], functions=[partial_stddev(x#2), partial_avg(x#2)], output=[k#1L, n#10, avg#11, m2#12, sum#35, count#36L])
