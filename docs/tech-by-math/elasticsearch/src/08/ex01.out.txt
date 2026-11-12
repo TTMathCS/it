@@ -1,0 +1,21 @@
+Elasticsearch's own test values:
+   'hell'                                          0x5a0cb7c3  expected 0x5a0cb7c3  ok
+   'hello'                                         0xd7c31989  expected 0xd7c31989  ok
+   'hello w'                                       0x22ab2984  expected 0x22ab2984  ok
+   'hello wo'                                      0xdf0ca123  expected 0xdf0ca123  ok
+   'hello wor'                                     0xe7744d61  expected 0xe7744d61  ok
+   'The quick brown fox jumps over the lazy dog'   0xe07db09c  expected 0xe07db09c  ok
+   'The quick brown fox jumps over the lazy cog'   0x4e63d2ad  expected 0x4e63d2ad  ok
+
+number_of_routing_shards chosen for an index of n primary shards (n x 2^k, at most 1024):
+   1 -> 1024, 2 -> 1024, 3 -> 768, 5 -> 640, 6 -> 768, 10 -> 640, 30 -> 960
+
+Worked: _id 'order-1042', 5 shards: hash -1435775536, floorMod(hash, 640) = 464, / 128 = 3
+
+100,000 ids on 5 shards: [19801, 20097, 20150, 19946, 20006]
+Split 5 -> 10 shards (routing shards stay 640): old shard -> new shards it feeds
+   shard 0 -> 0 (9,906 docs), 1 (9,895 docs)
+   shard 1 -> 2 (10,098 docs), 3 (9,999 docs)
+   shard 2 -> 4 (10,052 docs), 5 (10,098 docs)
+   shard 3 -> 6 (10,027 docs), 7 (9,919 docs)
+   shard 4 -> 8 (10,028 docs), 9 (9,978 docs)

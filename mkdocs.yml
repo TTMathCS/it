@@ -133,6 +133,7 @@ nav:
               - tech-by-math/elasticsearch/05-experiments/index.md
               - tech-by-math/elasticsearch/06-references/index.md
               - tech-by-math/elasticsearch/07-use-cases/index.md
+              - tech-by-math/elasticsearch/08-How-Search-Ranks.md
           - "Dremio":
               - tech-by-math/dremio/index.md
               - tech-by-math/dremio/01-core-model/index.md

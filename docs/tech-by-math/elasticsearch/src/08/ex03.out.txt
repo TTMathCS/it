@@ -1,0 +1,18 @@
+Part 1. One-byte lengths: exact up to 40
+   length    10 -> byte  10 -> read back as    10
+   length    39 -> byte  39 -> read back as    39
+   length    40 -> byte  40 -> read back as    40
+   length    41 -> byte  40 -> read back as    40
+   length    50 -> byte  45 -> read back as    50
+   length   100 -> byte  57 -> read back as    96
+   length   101 -> byte  57 -> read back as    96
+   length   250 -> byte  70 -> read back as   248
+   length  1000 -> byte  87 -> read back as   984
+   length  1234 -> byte  89 -> read back as  1176
+   length  5000 -> byte 105 -> read back as  4632
+   largest relative rounding for lengths 1..100,000: 11.1% (always rounded down)
+
+Part 2. The same document on two shards with different statistics, query 'regolith'
+   shard A            n =  10, N = 1000: idf 4.5574, score 2.8484
+   shard B            n = 200, N = 1000: idf 1.6079, score 1.0050
+   whole index (dfs)  n = 210, N = 2000: idf 2.2519, score 1.4074

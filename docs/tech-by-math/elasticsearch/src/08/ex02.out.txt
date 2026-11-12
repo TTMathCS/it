@@ -1,0 +1,25 @@
+Inverted index (term -> postings: document, frequency):
+   red   -> [(1, 2), (2, 1), (5, 5), (6, 1)]
+   rock  -> [(1, 1), (2, 1), (3, 2)]
+   sand  -> [(1, 1), (4, 1)]
+   dust  -> [(2, 1), (4, 1)]
+
+N = 6 documents; lengths {1: 5, 2: 9, 3: 5, 4: 3, 5: 5, 6: 5}; avgdl = 32/6 = 5.333333333333333
+k1 = 1.2, b = 0.75
+   idf(red) = ln(1 + (6 - 4 + 0.5) / (4 + 0.5)) = 0.4418
+   idf(rock) = ln(1 + (6 - 3 + 0.5) / (3 + 0.5)) = 0.6931
+
+Query 'red rock': score = sum over the two terms of idf x freq / (freq + k1 (1 - b + b dl / avgdl))
+   doc 1 (length 5): red: f=2, tf part 0.6362; rock: f=1, tf part 0.4665  score 0.6044
+   doc 2 (length 9): red: f=1, tf part 0.3548; rock: f=1, tf part 0.3548  score 0.4027
+   doc 3 (length 5): rock: f=2, tf part 0.6362                            score 0.4410
+   doc 4 (length 3): no match                                             score 0.0000
+   doc 5 (length 5): red: f=5, tf part 0.8138                             score 0.3596
+   doc 6 (length 5): red: f=1, tf part 0.4665                             score 0.2061
+Ranking: [1, 3, 2, 5, 6]
+
+Classic BM25 multiplies each term by (k1 + 1) = 2.2; every score is 2.2 times larger, same ranking:
+   doc 1: 1.3297, doc 3: 0.9701, doc 2: 0.8858, doc 5: 0.7911, doc 6: 0.4534
+
+Saturation: the tf part for a document of average length, freq = 1, 2, 3, 5, 10, 100 (limit 1):
+   1: 0.455, 2: 0.625, 3: 0.714, 5: 0.806, 10: 0.893, 100: 0.988
