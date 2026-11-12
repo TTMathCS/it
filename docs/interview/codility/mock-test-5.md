@@ -64,13 +64,13 @@ CREATE TABLE orders (
 
 ??? success "Solution and explanation (open after you try)"
 
-    **SQLite**
+    **PostgreSQL** (the database of your test; run on PostgreSQL 16)
     
     ```sql
     WITH m AS (
-        SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue
+        SELECT TO_CHAR(order_date, 'YYYY-MM') AS month, SUM(amount) AS revenue
         FROM orders
-        GROUP BY strftime('%Y-%m', order_date)
+        GROUP BY TO_CHAR(order_date, 'YYYY-MM')
     )
     SELECT month, revenue,
            revenue - LAG(revenue) OVER (ORDER BY month) AS change
@@ -78,14 +78,13 @@ CREATE TABLE orders (
     ORDER BY month;
     ```
     
-    **PostgreSQL** (not run): the same query with `TO_CHAR(order_date, 'YYYY-MM')` in both places where
-    `strftime` is.
+    **SQLite**: the same query with `strftime('%Y-%m', order_date)` in both places where `TO_CHAR` is.
     
     **Why it works**
     
     * **Total first, then LAG.** `LAG` looks at the row before. If you run it on the orders, "the row before" is
       another order, not another month. So the CTE makes one row per month, and `LAG` runs on that.
-    * **Year and month together.** `'%Y-%m'` keeps November 2025 and November 2026 apart. Grouping by the month
+    * **Year and month together.** `'YYYY-MM'` keeps November 2025 and November 2026 apart. Grouping by the month
       number alone adds them up into one row.
     * **The text sorts right.** `'2025-12'` comes before `'2026-01'` as text, because the year is first and the
       month has two digits. So `ORDER BY month` is also date order.
@@ -94,7 +93,7 @@ CREATE TABLE orders (
     * A month with no orders (February 2026 here) has no row, so March is compared with January. That is what the
       task says.
     
-    **Tested on SQLite 3.54.** Every case below gave exactly the expected rows, compared with a separate Python answer:
+    **Tested.** The PostgreSQL query gave exactly the expected rows on the example on PostgreSQL 16. The SQLite version gave exactly the expected rows, compared with a separate Python answer, on:
     
     * the example above;
     * edge case: empty table;
@@ -110,7 +109,7 @@ CREATE TABLE orders (
     ??? failure "A common wrong answer: month number only (two Novembers become one)"
     
         ```sql
-        WITH m AS (SELECT strftime('%m', order_date) AS month, SUM(amount) AS revenue FROM orders GROUP BY 1)
+        WITH m AS (SELECT TO_CHAR(order_date, 'MM') AS month, SUM(amount) AS revenue FROM orders GROUP BY 1)
         SELECT month, revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS change FROM m ORDER BY month;
         ```
         
@@ -120,8 +119,8 @@ CREATE TABLE orders (
     ??? failure "A common wrong answer: LAG on the orders, not on the months"
     
         ```sql
-        SELECT DISTINCT strftime('%Y-%m', order_date) AS month,
-               SUM(amount) OVER (PARTITION BY strftime('%Y-%m', order_date)) AS revenue,
+        SELECT DISTINCT TO_CHAR(order_date, 'YYYY-MM') AS month,
+               SUM(amount) OVER (PARTITION BY TO_CHAR(order_date, 'YYYY-MM')) AS revenue,
                amount - LAG(amount) OVER (ORDER BY order_date, id) AS change
         FROM orders ORDER BY month;
         ```
@@ -131,7 +130,7 @@ CREATE TABLE orders (
     ??? failure "A common wrong answer: COALESCE turns the first change into 0"
     
         ```sql
-        WITH m AS (SELECT strftime('%Y-%m', order_date) AS month, SUM(amount) AS revenue FROM orders GROUP BY 1)
+        WITH m AS (SELECT TO_CHAR(order_date, 'YYYY-MM') AS month, SUM(amount) AS revenue FROM orders GROUP BY 1)
         SELECT month, revenue, COALESCE(revenue - LAG(revenue) OVER (ORDER BY month), 0) AS change
         FROM m ORDER BY month;
         ```
