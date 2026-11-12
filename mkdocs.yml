@@ -75,6 +75,10 @@ markdown_extensions:
       alternate_style: true
 
 # With --strict, a broken link or #anchor stops the build
+# the Tech by Math 2025 drafts have many sub-pages (use cases, proofs); they are reached by links, not the menu
+not_in_nav: |
+  /tech-by-math/
+
 validation:
   omitted_files: warn
   absolute_links: warn
@@ -90,14 +94,108 @@ nav:
       - books/index.md
       - "Tech by Math":
           - tech-by-math/index.md
-          - "The data engineering core":
-              - tech-by-math/data-engineering-core/index.md
-              - tech-by-math/data-engineering-core/01-Joins-Are-Set-Math.md
-              - tech-by-math/data-engineering-core/02-Why-an-Index-Is-Fast.md
-              - tech-by-math/data-engineering-core/03-How-the-Planner-Guesses.md
-              - tech-by-math/data-engineering-core/04-When-Transactions-Are-the-Same.md
-              - tech-by-math/data-engineering-core/05-Column-Files.md
-              - tech-by-math/data-engineering-core/06-Shuffles-and-Skew.md
+          - "PostgreSQL":
+              - tech-by-math/postgresql/index.md
+              - tech-by-math/postgresql/01-Joins-Are-Set-Math.md
+              - tech-by-math/postgresql/02-Why-an-Index-Is-Fast.md
+              - tech-by-math/postgresql/03-How-the-Planner-Guesses.md
+              - tech-by-math/postgresql/04-When-Transactions-Are-the-Same.md
+          - "Apache Parquet":
+              - tech-by-math/parquet/index.md
+              - tech-by-math/parquet/01-Column-Files.md
+          - "Apache Spark":
+              - tech-by-math/spark/index.md
+              - tech-by-math/spark/01-core-model/index.md
+              - tech-by-math/spark/02-math-toolkit/index.md
+              - tech-by-math/spark/03-algorithms/index.md
+              - tech-by-math/spark/04-failure-models/index.md
+              - tech-by-math/spark/05-experiments/index.md
+              - tech-by-math/spark/06-references/index.md
+              - tech-by-math/spark/07-use-cases/index.md
+              - tech-by-math/spark/08-Shuffles-and-Skew.md
+          - "Apache Kafka":
+              - tech-by-math/kafka/index.md
+              - tech-by-math/kafka/01-core-model/index.md
+              - tech-by-math/kafka/02-math-toolkit/index.md
+              - tech-by-math/kafka/03-algorithms/index.md
+              - tech-by-math/kafka/04-failure-models/index.md
+              - tech-by-math/kafka/05-experiments/index.md
+              - tech-by-math/kafka/06-references/index.md
+              - tech-by-math/kafka/07-use-cases/index.md
+          - "Elasticsearch":
+              - tech-by-math/elasticsearch/index.md
+              - tech-by-math/elasticsearch/01-core-model/index.md
+              - tech-by-math/elasticsearch/02-math-toolkit/index.md
+              - tech-by-math/elasticsearch/03-algorithms/index.md
+              - tech-by-math/elasticsearch/04-failure-models/index.md
+              - tech-by-math/elasticsearch/05-experiments/index.md
+              - tech-by-math/elasticsearch/06-references/index.md
+              - tech-by-math/elasticsearch/07-use-cases/index.md
+          - "Dremio":
+              - tech-by-math/dremio/index.md
+              - tech-by-math/dremio/01-core-model/index.md
+              - tech-by-math/dremio/02-math-toolkit/index.md
+              - tech-by-math/dremio/03-algorithms/index.md
+              - tech-by-math/dremio/04-failure-models/index.md
+              - tech-by-math/dremio/05-experiments/index.md
+              - tech-by-math/dremio/06-references/index.md
+              - tech-by-math/dremio/07-use-cases/index.md
+          - "Apache NiFi":
+              - tech-by-math/nifi/index.md
+              - tech-by-math/nifi/01-core-model/index.md
+              - tech-by-math/nifi/02-math-toolkit/index.md
+              - tech-by-math/nifi/03-algorithms/index.md
+              - tech-by-math/nifi/04-failure-models/index.md
+              - tech-by-math/nifi/05-experiments/index.md
+              - tech-by-math/nifi/06-references/index.md
+              - tech-by-math/nifi/07-use-cases/index.md
+          - "Kubernetes":
+              - tech-by-math/kubernetes/index.md
+              - tech-by-math/kubernetes/01-core-model/index.md
+              - tech-by-math/kubernetes/02-math-toolkit/index.md
+              - tech-by-math/kubernetes/03-algorithms/index.md
+              - tech-by-math/kubernetes/04-failure-models/index.md
+              - tech-by-math/kubernetes/05-experiments/index.md
+              - tech-by-math/kubernetes/06-references/index.md
+              - tech-by-math/kubernetes/07-use-cases/index.md
+          - "Git":
+              - tech-by-math/git/index.md
+              - tech-by-math/git/01-core-model/index.md
+              - tech-by-math/git/02-math-toolkit/index.md
+              - tech-by-math/git/03-algorithms/index.md
+              - tech-by-math/git/04-failure-models/index.md
+              - tech-by-math/git/05-experiments/index.md
+              - tech-by-math/git/06-references/index.md
+              - tech-by-math/git/07-use-cases/index.md
+          - "PKI and certificates":
+              - tech-by-math/pki/index.md
+              - tech-by-math/pki/01-core-model/index.md
+              - tech-by-math/pki/02-math-toolkit/index.md
+              - tech-by-math/pki/03-algorithms/index.md
+              - tech-by-math/pki/04-failure-models/index.md
+              - tech-by-math/pki/05-experiments/index.md
+              - tech-by-math/pki/06-references/index.md
+              - tech-by-math/pki/07-use-cases/index.md
+          - "Computer networks":
+              - tech-by-math/network/index.md
+              - tech-by-math/network/01-core-model/index.md
+              - tech-by-math/network/02-math-toolkit/index.md
+              - tech-by-math/network/03-algorithms/index.md
+              - tech-by-math/network/04-failure-models/index.md
+              - tech-by-math/network/05-experiments/index.md
+              - tech-by-math/network/06-references/index.md
+              - tech-by-math/network/07-use-cases/index.md
+          - "AI":
+              - tech-by-math/ai/index.md
+              - tech-by-math/ai/01-core-model/index.md
+              - tech-by-math/ai/02-math-toolkit/index.md
+              - tech-by-math/ai/03-algorithms/index.md
+              - tech-by-math/ai/04-failure-models/index.md
+              - tech-by-math/ai/05-experiments/index.md
+              - tech-by-math/ai/06-references/index.md
+              - tech-by-math/ai/07-use-cases/index.md
+          - "AI agents":
+              - tech-by-math/ai-agent/index.md
       - "Databases":
           - databases/index.md
           - "SQL":

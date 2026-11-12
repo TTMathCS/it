@@ -26,7 +26,24 @@ COURSES = {
     "sql": "SQL",
     "databricks": "Databricks and the medallion model",
     "codility": "Codility test prep",
-    "data-engineering-core": "The data engineering core",
+    "postgresql": "PostgreSQL",
+    "parquet": "Apache Parquet",
+    "spark": "Apache Spark",
+    "kafka": "Apache Kafka",
+    "elasticsearch": "Elasticsearch",
+    "dremio": "Dremio",
+    "nifi": "Apache NiFi",
+    "kubernetes": "Kubernetes",
+    "git": "Git",
+    "pki": "PKI and certificates",
+    "network": "Computer networks",
+    "ai": "AI",
+    "ai-agent": "AI agents",
+}
+# a category whose courses are not in alphabetical order lists them here
+COURSE_ORDER = {
+    "tech-by-math": ["postgresql", "parquet", "spark", "kafka", "elasticsearch", "dremio", "nifi", "kubernetes", "git",
+                     "pki", "network", "ai", "ai-agent"],
 }
 # a course whose pages are not numbered lists them here, in menu order (after its index.md)
 ORDER = {
@@ -48,7 +65,10 @@ for cat, name in CATEGORIES:
     if not os.path.exists(os.path.join(cp, "index.md")):
         continue
     out += [f'      - "{name}":', f"          - {cat}/index.md"]
-    for course in sorted(os.listdir(cp)):
+    courses = sorted(os.listdir(cp))
+    if cat in COURSE_ORDER:
+        courses = [c for c in COURSE_ORDER[cat] if c in courses] + [c for c in courses if c not in COURSE_ORDER[cat]]
+    for course in courses:
         p = os.path.join(cp, course)
         if not os.path.exists(os.path.join(p, "index.md")):
             continue
@@ -58,7 +78,12 @@ for cat, name in CATEGORIES:
             out += [f"              - {cat}/{course}/{f}" for f in ORDER[course] if f in files]
             continue
         out += [f"              - {cat}/{course}/{f}" for f in FRONT if f in files]
-        out += [f"              - {cat}/{course}/{f}" for f in sorted(files) if re.match(r"\d\d-.*\.md$", f)]
+        chapters = [f for f in files if re.match(r"\d\d-.*\.md$", f)]
+        # a numbered folder with its own README.md or index.md is a chapter too (the Tech by Math system courses)
+        for f in files:
+            if re.match(r"\d\d-", f) and os.path.isdir(os.path.join(p, f)):
+                chapters += [f"{f}/{i}" for i in ("index.md", "README.md") if os.path.exists(os.path.join(p, f, i))][:1]
+        out += [f"              - {cat}/{course}/{f}" for f in sorted(chapters)]
         out += [f"              - {cat}/{course}/{f}" for f in BACK if f in files]
 out.append("  # books: end")
 

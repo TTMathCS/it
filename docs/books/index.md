@@ -10,7 +10,10 @@ Courses by category. A category joins this list, and the menu, once its first co
 
 | Course | From | To |
 | --- | --- | --- |
-| [The data engineering core](../tech-by-math/data-engineering-core/index.md) | Remainders, averages and sets | The math under joins, indexes, query plans, transactions, column files, Spark shuffles and Kafka (tutorials going up as they are checked) |
+| [PostgreSQL](../tech-by-math/postgresql/index.md) | Sets and logarithms | Joins as set math, B-tree height, the planner's estimates, serializable transactions |
+| [Apache Parquet](../tech-by-math/parquet/index.md) | Binary numbers | Dictionary and run-length coding, min/max skipping |
+| [Apache Spark](../tech-by-math/spark/index.md) | Remainders and averages | The 2025 drafts, and shuffles and skew |
+| [Kafka, Elasticsearch, Dremio, NiFi, Kubernetes, Git, PKI, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 
