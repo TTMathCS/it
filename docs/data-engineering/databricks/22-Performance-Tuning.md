@@ -1051,7 +1051,7 @@ The Databricks fixes, in order of effort ([Skew and spill](https://docs.databric
 
 The old `SKEW` join hint is documented only on a retired page: "Skew join hints are not required. Databricks handles skew by default by using adaptive query execution (AQE)" ([Skew join optimization using skew hints](https://docs.databricks.com/aws/en/archive/legacy/skew-join)). The AQE page agrees: "Use AQE skew join handling."
 
-**Salting, shown.** AQE skew handling covers joins only; a skewed `GROUP BY` or a `FULL OUTER` join needs salting. In this Red Rock Supply data, customer 7 (a reseller account) places 80% of 300,000 orders. Shuffling by `customer_id` into eight partitions:
+**Salting, shown.** AQE skew handling covers joins only. A skewed `GROUP BY` with `sum`, `count`, `min`, `max` or `avg` usually needs no salt: Spark adds up inside each map task before the shuffle (`partial_sum` and `partial_count` in the plan), so the hot key crosses the shuffle as at most one row per map task (shown below). Salting is for the cases where every row of the hot key must reach one task: a `repartition` or a write by that key, a `FULL OUTER` join, or a grouped Python function (`applyInPandas`), which has no partial step. In this Red Rock Supply data, customer 7 (a reseller account) places 80% of 300,000 orders. Shuffling by `customer_id` into eight partitions with `repartition`, which moves every row:
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 
@@ -1101,7 +1101,18 @@ FROM partial WHERE customer_id IN (7, 8, 9) GROUP BY customer_id ORDER BY custom
 +-----------+-----------+
 ```
 
-Salting only works for aggregates you can combine in two steps (`sum`, `count`, `min`, `max`; an average as sum and count). A median or an exact `count(DISTINCT)` does not split that way.
+The two-stage sum shows the pattern, but for a plain `sum` Spark already does it for you. A plain `groupBy` with `sum` and `count` on the same data shape, read as 4 input partitions (`src/ch22/ch22_partial_agg.py`):
+
+*Run here: Apache Spark 4.2.*
+
+```text
+*(2) HashAggregate(keys=[customer_id#2], functions=[sum(amount#3), count(1)])
++- Exchange hashpartitioning(customer_id#2, 8), ENSURE_REQUIREMENTS, [plan_id=17]
+   +- *(1) HashAggregate(keys=[customer_id#2], functions=[partial_sum(amount#3), partial_count(1)])
+customer 7 rows read by each map task: [(0, 60015), (1, 60015), (2, 60015), (3, 60015)]
+```
+
+Each map task added up its own 60,015 rows of customer 7 and sent one partial row, so 4 rows of customer 7 crossed the shuffle, not 240,060. A two-stage salt only splits aggregates that combine in two steps (`sum`, `count`, `min`, `max`; an average as sum and count), and those are the ones Spark already pre-aggregates. A median or a `collect_list` needs every value of the key together at the end (the plan shows `partial_collect_list`, whose partial lists still hold every value), so a salt cannot remove the hot task there: use an approximate function such as `percentile_approx`, or handle the hot key separately.
 
 **A salted join.** For a join, salt the big side and copy each row of the small side once per salt value, then join on the key plus the salt:
 
@@ -1248,7 +1259,7 @@ Other production rules from [Production considerations for Structured Streaming]
 **Q2. One task in a stage runs 40 minutes while the other 199 take a few seconds. What is happening and what do you try, in order?**
 
 ??? success "Answer"
-    Data skew: one shuffle partition holds a hot key. Confirm on the stage page: Max duration far above the 75th percentile (Databricks says 50% or more suggests skew). Find the key with `SELECT key, count(*) ... GROUP BY key ORDER BY 2 DESC LIMIT 10`. Then: (1) if it is a sort-merge or shuffle hash join, check AQE skew handling applies (partition over 5 times the median and over 256 MB by default, a join type whose skewed side can be split, not a broadcast join) and lower the thresholds if needed; (2) for an aggregation or `FULL OUTER` join, salt the key and aggregate in two stages, or handle the hot key separately; (3) if the skew comes from the stored layout, liquid clustering.
+    Data skew: one shuffle partition holds a hot key. Confirm on the stage page: Max duration far above the 75th percentile (Databricks says 50% or more suggests skew). Find the key with `SELECT key, count(*) ... GROUP BY key ORDER BY 2 DESC LIMIT 10`. Then: (1) if it is a sort-merge or shuffle hash join, check AQE skew handling applies (partition over 5 times the median and over 256 MB by default, a join type whose skewed side can be split, not a broadcast join) and lower the thresholds if needed; (2) for a `FULL OUTER` join, a `repartition` or a grouped Python function, salt the key, or handle the hot key separately (a `sum` or `count` is already pre-aggregated in each task before the shuffle, so it rarely needs a salt); (3) if the skew comes from the stored layout, liquid clustering.
 
     **Why:** all rows of one key go to one partition, so one core does most of the work no matter how big the cluster is.
 
@@ -1401,7 +1412,7 @@ FROM order_items i JOIN customers_history h ON i.customer_id = h.customer_id;
                      .groupBy("customer_id").agg(F.sum("part_sum").alias("revenue")))
     ```
 
-    In the run, the largest shuffle partition fell from 247,764 rows to 53,136 and the result equaled the unsalted one.
+    In the run, the largest shuffle partition fell from 247,764 rows to 53,136 and the result equaled the unsalted one. In practice a plain `sum` is already pre-aggregated in each map task (section 22.14), so this pattern pays off where that partial step is missing, such as a grouped Python function.
 
     **Why:** the hot key is split across up to 16 groups in stage 1; stage 2 adds at most 16 partial sums per customer. This works for combinable aggregates (`sum`, `count`, `min`, `max`), not for an exact median.
 

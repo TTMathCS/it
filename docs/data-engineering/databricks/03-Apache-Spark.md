@@ -972,7 +972,7 @@ AdaptiveSparkPlan isFinalPlan=true
 
 The Databricks AQE page adds limits worth knowing: AQE handles skew "only in shuffle-based joins, which are sort merge joins and shuffle hash joins. It never optimizes skew in broadcast joins", and the join type decides which side can be split (for example a `LEFT OUTER` join can be optimized on the left side only, a `FULL OUTER` join on neither side).
 
-**Salting**, when AQE cannot help (a skewed aggregation, a `FULL OUTER` join, or older runtimes): add a random "salt" column so the hot key is spread over several partitions, then combine. Here is the effect on the partition sizes when the skewed orders are repartitioned by key:
+**Salting**, when AQE cannot help (a `FULL OUTER` join, a `repartition` by the key, a grouped Python function, or older runtimes; a `sum` or `count` aggregation is already added up inside each task before the shuffle, see section 22.14): add a random "salt" column so the hot key is spread over several partitions, then combine. Here is the effect on the partition sizes when the skewed orders are repartitioned by key:
 
 *Run here: Apache Spark 4.2 + Delta Lake 4.4.1.*
 ```python
@@ -993,7 +993,7 @@ print(sk.join(cust, "customer_id").count(), salted.join(cust_salted, ["customer_
 400000 400000
 ```
 
-The largest partition went from 260,456 rows to about 80,000. It is not perfectly even because the 8 salted keys of customer 7 are hashed into 8 partitions and some collide; more salt values spread it further. The salted join returns the same 400,000 rows, because every order still finds exactly one copy of its customer. For aggregations, salt in two steps: aggregate by `(key, salt)`, then by `key` (practice question 25).
+The largest partition went from 260,456 rows to about 80,000. It is not perfectly even because the 8 salted keys of customer 7 are hashed into 8 partitions and some collide; more salt values spread it further. The salted join returns the same 400,000 rows, because every order still finds exactly one copy of its customer. For aggregations the salt works in two steps: aggregate by `(key, salt)`, then by `key` (practice question 25). For `sum` and `count`, Spark's partial aggregation already does this split inside each task (section 22.14).
 
 ### Databricks differences
 

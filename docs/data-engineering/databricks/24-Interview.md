@@ -548,8 +548,10 @@ made a mistake.
     only showing top 3 rows
     ```
 
-    **Why:** customer 7 holds 90% of the rows. Without the salt, one task would count all 90,000; with it, eight
-    tasks share the work and a second, tiny aggregation adds the partial counts. The Databricks skew hint page is marked
+    **Why:** customer 7 holds 90% of the rows. In a join or a `repartition` by the key, one task would receive all
+    90,000; with the salt, eight tasks share the work and a second, tiny aggregation adds the partial counts. (For a
+    plain `count` like this one, Spark already counts inside each map task before the shuffle, chapter 22.14, so here
+    the salt shows the pattern rather than a speed-up.) The Databricks skew hint page is marked
     as retired documentation, and the AQE page says AQE skew handling "usually performs better than the skew join
     hint".
 
