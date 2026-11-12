@@ -14,7 +14,7 @@ hides the most famous trap in SQL, `NOT IN` with a NULL, and this chapter shows 
     - why `NOT IN` returns nothing when the list holds a NULL, and the fix
     - anti joins with a condition: "no shipped order in March"
 
-    **You need:** chapters 6 (NULL) and 8 (joins).
+    **You need:** [6. NULL](06-Null-and-Three-Valued-Logic.md) and [8. joins](08-Joins-Inner-Left-Right-Full-Cross.md).
 
 ## 9.1 Self joins { #self }
 
@@ -474,6 +474,11 @@ ORDER BY c.customer_id;
     | 10 | Kwame Mensah | 2 |
     <!-- /result -->
 
+    A **self join**: `employees` appears twice, as `m` (the manager) and `e` (a person reporting to them),
+    matched on `e.manager_id = m.employee_id`. Grouping by the manager counts their direct reports; people who
+    manage no one have no match and are left out by the inner join.
+
+
 **9.3** Products that have been sold in a shipped order to a customer in Canada. Each product once, no DISTINCT.
 
 ??? success "Answer"
@@ -645,5 +650,10 @@ two conditions.)
     | Desk lamp | Wall clock | Home | 0.00 |
     | Plant pot | Bookend | Home | 2.75 |
     <!-- /result -->
+
+    A self join that pairs products of the same category. `a.product_id < b.product_id` keeps each pair once
+    (not A-B and B-A) and never pairs a product with itself. `ABS(...)` is the size of the difference whatever
+    its sign.
+
 
 **Next:** [10. Subqueries](10-Subqueries.md).

@@ -517,6 +517,11 @@ ORDER BY price, name;
     | 117 | 4 | 8.75 |
     <!-- /result -->
 
+    `quantity * unit_price AS line_value` computes a new column and names it. `ORDER BY line_value` may use that
+    name because `ORDER BY` runs after `SELECT`; `WHERE` could not. `IN (109, 117)` is a short way to write
+    `order_id = 109 OR order_id = 117`.
+
+
 **2.3** The distinct statuses that orders have, alphabetically.
 
 ??? success "Answer"
@@ -536,6 +541,10 @@ ORDER BY price, name;
     | pending |
     | shipped |
     <!-- /result -->
+
+    `DISTINCT` removes repeated rows from the result, so each status appears once. Use it for "the different
+    values of ..."; to count them, use `COUNT(DISTINCT status)`.
+
 
 **2.4** The three most recently hired employees. Return `name`, `hire_date`, newest first.
 

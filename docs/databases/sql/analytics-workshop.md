@@ -16,7 +16,7 @@ sessions and funnels. Every example runs in your browser (press **Run this**), a
     - **sessions** from a click stream: `LAG`, a 30-minute gap, a running count
     - a **funnel**: how many visitors reached each step, and the conversion rate
 
-    **You need:** chapters 7 (GROUP BY), 8 (joins), 11 (CTEs), 13 and 14 (window functions). The tables are
+    **You need:** [7. GROUP BY](07-Aggregation-Group-By-Having.md), [8. joins](08-Joins-Inner-Left-Right-Full-Cross.md), [11. CTEs](11-CTEs-and-Recursive-CTEs.md), [13. window functions: ranking](13-Window-Functions-Ranking.md) and [14. LAG, LEAD, running totals](14-Window-Functions-Lag-Lead-Running-Totals.md). The tables are
     `orders`, `order_items`, `payments` and `page_views` of the [sample database](sample-database.md#payments);
     look at their rows first.
 
@@ -584,6 +584,11 @@ rows with no method. Return `method`, `attempts`, `failed_pct`, sorted by `metho
     | gift | 1 | 0.0 |
     | paypal | 4 | 0.0 |
     <!-- /result -->
+
+    `SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)` counts the failed attempts, and dividing by `COUNT(*)`
+    (all attempts of that method) gives the share. `100.0` keeps the division decimal; `WHERE method IS NOT
+    NULL` drops the rows with no method before grouping.
+
 
 **W.4** Each day's net revenue (paid plus refunded, failed left out) and the **running total** since the first
 day. Return `day`, `net`, `running_total`, sorted by `day`.

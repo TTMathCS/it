@@ -442,7 +442,8 @@ ORDER BY c.customer_id;
 | 2 | {102,106,113} | 3 | 102 |
 <!-- /result -->
 
-PostgreSQL arrays count from **1**, not 0 like JSON arrays. `UNNEST` turns an array back into rows, and `= ANY(array)`
+`ARRAY_AGG(x ORDER BY x)` is an aggregate that collects a group's values into one array; `CARDINALITY(array)` is the
+number of elements in it; `array[1]` is its first element. PostgreSQL arrays count from **1**, not 0 like JSON arrays. `UNNEST` turns an array back into rows, and `= ANY(array)`
 tests membership:
 
 <!-- sql pg -->
@@ -611,6 +612,10 @@ the tables people query.
     | view | 2 | 1 |
     <!-- /result -->
 
+    `->>` takes a field out of a JSON value as text; `->` takes it out as JSON, so you can go one level deeper
+    (`payload -> 'user' ->> 'country'`). A missing field gives NULL, which the `CASE` counts.
+
+
 **24.2** For each purchase, return the event, the number of items (lines) in it and the total units, using the
 items array, not the `total` field.
 
@@ -710,6 +715,11 @@ items array, not the `total` field.
         | home | 1 |
         | pen | 1 |
         <!-- /result -->
+
+    Both versions first turn the comma-separated text into one row per tag, then count. PostgreSQL:
+    `STRING_TO_ARRAY` splits the text into an array and `UNNEST` turns the array into rows. SQLite has no
+    arrays, so the text is rewritten as a JSON array and `json_each` returns one row per element.
+
 
 **24.4** Return the ids of the events whose items include `NOTE`, on SQLite (without `@>`).
 

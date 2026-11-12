@@ -105,6 +105,9 @@ CREATE TABLE order_items (
 );
 ```
 
+`NUMERIC(8,2)` is an exact decimal number with up to 8 digits, 2 of them after the point: the right type for money,
+because it never rounds 0.10 + 0.20 into 0.30000000000000004 the way a floating-point number can.
+
 A key made of several columns is a **composite key**. It means "the same product cannot appear twice in one order";
 buying three notebooks is one row with `quantity` 3. Trying to add product 1 to order 101 a second time fails:
 

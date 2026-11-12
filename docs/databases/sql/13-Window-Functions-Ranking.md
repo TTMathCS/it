@@ -17,7 +17,7 @@ and the ranking functions. Their biggest trap is ties, and the sample data is fu
     - why a window function can't go in WHERE, and the CTE that fixes it
     - `NTILE`, `PERCENT_RANK`, `CUME_DIST`, and the `WINDOW` clause
 
-    **You need:** chapters 3, 7 and 11. Window functions work in PostgreSQL 8.4+, SQLite 3.25+, MySQL 8+, SQL Server
+    **You need:** [3. the order a query runs in](03-The-Order-a-Query-Runs-In.md), [7. GROUP BY](07-Aggregation-Group-By-Having.md) and [11. CTEs](11-CTEs-and-Recursive-CTEs.md). Window functions work in PostgreSQL 8.4+, SQLite 3.25+, MySQL 8+, SQL Server
     and Oracle.
 
 ## 13.1 Aggregates that keep every row { #aggregate-windows }
@@ -622,6 +622,11 @@ equal prices share a rank, no gaps).
     | Support | Leo Park | 2026-01-12 |
     <!-- /result -->
 
+    `ROW_NUMBER()` numbers the employees of each department from the latest hire (1) down. The CTE is needed
+    because a window function can't be used in `WHERE`; the outer query keeps `rn = 1`. `employee_id DESC`
+    breaks a tie between two people hired on the same day.
+
+
 **13.5** Number each customer's orders in date order (1 for their first order), for customers 1 and 2, with the
 order id as tie-break.
 
@@ -686,6 +691,11 @@ rank. Include products never sold, with revenue 0.
     | Bookend | 0 | 11 |
     <!-- /result -->
 
+    Window functions run after `GROUP BY`, so `RANK()` can rank the groups by their own `SUM`. `RANK` gives tied
+    revenues the same rank and skips the next number. The `LEFT JOIN` and `COALESCE(..., 0)` keep products never
+    sold, with revenue 0.
+
+
 **13.7** Each employee's salary as a percentage of their department's total payroll, one decimal, largest share first
 within each department.
 
@@ -716,6 +726,10 @@ within each department.
     | Support | Kwame Mensah | 75000 | 59.1 |
     | Support | Ella Novak | 52000 | 40.9 |
     <!-- /result -->
+
+    `SUM(salary) OVER (PARTITION BY department)` puts the department's total on every employee's row without
+    merging the rows, so each salary can be divided by it. With `GROUP BY` you would lose the individual rows.
+
 
 **13.8** Find the customers whose first-ever order was cancelled.
 

@@ -16,7 +16,7 @@ islands), pivots, the median, "in every month", and "bought together".*
     - "every month" and other "for all" questions
     - pairs that occur together (market basket)
 
-    **You need:** chapters 7 to 14. Each pattern names the chapter it builds on.
+    **You need:** chapters 7 to 14, from [7. GROUP BY](07-Aggregation-Group-By-Having.md) to [14. LAG, LEAD, running totals](14-Window-Functions-Lag-Lead-Running-Totals.md). Each pattern names the chapter it builds on.
 
 ## 15.1 The Nth highest { #nth-highest }
 
@@ -525,6 +525,12 @@ the SQLite version swaps the date arithmetic as in 15.3.)
     | 6 | 1 |
     <!-- /result -->
 
+    **Gaps and islands.** Number each customer's login days 1, 2, 3; a date minus its number stays the same for
+    as long as the days are consecutive, and changes after a gap. That value (`island`) names one run, so
+    `COUNT(*)` per island is the run's length and `MAX` picks the longest. `DISTINCT` first, or a repeated login
+    would break the numbering.
+
+
 **15.3** Pivot: for each department, the number of employees hired in each of 2023, 2024 and 2025, as three columns.
 
 ??? success "Answer"
@@ -549,6 +555,10 @@ the SQLite version swaps the date arithmetic as in 15.3.)
     | Sales | 2 | 0 | 1 |
     | Support | 0 | 1 | 0 |
     <!-- /result -->
+
+    A **pivot**: one `SUM(CASE WHEN ... THEN 1 ELSE 0 END)` per output column counts only the rows of that year.
+    `GROUP BY department` gives one row per department; the years become columns instead of rows.
+
 
 **15.4** Order ids are meant to run from 101 with no gaps. Check it: list any missing ids between the smallest and
 largest. (There are none in the sample; prove it.)

@@ -44,7 +44,7 @@ submitting.
 Five hours a day, most of it on SQL, and three full timed rehearsals in the real format: three tasks in 150
 minutes: [Full mock A](full-mock-a.md), [Full mock B](full-mock-b.md) and [Full mock C](full-mock-c.md). Each
 has its solutions folded away and a **Try it here** box under every task, to check your answers when the timer
-ends.
+ends. A fourth rehearsal in the same format, [Mock test 8](mock-test-8.md), is there if you find a spare evening.
 
 === "Thu 12"
 

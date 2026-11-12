@@ -16,7 +16,7 @@ big.*
     - **fan-out**: how joining to a "many" table multiplies rows, how to spot it, and how to avoid it
     - `USING`, joins on conditions other than `=`, and why `NATURAL JOIN` is best avoided
 
-    **You need:** chapters 2 and 7, and the [sample database](sample-database.md).
+    **You need:** [2. SELECT and WHERE](02-Select-Where-Order-By-Limit.md) and [7. GROUP BY](07-Aggregation-Group-By-Having.md), and the [sample database](sample-database.md).
 
 ## 8.1 INNER JOIN: only the pairs that match { #inner }
 
@@ -561,6 +561,11 @@ first, then by product name.
     | 11 | Bookend |
     <!-- /result -->
 
+    An **anti join** written as a `LEFT JOIN`: every product is kept, and products with no order line get NULL
+    in the `order_items` columns. `WHERE i.order_id IS NULL` keeps exactly those. Test a column that can't be
+    NULL in a real match (here `order_id`).
+
+
 **8.3** For each order, its date, the customer's name (or `guest` when there is no customer) and the order's
 revenue. Only orders from February.
 
@@ -644,6 +649,10 @@ revenue. Only orders from February.
     | 109 | Tea kettle | 30.00 | 32.00 |
     | 120 | Office chair | 139.00 | 149.00 |
     <!-- /result -->
+
+    An inner join puts each order line next to its product, so the price paid and today's price are on one row,
+    and `<>` (not equal) keeps the lines where they differ.
+
 
 **8.6** Every employee with their manager's name; the person with no manager should still appear, with NULL.
 

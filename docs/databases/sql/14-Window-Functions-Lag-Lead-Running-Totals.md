@@ -17,7 +17,7 @@ window, which quietly changes running totals when dates tie and makes LAST_VALUE
     - moving averages
     - `FIRST_VALUE`, `LAST_VALUE` (and its trap), `NTH_VALUE`
 
-    **You need:** chapter 13.
+    **You need:** [13. window functions: ranking](13-Window-Functions-Ranking.md).
 
 ## 14.1 LAG and LEAD: the row before and after { #lag-lead }
 
@@ -461,6 +461,11 @@ order. `NTH_VALUE(x, n)` gives the n-th row's value and has the same frame trap.
     | 112 | 2026-03-01 | 181.00 | 24.50 |
     <!-- /result -->
 
+    `LAG(total, 1, 0)` reads `total` from 1 row back in the window's order, and gives 0 instead of NULL for the
+    first order, which has no row before it. The CTE first adds up each order's lines, so `LAG` compares whole
+    orders.
+
+
 **14.2** Customers who placed an order within 15 days of their previous order. Show the customer, the two order ids
 and dates. Write it in PostgreSQL (or in SQLite, with `julianday`).
 
@@ -542,6 +547,11 @@ and dates. Write it in PostgreSQL (or in SQLite, with `julianday`).
     | 110 | 10 | 20 |
     | 117 | 5 | 25 |
     <!-- /result -->
+
+    `SUM(quantity) OVER (ORDER BY order_id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)` adds every row
+    from the first up to the current one: a running total. `ROWS` counts rows one by one, so two rows with the
+    same sort value are not added together at once.
+
 
 **14.4** The first day on which the running total of shipped revenue reached 500.
 
@@ -632,5 +642,10 @@ department (by salary, ties broken by name). NULL for the lowest.
     | 2026-03 | 322.50 | 38.3 |
     | 2026-04 | 163.50 | 16.3 |
     <!-- /result -->
+
+    Two layers: the CTE gives one row per month, then each month's revenue is divided by the running total up to
+    and including that month. `SUBSTR(CAST(order_date AS TEXT), 1, 7)` takes the first 7 characters of the date,
+    `'2026-03'`, and works on both databases.
+
 
 **Next:** [15. Classic interview patterns](15-Classic-Interview-Patterns.md).

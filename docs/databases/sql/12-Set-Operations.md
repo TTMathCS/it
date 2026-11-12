@@ -14,7 +14,7 @@ UNION ALL does not, and the difference is both a correctness and a speed questio
     - how set operations treat NULL (unlike `=`, they treat two NULLs as the same)
     - turning columns into rows with UNION ALL
 
-    **You need:** chapters 2 and 9.
+    **You need:** [2. SELECT and WHERE](02-Select-Where-Order-By-Limit.md) and [9. self, semi and anti joins](09-Self-Semi-and-Anti-Joins.md).
 
 ## 12.1 UNION and UNION ALL { #union }
 

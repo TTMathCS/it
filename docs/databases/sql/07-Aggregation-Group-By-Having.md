@@ -17,7 +17,7 @@ and the columns PostgreSQL refuses but SQLite lets through.*
     - why `1 / 4` is `0`, and how to get `0.25`
     - the rule for what may appear in SELECT, and why SQLite breaks it
 
-    **You need:** chapters 2 and 3, and the [sample database](sample-database.md). Chapter 6 (NULL) helps.
+    **You need:** [2. SELECT and WHERE](02-Select-Where-Order-By-Limit.md) and [3. the order a query runs in](03-The-Order-a-Query-Runs-In.md), and the [sample database](sample-database.md). [6. NULL](06-Null-and-Three-Valued-Logic.md) helps.
 
 ## 7.1 Many rows in, one row out { #aggregates }
 

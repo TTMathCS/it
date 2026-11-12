@@ -508,6 +508,11 @@ two columns, using `FILTER`.
     | Support | 1 | 2 |
     <!-- /result -->
 
+    `COUNT(*) FILTER (WHERE ...)` counts only the rows that pass the test, inside an ordinary `GROUP BY`. It is
+    the short PostgreSQL way of writing `SUM(CASE WHEN ... THEN 1 ELSE 0 END)`; SQLite supports it too (since
+    3.30).
+
+
 **27.4** On PostgreSQL, for every product category, return its single best-selling product by units, using
 `LATERAL`. Ignore products with no category.
 

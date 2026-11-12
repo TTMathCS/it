@@ -15,7 +15,7 @@ every data engineer is asked about: filling in missing days, and cohort retentio
     - a calendar of every day, joined to the data so empty days show as 0
     - cohorts and retention
 
-    **You need:** chapters 7, 8, 11 (recursive CTEs) and 14.
+    **You need:** [7. GROUP BY](07-Aggregation-Group-By-Having.md), [8. joins](08-Joins-Inner-Left-Right-Full-Cross.md), [11. CTEs](11-CTEs-and-Recursive-CTEs.md) and [14. LAG, LEAD, running totals](14-Window-Functions-Lag-Lead-Running-Totals.md).
 
 ## 16.1 How dates are stored { #storage }
 
@@ -97,7 +97,9 @@ text literals too, so the result is the same; in a real PostgreSQL date column t
     | 120 | 2026-04-05 | 2026 | 4 | 5 | 0 | 2026-04 |
     <!-- /result -->
 
-`strftime` returns text, so cast it when you need a number. Both number the days of the week from 0 = Sunday here
+`EXTRACT(part FROM d)` takes one part out of a date: `YEAR`, `MONTH`, `DAY`, or `DOW`, the day of the week. `to_char(d,
+'YYYY-MM')` formats a date as text in the pattern you give. `strftime` returns text, so cast it when you need a
+number. Both number the days of the week from 0 = Sunday here
 (PostgreSQL's `ISODOW` gives 1 = Monday to 7 = Sunday). In PostgreSQL 14 and later, `EXTRACT` returns a `numeric`;
 cast to `INTEGER` if a test compares types strictly.
 
@@ -517,6 +519,11 @@ choice; the answer gives both.
         | 2 | 2 |
         | 5 | 1 |
         <!-- /result -->
+
+    Both versions take the day of the week out of the date as a number (0 = Sunday): `EXTRACT(DOW FROM d)` on
+    PostgreSQL, `strftime('%w', d)` on SQLite, which returns text and so is cast to a number. `GROUP BY 1` means
+    "group by the first column of the SELECT".
+
 
 **16.2** For each customer, the number of days from signing up to their first order. Customers without orders are
 left out. (PostgreSQL.)

@@ -587,6 +587,11 @@ answer give the same rows on both databases.
     | Support | Ella Novak; Kwame Mensah; Leo Park |
     <!-- /result -->
 
+    `STRING_AGG(name, '; ' ORDER BY name)` is an aggregate: like `SUM` adds numbers, it joins the group's texts
+    into one, with `'; '` between them, in the order given. Without its own `ORDER BY`, the names come in any
+    order.
+
+
 **5.5** What does each database return for `SELECT COUNT(*) FROM products WHERE name LIKE 'office%'`, and why? Write a
 version that returns 1 on both.
 

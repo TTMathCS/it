@@ -16,7 +16,7 @@ and SQLite 3.53, and most answers also show the wrong query people usually write
       list price. Most questions here touch at least one of them, as test data does.
     - Where an answer depends on the database, it is given for PostgreSQL and SQLite in tabs.
 
-    **You need:** chapters 7 to 16. Each answer names the chapter to go back to if it surprised you.
+    **You need:** chapters 7 to 16, from [7. GROUP BY](07-Aggregation-Group-By-Having.md) to [16. dates](16-Dates-and-Time-Series.md). Each answer names the chapter to go back to if it surprised you.
 
 ## Questions { #questions }
 

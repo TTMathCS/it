@@ -15,7 +15,7 @@ walks an org chart of any depth.*
     - how to stop a recursive query running forever
     - what a CTE can't do
 
-    **You need:** chapters 7, 8 and 10.
+    **You need:** [7. GROUP BY](07-Aggregation-Group-By-Having.md), [8. joins](08-Joins-Inner-Left-Right-Full-Cross.md) and [10. subqueries](10-Subqueries.md).
 
 ## 11.1 WITH: name a step { #with }
 
@@ -426,6 +426,11 @@ one decimal, largest first. The gift card's missing category should show as `non
     | none | 50.00 | 5.0 |
     <!-- /result -->
 
+    Each `WITH` step does one job: `shipped` makes one row per shipped order line with its category,
+    `by_category` adds them up per category, and the final query divides each by the grand total from a scalar
+    subquery. Each step can be run on its own to check it.
+
+
 **11.2** The numbers 1 to 12 with their squares, using a recursive CTE.
 
 ??? success "Answer"
@@ -457,6 +462,11 @@ one decimal, largest first. The gift card's missing category should show as `non
     | 11 | 121 |
     | 12 | 144 |
     <!-- /result -->
+
+    A **recursive CTE** has two parts joined by `UNION ALL`: the start (`SELECT 1`) and the step (`SELECT i + 1
+    FROM n`), which runs again on the rows it just made until its `WHERE i < 12` stops it. The same shape lists
+    every date in a range or walks a management chain.
+
 
 **11.3** For every employee, the number of people below them at any depth (not just direct reports). Show only
 those with at least one.

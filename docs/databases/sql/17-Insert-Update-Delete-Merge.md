@@ -17,7 +17,7 @@ on both, and the page says plainly which database supports which.*
     - SQLite's `INSERT OR REPLACE`, and the columns it quietly wipes
     - the habits that stop a bad `UPDATE` from reaching every row
 
-    **You need:** chapters 1 to 11. Every example below runs inside a transaction that is rolled back afterwards, so
+    **You need:** chapters 1 to 11, from [1. tables and keys](01-Tables-Rows-and-Keys.md) to [11. CTEs](11-CTEs-and-Recursive-CTEs.md). Every example below runs inside a transaction that is rolled back afterwards, so
     the shop is unchanged for the next one; most end with a `SELECT` that shows the rows afterwards.
 
 **Which database supports what** (all run for this page, PostgreSQL 16 and SQLite 3.53):

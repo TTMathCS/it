@@ -17,7 +17,7 @@ ran on PostgreSQL 16 and SQLite 3.53, the two SQL dialects Codility offers on it
       set](../../interview/codility/sql-practice.md); do both. If a task stumps you, [Which technique does this
       wording ask for?](which-technique.md) maps its wording to a chapter.
 
-    **You need:** chapters 1 to 16. [Practice set A](30-Practice-Set-A.md) is the easier warm-up.
+    **You need:** chapters 1 to 16, from [1. tables and keys](01-Tables-Rows-and-Keys.md) to [16. dates](16-Dates-and-Time-Series.md). [Practice set A](30-Practice-Set-A.md) is the easier warm-up.
 
 ## Questions { #questions }
 

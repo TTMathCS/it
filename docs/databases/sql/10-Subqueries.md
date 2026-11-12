@@ -16,7 +16,7 @@ one), and one that returns no rows at all.*
     - what happens when a "one value" subquery returns two rows
     - when to use a subquery, a join, or a CTE
 
-    **You need:** chapters 7 and 9.
+    **You need:** [7. GROUP BY](07-Aggregation-Group-By-Having.md) and [9. self, semi and anti joins](09-Self-Semi-and-Anti-Joins.md).
 
 ## 10.1 One value: scalar subqueries { #scalar }
 
@@ -433,6 +433,11 @@ have a customer. One decimal.
     | 8 | 1 | 5.3 |
     | 10 | 1 | 5.3 |
     <!-- /result -->
+
+    The **scalar subquery** `(SELECT COUNT(*) FROM orders WHERE customer_id IS NOT NULL)` gives one number, the
+    total, which every group's count is divided by. `100.0` (not `100`) makes the division a decimal one; with
+    whole numbers it would round down to 0.
+
 
 **10.6** The department with the highest total payroll. Show it with its payroll; if two departments tie, show both.
 

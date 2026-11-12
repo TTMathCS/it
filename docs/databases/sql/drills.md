@@ -14,7 +14,15 @@ minutes each. If one takes longer, read the chapter named under the group's head
 
 ## A. Filters and NULL { #filters }
 
-Chapters [2](02-Select-Where-Order-By-Limit.md) and [6](06-Null-and-Three-Valued-Logic.md).
+!!! info "The tools in this group"
+    - `WHERE`: keeps only the rows that pass a test.
+    - `BETWEEN a AND b`: a range, **both ends included**. `IN ('a', 'b')`: one of a list.
+    - `IS NULL` / `IS NOT NULL`: the only way to find a missing value (NULL); `= NULL` is never true.
+    - `COALESCE(x, 'text')`: shows a stand-in when `x` is missing.
+    - `ORDER BY ... LIMIT n`: sort, then keep the first `n` rows; add a second sort column to break ties.
+
+    Learn it fully: [Chapter 2: SELECT, WHERE, ORDER BY, LIMIT](02-Select-Where-Order-By-Limit.md) and
+    [Chapter 6: NULL and three-valued logic](06-Null-and-Three-Valued-Logic.md).
 
 **D.1** Products that cost between 10 and 30, both included. Return `name`, `price`, cheapest first, then by name.
 
@@ -61,6 +69,9 @@ Chapters [2](02-Select-Where-Order-By-Limit.md) and [6](06-Null-and-Three-Valued
     | 5 | eli@example.com | *NULL* |
     | 8 | *NULL* | Osaka |
     <!-- /result -->
+
+    `IS NULL` is the only test that finds a missing value: `email = NULL` would return no rows at all. `OR`
+    keeps a row when either side is true.
 
 **D.3** Customers who are **not** in Toronto, including the one whose city is unknown. Return `customer_id`, `city`,
 sorted by `customer_id`.
@@ -112,6 +123,9 @@ sorted by `customer_id`.
     | Leo Park | *NULL* |
     <!-- /result -->
 
+    A NULL salary does not pass `salary < 60000` (comparing with NULL gives *unknown*, not true), so it needs
+    its own `salary IS NULL` test. Without it, the employee with no salary quietly disappears.
+
 **D.5** Each customer's email, or the text `'(none)'` when it is missing. Return `name`, `email_shown`, sorted by
 `customer_id`.
 
@@ -140,6 +154,9 @@ sorted by `customer_id`.
     | Ana Silva | ana.silva@example.com |
     <!-- /result -->
 
+    `COALESCE(a, b)` returns the first value that is not NULL: the email when there is one, otherwise
+    `'(none)'`. Reach for it whenever a task says "show ... instead of a missing value".
+
 **D.6** The three most expensive products. If several share the third price, return only three rows, the ones
 first by name. Return `name`, `price`.
 
@@ -167,7 +184,15 @@ first by name. Return `name`, `price`.
 
 ## B. GROUP BY and HAVING { #grouping }
 
-Chapter [7](07-Aggregation-Group-By-Having.md).
+!!! info "The tools in this group"
+    - `GROUP BY col`: folds the rows into **one row per value** of `col` (per status, per customer).
+    - `COUNT(*)` counts rows; `COUNT(col)` counts rows where `col` is not NULL; `COUNT(DISTINCT col)` counts
+      different values.
+    - `SUM`, `AVG`, `MIN`, `MAX`: total, average, smallest, largest of each group (NULLs are skipped).
+    - `HAVING`: keeps groups **after** counting (`HAVING COUNT(*) >= 3`). `WHERE` keeps rows **before** grouping
+      and can't use `COUNT` or `SUM`.
+
+    Learn it fully: [Chapter 7: Aggregation, GROUP BY and HAVING](07-Aggregation-Group-By-Having.md).
 
 **D.7** The number of orders in each status. Return `status`, `orders`, most orders first.
 
@@ -189,6 +214,10 @@ Chapter [7](07-Aggregation-Group-By-Having.md).
     | cancelled | 2 |
     | pending | 2 |
     <!-- /result -->
+
+    `GROUP BY status` makes one row per status and `COUNT(*)` counts the orders in each. `ORDER BY orders DESC`
+    may use the name `orders` because `ORDER BY` runs after `SELECT`; `status` breaks a tie between two equal
+    counts.
 
 **D.8** For each category, the number of products, the cheapest and the dearest price. Products with no category
 form their own row. Return `category`, `products`, `cheapest`, `dearest`, sorted by `category` with the missing one
@@ -214,6 +243,10 @@ last.
     | *NULL* | 1 | 25.00 | 25.00 |
     <!-- /result -->
 
+    `GROUP BY category` puts every product with no category into one group whose `category` is NULL. `NULLS
+    LAST` puts that group at the end on both databases: PostgreSQL already does so when sorting up, SQLite puts
+    NULLs first unless told.
+
 **D.9** Customers with **three or more** orders. Return `customer_id`, `orders`, sorted by `customer_id`.
 
 ??? success "Answer"
@@ -235,6 +268,9 @@ last.
     | 1 | 5 |
     | 2 | 3 |
     <!-- /result -->
+
+    `HAVING` keeps groups **after** counting; a test on `COUNT(*)` can't go in `WHERE`, which runs before the
+    groups exist. `WHERE customer_id IS NOT NULL` leaves out the guest order, which has no customer.
 
 **D.10** The value of each order (sum of quantity × unit price), for orders worth more than 100. Return `order_id`,
 `value`, highest value first.
@@ -258,6 +294,9 @@ last.
     | 102 | 149.00 |
     | 120 | 139.00 |
     <!-- /result -->
+
+    `GROUP BY order_id` adds up the lines of each order, then `HAVING` keeps the orders above 100. The sum is
+    written again in `HAVING`: PostgreSQL does not let `HAVING` use the name `value` given in `SELECT`.
 
 **D.11** For each department: the number of employees, how many have a known salary, and the average known salary
 rounded to a whole number. Return `department`, `people`, `with_salary`, `avg_salary`, sorted by `department`.
@@ -318,7 +357,18 @@ and `customers`, sorted by `month`. Guest orders do not count.
 
 ## C. Joins { #joins }
 
-Chapters [8](08-Joins-Inner-Left-Right-Full-Cross.md) and [9](09-Self-Semi-and-Anti-Joins.md).
+!!! info "The tools in this group"
+    - `JOIN ... ON` (inner join): pairs rows of two tables that match; a row with no partner disappears.
+    - `LEFT JOIN`: keeps every row of the first table; the second table's columns are NULL where nothing matches.
+      Use it for "including those with none".
+    - **Self join**: one table joined to itself under two names, such as an employee and their manager.
+    - **Anti join**: rows with **no** match, written `NOT EXISTS (...)` or `LEFT JOIN ... WHERE right.key IS NULL`.
+    - **Semi join**: rows with **at least one** match, each kept once: `EXISTS (...)`.
+    - **Fan-out**: joining to a table with several matching rows repeats the left row once per match, so sums and
+      counts grow. Count or add up first, then join.
+
+    Learn it fully: [Chapter 8: Joins](08-Joins-Inner-Left-Right-Full-Cross.md) and
+    [Chapter 9: Self, semi and anti joins](09-Self-Semi-and-Anti-Joins.md).
 
 **D.13** Every order with its customer's name; the guest order shows `NULL`. Return `order_id`, `name`, sorted by
 `order_id`, for orders placed in February 2026.
@@ -345,6 +395,10 @@ Chapters [8](08-Joins-Inner-Left-Right-Full-Cross.md) and [9](09-Self-Semi-and-A
     | 110 | Ana Silva |
     | 111 | Gus Novak |
     <!-- /result -->
+
+    `LEFT JOIN` keeps every order even when no customer matches: the guest order's `customer_id` is NULL, so it
+    has no partner and `name` comes back NULL. A plain `JOIN` would drop that order. The date test is on the
+    left table (`orders`), so it is safe in `WHERE`.
 
 **D.14** Every customer with their number of orders, **including customers with none** (0). Return `name`,
 `orders`, sorted by `customer_id`.
@@ -398,6 +452,10 @@ Chapters [8](08-Joins-Inner-Left-Right-Full-Cross.md) and [9](09-Self-Semi-and-A
     | --- | --- |
     | 11 | Bookend |
     <!-- /result -->
+
+    An **anti join**: `NOT EXISTS` keeps a product when the subquery finds no order line for it. `SELECT 1` is a
+    habit, since `EXISTS` only asks whether a row exists. `NOT IN` would also work here, but returns nothing if
+    the inner column ever holds a NULL.
 
 **D.16** Customers who never placed an order, written with `LEFT JOIN`. Return `customer_id`, `name`.
 
@@ -453,6 +511,9 @@ sorted by `employee`.
     | Zoe Martin | Omar Aziz |
     <!-- /result -->
 
+    A **self join**: the same table under two names, `e` for the employee and `m` for the manager, matched on
+    `m.employee_id = e.manager_id`. `LEFT JOIN` keeps the top manager, whose `manager_id` is NULL.
+
 **D.18** For each order item where the price paid is **different** from today's price: `order_id`, `product`,
 `unit_price`, `price_today`, sorted by `order_id`.
 
@@ -474,6 +535,9 @@ sorted by `employee`.
     | 109 | Tea kettle | 30.00 | 32.00 |
     | 120 | Office chair | 139.00 | 149.00 |
     <!-- /result -->
+
+    The join puts each order line next to its product, so both prices are on one row; `<>` (not equal) keeps the
+    lines where they differ. This is how you find prices that changed after an order was placed.
 
 **D.19** Customers who bought something in **both** the Kitchen and the Office categories. Return `customer_id`,
 sorted.
@@ -531,7 +595,17 @@ smaller first) and `city`, sorted by `a`, `b`.
 
 ## D. Subqueries and CTEs { #subqueries }
 
-Chapters [10](10-Subqueries.md) and [11](11-CTEs-and-Recursive-CTEs.md).
+!!! info "The tools in this group"
+    - **Scalar subquery**: `(SELECT AVG(price) FROM products)`, a query that returns one value, used like a number.
+    - **Correlated subquery**: a subquery that uses the outer row (`WHERE d.department = e.department`), so it is
+      worked out again for each row. Clear, but slow on big tables.
+    - **CTE**: `WITH name AS (SELECT ...)` names a step; the next step reads it like a table. Use it to build an
+      answer in small steps you can run one by one.
+    - "The highest" and "the second highest": compare with `MAX(...)` from a subquery, so ties come back too.
+      `ORDER BY ... LIMIT 1 OFFSET 1` is the tempting wrong answer when the top value is shared.
+
+    Learn it fully: [Chapter 10: Subqueries](10-Subqueries.md) and
+    [Chapter 11: CTEs and recursive CTEs](11-CTEs-and-Recursive-CTEs.md).
 
 **D.21** Products that cost more than the average product. Return `name`, `price`, dearest first.
 
@@ -553,6 +627,9 @@ Chapters [10](10-Subqueries.md) and [11](11-CTEs-and-Recursive-CTEs.md).
     | Monitor stand | 32.00 |
     | Tea kettle | 32.00 |
     <!-- /result -->
+
+    The **scalar subquery** `(SELECT AVG(price) FROM products)` returns one number, and every product is
+    compared with it. `WHERE price > AVG(price)` is not allowed: an aggregate can't be used in `WHERE`.
 
 **D.22** Employees who earn more than the average of **their own department**. Return `name`, `department`,
 `salary`, sorted by `department`, then `salary` from highest.
@@ -634,7 +711,19 @@ query should return `NULL`.)
 
 ## E. Window functions { #windows }
 
-Chapters [13](13-Window-Functions-Ranking.md) and [14](14-Window-Functions-Lag-Lead-Running-Totals.md).
+!!! info "The tools in this group"
+    - A **window function** computes over related rows **and keeps every row**, unlike `GROUP BY`. It always has
+      `OVER (...)`.
+    - `PARTITION BY col` inside `OVER`: start again for each value of `col` (each customer, each department).
+    - `ORDER BY` inside `OVER`: the order in which rows are numbered or added up.
+    - `ROW_NUMBER()` gives 1, 2, 3 (ties get different numbers); `RANK()` gives 1, 2, 2, 4; `DENSE_RANK()` gives
+      1, 2, 2, 3. Keep "the first row of each group" with `ROW_NUMBER() ... = 1` in a CTE.
+    - `LAG(col)` / `LEAD(col)`: the value in the previous / next row. For "change since last time".
+    - `SUM(col) OVER (ORDER BY ...)`: a running total. `SUM(col) OVER (PARTITION BY g)`: the group's total on
+      every row, for "share of the group".
+
+    Learn it fully: [Chapter 13: Window functions, ranking](13-Window-Functions-Ranking.md) and
+    [Chapter 14: LAG, LEAD and running totals](14-Window-Functions-Lag-Lead-Running-Totals.md).
 
 **D.25** Number the orders of each customer from their first (1) to their latest. Return `customer_id`,
 `order_id`, `order_date`, `order_no`, sorted by `customer_id`, then `order_no`. Leave out the guest order.
@@ -674,6 +763,10 @@ Chapters [13](13-Window-Functions-Ranking.md) and [14](14-Window-Functions-Lag-L
     | 8 | 114 | 2026-03-09 | 1 |
     | 10 | 117 | 2026-03-25 | 1 |
     <!-- /result -->
+
+    `ROW_NUMBER()` numbers the rows 1, 2, 3 inside each `PARTITION BY customer_id` group, in the order given
+    inside `OVER`. `order_id` breaks the tie when a customer ordered twice on one day, so the numbers are the
+    same on every run.
 
 **D.26** Each customer's **first** order: `customer_id`, `order_id`, `order_date`, sorted by `customer_id`.
 
@@ -814,6 +907,10 @@ rank is skipped. Leave out unknown salaries. Return `department`, `name`, `salar
     | 2026-04-05 | 139.00 | 1005.00 |
     <!-- /result -->
 
+    Step 1 (the CTE) adds up each day's shipped value; step 2 adds a running total with `SUM(...) OVER (ORDER BY
+    order_date)`, which adds every row up to the current date. With one row per date, this gives the same result
+    as `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`.
+
 **D.30** Each product's price as a **percentage of its category's total** price, one decimal. Leave out the product
 with no category. Return `category`, `name`, `pct`, sorted by `category`, then `pct` from highest, then `name`.
 
@@ -848,7 +945,20 @@ with no category. Return `category`, `name`, `pct`, sorted by `category`, then `
 
 ## F. Dates and CASE { #dates }
 
-Chapters [4](04-Expressions-Case-Numbers-Dates-Cast.md) and [16](16-Dates-and-Time-Series.md). PostgreSQL.
+!!! info "The tools in this group (PostgreSQL)"
+    - `CASE WHEN ... THEN ... ELSE ... END`: if-then-else inside a query, for labels and bands.
+    - `SUM(CASE WHEN status = 'x' THEN 1 ELSE 0 END)`: counts only some rows. One per column turns rows into
+      columns (a **pivot**).
+    - `to_char(d, 'YYYY-MM')`, `date_trunc('month', d)`: a date's month, to group by month.
+    - `EXTRACT(ISODOW FROM d)`: the day of the week, 1 (Monday) to 7 (Sunday).
+    - `d2 - d1`: the number of days between two dates.
+    - `generate_series(a, b, step)`: makes a list of values, such as every month from January to April, so months
+      with no data still appear after a `LEFT JOIN`.
+    - **Gaps and islands**: finding runs of consecutive days. Subtracting a row number from each date gives the
+      same value for every day of one run, so the run can be grouped.
+
+    Learn it fully: [Chapter 4: CASE, numbers, dates, CAST](04-Expressions-Case-Numbers-Dates-Cast.md) and
+    [Chapter 16: Dates and time series](16-Dates-and-Time-Series.md).
 
 **D.31** Shipped order value per month of 2026, every month from January to April, showing 0 for a month with
 nothing. Return `month` (the first day of the month) and `value`, sorted by `month`.

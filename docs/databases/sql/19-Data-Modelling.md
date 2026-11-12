@@ -17,7 +17,7 @@ and runs the queries.*
     - slowly changing dimensions, types 1, 2 and 3, with a point-in-time join
     - snowflake schemas, data vault, one big table, and where the medallion layers fit
 
-    **You need:** chapters 1, 7, 8 and 18.
+    **You need:** [1. tables and keys](01-Tables-Rows-and-Keys.md), [7. GROUP BY](07-Aggregation-Group-By-Having.md), [8. joins](08-Joins-Inner-Left-Right-Full-Cross.md) and [18. CREATE TABLE](18-Create-Table-Types-Constraints.md).
 
 ## 19.1 Store each fact once { #anomalies }
 

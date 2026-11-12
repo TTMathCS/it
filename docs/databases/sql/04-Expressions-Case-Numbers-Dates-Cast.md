@@ -452,6 +452,10 @@ Adding days and taking out the year are written differently:
     | 120 | 2026-04-05 | 2026-04-12 | 2026 | 4 |
     <!-- /result -->
 
+What the pieces do: on PostgreSQL, `order_date + 7` adds 7 days and `EXTRACT(YEAR FROM d)` takes out one part of a
+date as a number. On SQLite, `date(d, '+7 days')` moves a date, and `strftime('%Y', d)` formats a date as text
+(`%Y` the year, `%m` the month, `%d` the day), which `CAST(... AS INTEGER)` turns into a number.
+
 A few more facts worth knowing now, all covered with examples in [chapter 16](16-Dates-and-Time-Series.md):
 
 - Today: `CURRENT_DATE` works on both; SQLite also has `date('now')`. Both give the date in UTC on SQLite, and in the
@@ -675,5 +679,10 @@ within each. Return `order_id`, `order_date`, `status`.
     | 117 | 2026-03-25 | shipped |
     | 113 | 2026-03-05 | cancelled |
     <!-- /result -->
+
+    `CASE` turns each status into a number (pending 1, shipped 2, cancelled 3), and the rows are sorted by that
+    number. This is how to sort in an order that is not alphabetical. `order_date` and then `order_id` sort the
+    rows within each status, so the order is the same on every run.
+
 
 **Next:** [5. Text functions and pattern matching](05-Text-Functions-and-Pattern-Matching.md).
