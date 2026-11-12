@@ -20,7 +20,8 @@ Courses by category. A category joins this list, and the menu, once its first co
 | [Kubernetes](../tech-by-math/kubernetes/index.md) | Fractions and rounding | The 2025 drafts, and how Kubernetes places pods and counts them |
 | [Computer networks](../tech-by-math/network/index.md) | Binary numbers and square roots | The 2025 drafts, and addresses, routes and throughput: masks, shortest paths, TCP |
 | [Dremio](../tech-by-math/dremio/index.md) | Powers and remainders | The 2025 drafts, and columns, files and reflections: Arrow, Iceberg, rollups |
-| [NiFi, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
+| [Apache NiFi](../tech-by-math/nifi/index.md) | Powers of 2 and rates | The 2025 drafts, and back pressure, retries and partitions: queues, back-off, consistent hashing |
+| [AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 

@@ -12,7 +12,7 @@
 | [Apache Kafka](kafka/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: the log, offsets and lag |
 | [Elasticsearch](elasticsearch/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: the inverted index, BM25 and shards |
 | [Dremio](dremio/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: columns, files and reflections |
-| [Apache NiFi](nifi/index.md) | The 2025 drafts (7 parts) |
+| [Apache NiFi](nifi/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: back pressure, retries and partitions |
 | [Kubernetes](kubernetes/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: the scheduler and the autoscaler |
 | [Git](git/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: hashes, the commit graph and merges |
 | [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: signatures and certificate chains |

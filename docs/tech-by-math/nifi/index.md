@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. Back pressure, retries and partitions](08-Back-Pressure-Retries-Partitions.md): when a queue is full, how long FlowFiles wait, the retry back-off and the consistent hash behind partition by attribute, worked by hand from NiFi's source code and checked by programs.
 
 # NiFi: Tech-by-Math
 

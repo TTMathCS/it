@@ -1,0 +1,26 @@
+penalize the FlowFile (base = penalty duration, 30 s)
+   retry  1: wait min(600 s, 2^0 x 30 s) =    30 s   total     30 s
+   retry  2: wait min(600 s, 2^1 x 30 s) =    60 s   total     90 s
+   retry  3: wait min(600 s, 2^2 x 30 s) =   120 s   total    210 s
+   retry  4: wait min(600 s, 2^3 x 30 s) =   240 s   total    450 s
+   retry  5: wait min(600 s, 2^4 x 30 s) =   480 s   total    930 s
+   retry  6: wait min(600 s, 2^5 x 30 s) =   600 s   total  1,530 s
+   retry  7: wait min(600 s, 2^6 x 30 s) =   600 s   total  2,130 s
+   retry  8: wait min(600 s, 2^7 x 30 s) =   600 s   total  2,730 s
+   retry  9: wait min(600 s, 2^8 x 30 s) =   600 s   total  3,330 s
+   retry 10: wait min(600 s, 2^9 x 30 s) =   600 s   total  3,930 s
+   all 10 retries: 3,930 s = 65.5 min, then the FlowFile goes to the relationship itself
+
+yield the processor (base = yield duration, 1 s)
+   retry  1: wait min(600 s, 2^0 x 1 s) =     1 s   total      1 s
+   retry  2: wait min(600 s, 2^1 x 1 s) =     2 s   total      3 s
+   retry  3: wait min(600 s, 2^2 x 1 s) =     4 s   total      7 s
+   retry  4: wait min(600 s, 2^3 x 1 s) =     8 s   total     15 s
+   retry  5: wait min(600 s, 2^4 x 1 s) =    16 s   total     31 s
+   retry  6: wait min(600 s, 2^5 x 1 s) =    32 s   total     63 s
+   retry  7: wait min(600 s, 2^6 x 1 s) =    64 s   total    127 s
+   retry  8: wait min(600 s, 2^7 x 1 s) =   128 s   total    255 s
+   retry  9: wait min(600 s, 2^8 x 1 s) =   256 s   total    511 s
+   retry 10: wait min(600 s, 2^9 x 1 s) =   512 s   total  1,023 s
+   all 10 retries: 1,023 s = 17.1 min, then the FlowFile goes to the relationship itself
+

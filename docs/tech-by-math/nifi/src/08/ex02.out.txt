@@ -1,0 +1,25 @@
+Part 1. Which threshold trips first?
+   1 GB in NiFi = 1024^3 = 1,073,741,824 bytes; / 10,000 FlowFiles = 107,374.2 bytes each
+   FlowFiles of     2,000 bytes: full at 10,000 FlowFiles (count threshold)
+   FlowFiles of   100,000 bytes: full at 10,000 FlowFiles (count threshold)
+   FlowFiles of   200,000 bytes: full at  5,369 FlowFiles (size threshold)
+   FlowFiles of   500,000 bytes: full at  2,148 FlowFiles (size threshold)
+   FlowFiles of 5,000,000 bytes: full at    215 FlowFiles (size threshold)
+
+Part 2. Source 300/s, processor 200/s, queue threshold 10,000 FlowFiles of 1 KB
+   t =   0 s: queue after the processor runs    100
+   t =   1 s: queue after the processor runs    200
+   t =  50 s: queue after the processor runs  5,100
+   t =  98 s: queue after the processor runs  9,900
+   t =  99 s: queue after the processor runs 10,000
+   t = 100 s: queue after the processor runs  9,800
+   t = 101 s: queue after the processor runs  9,900
+   t = 102 s: queue after the processor runs 10,000
+   t = 103 s: queue after the processor runs  9,800
+   t = 200 s: queue after the processor runs  9,900
+   t = 399 s: queue after the processor runs 10,000
+   first full at t = 97 s; by hand about 10,000 / (300 - 200) = 100 s (a little sooner here,
+   because each second the 300 arrive before the 200 leave)
+   highest queue 10,200: the limit is checked before a run, so one run can pass it
+   throughput once throttled: 200/s; wait of the last 20,000 FlowFiles: about 49.5 s
+   Little's law: wait = queue / throughput = 10,000 / 200 = 50 s

@@ -1,0 +1,35 @@
+Part 1. Guava's own test values for consistentHash
+   inputs 0..19, 100 buckets: [0, 55, 62, 8, 45, 59, 86, 97, 82, 59, 73, 37, 17, 56, 86, 21, 90, 37, 38, 83] ok
+   consistentHash(10863919174838991, 11) = 6  Guava test 6  ok
+   consistentHash(2016238256797177309, 11) = 3  Guava test 3  ok
+   consistentHash(1673758223894951030, 11) = 5  Guava test 5  ok
+   consistentHash(2, 100001) = 80343  Guava test 80343  ok
+   consistentHash(2201, 100001) = 22152  Guava test 22152  ok
+   consistentHash(2202, 100001) = 15018  Guava test 15018  ok
+
+Part 2. NiFi's own test: values '4', '1', '2' over three nodes
+   '4': hashCode = 52 (the character code), partition 0  NiFi test expects 0
+   '1': hashCode = 49 (the character code), partition 1  NiFi test expects 1
+   '2': hashCode = 50 (the character code), partition 2  NiFi test expects 2
+   no attribute: hash 0, partition 0
+
+Part 2b. The jumps for '1' (hash 49): each step draws r in (0, 1] and jumps to floor((candidate + 1) / r)
+   candidate 0: r = 0.604797, (candidate + 1) / r = 1.653 -> 1  (below 3: jump)
+   candidate 1: r = 0.526906, (candidate + 1) / r = 3.796 -> 3  (3 or more: stop at 1)
+   with 4 nodes the same key goes to 3
+   with 5 nodes the same key goes to 3
+   with 6 nodes the same key goes to 3
+   with 10 nodes the same key goes to 3
+
+Part 3. String.hashCode by hand
+   'ab': 3105
+   'east': 3105789
+   'Aa': 2112
+   'BB': 2112
+   'ab' = 97 x 31 + 98 = 3105;  'Aa' = 65 x 31 + 97 = 2112 = 66 x 31 + 66 = 'BB'
+
+Part 4. 30,000 customer ids over 3 nodes, then a 4th node joins
+   on 3 nodes: [9990, 9994, 10016]
+   on 4 nodes: [7500, 7492, 7495, 7513]
+   jump hash: 7,513 keys moved (25.0%), every one of them to the new node: True
+   plain hash mod n, for comparison: 22,501 keys moved (75.0%)

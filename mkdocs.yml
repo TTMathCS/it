@@ -153,6 +153,7 @@ nav:
               - tech-by-math/nifi/05-experiments/index.md
               - tech-by-math/nifi/06-references/index.md
               - tech-by-math/nifi/07-use-cases/index.md
+              - tech-by-math/nifi/08-Back-Pressure-Retries-Partitions.md
           - "Kubernetes":
               - tech-by-math/kubernetes/index.md
               - tech-by-math/kubernetes/01-core-model/index.md
