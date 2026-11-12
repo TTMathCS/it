@@ -5,6 +5,11 @@ the mix you heard about: **two SQL tasks and one Python task**. (Your own test m
 number of tasks, the time limit and the allowed languages are shown on the test's intro page linked in your
 invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-faq/).)
 
+!!! abstract "Your test: 3 tasks in 150 minutes"
+    Your invitation is for a **150-minute, 3-task** Codility test in Python or SQL. The page
+    **[Your test: 3 tasks in 150 minutes](your-test.md)** explains what the invitation means, how to split the
+    time, and has a **five-day plan** (Thursday 12 to Monday 16 November, about five hours a day, SQL first).
+
 !!! tip "Do this first"
     Take Codility's free **[demo test](https://app.codility.com/demo/take-sample-test/)**. It is the real
     editor, you can repeat it as often as you like, and it shows the language versions Codility uses.
@@ -13,6 +18,7 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 
 | Page | What it is | Time |
 |---|---|---|
+| [Your test: 3 tasks in 150 minutes](your-test.md) | What your invitation means, the time split, the five-day plan | 15 min |
 | [Cheat sheet](cheat-sheet.md) | The one page to read the day before and the hour before | 10 min |
 | [How a Codility test works](how-codility-works.md) | Timer, Run, hidden tests, scoring | 15 min |
 | [Plan for 2 SQL + 1 Python](test-day-plan.md) | Time split, reading a task, which SQL dialect to pick | 15 min |

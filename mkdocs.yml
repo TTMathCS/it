@@ -286,6 +286,7 @@ nav:
           - interview/index.md
           - "Codility test prep":
               - interview/codility/index.md
+              - interview/codility/your-test.md
               - interview/codility/cheat-sheet.md
               - interview/codility/how-codility-works.md
               - interview/codility/test-day-plan.md

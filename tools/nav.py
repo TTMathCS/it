@@ -47,7 +47,7 @@ COURSE_ORDER = {
 }
 # a course whose pages are not numbered lists them here, in menu order (after its index.md)
 ORDER = {
-    "codility": ["cheat-sheet.md", "how-codility-works.md", "test-day-plan.md", "mock-test-1.md", "sql-practice.md",
+    "codility": ["your-test.md", "cheat-sheet.md", "how-codility-works.md", "test-day-plan.md", "mock-test-1.md", "sql-practice.md",
                  "python-practice.md", "mock-test-2.md", "mock-test-3.md", "mock-test-4.md",
                  "common-mistakes.md", "codility-tasks.md"],
 }
