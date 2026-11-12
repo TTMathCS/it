@@ -39,7 +39,8 @@ that are tested most, in the order that builds fastest. Each step says what to b
 | 14 | [Which technique does this wording ask for?](which-technique.md) | Turn a task's words into a technique in a minute |
 | 15 | [30. Practice set A](30-Practice-Set-A.md) | Solve each in under 10 minutes before opening the answer |
 | 16 | [32. Mock tests](32-Mock-Tests.md) | Two questions in 40 minutes, timed |
-| 17 | [Analytics workshop](analytics-workshop.md) | Aggregate before joining, reconcile, deduplicate, sessions and a funnel |
+| 17 | [SQL drills](drills.md) | 36 short exercises with Check: filters, GROUP BY, joins, subqueries, windows, dates |
+| 18 | [Analytics workshop](analytics-workshop.md) | Aggregate before joining, reconcile, deduplicate, sessions and a funnel |
 
 If there is time left, [12. UNION and friends](12-Set-Operations.md), [22. Duplicates and incremental
 loads](22-Duplicates-and-Incremental-Loads.md) and [19. Data modelling](19-Data-Modelling.md) are the topics a data

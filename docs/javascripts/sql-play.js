@@ -180,6 +180,13 @@
     });
     return { cols: cols, rows: rows };
   }
+  // a one-column result inside an answer box stays as "| a |" text instead of a table
+  function pipeTable(text) {
+    var lines = text.split("\n").map(function (l) { return l.trim(); }).filter(function (l) { return /^\|.*\|$/.test(l); });
+    var cells = function (l) { return l.slice(1, -1).split("|").map(function (c) { return c.trim(); }); };
+    if (lines.length < 2) return null;
+    return { cols: cells(lines[0]), rows: lines.slice(2).map(cells).filter(function (r) { return r.some(function (v) { return v !== ""; }); }) };
+  }
   function tableAfter(node, stop) {
     // the first <table> (or "(no rows)") after node, before stop
     for (var n = node.nextElementSibling; n && n !== stop; n = n.nextElementSibling) {
@@ -472,14 +479,15 @@
       var b = null;
       for (var i = 0; i < marks.length; i++) if (d.contains(marks[i].div) && marks[i].pg) { b = marks[i]; break; }
       if (!b || b.div.parentNode !== d) return;
-      var t = null;
+      var t = null, piped = null;
       for (var n = b.div.nextElementSibling; n; n = n.nextElementSibling) {
         if (n.tagName === "TABLE") { t = n; break; }
+        if (n.tagName === "P" && /^\|/.test(n.textContent.trim())) { piped = pipeTable(n.textContent); break; }
         if (n.querySelector && n.querySelector("table")) { t = n.querySelector("table"); break; }
         if (n.querySelector && n.querySelector("pre code")) return;
       }
-      if (!t) return;
-      var exp = htmlTable(t);
+      if (!t && !piped) return;
+      var exp = piped || htmlTable(t);
       if (exp.rows.length === 1 && /no rows/.test(exp.rows[0].join(" "))) exp.rows = [];
       var path = location.pathname.replace(/\.html$/, "");
       var box = makeBox({ title: "Try it here", sub: "PostgreSQL in your browser, with the shop database",
