@@ -1,0 +1,53 @@
+Spark 4.2.0
+
+== 1. Spark's hash of customer_id and the partition for n = 3
++-----------+-----------+------+
+|customer_id|       hash|pmod_3|
++-----------+-----------+------+
+|          1| -559580957|     1|
+|          2| 1765031574|     0|
+|          3|-1823081949|     0|
+|          4| -397064898|     0|
+|          5| 1023896466|     0|
+|          6| -331964951|     1|
+|          7| 1079293707|     0|
+|          8| -132918897|     0|
++-----------+-----------+------+
+
+== 2. repartition(n, key) puts each row in pmod(hash(key), n)
+n = 3: rows = 20000, rows where actual <> predicted = 0
+n = 8: rows = 20000, rows where actual <> predicted = 0
+n = 200: rows = 20000, rows where actual <> predicted = 0
+
+== 3. Hot key: 300,000 orders, customer 7 has 240,000
+largest keys: [(7, 240060), (148, 60), (463, 60)]
+by customer_id, n = 8: rows per partition = [8100, 8040, 7500, 247560, 6720, 8040, 7320, 6720]; max = 247560, mean = 37500.0, max/mean = 6.60
+lower bound max(total/n, largest key) = max(37500, 240060) = 240060; measured max = 247560 (1.031 x the bound)
+
+== 4. Salting: key becomes (customer_id, salt), salt = order_id % k
+k =   2: rows per partition = [8280, 7200, 7380, 7320, 126780, 7320, 8520, 127200]; max = 127200, mean = 37500.0, max/mean = 3.39
+k =   4: rows per partition = [7980, 67920, 7200, 6660, 67320, 7740, 67620, 67560]; max = 67920, mean = 37500.0, max/mean = 1.81
+k =   8: rows per partition = [7680, 67920, 66720, 35880, 37380, 7920, 36780, 39720]; max = 67920, mean = 37500.0, max/mean = 1.81
+k =  16: rows per partition = [22590, 52560, 51780, 21570, 52110, 22560, 22050, 54780]; max = 54780, mean = 37500.0, max/mean = 1.46
+k =  32: rows per partition = [45345, 59730, 36900, 44385, 30165, 15060, 22245, 46170]; max = 59730, mean = 37500.0, max/mean = 1.59
+k =  64: rows per partition = [37738, 59933, 37044, 59699, 22630, 18729, 22362, 41865]; max = 59933, mean = 37500.0, max/mean = 1.60
+k = 256: rows per partition = [37613, 42117, 41165, 49578, 28085, 33716, 31971, 35755]; max = 49578, mean = 37500.0, max/mean = 1.32
+two-stage salted sum equals plain sum: True
+partial rows after stage 1: 2014 (keys: 1000 )
+
+== 5. NULL keys
++-----------+----------+------+
+|customer_id|      hash|pmod_8|
++-----------+----------+------+
+|       NULL|        42|     2|
+|       NULL|        42|     2|
+|          5|1023896466|     2|
++-----------+----------+------+
+
+promo_id with 40% NULL, n = 8: rows per partition = [8080, 7400, 47340, 7500, 7320, 7500, 7520, 7340]; max = 47340, mean = 12500.0, max/mean = 3.79
+
+== 6. Equal-sized keys through Spark's real hash, n = 200
+K =     2000: mean = 10, max = 20, min = 2, max/mean = 2.000
+K =    20000: mean = 100, max = 128, min = 63, max/mean = 1.280
+K =   200000: mean = 1000, max = 1067, min = 912, max/mean = 1.067
+K =  1000000: mean = 5000, max = 5176, min = 4813, max/mean = 1.035

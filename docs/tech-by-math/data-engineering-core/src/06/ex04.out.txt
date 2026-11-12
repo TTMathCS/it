@@ -1,0 +1,56 @@
+== E1: customers 1..6 into n = 4
+customer 1: hash -559580957, partition 3
+customer 2: hash 1765031574, partition 2
+customer 3: hash -1823081949, partition 3
+customer 4: hash -397064898, partition 2
+customer 5: hash 1023896466, partition 2
+customer 6: hash -331964951, partition 1
+loads [0, 10, 120, 170] mean 75.0 max/mean 2.27
+
+== E3: keys needed for max within 10% of mean, n = 200
+K/n >= 1059.7, K >= 211933
+
+== E4: hot key 600,000 of 2,000,000, n = 100, cold per partition 14,000
+k = 100: slice = 6000 rows, avg max slices (sim) = 4.2 (formula 4.0), worst partition ~ 39410 vs mean 20000
+k = 1000: slice = 600 rows, avg max slices (sim) = 18.8 (formula 19.6), worst partition ~ 25301 vs mean 20000
+k = 10000: slice = 60 rows, avg max slices (sim) = 125.9 (formula 130.3), worst partition ~ 21556 vs mean 20000
+
+== E8: hash of two columns
+(7, 0): spark -1747671608, by hand -1747671608, partition n=8: 0
+(7, 1): spark -290518582, by hand -290518582, partition n=8: 2
+(7, 2): spark 309369863, by hand 309369863, partition n=8: 7
+(7, 3): spark 1218244675, by hand 1218244675, partition n=8: 3
+
+== E8: partition(key, 200) by hand vs Spark for keys 1..1000
+agree: 1000 of 1000
+
+== E6: does Spark drop NULL keys before the shuffle?
+-- inner join
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Project [promo_id#6, order_id#5, code#8]
+   +- SortMergeJoin [promo_id#6], [promo_id#7], Inner
+      :- Sort [promo_id#6 ASC NULLS FIRST], false, 0
+      :  +- Exchange hashpartitioning(promo_id#6, 200), ENSURE_REQUIREMENTS, [plan_id=41]
+      :     +- Filter isnotnull(promo_id#6)
+      :        +- Scan ExistingRDD[order_id#5,promo_id#6]
+      +- Sort [promo_id#7 ASC NULLS FIRST], false, 0
+         +- Exchange hashpartitioning(promo_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=42]
+            +- Filter isnotnull(promo_id#7)
+               +- Scan ExistingRDD[promo_id#7,code#8]
+
+
+-- left join
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Project [promo_id#6, order_id#5, code#8]
+   +- SortMergeJoin [promo_id#6], [promo_id#7], LeftOuter
+      :- Sort [promo_id#6 ASC NULLS FIRST], false, 0
+      :  +- Exchange hashpartitioning(promo_id#6, 200), ENSURE_REQUIREMENTS, [plan_id=68]
+      :     +- Scan ExistingRDD[order_id#5,promo_id#6]
+      +- Sort [promo_id#7 ASC NULLS FIRST], false, 0
+         +- Exchange hashpartitioning(promo_id#7, 200), ENSURE_REQUIREMENTS, [plan_id=69]
+            +- Filter isnotnull(promo_id#7)
+               +- Scan ExistingRDD[promo_id#7,code#8]
+
+

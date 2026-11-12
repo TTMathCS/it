@@ -6,6 +6,12 @@ title: All courses
 
 Courses by category. A category joins this list, and the menu, once its first course is written.
 
+## Tech by Math
+
+| Course | From | To |
+| --- | --- | --- |
+| [The data engineering core](../tech-by-math/data-engineering-core/index.md) | Remainders, averages and sets | The math under joins, indexes, query plans, transactions, column files, Spark shuffles and Kafka (tutorials going up as they are checked) |
+
 ## Databases
 
 | Course | From | To |

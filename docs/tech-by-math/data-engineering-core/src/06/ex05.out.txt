@@ -1,0 +1,20 @@
+-- groupBy(customer_id).sum(amount)
+== Physical Plan ==
+*(2) HashAggregate(keys=[customer_id#2], functions=[sum(amount#3)])
++- Exchange hashpartitioning(customer_id#2, 8), ENSURE_REQUIREMENTS, [plan_id=17]
+   +- *(1) HashAggregate(keys=[customer_id#2], functions=[partial_sum(amount#3)])
+      +- *(1) Project [CASE WHEN NOT ((id#0L % 5) = 0) THEN 7 ELSE cast((((cast(id#0L as double) / 5.0) % 1000.0) + 1.0) as int) END AS customer_id#2, cast((((id#0L * 37) % 500) + 1) as double) AS amount#3]
+         +- *(1) Range (0, 300000, step=1, splits=4)
+
+
+input partitions (map tasks): 4
+rows entering the shuffle for customer 7: 4 | all partial rows: 4000 | input rows: 300000
+-- groupBy(customer_id).collect_list(amount)
+== Physical Plan ==
+ObjectHashAggregate(keys=[customer_id#2], functions=[collect_list(amount#3, 0, 0, true)])
++- Exchange hashpartitioning(customer_id#2, 8), ENSURE_REQUIREMENTS, [plan_id=165]
+   +- ObjectHashAggregate(keys=[customer_id#2], functions=[partial_collect_list(amount#3, 0, 0, true)])
+      +- *(1) Project [CASE WHEN NOT ((id#0L % 5) = 0) THEN 7 ELSE cast((((cast(id#0L as double) / 5.0) % 1000.0) + 1.0) as int) END AS customer_id#2, cast((((id#0L * 37) % 500) + 1) as double) AS amount#3]
+         +- *(1) Range (0, 300000, step=1, splits=4)
+
+

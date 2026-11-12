@@ -7,6 +7,7 @@ import os, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # (folder, menu name), in menu order. Planned 11 Nov 2026; a new category is one line here.
 CATEGORIES = [
+    ("tech-by-math", "Tech by Math"),
     ("databases", "Databases"),
     ("data-engineering", "Data engineering"),
     ("warehouses-bi", "Data warehouses and BI"),
@@ -25,6 +26,7 @@ COURSES = {
     "sql": "SQL",
     "databricks": "Databricks and the medallion model",
     "codility": "Codility test prep",
+    "data-engineering-core": "The data engineering core",
 }
 # a course whose pages are not numbered lists them here, in menu order (after its index.md)
 ORDER = {

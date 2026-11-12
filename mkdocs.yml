@@ -88,6 +88,11 @@ nav:
   # books: start
   - Books:
       - books/index.md
+      - "Tech by Math":
+          - tech-by-math/index.md
+          - "The data engineering core":
+              - tech-by-math/data-engineering-core/index.md
+              - tech-by-math/data-engineering-core/06-Shuffles-and-Skew.md
       - "Databases":
           - databases/index.md
           - "SQL":
