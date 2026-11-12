@@ -28,6 +28,10 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 | [Mock test 1](mock-test-1.md) | Timed rehearsal, 2 SQL + 1 Python | 80 min |
 | [SQL practice set](sql-practice.md) | 53 tasks by pattern, easy to hard | as long as you have |
 | [Python practice set](python-practice.md) | 52 tasks by technique, data wrangling and algorithms | as long as you have |
+| [SQL practice: set 3](sql-practice-set-3.md) | 8 more tasks, PostgreSQL and SQLite | as long as you have |
+| [PostgreSQL practice: account data](postgres-practice-bank.md) | 8 PostgreSQL tasks: DISTINCT ON, FILTER, date_trunc, generate_series | as long as you have |
+| [PostgreSQL practice: harder patterns](postgres-practice-harder.md) | 8 harder PostgreSQL tasks: streaks, percentiles, pivots, recursion | as long as you have |
+| [Python practice: set 3](python-practice-set-3.md) | 8 more data-wrangling tasks | as long as you have |
 | [Mock test 2](mock-test-2.md) | Timed rehearsal | 70 min |
 | [Mock test 3](mock-test-3.md) | Timed rehearsal, harder SQL | 75 min |
 | [Mock test 4](mock-test-4.md) | The last rehearsal | 75 min |
