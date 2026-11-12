@@ -1,0 +1,2 @@
+computed root tree id: d6c0913970589432f4ab74acf8b614dac9fda8cc
+git's root tree id:    d6c0913970589432f4ab74acf8b614dac9fda8cc  (ex01.out.txt, 'tree' line of the second commit)

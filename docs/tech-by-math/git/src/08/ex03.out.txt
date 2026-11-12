@@ -1,0 +1,85 @@
+Part 1. History: A - B - C - F on main, and B - D - E on feature
+   git log --graph --oneline --all:
+      * 81e7a9f F
+      * fef87f9 C
+      | * 6596867 E
+      | * bac419f D
+      |/  
+      * e881efc B
+      * a184a0f A
+   ancestors of main    (git rev-list main):    ['A', 'B', 'C', 'F']
+   ancestors of feature (git rev-list feature): ['A', 'B', 'D', 'E']
+   common ancestors: ['A', 'B']
+   git merge-base main feature: B
+   git rev-list main..feature (in feature, not in main): ['D', 'E']
+   git rev-list feature..main (in main, not in feature): ['C', 'F']
+   git rev-list --left-right --count main...feature: 2	2  (main ahead, feature ahead)
+
+Part 2. Three-way merge, line by line (git merge-file ours base theirs); changes two lines apart
+   line  base    ours    theirs 
+   1     red     red     red    
+   2     green   GREEN   green  
+   3     a       a       a      
+   4     b       b       b      
+   5     blue    blue    BLUE   
+   6     c       c       c      
+   7     d       d       d      
+   8     pink    PINK    PINK   
+   9     e       e       e      
+   10    f       f       f      
+   11    white   grey    silver 
+   result (exit code 1 = number of conflicts):
+      red
+      GREEN
+      a
+      b
+      BLUE
+      c
+      d
+      PINK
+      e
+      f
+      <<<<<<< ours
+      grey
+      =======
+      silver
+      >>>>>>> theirs
+
+Part 3. The same kind of edits on neighbouring lines
+   line  base    ours    theirs 
+   1     red     red     red    
+   2     green   GREEN   green  
+   3     blue    blue    BLUE   
+   4     black   black   black  
+   result (exit code 1 = number of conflicts):
+      red
+      <<<<<<< ours
+      GREEN
+      blue
+      =======
+      green
+      BLUE
+      >>>>>>> theirs
+      black
+
+Part 4. Exercise E6: changes one unchanged line apart
+   line  base    ours    theirs 
+   1     a       a       a      
+   2     b       B       b      
+   3     c       c       c      
+   4     d       d       D      
+   5     e       e       e      
+   6     f       f       f      
+   7     g       G       h      
+   result (exit code 1 = number of conflicts):
+      a
+      B
+      c
+      D
+      e
+      f
+      <<<<<<< ours
+      G
+      =======
+      h
+      >>>>>>> theirs

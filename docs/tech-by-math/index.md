@@ -14,7 +14,7 @@
 | [Dremio](dremio/index.md) | The 2025 drafts (7 parts) |
 | [Apache NiFi](nifi/index.md) | The 2025 drafts (7 parts) |
 | [Kubernetes](kubernetes/index.md) | The 2025 drafts (7 parts) |
-| [Git](git/index.md) | The 2025 drafts (7 parts) |
+| [Git](git/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: hashes, the commit graph and merges |
 | [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) |
 | [Computer networks](network/index.md) | The 2025 drafts (7 parts) |
 | [AI](ai/index.md) | The 2025 drafts (7 parts) |

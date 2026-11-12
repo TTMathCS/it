@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. Names from contents: hashes and the commit graph](08-Names-From-Contents.md): object ids, Merkle trees, short ids and the birthday count, branches as sets, the three-way merge, all run on real git.
 
 # Git: Tech-by-Math
 

@@ -169,6 +169,7 @@ nav:
               - tech-by-math/git/05-experiments/index.md
               - tech-by-math/git/06-references/index.md
               - tech-by-math/git/07-use-cases/index.md
+              - tech-by-math/git/08-Names-From-Contents.md
           - "PKI and certificates":
               - tech-by-math/pki/index.md
               - tech-by-math/pki/01-core-model/index.md

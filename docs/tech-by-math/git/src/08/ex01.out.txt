@@ -1,0 +1,29 @@
+Part 1. A blob's id is SHA-1 of 'blob <size>\0' followed by the bytes
+   b''         header 'blob 0'  formula e69de29bb2d1d6434b8b29ae775ad8c2e48c5391  git e69de29bb2d1d6434b8b29ae775ad8c2e48c5391  same
+   b'hello\n'  header 'blob 6'  formula ce013625030ba8dba906f756967f9e9ca394464a  git ce013625030ba8dba906f756967f9e9ca394464a  same
+   b'hello!\n' header 'blob 7'  formula 4effa19f4f75f846c3229b9dbdbad14eff362f32  git 4effa19f4f75f846c3229b9dbdbad14eff362f32  same
+   b'Hello\n'  header 'blob 6'  formula e965047ad7c57865823c7d992b1d046ea66edf78  git e965047ad7c57865823c7d992b1d046ea66edf78  same
+   in a SHA-256 repository, b'hello\n': formula 2cf8d83d9ee29543b34a87727421fdecb7e3f3a183d337639025de576db9ebb4
+                                              git 2cf8d83d9ee29543b34a87727421fdecb7e3f3a183d337639025de576db9ebb4
+
+Part 2. Change one byte deep in the tree: which object ids change?
+   commit                     cf1fd4b1dda3 -> 5593696f4a82   CHANGED
+   tree /                     1d408b8d34bc -> d6c091397058   CHANGED
+   tree /docs                 a59e1955b52e -> 269d5682f356   CHANGED
+   tree /docs/guide           7b2f24db034b -> 86a5bd2554a4   CHANGED
+   blob README                ea2ae6d3d7f8 -> ea2ae6d3d7f8   same
+   blob docs/prices.txt       e5551ac0db1e -> e5551ac0db1e   same
+   blob docs/guide/start.txt  a84c222b8d6b -> d664f07580a1   CHANGED
+
+   the root tree, as git stores it (git cat-file -p HEAD^{tree}):
+      100644 blob ea2ae6d3d7f82720f73a3ef28c653d220772a40e	README
+      040000 tree 269d5682f356e77b9b0bff0b7b8414a895b74be4	docs
+   the second commit (git cat-file -p HEAD):
+      tree d6c0913970589432f4ab74acf8b614dac9fda8cc
+      parent cf1fd4b1dda3aa28e634b40217d1935b1154b974
+      author Ada <ada@example.com> 1767268800 +0000
+      committer Ada <ada@example.com> 1767268800 +0000
+      
+      second
+   SHA-1 of 'commit 197\0' + those 197 bytes = 5593696f4a824fd4961ce4fe1ece7cf64f37ba6b
+   git rev-parse HEAD                     = 5593696f4a824fd4961ce4fe1ece7cf64f37ba6b
