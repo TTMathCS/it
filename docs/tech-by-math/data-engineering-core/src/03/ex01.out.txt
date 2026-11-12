@@ -1,0 +1,94 @@
+Part 1. What ANALYZE stored (pg_stats)
+   ('orders3', 'amount', 1000.0, True)
+   ('orders3', 'city_id', 1000.0, True)
+   ('orders3', 'country_id', 10.0, True)
+   ('orders3', 'order_id', -1.0, False)
+   ('orders3', 'province_id', 100.0, True)
+   ('promos3', 'city_id', -1.0, False)
+   ('returns3', 'city_id', 1000.0, True)
+   ('returns3', 'country_id', 10.0, True)
+   ('returns3', 'order_id', -1.0, False)
+   ('returns3', 'province_id', 100.0, True)
+   table sizes: [('orders3', 1000000), ('promos3', 1000), ('returns3', 333333)]
+
+Part 2. One filter
+  Seq Scan on orders3  (cost=0.00..18870.00 rows=994 width=20) (actual rows=1000 loops=1)
+    Filter: (city_id = 7)
+    Rows Removed by Filter: 999000
+  Execution Time: 55.169 ms
+
+Part 3. Two independent filters
+  Seq Scan on orders3  (cost=0.00..21370.00 rows=99 width=20) (actual rows=100 loops=1)
+    Filter: ((amount < 100) AND (city_id = 7))
+    Rows Removed by Filter: 999900
+  Execution Time: 62.415 ms
+
+Part 4. Three filters that are not independent
+  Seq Scan on orders3  (cost=0.00..23870.00 rows=1 width=20) (actual rows=1000 loops=1)
+    Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+    Rows Removed by Filter: 999000
+  Execution Time: 58.859 ms
+
+Part 5. The join, planned on those estimates
+  Aggregate  (cost=31559.34..31559.35 rows=1 width=8) (actual rows=1 loops=1)
+    ->  Nested Loop  (cost=0.00..31559.34 rows=1 width=0) (actual rows=333 loops=1)
+          Join Filter: (o.order_id = r.order_id)
+          Rows Removed by Join Filter: 332667
+          ->  Seq Scan on orders3 o  (cost=0.00..23870.00 rows=1 width=4) (actual rows=1000 loops=1)
+                Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+                Rows Removed by Filter: 999000
+          ->  Seq Scan on returns3 r  (cost=0.00..7689.33 rows=1 width=4) (actual rows=333 loops=1000)
+                Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+                Rows Removed by Filter: 333000
+  Execution Time: 18477.640 ms
+
+Part 6. Tell the planner the columns depend on each other, and plan again
+   dependencies found: {"2 => 3": 1.000000, "2 => 4": 1.000000, "3 => 4": 1.000000, "2, 3 => 4": 1.000000, "2, 4 => 3": 1.000000}
+  Seq Scan on orders3  (cost=0.00..23870.00 rows=995 width=20) (actual rows=1000 loops=1)
+    Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+    Rows Removed by Filter: 999000
+  Execution Time: 46.115 ms
+  Aggregate  (cost=31567.21..31567.22 rows=1 width=8) (actual rows=1 loops=1)
+    ->  Hash Join  (cost=7693.47..31567.21 rows=1 width=0) (actual rows=333 loops=1)
+          Hash Cond: (o.order_id = r.order_id)
+          ->  Seq Scan on orders3 o  (cost=0.00..23870.00 rows=995 width=4) (actual rows=1000 loops=1)
+                Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+                Rows Removed by Filter: 999000
+          ->  Hash  (cost=7689.33..7689.33 rows=331 width=4) (actual rows=333 loops=1)
+                Buckets: 1024  Batches: 1  Memory Usage: 20kB
+                ->  Seq Scan on returns3 r  (cost=0.00..7689.33 rows=331 width=4) (actual rows=333 loops=1)
+                      Filter: ((city_id = 7) AND (province_id = 0) AND (country_id = 0))
+                      Rows Removed by Filter: 333000
+  Execution Time: 68.344 ms
+
+Part 7. Join size estimates: |R| x |S| / max(V(R), V(S))
+  Aggregate  (cost=44062.65..44062.67 rows=1 width=8) (actual rows=1 loops=1)
+    ->  Hash Join  (cost=10658.99..43229.32 rows=333333 width=0) (actual rows=333333 loops=1)
+          Hash Cond: (o.order_id = r.order_id)
+          ->  Seq Scan on orders3 o  (cost=0.00..16370.00 rows=1000000 width=4) (actual rows=1000000 loops=1)
+          ->  Hash  (cost=5189.33..5189.33 rows=333333 width=4) (actual rows=333333 loops=1)
+                Buckets: 262144  Batches: 4  Memory Usage: 4976kB
+                ->  Seq Scan on returns3 r  (cost=0.00..5189.33 rows=333333 width=4) (actual rows=333333 loops=1)
+  Execution Time: 391.373 ms
+  Aggregate  (cost=32650.50..32650.51 rows=1 width=8) (actual rows=1 loops=1)
+    ->  Hash Join  (cost=30.50..30150.50 rows=1000000 width=0) (actual rows=0 loops=1)
+          Hash Cond: (o.city_id = p.city_id)
+          ->  Seq Scan on orders3 o  (cost=0.00..16370.00 rows=1000000 width=4) (actual rows=1000000 loops=1)
+          ->  Hash  (cost=18.00..18.00 rows=1000 width=4) (actual rows=1000 loops=1)
+                Buckets: 1024  Batches: 1  Memory Usage: 44kB
+                ->  Seq Scan on promos3 p  (cost=0.00..18.00 rows=1000 width=4) (actual rows=1000 loops=1)
+  Execution Time: 91.026 ms
+
+Part 8. Exercise E2: an IN list and a range
+  Seq Scan on orders3  (cost=0.00..21370.00 rows=990 width=20) (actual rows=1000 loops=1)
+    Filter: ((city_id = ANY ('{7,8}'::integer[])) AND (amount < 500))
+    Rows Removed by Filter: 999000
+  Execution Time: 91.024 ms
+
+Part 9. Settings that limit the join-order search
+   join_collapse_limit = 8
+   from_collapse_limit = 8
+   geqo_threshold = 12
+   default_statistics_target = 100
+   autovacuum_analyze_scale_factor = 0.1
+   autovacuum_analyze_threshold = 50
