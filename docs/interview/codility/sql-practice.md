@@ -1,6 +1,6 @@
 # SQL practice set
 
-Forty-five tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
+Fifty-three tasks in the style of a Codility SQL task, from easy to hard, grouped by the pattern they practise.
 Each gives the tables, example rows and the exact result your query should return.
 
 **How to practise:** write the query in PostgreSQL or SQLite (an online [SQLite fiddle](https://sqlite.org/fiddle/)
@@ -3918,8 +3918,9 @@ CREATE TABLE org (
 
 Eight more tasks on patterns a data engineer meets every day: replayed rows, change feeds, runs of equal values,
 sessions, a type 2 history, an "Other" row and a reconciliation. Each solution was run on PostgreSQL 16 and SQLite 3.54
-with the example shown and gave exactly the expected rows, columns and order on both. They have not had the random
-and large-table tests of tasks 1 to 37, so write your own edge cases.
+with the example shown and gave exactly the expected rows, columns and order on both, and on SQLite they also passed
+three hand-worked edge cases each (empty table, one row, ties or NULLs). They have not had the random and
+large-table tests of tasks 1 to 37, so write your own edge cases too.
 
 ### 38. Replayed rows in each batch
 
@@ -4419,5 +4420,547 @@ INSERT INTO warehouse_orders VALUES (1, 1, 10), (2, 1, 20), (3, 2, 30), (5, 3, 5
     1. Aggregate each side per day on its own, then build the list of all days with `UNION`.
     2. Two `LEFT JOIN`s from that list keep days found on only one side; this avoids `FULL JOIN`, which old SQLite lacks.
     3. Day 3 has the same count but a wrong amount, so checking counts alone would miss it.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+## G. More data-engineering patterns, second set
+
+Eight more: unpivot, overlapping bookings, percent of total, cohorts, login streaks, the table after a merge,
+month-over-month change with an empty month and a leaderboard with ties. Each solution was run on PostgreSQL 16 and SQLite 3.54
+with the example shown and gave exactly the expected rows, columns and order on both. They have not had the random
+and large-table tests of tasks 1 to 37, so write your own edge cases.
+
+### 46. Quarter columns back into rows
+
+**Topic:** unpivot (the reverse of a CASE pivot)
+
+A finance sheet was loaded as one row per region with a column per quarter. An empty cell (`NULL`) means the region did not report that quarter.
+
+Turn it into long form: one row per reported quarter with `region`, `quarter` (the text `'Q1'` to `'Q4'`) and `amount`. Leave out the `NULL` cells. Sort by `region`, then `quarter`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE sheet (
+    region TEXT PRIMARY KEY,
+    q1 INTEGER, q2 INTEGER, q3 INTEGER, q4 INTEGER
+);
+INSERT INTO sheet VALUES ('east', 120, 135, NULL, 150);
+INSERT INTO sheet VALUES ('north', 80, NULL, NULL, 95);
+INSERT INTO sheet VALUES ('south', 200, 180, 210, 190);
+INSERT INTO sheet VALUES ('west', NULL, 60, 75, 70);
+INSERT INTO sheet VALUES ('yukon', NULL, NULL, NULL, NULL);
+```
+
+**Your query should return**
+
+| region | quarter | amount |
+|---|---|---|
+| east | Q1 | 120 |
+| east | Q2 | 135 |
+| east | Q4 | 150 |
+| north | Q1 | 80 |
+| north | Q4 | 95 |
+| south | Q1 | 200 |
+| south | Q2 | 180 |
+| south | Q3 | 210 |
+| south | Q4 | 190 |
+| west | Q2 | 60 |
+| west | Q3 | 75 |
+| west | Q4 | 70 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    SELECT region, 'Q1' AS quarter, q1 AS amount FROM sheet WHERE q1 IS NOT NULL
+    UNION ALL
+    SELECT region, 'Q2', q2 FROM sheet WHERE q2 IS NOT NULL
+    UNION ALL
+    SELECT region, 'Q3', q3 FROM sheet WHERE q3 IS NOT NULL
+    UNION ALL
+    SELECT region, 'Q4', q4 FROM sheet WHERE q4 IS NOT NULL
+    ORDER BY region, quarter;
+    ```
+
+    **Why it works**
+
+    1. One `SELECT` per quarter column gives that column as rows, with the quarter name as a constant.
+    2. `UNION ALL` stacks them; plain `UNION` would also drop real duplicates and costs a sort.
+    3. The `WHERE ... IS NOT NULL` filters skip empty cells, so `yukon`, with no numbers at all, gives no rows.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 47. Busy blocks from overlapping bookings
+
+**Topic:** merging overlapping intervals
+
+Each row books a meeting room from hour `start_h` up to hour `end_h` (`end_h > start_h`). Bookings may overlap, sit inside each other or touch (one ends at the hour the next starts).
+
+Merge them into busy blocks: overlapping or touching bookings of the same room become one block. Return `room`, `block_start`, `block_end`. Sort by `room`, then `block_start`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE bookings (
+    booking_id INTEGER PRIMARY KEY,
+    room    TEXT NOT NULL,
+    start_h INTEGER NOT NULL,
+    end_h   INTEGER NOT NULL
+);
+INSERT INTO bookings VALUES (1, 'A', 9, 11), (2, 'A', 10, 12), (3, 'A', 12, 13);
+INSERT INTO bookings VALUES (4, 'A', 14, 15), (5, 'A', 14, 17), (6, 'A', 15, 16);
+INSERT INTO bookings VALUES (7, 'B', 8, 9), (8, 'B', 10, 11), (9, 'B', 10, 11);
+INSERT INTO bookings VALUES (10, 'B', 11, 12), (11, 'B', 13, 18), (12, 'B', 14, 15);
+INSERT INTO bookings VALUES (13, 'C', 9, 10);
+```
+
+**Your query should return**
+
+| room | block_start | block_end |
+|---|---|---|
+| A | 9 | 13 |
+| A | 14 | 17 |
+| B | 8 | 9 |
+| B | 10 | 12 |
+| B | 13 | 18 |
+| C | 9 | 10 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH p AS (
+        SELECT room, start_h, end_h,
+               MAX(end_h) OVER (PARTITION BY room ORDER BY start_h, end_h, booking_id
+                                ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS prev_end,
+               booking_id
+        FROM bookings
+    ),
+    g AS (
+        SELECT room, start_h, end_h,
+               SUM(CASE WHEN prev_end IS NULL OR start_h > prev_end THEN 1 ELSE 0 END)
+                   OVER (PARTITION BY room ORDER BY start_h, end_h, booking_id
+                         ROWS UNBOUNDED PRECEDING) AS grp
+        FROM p
+    )
+    SELECT room, MIN(start_h) AS block_start, MAX(end_h) AS block_end
+    FROM g
+    GROUP BY room, grp
+    ORDER BY room, block_start;
+    ```
+
+    **Why it works**
+
+    1. Sort each room by start; `prev_end` is the latest end of all earlier bookings (a running `MAX`, not just `LAG`).
+    2. A booking starts a new block only when it starts after `prev_end`; touching (`start_h = prev_end`) stays in the block.
+    3. A running `SUM` of those starts numbers the blocks, and `MIN`/`MAX` per block gives its edges; `LAG(end_h)` would break on room A's 14-17, which holds 15-16 inside it.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 48. Share of the category and of all sales
+
+**Topic:** percent of total at two levels
+
+Each row is one sale. For each product return `category`, `product`, `revenue` (its total), `pct_of_category` (its share of its category's revenue) and `pct_of_all` (its share of all revenue), both as percentages rounded to 1 decimal place. Sort by `category`, then `revenue` from highest to lowest, then `product`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE sales (
+    sale_id  INTEGER PRIMARY KEY,
+    category TEXT NOT NULL,
+    product  TEXT NOT NULL,
+    amount   INTEGER NOT NULL
+);
+INSERT INTO sales VALUES (1, 'drinks', 'coffee', 30), (2, 'drinks', 'coffee', 20);
+INSERT INTO sales VALUES (3, 'drinks', 'tea', 10), (4, 'drinks', 'tea', 15);
+INSERT INTO sales VALUES (5, 'drinks', 'juice', 15), (6, 'drinks', 'juice', 10);
+INSERT INTO sales VALUES (7, 'snacks', 'chips', 40), (8, 'snacks', 'nuts', 20);
+INSERT INTO sales VALUES (9, 'snacks', 'nuts', 10), (10, 'snacks', 'cookies', 10);
+INSERT INTO sales VALUES (11, 'bakery', 'bread', 20);
+```
+
+**Your query should return**
+
+| category | product | revenue | pct_of_category | pct_of_all |
+|---|---|---|---|---|
+| bakery | bread | 20 | 100.0 | 10.0 |
+| drinks | coffee | 50 | 50.0 | 25.0 |
+| drinks | juice | 25 | 25.0 | 12.5 |
+| drinks | tea | 25 | 25.0 | 12.5 |
+| snacks | chips | 40 | 50.0 | 20.0 |
+| snacks | nuts | 30 | 37.5 | 15.0 |
+| snacks | cookies | 10 | 12.5 | 5.0 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH p AS (
+        SELECT category, product, SUM(amount) AS revenue
+        FROM sales
+        GROUP BY category, product
+    )
+    SELECT category, product, revenue,
+           ROUND(100.0 * revenue / SUM(revenue) OVER (PARTITION BY category), 1) AS pct_of_category,
+           ROUND(100.0 * revenue / SUM(revenue) OVER (), 1) AS pct_of_all
+    FROM p
+    ORDER BY category, revenue DESC, product;
+    ```
+
+    **Why it works**
+
+    1. Group to one row per product first; the windows then run over those totals, not over single sales.
+    2. `SUM(revenue) OVER (PARTITION BY category)` is the category total and `SUM(revenue) OVER ()` the grand total, both on every row.
+    3. `100.0 *` forces decimal division; with whole numbers `25 / 100` would be 0.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 49. Cohort table by sign-up month
+
+**Topic:** cohort counts
+
+Months are numbered (1 = January 2026, 2 = February, ...). Each user signs up in one month; `activity` may hold several rows for the same user and month.
+
+For each sign-up month return `cohort`, `users` (how many signed up), and `m0`, `m1`, `m2`: how many of those users were active in the sign-up month, one month later and two months later. A cohort with nobody active shows 0. Sort by `cohort`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE users (
+    user_id      INTEGER PRIMARY KEY,
+    signup_month INTEGER NOT NULL
+);
+CREATE TABLE activity (
+    user_id INTEGER NOT NULL,
+    month   INTEGER NOT NULL
+);
+INSERT INTO users VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 2);
+INSERT INTO users VALUES (6, 2), (7, 2), (8, 3), (9, 3), (10, 3);
+INSERT INTO activity VALUES (1, 1), (1, 2), (1, 3), (2, 1), (2, 1), (2, 3);
+INSERT INTO activity VALUES (3, 2), (4, 4), (5, 2), (5, 3), (6, 2), (7, 4);
+INSERT INTO activity VALUES (8, 3), (8, 4), (9, 3);
+```
+
+**Your query should return**
+
+| cohort | users | m0 | m1 | m2 |
+|---|---|---|---|---|
+| 1 | 4 | 2 | 2 | 2 |
+| 2 | 3 | 2 | 1 | 1 |
+| 3 | 3 | 2 | 1 | 0 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    SELECT u.signup_month AS cohort,
+           COUNT(DISTINCT u.user_id) AS users,
+           COUNT(DISTINCT CASE WHEN a.month - u.signup_month = 0 THEN u.user_id END) AS m0,
+           COUNT(DISTINCT CASE WHEN a.month - u.signup_month = 1 THEN u.user_id END) AS m1,
+           COUNT(DISTINCT CASE WHEN a.month - u.signup_month = 2 THEN u.user_id END) AS m2
+    FROM users u
+    LEFT JOIN activity a ON a.user_id = u.user_id
+    GROUP BY u.signup_month
+    ORDER BY cohort;
+    ```
+
+    **Why it works**
+
+    1. The `LEFT JOIN` keeps users with no activity (user 10), so `users` counts the whole cohort.
+    2. `a.month - u.signup_month` is the age of each activity row; each `CASE` keeps only one age and gives `NULL` otherwise.
+    3. `COUNT(DISTINCT ...)` skips the `NULL`s and counts user 2 once in month 1 even though there are two rows.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 50. Longest login streak per user
+
+**Topic:** consecutive-day streaks
+
+`day` is a day number (day 5 comes right after day 4). A user may log in several times a day. A streak is a run of days in a row with at least one login each.
+
+For each user return `user_id`, `longest_streak` (its length in days) and `streak_start` (its first day; if two streaks share the longest length, the earlier one). Sort by `user_id`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE logins (
+    login_id INTEGER PRIMARY KEY,
+    user_id  INTEGER NOT NULL,
+    day      INTEGER NOT NULL
+);
+INSERT INTO logins VALUES (1, 1, 1), (2, 1, 2), (3, 1, 2), (4, 1, 3), (5, 1, 5), (6, 1, 6);
+INSERT INTO logins VALUES (7, 2, 2), (8, 2, 2), (9, 2, 3), (10, 2, 4), (11, 2, 5);
+INSERT INTO logins VALUES (12, 2, 9), (13, 2, 10), (14, 2, 11), (15, 2, 12);
+INSERT INTO logins VALUES (16, 3, 7);
+```
+
+**Your query should return**
+
+| user_id | longest_streak | streak_start |
+|---|---|---|
+| 1 | 3 | 1 |
+| 2 | 4 | 2 |
+| 3 | 1 | 7 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH d AS (
+        SELECT DISTINCT user_id, day FROM logins
+    ),
+    g AS (
+        SELECT user_id, day,
+               day - ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY day) AS grp
+        FROM d
+    ),
+    s AS (
+        SELECT user_id, MIN(day) AS start_day, COUNT(*) AS len
+        FROM g
+        GROUP BY user_id, grp
+    ),
+    r AS (
+        SELECT user_id, start_day, len,
+               ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY len DESC, start_day) AS rn
+        FROM s
+    )
+    SELECT user_id, len AS longest_streak, start_day AS streak_start
+    FROM r
+    WHERE rn = 1
+    ORDER BY user_id;
+    ```
+
+    **Why it works**
+
+    1. `DISTINCT` first: without it the two logins on one day would break the day-minus-row-number trick.
+    2. Within a run of days in a row, `day - ROW_NUMBER()` stays the same, so it labels each streak.
+    3. Count each streak, then `ROW_NUMBER` by length (longest first, earlier start on a tie) picks one per user.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 51. Customer table after a merge
+
+**Topic:** upsert result
+
+Last night's `staging` rows are merged into `customers` by `id`:
+
+- an id not in `customers` is inserted;
+- an id already there is replaced only if the staging row's `updated_at` is later (an equal or older one is ignored);
+- staging can hold several rows for one id: only its latest counts.
+
+Without changing the tables, return what `customers` looks like after the merge, with `id`, `email`, `city`, `updated_at` and `action` (`'kept'`, `'updated'` or `'inserted'`). Sort by `id`. `updated_at` is never the same twice for one id inside `staging`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE customers (
+    id         INTEGER PRIMARY KEY,
+    email      TEXT NOT NULL,
+    city       TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+CREATE TABLE staging (
+    id         INTEGER NOT NULL,
+    email      TEXT NOT NULL,
+    city       TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+INSERT INTO customers VALUES (1, 'ann@old.test', 'Halifax', 10), (2, 'bo@old.test', 'Ottawa', 10);
+INSERT INTO customers VALUES (3, 'cy@old.test', 'Regina', 12), (4, 'di@old.test', 'Victoria', 8);
+INSERT INTO staging VALUES (1, 'ann@new.test', 'Halifax', 10);
+INSERT INTO staging VALUES (2, 'bo@new.test', 'Ottawa', 15);
+INSERT INTO staging VALUES (3, 'cy@new.test', 'Regina', 11);
+INSERT INTO staging VALUES (4, 'di@old.test', 'Toronto', 9), (4, 'di@old.test', 'Montreal', 14);
+INSERT INTO staging VALUES (5, 'ed@new.test', 'Calgary', 13), (5, 'ed@new.test', 'Edmonton', 16);
+INSERT INTO staging VALUES (6, 'fay@new.test', 'Quebec', 7);
+```
+
+**Your query should return**
+
+| id | email | city | updated_at | action |
+|---|---|---|---|---|
+| 1 | ann@old.test | Halifax | 10 | kept |
+| 2 | bo@new.test | Ottawa | 15 | updated |
+| 3 | cy@old.test | Regina | 12 | kept |
+| 4 | di@old.test | Montreal | 14 | updated |
+| 5 | ed@new.test | Edmonton | 16 | inserted |
+| 6 | fay@new.test | Quebec | 7 | inserted |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH r AS (
+        SELECT id, email, city, updated_at,
+               ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rn
+        FROM staging
+    ),
+    s AS (
+        SELECT id, email, city, updated_at FROM r WHERE rn = 1
+    )
+    SELECT c.id,
+           CASE WHEN s.updated_at > c.updated_at THEN s.email ELSE c.email END AS email,
+           CASE WHEN s.updated_at > c.updated_at THEN s.city ELSE c.city END AS city,
+           CASE WHEN s.updated_at > c.updated_at THEN s.updated_at ELSE c.updated_at END AS updated_at,
+           CASE WHEN s.updated_at > c.updated_at THEN 'updated' ELSE 'kept' END AS action
+    FROM customers c
+    LEFT JOIN s ON s.id = c.id
+    UNION ALL
+    SELECT s.id, s.email, s.city, s.updated_at, 'inserted'
+    FROM s
+    WHERE NOT EXISTS (SELECT 1 FROM customers c WHERE c.id = s.id)
+    ORDER BY id;
+    ```
+
+    **Why it works**
+
+    1. Keep only the latest staging row per id (`ROW_NUMBER` newest first), so id 4 uses Montreal and id 5 Edmonton.
+    2. The `LEFT JOIN` part covers every existing customer: a later staging row wins, otherwise (no row, equal or older) the old row stays; a `NULL` compare is not true, so no match means kept.
+    3. The `NOT EXISTS` part adds the new ids; `UNION ALL` of both halves is what a `MERGE` or `INSERT ... ON CONFLICT DO UPDATE` would leave.
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 52. Month-over-month change with empty months
+
+**Topic:** month-over-month change with missing months
+
+`orders` keeps `year` and `month` as numbers. Some months have no orders at all.
+
+Return one row for every calendar month from the first month with an order to the last: `year`, `month`, `revenue` (0 for a month with no orders) and `change` (revenue minus the previous calendar month's revenue; `NULL` for the first month). Sort by `year`, then `month`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY,
+    year     INTEGER NOT NULL,
+    month    INTEGER NOT NULL,
+    amount   INTEGER NOT NULL
+);
+INSERT INTO orders VALUES (1, 2025, 10, 100), (2, 2025, 10, 50), (3, 2025, 11, 120);
+INSERT INTO orders VALUES (4, 2026, 1, 80), (5, 2026, 1, 40), (6, 2026, 1, 60);
+INSERT INTO orders VALUES (7, 2026, 3, 90), (8, 2026, 4, 30), (9, 2026, 4, 70), (10, 2026, 4, 100);
+```
+
+**Your query should return**
+
+| year | month | revenue | change |
+|---|---|---|---|
+| 2025 | 10 | 150 | |
+| 2025 | 11 | 120 | -30 |
+| 2025 | 12 | 0 | -120 |
+| 2026 | 1 | 180 | 180 |
+| 2026 | 2 | 0 | -180 |
+| 2026 | 3 | 90 | 90 |
+| 2026 | 4 | 200 | 110 |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    WITH RECURSIVE b AS (
+        SELECT MIN(year * 12 + month - 1) AS lo, MAX(year * 12 + month - 1) AS hi
+        FROM orders
+    ),
+    m(k) AS (
+        SELECT lo FROM b
+        UNION ALL
+        SELECT k + 1 FROM m, b WHERE k < hi
+    ),
+    t AS (
+        SELECT year * 12 + month - 1 AS k, SUM(amount) AS revenue
+        FROM orders
+        GROUP BY year * 12 + month - 1
+    ),
+    f AS (
+        SELECT m.k, COALESCE(t.revenue, 0) AS revenue
+        FROM m
+        LEFT JOIN t ON t.k = m.k
+    )
+    SELECT k / 12 AS year, k % 12 + 1 AS month, revenue,
+           revenue - LAG(revenue) OVER (ORDER BY k) AS change
+    FROM f
+    ORDER BY k;
+    ```
+
+    **Why it works**
+
+    1. `year * 12 + month - 1` turns a month into one number, so the next month is always `+ 1`, even across New Year.
+    2. The recursive CTE lists every month from the first to the last; a `LEFT JOIN` with `COALESCE` gives empty months 0.
+    3. `LAG` now looks at the previous calendar month, not the previous month that had orders (which is what task 23 does).
+
+    **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.
+
+
+### 53. Leaderboard that shows the ties
+
+**Topic:** rank with ties shown
+
+For each player return `league`, `player`, `points`, `rank_pos` (Olympic rank: tied players share a place and the next place is skipped), `dense_pos` (tied players share a place, no place skipped) and `tied` (`'yes'` if another player in the same league has the same points, else `'no'`). Sort by `league`, then `points` from highest to lowest, then `player`.
+
+**Tables and example data**
+
+```sql
+CREATE TABLE results (
+    league TEXT NOT NULL,
+    player TEXT NOT NULL,
+    points INTEGER NOT NULL,
+    PRIMARY KEY (league, player)
+);
+INSERT INTO results VALUES ('A', 'ana', 90), ('A', 'ben', 85), ('A', 'cal', 85);
+INSERT INTO results VALUES ('A', 'dev', 80), ('A', 'eli', 80), ('A', 'fox', 70);
+INSERT INTO results VALUES ('B', 'gus', 60), ('B', 'hal', 60), ('B', 'ivy', 60);
+INSERT INTO results VALUES ('B', 'jon', 55), ('B', 'kai', 50);
+```
+
+**Your query should return**
+
+| league | player | points | rank_pos | dense_pos | tied |
+|---|---|---|---|---|---|
+| A | ana | 90 | 1 | 1 | no |
+| A | ben | 85 | 2 | 2 | yes |
+| A | cal | 85 | 2 | 2 | yes |
+| A | dev | 80 | 4 | 3 | yes |
+| A | eli | 80 | 4 | 3 | yes |
+| A | fox | 70 | 6 | 4 | no |
+| B | gus | 60 | 1 | 1 | yes |
+| B | hal | 60 | 1 | 1 | yes |
+| B | ivy | 60 | 1 | 1 | yes |
+| B | jon | 55 | 4 | 2 | no |
+| B | kai | 50 | 5 | 3 | no |
+
+??? success "Solution and explanation (open after you try)"
+
+    **Runs unchanged on PostgreSQL and SQLite**
+
+    ```sql
+    SELECT league, player, points,
+           RANK() OVER (PARTITION BY league ORDER BY points DESC) AS rank_pos,
+           DENSE_RANK() OVER (PARTITION BY league ORDER BY points DESC) AS dense_pos,
+           CASE WHEN COUNT(*) OVER (PARTITION BY league, points) > 1 THEN 'yes' ELSE 'no' END AS tied
+    FROM results
+    ORDER BY league, points DESC, player;
+    ```
+
+    **Why it works**
+
+    1. `RANK` gives a tie the same place and jumps after it (2, 2, 4); `DENSE_RANK` does not jump (2, 2, 3).
+    2. `COUNT(*) OVER (PARTITION BY league, points)` is how many players share this score, so above 1 means tied.
+    3. `ROW_NUMBER` would be wrong here: it gives tied players different places, decided by nothing in the data.
 
     **Tested on PostgreSQL 16 and SQLite 3.54** with the example above: exactly the expected rows, columns and order on both.

@@ -17,8 +17,8 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 | [How a Codility test works](how-codility-works.md) | Timer, Run, hidden tests, scoring | 15 min |
 | [Plan for 2 SQL + 1 Python](test-day-plan.md) | Time split, reading a task, which SQL dialect to pick | 15 min |
 | [Mock test 1](mock-test-1.md) | Timed rehearsal, 2 SQL + 1 Python | 80 min |
-| [SQL practice set](sql-practice.md) | 45 tasks by pattern, easy to hard | as long as you have |
-| [Python practice set](python-practice.md) | 44 tasks by technique, data wrangling and algorithms | as long as you have |
+| [SQL practice set](sql-practice.md) | 53 tasks by pattern, easy to hard | as long as you have |
+| [Python practice set](python-practice.md) | 52 tasks by technique, data wrangling and algorithms | as long as you have |
 | [Mock test 2](mock-test-2.md) | Timed rehearsal | 70 min |
 | [Mock test 3](mock-test-3.md) | Timed rehearsal, harder SQL | 75 min |
 | [Mock test 4](mock-test-4.md) | The last rehearsal | 75 min |

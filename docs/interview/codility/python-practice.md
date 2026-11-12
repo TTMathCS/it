@@ -1,6 +1,6 @@
 # Python practice set
 
-Forty-four tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
+Fifty-two tasks in the style of a Codility programming task: a function `solution(...)`, examples, and limits
 that tell you how fast the answer must be. They are grouped by the technique they practise. A data engineer's
 Python task is as likely to be **data wrangling** as a classic algorithm, so both are here: about half work with
 log lines, CSV text, records, joins, dates and nested data, and the rest are the algorithm patterns of Codility's
@@ -3335,7 +3335,8 @@ def solution(W, D):
 
 Eight more tasks of the kind a data engineer gets: cleaning and counting, merging sorted streams, a change feed with
 deletes, row checks, a rate limiter, the busiest hour, a quoted CSV line and a limited forward fill. Standard library
-only. Every solution passes its tests (shown inside) on Python 3.9 and 3.13.
+only. Every solution passes its tests (shown inside) on Python 3.9 and 3.13, and 500 random small inputs each,
+compared with a slow but obviously correct answer.
 
 ### 37. Clean e-mails, count per domain
 
@@ -3870,5 +3871,540 @@ def solution(A, K): -> list
     assert solution([4, None], 0) == [4, None]
     a = [1, None]
     assert solution(a, 1) == [1, 1] and a == [1, None]
+    print('task 8: ok')
+    ```
+
+## I. More data-engineering tasks, second set
+
+Eight more: top K per group, a left join of records, duplicate files, a running median, a schema check,
+packing messages into batches, dotted keys into a nested dict and events per UTC day. Standard library
+only. Every solution passes its tests (shown inside) on Python 3.9 and 3.13.
+
+### 45. Top K scores in each group
+
+**Level:** Easy · **Aim for:** 12 minutes
+
+`A` is a list of `(group, name, score)` tuples, for example game scores by country. For each group keep the `K`
+best rows: the highest score first, ties by name A to Z. Return a `dict` that maps each group to its list of
+`(name, score)` tuples. A group with fewer than `K` rows keeps all of them.
+
+```text
+def solution(A, K): -> dict of str -> list of (str, int)
+```
+
+**Examples**
+
+* `solution([('ca', 'ann', 5), ('ca', 'bob', 9), ('ca', 'cy', 7), ('us', 'dan', 1)], 2)` returns `{'ca': [('bob', 9), ('cy', 7)], 'us': [('dan', 1)]}`
+* `solution([('x', 'b', 3), ('x', 'a', 3), ('x', 'c', 3)], 2)` returns `{'x': [('a', 3), ('b', 3)]}`
+* `solution([], 3)` returns `{}`
+
+**Limits:** `len(A)` up to 1,000,000; `K` from 1 to 100.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    import heapq
+
+    def solution(A, K):
+        g = {}
+        for grp, name, sc in A:
+            g.setdefault(grp, []).append((name, sc))
+        return {k: heapq.nsmallest(K, v, key=lambda x: (-x[1], x[0])) for k, v in g.items()}
+    ```
+
+    `nsmallest` with the key `(-score, name)` gives "highest score, then name A to Z" in one go. `nlargest` with key
+    `(score, name)` looks the same but breaks ties Z to A. Sorting each whole group also works, but costs O(N log N)
+    where `nsmallest` keeps only a heap of K.
+
+    **Cost:** O(N log K) time, O(N) memory for the groups.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([('ca', 'ann', 5), ('ca', 'bob', 9), ('ca', 'cy', 7), ('us', 'dan', 1)], 2) == {'ca': [('bob', 9), ('cy', 7)], 'us': [('dan', 1)]}
+    assert solution([('x', 'b', 3), ('x', 'a', 3), ('x', 'c', 3)], 2) == {'x': [('a', 3), ('b', 3)]}
+    assert solution([], 3) == {}
+    assert solution([('g', 'a', -1)], 1) == {'g': [('a', -1)]}
+    for _ in range(300):
+        A = [(random.choice('pq'), random.choice('abcd'), random.randint(0, 4)) for _ in range(random.randint(0, 12))]
+        K = random.randint(1, 4)
+        want = {}
+        for grp in set(r[0] for r in A):
+            want[grp] = sorted([(n, s) for g2, n, s in A if g2 == grp], key=lambda x: (-x[1], x[0]))[:K]
+        assert solution(A, K) == want
+    print('task 1: ok')
+    ```
+
+
+### 46. Left join two lists of records
+
+**Level:** Easy · **Aim for:** 15 minutes
+
+`L` and `R` are lists of dicts (rows), and `key` is a column name that every row of both lists has. Return the left
+join, the way SQL does it: for each row of `L`, in order, one output row for every row of `R` with the same key
+value (in `R`'s order), made of the `L` row plus the `R` row's other columns. A row of `L` with no match gives one
+output row whose `R` columns are all `None`. The `R` columns are every column seen in `R` other than `key`. No
+column other than `key` is in both lists.
+
+```text
+def solution(L, R, key): -> list of dict
+```
+
+**Examples**
+
+* `solution([{'id': 1, 'n': 'a'}, {'id': 2, 'n': 'b'}], [{'id': 1, 'city': 'X'}], 'id')` returns `[{'id': 1, 'n': 'a', 'city': 'X'}, {'id': 2, 'n': 'b', 'city': None}]`
+* `solution([{'id': 1}], [{'id': 1, 'v': 5}, {'id': 1, 'v': 6}], 'id')` returns `[{'id': 1, 'v': 5}, {'id': 1, 'v': 6}]`
+* `solution([{'id': 3}], [], 'id')` returns `[{'id': 3}]`
+
+**Limits:** each list up to 200,000 rows.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(L, R, key):
+        idx = {}
+        cols = {}
+        for r in R:
+            idx.setdefault(r[key], []).append(r)
+            for c in r:
+                if c != key:
+                    cols[c] = None
+        out = []
+        for l in L:
+            for r in idx.get(l[key], [{}]):
+                row = dict(l)
+                row.update({c: r.get(c) for c in cols})
+                out.append(row)
+        return out
+    ```
+
+    Build an index of `R` by key once; then each `L` row is a dict lookup. The `[{}]` default is the "no match" row.
+    A row of `R` that lacks one of the `R` columns gets `None` for it too (`r.get(c)`), like SQL does. The slow way,
+    a loop over `R` inside a loop over `L`, is O(N·M) and times out at 200,000 each.
+
+    **Cost:** O(N + M + output size) time and memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([{'id': 1, 'n': 'a'}, {'id': 2, 'n': 'b'}], [{'id': 1, 'city': 'X'}], 'id') == [{'id': 1, 'n': 'a', 'city': 'X'}, {'id': 2, 'n': 'b', 'city': None}]
+    assert solution([{'id': 1}], [{'id': 1, 'v': 5}, {'id': 1, 'v': 6}], 'id') == [{'id': 1, 'v': 5}, {'id': 1, 'v': 6}]
+    assert solution([{'id': 3}], [], 'id') == [{'id': 3}]
+    assert solution([], [{'id': 1, 'v': 2}], 'id') == []
+    assert solution([{'k': 1}], [{'k': 1, 'a': 1}, {'k': 2, 'b': 2}], 'k') == [{'k': 1, 'a': 1, 'b': None}]
+    L0 = [{'id': 1, 'n': 'a'}]
+    solution(L0, [{'id': 1, 'v': 9}], 'id')
+    assert L0 == [{'id': 1, 'n': 'a'}]
+    for _ in range(300):
+        L = [{'id': random.randint(0, 4), 'n': i} for i in range(random.randint(0, 6))]
+        R = [{'id': random.randint(0, 4), 'v': i} for i in range(random.randint(0, 6))]
+        want = []
+        for l in L:
+            m = [r for r in R if r['id'] == l['id']]
+            if m:
+                want += [{'id': l['id'], 'n': l['n'], 'v': r['v']} for r in m]
+            else:
+                want.append(dict(l, v=None) if R else dict(l))
+        assert solution(L, R, 'id') == want
+    print('task 2: ok')
+    ```
+
+
+### 47. Find duplicate files by content
+
+**Level:** Easy · **Aim for:** 12 minutes
+
+A backup tool lists files as `(path, content)` tuples, the content as a string. Find the files whose content is
+exactly the same. Return a list of groups: each group is the sorted list of paths that share one content, only
+groups of 2 or more, and the groups sorted by their first path. Do not keep the contents in memory as keys; use a
+SHA-256 hash of each content (from `hashlib`) instead, as a real tool would for big files.
+
+```text
+def solution(F): -> list of list of str
+```
+
+**Examples**
+
+* `solution([('a.txt', 'hi'), ('b.txt', 'yo'), ('c.txt', 'hi')])` returns `[['a.txt', 'c.txt']]`
+* `solution([('z', ''), ('y', ''), ('x', 'q'), ('w', 'q')])` returns `[['w', 'x'], ['y', 'z']]`
+* `solution([('only', 'one')])` returns `[]`
+
+**Limits:** up to 100,000 files; contents up to 10,000 characters each.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    import hashlib
+
+    def solution(F):
+        g = {}
+        for path, text in F:
+            h = hashlib.sha256(text.encode()).hexdigest()
+            g.setdefault(h, []).append(path)
+        return sorted(sorted(v) for v in g.values() if len(v) > 1)
+    ```
+
+    `hashlib` works on bytes, so `.encode()` first; forgetting it is a `TypeError`. Two different contents with the
+    same SHA-256 have never been found, so the hash is safe as a key here. A real tool often groups by file size first
+    and hashes only sizes that repeat, which saves reading most files.
+
+    **Cost:** O(total characters) for the hashes, plus O(N log N) to sort the paths.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution([('a.txt', 'hi'), ('b.txt', 'yo'), ('c.txt', 'hi')]) == [['a.txt', 'c.txt']]
+    assert solution([('z', ''), ('y', ''), ('x', 'q'), ('w', 'q')]) == [['w', 'x'], ['y', 'z']]
+    assert solution([('only', 'one')]) == []
+    assert solution([]) == []
+    assert solution([('a', 'é'), ('b', 'é'), ('c', 'e')]) == [['a', 'b']]
+    for _ in range(300):
+        F = [('p%d' % i, random.choice(['', 'a', 'b', 'ab'])) for i in range(random.randint(0, 8))]
+        by = {}
+        for p, t in F:
+            by.setdefault(t, []).append(p)
+        assert solution(F) == sorted(sorted(v) for v in by.values() if len(v) > 1)
+    print('task 3: ok')
+    ```
+
+
+### 48. Median after every reading
+
+**Level:** Medium · **Aim for:** 20 minutes
+
+A sensor sends integer readings one by one; `A` is the list of them in order. After each reading, report the
+median of all readings so far: the middle one when the count is odd, the mean of the two middle ones when it is even
+(that can be a float like `2.5`). Return the list of medians.
+
+```text
+def solution(A): -> list of numbers
+```
+
+**Examples**
+
+* `solution([5, 15, 1, 3])` returns `[5, 10.0, 5, 4.0]`
+* `solution([2, 2, 2])` returns `[2, 2.0, 2]`
+* `solution([-1, 4])` returns `[-1, 1.5]`
+
+**Limits:** `len(A)` up to 200,000.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    import heapq
+
+    def solution(A):
+        lo, hi, out = [], [], []          # lo: max-heap (negated) of the smaller half, hi: min-heap
+        for x in A:
+            heapq.heappush(lo, -x)
+            heapq.heappush(hi, -heapq.heappop(lo))
+            if len(hi) > len(lo):
+                heapq.heappush(lo, -heapq.heappop(hi))
+            out.append(-lo[0] if len(lo) > len(hi) else (-lo[0] + hi[0]) / 2)
+        return out
+    ```
+
+    Two heaps: `lo` holds the smaller half (negated, since `heapq` is a min-heap), `hi` the bigger half, and `lo` has
+    the same size or one more. Each new value goes through `lo` into `hi`, so every value in `lo` stays at most every
+    value in `hi`. Sorting after each reading is O(N² log N); `bisect.insort` is O(N²) because of the list shifts.
+
+    **Cost:** O(N log N) time, O(N) memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random, statistics
+    assert solution([5, 15, 1, 3]) == [5, 10.0, 5, 4.0]
+    assert solution([2, 2, 2]) == [2, 2.0, 2]
+    assert solution([-1, 4]) == [-1, 1.5]
+    assert solution([]) == []
+    for _ in range(300):
+        A = [random.randint(-5, 5) for _ in range(random.randint(0, 15))]
+        assert solution(A) == [statistics.median(A[:i + 1]) for i in range(len(A))]
+    print('task 4: ok')
+    ```
+
+
+### 49. Check a record against a schema
+
+**Level:** Medium · **Aim for:** 20 minutes
+
+An API sends JSON records, already loaded as Python dicts. `S` is the schema: a dict that maps each field name to a
+type (`int`, `float`, `str` or `bool`), to a list of one schema item such as `[str]` (a list whose items all match
+it), or to a nested schema dict. `D` is a record, always a dict. Report every problem as a `(path, problem)` tuple:
+
+* `'missing'`: a field of the schema is not in the record;
+* `'extra'`: the record has a field the schema does not have;
+* `'type'`: the value has the wrong type. `bool` is not an `int` here, and a `float` field also takes an `int`.
+
+A path joins field names with dots, and a list item adds `[i]`: `tags[2]`, `address.city`. Stop going down a value
+whose type is wrong. Return the problems sorted.
+
+```text
+def solution(S, D): -> list of (str, str)
+```
+
+**Examples**
+
+* `solution({'id': int, 'tags': [str]}, {'id': 7, 'tags': ['a', 3]})` returns `[('tags[1]', 'type')]`
+* `solution({'id': int, 'addr': {'city': str}}, {'id': True, 'addr': {}, 'x': 1})` returns `[('addr.city', 'missing'), ('id', 'type'), ('x', 'extra')]`
+* `solution({'price': float, 'tags': [str]}, {'price': 3, 'tags': 'a'})` returns `[('tags', 'type')]`
+
+**Limits:** schema and record nested at most 50 levels; at most 100,000 values in a record.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(S, D):
+        out = []
+        def go(s, v, p):
+            if isinstance(s, dict):
+                if type(v) is not dict:
+                    return out.append((p, 'type'))
+                for k in s:
+                    q = p + '.' + k if p else k
+                    if k in v:
+                        go(s[k], v[k], q)
+                    else:
+                        out.append((q, 'missing'))
+                out.extend((p + '.' + k if p else k, 'extra') for k in v if k not in s)
+            elif isinstance(s, list):
+                if type(v) is not list:
+                    return out.append((p, 'type'))
+                for i, x in enumerate(v):
+                    go(s[0], x, '%s[%d]' % (p, i))
+            elif not (type(v) is s or (s is float and type(v) is int)):
+                out.append((p, 'type'))
+        go(S, D, '')
+        return sorted(out)
+    ```
+
+    The trap is `isinstance(True, int)`, which is `True`: a flag sent where a number is wanted would pass. So compare
+    `type(v) is s`. The recursion follows the schema, which is at most 50 deep, so Python's limit of 1,000 is safe.
+
+    **Cost:** O(number of values in `D` + size of `S`), plus the final sort of the problems.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution({'id': int, 'tags': [str]}, {'id': 7, 'tags': ['a', 3]}) == [('tags[1]', 'type')]
+    assert solution({'id': int, 'addr': {'city': str}}, {'id': True, 'addr': {}, 'x': 1}) == [('addr.city', 'missing'), ('id', 'type'), ('x', 'extra')]
+    assert solution({'price': float, 'tags': [str]}, {'price': 3, 'tags': 'a'}) == [('tags', 'type')]
+    assert solution({}, {}) == []
+    assert solution({'ok': bool}, {'ok': 1}) == [('ok', 'type')]
+    assert solution({'n': int}, {'n': 2.0}) == [('n', 'type')]
+    assert solution({'a': {'b': int}}, {'a': 5}) == [('a', 'type')]
+    S = {'rows': [{'id': int, 'v': [float]}]}
+    assert solution(S, {'rows': [{'id': 1, 'v': [1, 2.5]}, {'id': 'x', 'v': [None], 'z': 0}]}) == [('rows[1].id', 'type'), ('rows[1].v[0]', 'type'), ('rows[1].z', 'extra')]
+    assert solution({'m': [[int]]}, {'m': [[1], [2, 'x']]}) == [('m[1][1]', 'type')]
+    print('task 5: ok')
+    ```
+
+
+### 50. Pack messages into batches
+
+**Level:** Easy · **Aim for:** 15 minutes
+
+A loader sends messages to an API that takes at most `N` messages per call and at most `B` characters in total per
+call. `A` is the list of messages (strings), in order. Fill batches greedily, keeping the order: add each message to
+the current batch, and start a new batch when adding it would break either limit. A message longer than `B` can
+never fit, so it goes alone in its own batch (the API will reject it, and the caller logs that). Return the list of
+batches.
+
+```text
+def solution(A, N, B): -> list of list of str
+```
+
+**Examples**
+
+* `solution(['aa', 'bb', 'cc', 'dd', 'ee'], 2, 100)` returns `[['aa', 'bb'], ['cc', 'dd'], ['ee']]`
+* `solution(['abc', 'de', 'fghi', 'j'], 10, 5)` returns `[['abc', 'de'], ['fghi', 'j']]`
+* `solution(['a', 'toolong', 'b'], 5, 3)` returns `[['a'], ['toolong'], ['b']]`
+
+**Limits:** `len(A)` up to 1,000,000; `N` and `B` at least 1.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(A, N, B):
+        out, cur, size = [], [], 0
+        for m in A:
+            if cur and (len(cur) == N or size + len(m) > B):
+                out.append(cur)
+                cur, size = [], 0
+            cur.append(m)
+            size += len(m)
+        if cur:
+            out.append(cur)
+        return out
+    ```
+
+    The `cur and` part is what puts a too-long message in its own batch instead of a loop that never ends or an empty
+    batch. Only a count limit? Then `[A[i:i + N] for i in range(0, len(A), N)]` is the one-liner, and in Python 3.12
+    `itertools.batched(A, N)` does it (not on 3.9, not run here).
+
+    **Cost:** O(N) time; each message is looked at once.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution(['aa', 'bb', 'cc', 'dd', 'ee'], 2, 100) == [['aa', 'bb'], ['cc', 'dd'], ['ee']]
+    assert solution(['abc', 'de', 'fghi', 'j'], 10, 5) == [['abc', 'de'], ['fghi', 'j']]
+    assert solution(['a', 'toolong', 'b'], 5, 3) == [['a'], ['toolong'], ['b']]
+    assert solution([], 3, 3) == []
+    assert solution(['', '', ''], 2, 0) == [['', ''], ['']]
+    for _ in range(500):
+        A = ['x' * random.randint(0, 6) for _ in range(random.randint(0, 12))]
+        N, B = random.randint(1, 4), random.randint(1, 8)
+        got = solution(A, N, B)
+        assert [m for b in got for m in b] == A
+        for i, b in enumerate(got):
+            assert 1 <= len(b) <= N and (sum(map(len, b)) <= B or len(b) == 1)
+            if i + 1 < len(got):
+                nxt = got[i + 1][0]
+                assert len(b) == N or sum(map(len, b)) + len(nxt) > B
+    print('task 6: ok')
+    ```
+
+
+### 51. Dotted keys back into a nested dict
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+A config file was stored flat: `D` maps dotted paths such as `'db.host'` to integer values. Build the nested dict
+back: `{'a': 1, 'b.c': 2}` becomes `{'a': 1, 'b': {'c': 2}}`. Path parts are non-empty and have no dots. If two keys
+clash, so that one path needs to be both a value and a dict (`'a'` and `'a.b'`), return `None`, whatever their
+order in `D`.
+
+```text
+def solution(D): -> dict or None
+```
+
+**Examples**
+
+* `solution({'db.host': 1, 'db.port': 2, 'debug': 0})` returns `{'db': {'host': 1, 'port': 2}, 'debug': 0}`
+* `solution({'a.b.c': 5})` returns `{'a': {'b': {'c': 5}}}`
+* `solution({'a.b': 1, 'a': 2})` returns `None`
+
+**Limits:** `D` has up to 100,000 keys; each key has up to 50 parts.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    def solution(D):
+        out = {}
+        for k, v in D.items():
+            *path, last = k.split('.')
+            cur = out
+            for p in path:
+                cur = cur.setdefault(p, {})
+                if type(cur) is not dict:
+                    return None
+            if last in cur:
+                return None
+            cur[last] = v
+            # values are ints, never dicts, so a later 'x.y' under an int 'x' fails above
+        return out
+    ```
+
+    There are two ways to clash and each order hits one of the two checks: `'a'` first, then `'a.b'` finds an int on
+    its way down; `'a.b'` first, then `'a'` finds the key taken. The reverse of task 20 on the page (flatten a nested
+    record): flattening the answer gives `D` back, which the tests check.
+
+    **Cost:** O(total parts in all keys) time and memory.
+
+    **Tests**
+
+    ```python
+    # tests
+    import random
+    assert solution({'db.host': 1, 'db.port': 2, 'debug': 0}) == {'db': {'host': 1, 'port': 2}, 'debug': 0}
+    assert solution({'a.b.c': 5}) == {'a': {'b': {'c': 5}}}
+    assert solution({'a.b': 1, 'a': 2}) is None
+    assert solution({'a': 2, 'a.b': 1}) is None
+    assert solution({'x.y': 1, 'x.y.z': 2}) is None
+    assert solution({}) == {}
+    def flat(d, p=''):
+        r = {}
+        for k, v in d.items():
+            q = p + '.' + k if p else k
+            r.update(flat(v, q) if isinstance(v, dict) else {q: v})
+        return r
+    for _ in range(300):
+        D = {'.'.join(random.choice('ab') for _ in range(random.randint(1, 3))): random.randint(0, 9) for _ in range(random.randint(0, 5))}
+        keys = list(D)
+        clash = any(a != b and b.startswith(a + '.') for a in keys for b in keys)
+        got = solution(D)
+        assert (got is None) == clash
+        if got is not None:
+            assert flat(got) == D
+    print('task 7: ok')
+    ```
+
+
+### 52. Events per UTC day from mixed time zones
+
+**Level:** Medium · **Aim for:** 15 minutes
+
+Servers in different countries log events with local timestamps in ISO 8601 form, `YYYY-MM-DDTHH:MM:SS` followed by
+an offset: `+HH:MM`, `-HH:MM` or `Z` (which means UTC). A timestamp with no offset is already UTC. Count the events
+per **UTC** date and return a list of `(date, count)` tuples, dates as `'YYYY-MM-DD'`, oldest first. Days with no
+events are left out.
+
+```text
+def solution(A): -> list of (str, int)
+```
+
+**Examples**
+
+* `solution(['2026-03-01T23:30:00-05:00', '2026-03-02T01:00:00Z'])` returns `[('2026-03-02', 2)]`
+* `solution(['2026-03-01T00:30:00+02:00', '2026-03-01T12:00:00'])` returns `[('2026-02-28', 1), ('2026-03-01', 1)]`
+* `solution(['2024-12-31T23:59:59-00:01'])` returns `[('2025-01-01', 1)]`
+
+**Limits:** `len(A)` up to 500,000; all timestamps are valid.
+
+??? success "Solution and explanation (open after you try)"
+
+    ```python
+    from datetime import datetime, timezone
+
+    def solution(A):
+        cnt = {}
+        for s in A:
+            t = datetime.fromisoformat(s.replace('Z', '+00:00'))
+            if t.tzinfo:
+                t = t.astimezone(timezone.utc)
+            d = t.date().isoformat()
+            cnt[d] = cnt.get(d, 0) + 1
+        return sorted(cnt.items())
+    ```
+
+    Two traps. `fromisoformat` takes `'Z'` only from Python 3.11 on (from the Python docs, not run here), so it is
+    replaced first and the code runs the same on 3.9. And `t.date()` on the local time gives the local day, which is
+    what example 1 gets wrong: 23:30 in New York is already the next day in UTC. `astimezone` on a timestamp with no
+    offset would treat it as the Mac's local time, hence the `if`.
+
+    **Cost:** O(N) to parse and count, plus O(D log D) to sort D days.
+
+    **Tests**
+
+    ```python
+    # tests
+    assert solution(['2026-03-01T23:30:00-05:00', '2026-03-02T01:00:00Z']) == [('2026-03-02', 2)]
+    assert solution(['2026-03-01T00:30:00+02:00', '2026-03-01T12:00:00']) == [('2026-02-28', 1), ('2026-03-01', 1)]
+    assert solution(['2024-12-31T23:59:59-00:01']) == [('2025-01-01', 1)]
+    assert solution([]) == []
+    assert solution(['2024-02-29T22:00:00-03:00', '2024-03-01T00:00:00Z', '2024-02-29T23:59:59+00:00']) == [('2024-02-29', 1), ('2024-03-01', 2)]
+    assert solution(['2026-06-01T05:00:00+05:30']) == [('2026-05-31', 1)]
     print('task 8: ok')
     ```
