@@ -42,8 +42,9 @@ submitting.
 ## The five-day plan
 
 Five hours a day, most of it on SQL, and three full timed rehearsals in the real format: three tasks in 150
-minutes. The three full mocks (A, B and C) and a new set of harder SQL and Python tasks are being added to this
-guide on Thursday and Friday; their links will appear here.
+minutes: [Full mock A](full-mock-a.md), [Full mock B](full-mock-b.md) and [Full mock C](full-mock-c.md). Each
+has its solutions folded away and a **Try it here** box under every task, to check your answers when the timer
+ends.
 
 === "Thu 12"
 
@@ -73,7 +74,7 @@ guide on Thursday and Friday; their links will appear here.
 
     | Time | What |
     |---|---|
-    | 150 min | **Full mock A** (three tasks, 150 minutes), timed, in one go, on paper or in a plain editor; then check each answer in its Try it box |
+    | 150 min | **[Full mock A](full-mock-a.md)** (three tasks, 150 minutes), timed, in one go, on paper or in a plain editor; then check each answer in its Try it box |
     | 60 min | Read every solution of the mock, including the wrong answers. Write down each mistake. |
     | 90 min | [SQL practice](sql-practice.md) group D (sequences, gaps and time) |
 
@@ -83,7 +84,7 @@ guide on Thursday and Friday; their links will appear here.
 
     | Time | What |
     |---|---|
-    | 150 min | **Full mock B**, timed |
+    | 150 min | **[Full mock B](full-mock-b.md)**, timed |
     | 45 min | Its solutions and your mistakes list |
     | 75 min | [SQL practice](sql-practice.md) groups E, F and G: pick the patterns that felt weakest; [Python practice](python-practice.md) group C (sorting and intervals) |
     | 30 min | [The 15 most common mistakes](common-mistakes.md) |
@@ -94,7 +95,7 @@ guide on Thursday and Friday; their links will appear here.
 
     | Time | What |
     |---|---|
-    | 150 min | **Full mock C**, timed, in the morning |
+    | 150 min | **[Full mock C](full-mock-c.md)**, timed, in the morning |
     | 30 min | Its solutions; your mistakes list from all three mocks |
     | 20 min | [Codility's demo test](https://app.codility.com/demo/take-sample-test/) once more, the [cheat sheet](cheat-sheet.md) |
     | | Stop early. Sleep well. |

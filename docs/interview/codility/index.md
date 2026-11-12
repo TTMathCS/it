@@ -19,6 +19,9 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 | Page | What it is | Time |
 |---|---|---|
 | [Your test: 3 tasks in 150 minutes](your-test.md) | What your invitation means, the time split, the five-day plan | 15 min |
+| [Full mock A](full-mock-a.md) | Your test's format: 3 tasks in 150 minutes, PostgreSQL (Sat 14) | 150 min |
+| [Full mock B](full-mock-b.md) | 3 tasks in 150 minutes (Sun 15) | 150 min |
+| [Full mock C](full-mock-c.md) | 3 tasks in 150 minutes, 1 SQL + 2 Python (Mon 16) | 150 min |
 | [Cheat sheet](cheat-sheet.md) | The one page to read the day before and the hour before | 10 min |
 | [How a Codility test works](how-codility-works.md) | Timer, Run, hidden tests, scoring | 15 min |
 | [Plan for 2 SQL + 1 Python](test-day-plan.md) | Time split, reading a task, which SQL dialect to pick | 15 min |
