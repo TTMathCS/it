@@ -37,6 +37,7 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 | [Mock test 4](mock-test-4.md) | The last rehearsal | 75 min |
 | [Mock test 5](mock-test-5.md) | Extra rehearsal, SQL tested on SQLite | 80 min |
 | [Mock test 6](mock-test-6.md) | Extra rehearsal, SQL tested on SQLite | 80 min |
+| [Find the bug: 20 SQL drills](sql-bug-drills.md) | Spot the mistake in a query that looks right | 40 min |
 | [Mock test 8](mock-test-8.md) | Full-length rehearsal like the real test: 2 PostgreSQL + 1 Python | 150 min |
 | [Flash cards](flash-cards.md) | Quick questions for the last evening: SQL, Python, Databricks | 30 min |
 | [Asked aloud](asked-aloud.md) | 30 SQL and pipeline questions an interviewer may ask out loud | 30 min |
