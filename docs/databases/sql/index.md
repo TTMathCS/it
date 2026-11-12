@@ -25,6 +25,8 @@ differences. Results on MySQL, SQL Server and Oracle have not been tested here.
 - **Starting out?** Read in order from chapter 1.
 - **Try everything.** Load the [sample database](sample-database.md) on your own computer (a few minutes, free), or
   paste it into an online SQL playground, and run the examples yourself. Change them and see what happens.
+  How the **Run** buttons on these pages run a real PostgreSQL inside your browser, and whether that is safe, is
+  explained in [WebAssembly: real programs inside a web page](../../programming/webassembly/index.md).
 
 ## How a chapter works
 

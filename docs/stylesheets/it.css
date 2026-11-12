@@ -40,3 +40,10 @@
 .md-typeset figure.mars-fig .acc-fill { fill: var(--md-accent-fg-color); }
 .md-typeset figure.mars-fig .soft { fill: currentColor; fill-opacity: .08; }
 .md-typeset figure.mars-fig .soft-acc { fill: var(--md-accent-fg-color); fill-opacity: .18; }
+
+/* a wide diagram (class "mars-fig wide", the WebAssembly course): on a phone it keeps a readable size and
+   scrolls sideways inside its own box instead of shrinking its text below about 10 px */
+@media (max-width: 600px) {
+  .md-typeset figure.mars-fig.wide { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .md-typeset figure.mars-fig.wide svg { min-width: 560px; }
+}

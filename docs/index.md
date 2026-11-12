@@ -31,12 +31,16 @@ system before it goes on a page, with its true result shown under it.
 [Databricks and the medallion model](data-engineering/databricks/index.md) (chapters going up as they are checked). Later: Spark, Airflow, dbt, Kafka.
 </div>
 <div markdown>
+### [Programming](programming/index.md)
+[WebAssembly: real programs inside a web page](programming/webassembly/index.md): how PostgreSQL runs in your browser, the engine behind the SQL Run buttons. Later: Python, Java, JavaScript, Bash.
+</div>
+<div markdown>
 ### [Interview prep](interview/index.md)
 [Codility test prep](interview/codility/index.md): two timed mock tests and 52 SQL and Python practice tasks.
 </div>
 <div markdown>
 ### Coming later
-Data warehouses and BI · Programming · Cloud · DevOps · Servers and operating systems · Enterprise applications ·
+Data warehouses and BI · Cloud · DevOps · Servers and operating systems · Enterprise applications ·
 Identity and security · Monitoring and operations · AI and machine learning.
 </div>
 </div>

@@ -13,7 +13,7 @@ open one to see its courses, and open a course to see its chapters.
 | Databases | The SQL language, and each database system (PostgreSQL, MySQL, SQL Server, Oracle, MongoDB, Redis ...) |
 | Data engineering | Moving and shaping data at scale: Databricks and the medallion model, Spark, Airflow, dbt, Kafka |
 | Data warehouses and BI | Snowflake, BigQuery, Redshift, Power BI, Tableau |
-| Programming | Python, Java, JavaScript, Bash. SQL lives under Databases and is linked from here |
+| Programming | [WebAssembly](../programming/webassembly/index.md) (how PostgreSQL runs in a browser); later Python, Java, JavaScript, Bash. SQL lives under Databases and is linked from here |
 | Cloud | AWS, Azure, Google Cloud |
 | DevOps | Git, Docker, Kubernetes, Terraform, CI/CD |
 | Servers and operating systems | Linux, Windows Server, virtual machines |

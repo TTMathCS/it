@@ -36,6 +36,12 @@ Courses by category. A category joins this list, and the menu, once its first co
 | --- | --- | --- |
 | [Databricks and the medallion model](../data-engineering/databricks/index.md) | What Databricks is | Delta Lake internals, bronze/silver/gold pipelines, the Databricks SQL dialect, performance, governance and interview practice (chapters going up as they are checked) |
 
+## Programming
+
+| Course | From | To |
+| --- | --- | --- |
+| [WebAssembly](../programming/webassembly/index.md) | What a browser could run before 2017 | A .wasm file byte by byte, how PostgreSQL loads and runs in a tab, where it keeps its files, its sandbox, and your own SQL playground |
+
 ## Interview prep
 
 | Guide | What it covers |
@@ -44,6 +50,6 @@ Courses by category. A category joins this list, and the menu, once its first co
 
 ## Planned categories
 
-Data warehouses and BI · Programming · Cloud · DevOps · Servers and operating systems · Enterprise applications ·
+Data warehouses and BI · Cloud · DevOps · Servers and operating systems · Enterprise applications ·
 Identity and security · Monitoring and operations · AI and machine learning. See [Start here](../start/index.md) for
 what goes in each.

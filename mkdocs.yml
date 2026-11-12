@@ -284,6 +284,17 @@ nav:
               - data-engineering/databricks/24-Interview.md
               - data-engineering/databricks/25-PySpark-Practice.md
               - data-engineering/databricks/glossary.md
+      - "Programming":
+          - programming/index.md
+          - "WebAssembly":
+              - programming/webassembly/index.md
+              - programming/webassembly/01-What-WebAssembly-Is.md
+              - programming/webassembly/02-Inside-a-wasm-File.md
+              - programming/webassembly/03-From-C-Source-to-wasm.md
+              - programming/webassembly/04-How-the-Browser-Loads-It.md
+              - programming/webassembly/05-Where-Everything-Is-Kept.md
+              - programming/webassembly/06-Is-It-Safe.md
+              - programming/webassembly/07-Build-Your-Own-Playground.md
       - "Interview prep":
           - interview/index.md
           - "Codility test prep":

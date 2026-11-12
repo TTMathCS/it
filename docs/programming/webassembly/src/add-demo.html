@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<p id="out">loading…</p>
+<script type="module">
+  // 1. what the module may call: one JavaScript function, under the names it imports
+  const imports = { env: { show: n => console.log('the module called show(' + n + ')') } };
+  // 2. download, compile and instantiate in one step, while the bytes arrive
+  const { instance } = await WebAssembly.instantiateStreaming(fetch('add.wasm'), imports);
+  // 3. call the function the module exports
+  document.getElementById('out').textContent = 'add(2, 3) = ' + instance.exports.add(2, 3);
+</script>

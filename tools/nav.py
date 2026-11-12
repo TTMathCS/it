@@ -24,6 +24,7 @@ CATEGORIES = [
 # course folder -> menu name; a course not listed here is named from its folder
 COURSES = {
     "sql": "SQL",
+    "webassembly": "WebAssembly",
     "databricks": "Databricks and the medallion model",
     "codility": "Codility test prep",
     "postgresql": "PostgreSQL",
