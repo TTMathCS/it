@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. Steps, checks and votes](08-Steps-Checks-and-Votes.md): how errors pile up over an agent's steps, what checks and votes are worth, the loop as a Markov chain and how its history grows, worked by hand and checked by simulation.
 
 # AI Agents: Concepts, Capabilities, Development, and Use‑Cases
 

@@ -1,0 +1,17 @@
+Part 1. Every step must be right: P = p^n
+   p = 0.99: n=1: 0.990, n=5: 0.951, n=10: 0.904, n=20: 0.818, n=50: 0.605
+   p = 0.95: n=1: 0.950, n=5: 0.774, n=10: 0.599, n=20: 0.358, n=50: 0.077
+   p = 0.9: n=1: 0.900, n=5: 0.590, n=10: 0.349, n=20: 0.122, n=50: 0.005
+
+Part 2. Checks and retries (p = 0.95 per attempt, 20 steps)
+   check catches 0% of errors, up to  1 attempts: one step 0.95000, 20 steps 0.3585
+   check catches 100% of errors, up to  3 attempts: one step 0.99987, 20 steps 0.9975
+   check catches 90% of errors, up to  3 attempts: one step 0.99467, 20 steps 0.8987
+   check catches 50% of errors, up to  3 attempts: one step 0.97434, 20 steps 0.5946
+   check catches 90% of errors, up to 10 attempts: one step 0.99476, 20 steps 0.9003
+   unlimited attempts, check catches 90%: p / (1 - (1 - p) d) = 0.99476; 20 steps 0.9003
+
+Part 3. Simulation of part 2, 200,000 tasks each
+   d = 0.0, k = 1: formula 0.3585, simulated 0.3590
+   d = 1.0, k = 3: formula 0.9975, simulated 0.9975
+   d = 0.9, k = 3: formula 0.8987, simulated 0.8995

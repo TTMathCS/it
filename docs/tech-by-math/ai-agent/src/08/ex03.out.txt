@@ -1,0 +1,17 @@
+Part 1. Fundamental matrix N = (I - Q)^-1 (expected visits to each state, starting from each state)
+[[1.8182 1.8182 1.8182]
+ [0.8182 1.8182 1.8182]
+ [0.8182 0.8182 1.8182]]
+   expected steps from Think: 5.4545   (by hand: 3 steps a round, 1 / 0.55 = 1.8182 rounds, 5.4545 steps)
+   chance of ending in Done: 0.9091, in GiveUp: 0.0909   (by hand: 0.50 / 0.55 = 0.9091)
+
+Part 2. A step budget: stop after at most m rounds of 3 steps
+    1 rounds ( 3 steps): Done with chance 0.5000
+    2 rounds ( 6 steps): Done with chance 0.7250
+    3 rounds ( 9 steps): Done with chance 0.8262
+    4 rounds (12 steps): Done with chance 0.8718
+    6 rounds (18 steps): Done with chance 0.9015
+   10 rounds (30 steps): Done with chance 0.9088
+
+Part 3. Simulation, 200,000 runs, no budget
+   average steps 5.4446, Done 0.9097, Done within 12 steps 0.8725

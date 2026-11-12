@@ -1,0 +1,4 @@
+   5 answers, p = 0.4,   1 possible wrong answers: most common answer right 0.318
+   5 answers, p = 0.4,   2 possible wrong answers: most common answer right 0.448
+   5 answers, p = 0.4,  10 possible wrong answers: most common answer right 0.639
+   5 answers, p = 0.4, 100 possible wrong answers: most common answer right 0.707

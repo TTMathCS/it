@@ -1,0 +1,17 @@
+Part 1. Input tokens sent over a run of n steps
+   n =  1: loop     2,000  formula n s + t n(n-1)/2 =     2,000  per step    2,000
+   n = 10: loop    42,500  formula n s + t n(n-1)/2 =    42,500  per step    4,250
+   n = 20: loop   135,000  formula n s + t n(n-1)/2 =   135,000  per step    6,750
+   n = 40: loop   470,000  formula n s + t n(n-1)/2 =   470,000  per step   11,750
+   n = 80: loop 1,740,000  formula n s + t n(n-1)/2 = 1,740,000  per step   21,750
+   20 -> 40 steps: x3.48 tokens; 40 -> 80: x3.70
+
+Part 2. When does one request pass a context window of W tokens?
+   W =  32,000: steps 1 to 61 fit, step 62 is the first to need more (by hand: step k fits while k <= (W - s) / t + 1 = 61)
+   W = 128,000: steps 1 to 253 fit, step 254 is the first to need more (by hand: step k fits while k <= (W - s) / t + 1 = 253)
+   W = 200,000: steps 1 to 397 fit, step 398 is the first to need more (by hand: step k fits while k <= (W - s) / t + 1 = 397)
+
+Part 3. Keeping only a summary: after every 10 steps, replace the history by 1,000 tokens
+   n = 20: full history   135,000   with summaries    95,000
+   n = 40: full history   470,000   with summaries   200,000
+   n = 80: full history 1,740,000   with summaries   410,000

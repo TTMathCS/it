@@ -206,6 +206,7 @@ nav:
               - tech-by-math/ai/08-How-a-Language-Model-Picks-the-Next-Word.md
           - "AI agents":
               - tech-by-math/ai-agent/index.md
+              - tech-by-math/ai-agent/08-Steps-Checks-and-Votes.md
       - "Databases":
           - databases/index.md
           - "SQL":
