@@ -1,0 +1,22 @@
+Part 1. Scores 2, 1, 0 for ['Mars', 'Earth', 'cheese']
+   e^2 = 7.3891, e^1 = 2.7183, e^0 = 1.0000, sum 11.1073
+   probabilities: [0.6652 0.2447 0.09  ]
+
+Part 2. Temperature T: softmax(z / T)
+   T =  0.25: [0.9817 0.018  0.0003]
+   T =   0.5: [0.8668 0.1173 0.0159]
+   T =   1.0: [0.6652 0.2447 0.09  ]
+   T =   2.0: [0.5065 0.3072 0.1863]
+   T =  10.0: [0.3672 0.3322 0.3006]
+
+Part 3. Adding the same number to every score changes nothing
+   z + 100: [0.6652 0.2447 0.09  ]
+
+Part 4. Why subtract the largest score: scores 1000, 999, 998
+   naive e^z / sum: [nan nan nan]  (e^1000 overflows a float)
+   after subtracting 1000: [0.6652 0.2447 0.09  ]
+
+Part 5. Sampling 100,000 next words at T = 1 (seeded)
+   Mars    expected 0.6652  drawn 0.6656
+   Earth   expected 0.2447  drawn 0.2442
+   cheese  expected 0.0900  drawn 0.0901

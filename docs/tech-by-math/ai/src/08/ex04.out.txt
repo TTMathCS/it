@@ -1,0 +1,21 @@
+Part 1. Scores 2, 1, 0; the right word is the second (index 1)
+   p = [0.6652 0.2447 0.09  ]  loss 1.4076
+   gradient p - y = [ 0.6652 -0.7553  0.09  ]
+   finite differences = [ 0.6652 -0.7553  0.09  ]  largest gap 1.0e-10
+   one step with learning rate 0.5: z = [ 1.6674  1.3776 -0.045 ], p = [0.5184 0.388  0.0935], loss 0.9467
+
+Part 2. Random scores for 10 words, 5 checks of p - y against finite differences
+   largest gap over all checks: 1.5e-09
+
+Part 3. A next-word model for one tiny text, trained by gradient descent
+   step    0: mean loss 2.1972
+   step   10: mean loss 0.8846
+   step  100: mean loss 0.5887
+   step 1000: mean loss 0.5679
+   step 3000: mean loss 0.5665
+   lowest possible loss for this text (from the counts): 0.5658
+   after 'the', learned vs counted:
+      cat  learned 0.4999   counted 0.5000
+      mat  learned 0.1665   counted 0.1667
+      rat  learned 0.1665   counted 0.1667
+      dog  learned 0.1665   counted 0.1667

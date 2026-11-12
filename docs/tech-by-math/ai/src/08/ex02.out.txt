@@ -1,0 +1,18 @@
+Part 1. Loss of one prediction = -ln(probability given to the right word)
+   p = 1.0    loss 0.0000 nats
+   p = 0.9    loss 0.1054 nats
+   p = 0.5    loss 0.6931 nats
+   p = 0.245  loss 1.4065 nats
+   p = 0.1    loss 2.3026 nats
+   p = 0.01   loss 4.6052 nats
+
+Part 2. A four-word sentence
+   losses: [0.6931, 1.3863, 0.2231, 2.3026]
+   mean loss 1.1513; perplexity e^1.1513 = 3.1623
+   check: 1 / geometric mean of the probabilities = 1 / 0.3162 = 3.1623
+
+Part 3. Guessing uniformly over a vocabulary of V words
+   V =      2: loss ln V = 0.6931 nats, perplexity 2
+   V =     26: loss ln V = 3.2581 nats, perplexity 26
+   V = 50,257: loss ln V = 10.8249 nats, perplexity 50,257
+   in bits: log2(50,257) = 15.62

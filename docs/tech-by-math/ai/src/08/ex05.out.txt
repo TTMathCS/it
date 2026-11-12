@@ -1,0 +1,19 @@
+Part 1. One block of GPT-2 small (d = 768)
+   ln_1              1,536
+   attn c_attn   1,771,776
+   attn c_proj     590,592
+   ln_2              1,536
+   mlp c_fc      2,362,368
+   mlp c_proj    2,360,064
+   block total   7,087,872   (12 d^2 = 7,077,888)
+
+Part 2. The four released sizes (layers and width from the GPT-2 paper, Table 2)
+   small  L = 12, d =  768:   124,439,808 parameters  (model card: 124 million); blocks 68%, embeddings 32%; 12 L d^2 + V d = 123,532,032
+   medium L = 24, d = 1024:   354,823,168 parameters  (model card: 355 million); blocks 85%, embeddings 15%; 12 L d^2 + V d = 353,453,056
+   large  L = 36, d = 1280:   774,030,080 parameters  (model card: 774 million); blocks 92%, embeddings 8%; 12 L d^2 + V d = 772,117,760
+   XL     L = 48, d = 1600: 1,557,611,200 parameters  (model card: 1.5 billion); blocks 95%, embeddings 5%; 12 L d^2 + V d = 1,554,971,200
+
+Part 3. Rule of thumb for training compute: about 6 x parameters x tokens
+   124M parameters,    1B tokens: about 7.47e+17 floating-point operations
+   124M parameters,   10B tokens: about 7.47e+18 floating-point operations
+   124M parameters,  100B tokens: about 7.47e+19 floating-point operations

@@ -1,0 +1,22 @@
+Part 1. Three tokens, d = 2
+   scores q.k / sqrt(2):
+ [[0.7071 0.     0.7071]
+ [0.     1.4142 0.7071]
+ [0.7071 1.4142 1.4142]]
+   weights after the causal mask and softmax:
+ [[1.     0.     0.    ]
+ [0.1956 0.8044 0.    ]
+ [0.1978 0.4011 0.4011]]
+   outputs (weights @ V):
+ [[10.      0.    ]
+ [ 1.9557  8.0443]
+ [ 3.9833  6.0167]]
+
+Part 2. Why divide by sqrt(d): random q and k with mean 0, variance 1
+   d =   2: variance of q.k =    2.00 (theory 2); after / sqrt(d): 1.002
+   d =  16: variance of q.k =   15.99 (theory 16); after / sqrt(d): 0.999
+   d =  64: variance of q.k =   64.07 (theory 64); after / sqrt(d): 1.001
+   d = 256: variance of q.k =  255.50 (theory 256); after / sqrt(d): 0.998
+
+Part 3. What the scale does to the weights: 16 keys, d = 256, largest weight on average
+   without scaling: 0.927   with scaling: 0.249

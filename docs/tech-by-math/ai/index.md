@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. How a language model picks the next word](08-How-a-Language-Model-Picks-the-Next-Word.md): softmax and temperature, loss and perplexity, attention, learning by `p − y`, and counting GPT-2's parameters, worked by hand and checked by programs.
 
 # Artificial Intelligence: Tech-by-Math
 

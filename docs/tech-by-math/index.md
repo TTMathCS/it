@@ -17,7 +17,7 @@
 | [Git](git/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: hashes, the commit graph and merges |
 | [PKI and certificates](pki/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: signatures and certificate chains |
 | [Computer networks](network/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: addresses, routes and throughput |
-| [AI](ai/index.md) | The 2025 drafts (7 parts) |
+| [AI](ai/index.md) | The 2025 drafts (7 parts) and 1 checked tutorial: how a language model picks the next word |
 | [AI agents](ai-agent/index.md) | The 2025 drafts: concepts, tools and use cases |
 
 **The 2025 drafts** were written in August 2025 and moved here as they were. They have not been checked yet: some formulas have no source, some "proofs" claim more than is true, and the people in their stories are invented. Each part of each system follows the same seven steps: the core model, the math toolkit, the algorithms, the failure models, experiments, references and use cases.
