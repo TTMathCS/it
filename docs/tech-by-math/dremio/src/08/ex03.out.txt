@@ -1,0 +1,25 @@
+Part 1. Six files and the filter amount BETWEEN 900 AND 1000
+   f1: min     5, max   480  ->  skip
+   f2: min   120, max   870  ->  skip
+   f3: min   400, max   950  ->  read
+   f4: min   990, max  1500  ->  read
+   f5: min  1010, max  2000  ->  skip
+   f6: min    30, max   899  ->  skip
+   read 2 of 6
+
+Part 2. The same 1,000,000 rows in 100 files of 10,000, filter x >= 0.99
+   rows in arrival order : read 100 of 100 files
+   rows sorted by x      : read   1 of 100 files
+   rows that match       : 9,923 (0.99%)
+
+Part 3. Chance a random file of k rows can be skipped for x >= 0.9: all k rows below 0.9, 0.9^k
+   k =      1: formula 0.9   simulated 0.902 (20,000 trials)
+   k =      5: formula 0.59   simulated 0.59 (20,000 trials)
+   k =     10: formula 0.349   simulated 0.349 (20,000 trials)
+   k =     20: formula 0.122   simulated 0.123 (20,000 trials)
+   k =     50: formula 0.00515   simulated 0.0053 (20,000 trials)
+   k =    100: formula 2.66e-05   simulated 0.0001 (20,000 trials)
+   k =  10000: formula 10^-458 (too small for a float)   simulated 0 (200 trials)
+
+Part 4. Partitions by day: a table of 365 daily partitions, a query for 7 days
+   365 days x 40 files a day = 14,600 files; the 7 days hold 280 files = 1.9% of the table

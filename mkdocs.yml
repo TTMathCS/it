@@ -143,6 +143,7 @@ nav:
               - tech-by-math/dremio/05-experiments/index.md
               - tech-by-math/dremio/06-references/index.md
               - tech-by-math/dremio/07-use-cases/index.md
+              - tech-by-math/dremio/08-Columns-Files-Reflections.md
           - "Apache NiFi":
               - tech-by-math/nifi/index.md
               - tech-by-math/nifi/01-core-model/index.md

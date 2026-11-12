@@ -1,0 +1,5 @@
+bucket[32] mod 16 == bucket[16] for all 100,000 ids: True
+   ids in bucket  0 of 16 went to buckets [0, 16] of 32
+   ids in bucket  3 of 16 went to buckets [3, 19] of 32
+   ids in bucket 15 of 16 went to buckets [15, 31] of 32
+   with 24 buckets instead, bucket 3 of 16 spreads over 3 of the 24

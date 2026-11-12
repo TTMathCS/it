@@ -1,0 +1,24 @@
+Part 1. Size
+   raw rows: 200,000; reflection rows: 2,920; at most 8 regions x 365 days = 2,920
+
+Part 2. Revenue, orders, average and largest order per region: raw rows vs the reflection
+   North  revenue $ 6,280,791.30  orders 24,685  max $ 500.00  avg $254.4376 = sum/count $254.4376; mean of daily averages $254.6246
+   South  revenue $ 6,414,939.22  orders 25,208  max $ 500.00  avg $254.4803 = sum/count $254.4803; mean of daily averages $254.5515
+   East   revenue $ 6,290,388.61  orders 24,769  max $ 499.99  avg $253.9622 = sum/count $253.9622; mean of daily averages $254.0346
+   West   revenue $ 6,351,597.32  orders 25,225  max $ 499.99  avg $251.7977 = sum/count $251.7977; mean of daily averages $251.8116
+   Centre revenue $ 6,220,643.18  orders 24,902  max $ 500.00  avg $249.8050 = sum/count $249.8050; mean of daily averages $249.8163
+   Coast  revenue $ 6,500,675.32  orders 25,668  max $ 500.00  avg $253.2599 = sum/count $253.2599; mean of daily averages $253.2488
+   Lakes  revenue $ 6,228,521.22  orders 24,773  max $ 500.00  avg $251.4238 = sum/count $251.4238; mean of daily averages $251.2856
+   Hills  revenue $ 6,280,596.29  orders 24,770  max $ 499.99  avg $253.5566 = sum/count $253.5566; mean of daily averages $253.6603
+   sums, counts and maxima equal the raw answer exactly: True
+
+Part 3. Distinct customers per region
+   North  exact 3,708  sum of daily distinct counts 24,482 (wrong)  merged sketch    3,779 (+1.92%)
+   South  exact 3,793  sum of daily distinct counts 24,982 (wrong)  merged sketch    3,767 (-0.69%)
+   East   exact 3,720  sum of daily distinct counts 24,529 (wrong)  merged sketch    3,744 (+0.65%)
+   West   exact 3,758  sum of daily distinct counts 24,999 (wrong)  merged sketch    3,774 (+0.43%)
+   Centre exact 3,728  sum of daily distinct counts 24,691 (wrong)  merged sketch    3,754 (+0.70%)
+   Coast  exact 3,801  sum of daily distinct counts 25,430 (wrong)  merged sketch    3,850 (+1.30%)
+   Lakes  exact 3,722  sum of daily distinct counts 24,534 (wrong)  merged sketch    3,702 (-0.54%)
+   Hills  exact 3,725  sum of daily distinct counts 24,514 (wrong)  merged sketch    3,612 (-3.04%)
+   sketch: 4,096 registers; textbook standard error 1.04/sqrt(4,096) = 1.62%; largest error here 3.04%

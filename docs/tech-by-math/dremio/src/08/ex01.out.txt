@@ -1,0 +1,30 @@
+Part 1. The spec's own example: ['joe', None, None, 'mark']
+   validity byte 0: 00001001 (bit j from the right is slot j)
+   offsets        : [0, 3, 3, 3, 7]
+   value bytes    : b'joemark'
+
+Part 2. One million int32 values, 1 in 10 null
+   by hand: bitmap ceil(1,000,000/8) = 125,000 bytes, data 1,000,000 x 4 = 4,000,000 bytes
+   pyarrow: bitmap 125,000 bytes, data 4,000,000 bytes, null_count 100,000
+   padded to 64: bitmap 125,056, data 4,000,000
+   the bitmap costs 3.1% of the data
+   slot  0: bit 0  (value None)
+   slot  1: bit 1  (value 1)
+   slot  9: bit 1  (value 9)
+   slot 10: bit 0  (value None)
+   slot 11: bit 1  (value 11)
+
+Part 3. Strings: offsets + bytes
+   offsets: [0, 7, 13, 13, 22, 29]
+   by hand: offsets (5+1) x 4 = 24 bytes, data 29 bytes (é is 2 bytes in UTF-8)
+   pyarrow: data buffer 29 bytes
+
+Part 4. Padding as written by Arrow IPC (the format Arrow Flight sends)
+   n=    1: data     4 bytes, by hand padded to 8 ->     8, to 64 ->    64; pyarrow IPC body     8
+   n=    7: data    28 bytes, by hand padded to 8 ->    32, to 64 ->    64; pyarrow IPC body    32
+   n=    8: data    32 bytes, by hand padded to 8 ->    32, to 64 ->    64; pyarrow IPC body    32
+   n=  100: data   400 bytes, by hand padded to 8 ->   400, to 64 ->   448; pyarrow IPC body   400
+   n= 1000: data  4000 bytes, by hand padded to 8 ->  4000, to 64 ->  4032; pyarrow IPC body  4000
+
+Part 5. Column pruning: a query that uses 3 of 40 int64 columns of 2 billion rows
+   one column: 16 GB; all 40: 640 GB; the 3 used: 48 GB (7.5%)

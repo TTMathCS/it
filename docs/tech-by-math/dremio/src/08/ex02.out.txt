@@ -1,0 +1,30 @@
+Part 1. The spec's test values (Appendix B)
+   int 34 (hashed as a long)                2017239379  spec   2017239379  ok
+   long 34L                                 2017239379  spec   2017239379  ok
+   decimal 14.20 (unscaled 1420)            -500754589  spec   -500754589  ok
+   date 2017-11-16                          -653330422  spec   -653330422  ok
+   time 22:31:08                            -662762989  spec   -662762989  ok
+   timestamp 2017-11-16T22:31:08           -2047944441  spec  -2047944441  ok
+   timestamp ...22:31:08.000001            -1207196810  spec  -1207196810  ok
+   string 'iceberg'                         1210000089  spec   1210000089  ok
+   uuid f79c3e09-...                        1488055340  spec   1488055340  ok
+   binary 00 01 02 03                       -188683207  spec   -188683207  ok
+   string '34' (not the same as int 34)     -427558391  spec   -427558391  ok
+
+Part 2. bucket[16] of customer ids, by hand for 34
+   hash 34 = 2017239379; & 0x7FFFFFFF = 2017239379; % 16 = 3
+   100,000 ids 1..100,000 into 16 buckets: fewest 6,059, most 6,324, ideal 6,250
+   a negative hash: id -7 -> hash -1703207563, & 0x7FFFFFFF = 444276085, % 16 = 5
+
+Part 3. truncate[W]: the remainder must not be negative
+   truncate[10](    1) =     0   (C/Java-style v - v%W would give     0)
+   truncate[10](   -1) =   -10   (C/Java-style v - v%W would give     0)
+   truncate[10](   37) =    30   (C/Java-style v - v%W would give    30)
+   truncate[10](  -37) =   -40   (C/Java-style v - v%W would give   -30)
+   truncate[100]( 1234) =  1200   (C/Java-style v - v%W would give  1200)
+   spec examples: W=10: 1 -> 0, -1 -> -10;  W=50 on 10.65 (scale 2): 10.50
+
+Part 4. day(ts): days since 1970-01-01
+   1970-01-02 00:00:00  ->  day 1
+   2017-11-16 22:31:08  ->  day 17,486
+   2026-11-12 09:00:00  ->  day 20,769

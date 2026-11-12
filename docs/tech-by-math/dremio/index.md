@@ -1,4 +1,6 @@
 > **Migrated from the August 2025 drafts, not yet checked.** Formulas and claims may be wrong or unsourced, and the people in the stories are invented. They will be checked and rewritten one by one.
+>
+> **Checked tutorial for this system:** [8. Columns, files and reflections](08-Columns-Files-Reflections.md): Arrow's column layout, Iceberg's partition transforms and min/max file skipping, and what an aggregation reflection can answer, worked by hand and checked by programs.
 
 # Dremio: Tech-by-Math
 
