@@ -123,6 +123,7 @@ nav:
               - tech-by-math/kafka/05-experiments/index.md
               - tech-by-math/kafka/06-references/index.md
               - tech-by-math/kafka/07-use-cases/index.md
+              - tech-by-math/kafka/08-Log-Offsets-and-Lag.md
           - "Elasticsearch":
               - tech-by-math/elasticsearch/index.md
               - tech-by-math/elasticsearch/01-core-model/index.md

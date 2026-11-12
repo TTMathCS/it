@@ -13,7 +13,8 @@ Courses by category. A category joins this list, and the menu, once its first co
 | [PostgreSQL](../tech-by-math/postgresql/index.md) | Sets and logarithms | Joins as set math, B-tree height, the planner's estimates, serializable transactions |
 | [Apache Parquet](../tech-by-math/parquet/index.md) | Binary numbers | Dictionary and run-length coding, min/max skipping |
 | [Apache Spark](../tech-by-math/spark/index.md) | Remainders and averages | The 2025 drafts, shuffles and skew, and why sums split and medians do not |
-| [Kafka, Elasticsearch, Dremio, NiFi, Kubernetes, Git, PKI, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
+| [Apache Kafka](../tech-by-math/kafka/index.md) | Remainders and rates | The 2025 drafts, and the log, offsets and lag |
+| [Elasticsearch, Dremio, NiFi, Kubernetes, Git, PKI, networks, AI, AI agents](../tech-by-math/index.md) | | The 2025 drafts, one course per system, to be checked one by one |
 
 ## Databases
 

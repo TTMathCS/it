@@ -1,0 +1,15 @@
+Part 1. Steady rates: lag 1,200,000, producers add 2,000 msg/s, the consumer reads 2,500 msg/s
+   after    1 s: log-end offset  1,202,000, committed      2,500, lag  1,199,500
+   after   60 s: log-end offset  1,320,000, committed    150,000, lag  1,170,000
+   after  600 s: log-end offset  2,400,000, committed  1,500,000, lag    900,000
+   caught up after 2,400 s; formula L / (mu - lambda) = 1,200,000 / 500 = 2,400 s
+
+Part 2. Random traffic: Poisson arrivals, 1,000 msg/s on average. Each second the consumer reads up to
+        1,250 messages, but in some seconds it reads nothing (busy: garbage collection, a rebalance).
+        Little's law check: average lag = arrival rate x average wait.
+   consumer free capacity/s utilisation  average lag average wait  lambda x W
+           100%    1,250.0       0.800          0.0       0.000s         0.0
+            95%    1,187.5       0.842        181.5       0.181s       181.5
+            90%    1,125.0       0.889        500.0       0.500s       500.0
+            85%    1,062.5       0.942      1,309.8       1.309s     1,309.8
+            82%    1,025.0       0.976      3,222.4       3.221s     3,222.4

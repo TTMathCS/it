@@ -1,0 +1,22 @@
+Kafka's own test vectors:
+   murmur2('21'                                                ) =   -973932308  expected   -973932308  ok
+   murmur2('foobar'                                            ) =   -790332482  expected   -790332482  ok
+   murmur2('a-little-bit-long-string'                          ) =   -985981536  expected   -985981536  ok
+   murmur2('a-little-bit-longer-string'                        ) =  -1486304829  expected  -1486304829  ok
+   murmur2('lkjh234lh9fiuh90y23oiuhsafujhadof229phr9h19h89h8'  ) =    -58897971  expected    -58897971  ok
+   murmur2('abc'                                               ) =    479470107  expected    479470107  ok
+
+toPositive keeps the low 31 bits; it is not the absolute value (Java's Math.abs, on 32-bit ints):
+   hash   -973,932,308: toPositive = 1,173,551,340   Math.abs =    973,932,308
+   hash    479,470,107: toPositive =   479,470,107   Math.abs =    479,470,107
+   hash -2,147,483,648: toPositive =             0   Math.abs = -2,147,483,648
+
+Keys customer-1 .. customer-8 on a topic with 6 partitions:
+   customer-1  murmur2 =   1939597761  toPositive = 1,939,597,761  mod 6 = 3
+   customer-2  murmur2 =   1971984518  toPositive = 1,971,984,518  mod 6 = 2
+   customer-3  murmur2 =    550332970  toPositive =   550,332,970  mod 6 = 4
+   customer-4  murmur2 =    -66026923  toPositive = 2,081,456,725  mod 6 = 1
+   customer-5  murmur2 =   1334034258  toPositive = 1,334,034,258  mod 6 = 0
+   customer-6  murmur2 =    366161251  toPositive =   366,161,251  mod 6 = 1
+   customer-7  murmur2 =  -1283830537  toPositive =   863,653,111  mod 6 = 1
+   customer-8  murmur2 =    222690404  toPositive =   222,690,404  mod 6 = 2
