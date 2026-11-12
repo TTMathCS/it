@@ -3,6 +3,9 @@
     so the text does not jump when the page opens. Same file on cs, math and cryptography. -#}
 {% block extrahead %}
   {{ super() }}
+  {%- if page and page.meta and page.meta.robots %}
+  <meta name="robots" content="{{ page.meta.robots }}">
+  {%- endif %}
   <script>try{var r=JSON.parse(localStorage.getItem("akadian-reader"))||{};if(r.scale)document.documentElement.style.setProperty("--reader-scale",r.scale);if(r.focus)document.documentElement.classList.add("reader-mode")}catch(e){}</script>
   {#- Light or dark, the same on every akadian.ca site (Mars-Requirements site/theme.md; Jim, 5 Nov 2026): the choice is one cookie
       for all of akadian.ca (Mars-Home theme.js writes it on www), so it is set here before the page is drawn; with none, dark

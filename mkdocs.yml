@@ -8,6 +8,9 @@ copyright: 'Part of <a href="https://www.akadian.ca/">Mars – your new home</a>
 exclude_docs: |
   README.md
 use_directory_urls: false
+# a page with robots: noindex in its front matter is also left out of sitemap.xml (tools/hooks.py)
+hooks:
+  - tools/hooks.py
 
 theme:
   name: material
@@ -78,6 +81,7 @@ markdown_extensions:
 # the Tech by Math 2025 drafts have many sub-pages (use cases, proofs); they are reached by links, not the menu
 not_in_nav: |
   /tech-by-math/
+  /notes/
 
 validation:
   omitted_files: warn
