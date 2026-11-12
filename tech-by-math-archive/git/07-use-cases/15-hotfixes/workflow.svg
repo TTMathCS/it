@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .hotfix { fill: #F44336; stroke: #B71C1C; stroke-width: 2; }
+      .develop { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .urgent { fill: #FF5722; stroke: #D84315; stroke-width: 3; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #F44336; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .sync-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">Hotfix and Emergency Patches Workflow</text>
+  
+  <!-- Main branch (production) -->
+  <text x="50" y="80" class="branch-label" fill="#2E7D32">main (production)</text>
+  <circle cx="100" cy="100" r="10" class="main"/>
+  <text x="100" y="125" text-anchor="middle" class="text">v1.2.0</text>
+  
+  <line x1="110" y1="100" x2="290" y2="100" class="branch-line"/>
+  <circle cx="300" cy="100" r="10" class="main"/>
+  <text x="300" y="125" text-anchor="middle" class="text">v1.2.1</text>
+  
+  <line x1="310" y1="100" x2="490" y2="100" class="branch-line"/>
+  <circle cx="500" cy="100" r="10" class="main"/>
+  <text x="500" y="125" text-anchor="middle" class="text">v1.2.2</text>
+  
+  <line x1="510" y1="100" x2="690" y2="100" class="branch-line"/>
+  <circle cx="700" cy="100" r="10" class="main"/>
+  <text x="700" y="125" text-anchor="middle" class="text">v1.3.0</text>
+  
+  <!-- Develop branch -->
+  <text x="50" y="180" class="branch-label" fill="#1976D2">develop</text>
+  <line x1="110" y1="100" x2="130" y2="200" class="branch-line"/>
+  <circle cx="140" cy="200" r="10" class="develop"/>
+  <text x="140" y="225" text-anchor="middle" class="text">ongoing</text>
+  
+  <line x1="150" y1="200" x2="250" y2="200" class="branch-line"/>
+  <circle cx="260" cy="200" r="10" class="develop"/>
+  <text x="260" y="225" text-anchor="middle" class="text">features</text>
+  
+  <!-- Sync from hotfix 1 -->
+  <line x1="310" y1="100" x2="330" y2="200" class="sync-line"/>
+  <circle cx="340" cy="200" r="10" class="develop"/>
+  <text x="340" y="225" text-anchor="middle" class="text">sync</text>
+  
+  <line x1="350" y1="200" x2="450" y2="200" class="branch-line"/>
+  <circle cx="460" cy="200" r="10" class="develop"/>
+  <text x="460" y="225" text-anchor="middle" class="text">continue</text>
+  
+  <!-- Sync from hotfix 2 -->
+  <line x1="510" y1="100" x2="530" y2="200" class="sync-line"/>
+  <circle cx="540" cy="200" r="10" class="develop"/>
+  <text x="540" y="225" text-anchor="middle" class="text">sync</text>
+  
+  <line x1="550" y1="200" x2="650" y2="200" class="branch-line"/>
+  <circle cx="660" cy="200" r="10" class="develop"/>
+  <text x="660" y="225" text-anchor="middle" class="text">release</text>
+  
+  <!-- Merge to main -->
+  <line x1="670" y1="200" x2="690" y2="100" class="merge-line"/>
+  
+  <!-- Hotfix 1: Critical security bug -->
+  <text x="50" y="300" class="branch-label" fill="#F44336">hotfix/security-1.2.1</text>
+  <line x1="110" y1="100" x2="150" y2="320" class="branch-line"/>
+  <circle cx="160" cy="320" r="10" class="hotfix"/>
+  <text x="160" y="345" text-anchor="middle" class="text">🚨 CVE fix</text>
+  
+  <line x1="170" y1="320" x2="210" y2="320" class="branch-line"/>
+  <circle cx="220" cy="320" r="10" class="hotfix"/>
+  <text x="220" y="345" text-anchor="middle" class="text">validate</text>
+  
+  <line x1="230" y1="320" x2="270" y2="320" class="branch-line"/>
+  <circle cx="280" cy="320" r="10" class="hotfix"/>
+  <text x="280" y="345" text-anchor="middle" class="text">test</text>
+  
+  <!-- Merge hotfix 1 to main -->
+  <line x1="290" y1="320" x2="290" y2="100" class="merge-line"/>
+  
+  <!-- Hotfix 2: Database corruption -->
+  <text x="350" y="380" class="branch-label" fill="#F44336">hotfix/db-corruption-1.2.2</text>
+  <line x1="310" y1="100" x2="370" y2="400" class="branch-line"/>
+  <circle cx="380" cy="400" r="10" class="hotfix"/>
+  <text x="380" y="425" text-anchor="middle" class="text">🔥 DB fix</text>
+  
+  <line x1="390" y1="400" x2="430" y2="400" class="branch-line"/>
+  <circle cx="440" cy="400" r="10" class="hotfix"/>
+  <text x="440" y="425" text-anchor="middle" class="text">migrate</text>
+  
+  <line x1="450" y1="400" x2="490" y2="380" class="branch-line"/>
+  <circle cx="500" cy="370" r="10" class="hotfix"/>
+  <text x="500" y="360" text-anchor="middle" class="text">deploy</text>
+  
+  <!-- Merge hotfix 2 to main -->
+  <line x1="510" y1="370" x2="490" y2="100" class="merge-line"/>
+  
+  <!-- Emergency indicators -->
+  <rect x="580" y="250" width="180" height="200" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text x="590" y="270" class="title" fill="#F44336">⚡ Emergency Process</text>
+  
+  <text x="590" y="295" class="text">1. Critical issue detected</text>
+  <text x="590" y="310" class="text">2. Branch from last stable</text>
+  <text x="590" y="325" class="text">3. Minimal targeted fix</text>
+  <text x="590" y="340" class="text">4. Fast-track testing</text>
+  <text x="590" y="355" class="text">5. Deploy to production</text>
+  <text x="590" y="370" class="text">6. Sync back to develop</text>
+  
+  <text x="590" y="395" class="branch-label" fill="#F44336">Hotfix Criteria:</text>
+  <text x="590" y="415" class="text">• Security vulnerabilities</text>
+  <text x="590" y="430" class="text">• Data corruption risks</text>
+  <text x="590" y="445" class="text">• Service outages</text>
+  
+  <!-- Timeline indicator -->
+  <text x="50" y="460" class="title">Timeline: Hours not days ⏰</text>
+</svg>

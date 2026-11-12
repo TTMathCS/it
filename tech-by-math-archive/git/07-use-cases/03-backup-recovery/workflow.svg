@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .commit { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .backup { fill: #2196F3; stroke: #1976D2; stroke-width: 2; }
+      .recovery { fill: #FF9800; stroke: #F57C00; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .backup-line { stroke: #2196F3; stroke-width: 2; fill: none; stroke-dasharray: 5,5; }
+      .text { font-family: 'Courier New', monospace; font-size: 11px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">Code Backup and Recovery Workflow</text>
+  
+  <!-- Local development timeline -->
+  <text x="50" y="80" class="title">Local Development</text>
+  <circle cx="100" cy="120" r="12" class="commit"/>
+  <text x="100" y="145" text-anchor="middle" class="text">A: Init</text>
+  
+  <line x1="112" y1="120" x2="148" y2="120" class="branch-line"/>
+  <circle cx="160" cy="120" r="12" class="commit"/>
+  <text x="160" y="145" text-anchor="middle" class="text">B: Feature</text>
+  
+  <line x1="172" y1="120" x2="208" y2="120" class="branch-line"/>
+  <circle cx="220" cy="120" r="12" class="commit"/>
+  <text x="220" y="145" text-anchor="middle" class="text">C: Update</text>
+  
+  <line x1="232" y1="120" x2="268" y2="120" class="branch-line"/>
+  <circle cx="280" cy="120" r="12" class="commit"/>
+  <text x="280" y="145" text-anchor="middle" class="text">D: Polish</text>
+  
+  <!-- Remote backup operations -->
+  <text x="50" y="200" class="title">Remote Backup</text>
+  <line x1="112" y1="120" x2="148" y2="240" class="backup-line"/>
+  <circle cx="160" cy="240" r="12" class="backup"/>
+  <text x="160" y="265" text-anchor="middle" class="text">Push A</text>
+  
+  <line x1="172" y1="120" x2="208" y2="240" class="backup-line"/>
+  <circle cx="220" cy="240" r="12" class="backup"/>
+  <text x="220" y="265" text-anchor="middle" class="text">Push B</text>
+  
+  <line x1="232" y1="120" x2="268" y2="240" class="backup-line"/>
+  <circle cx="280" cy="240" r="12" class="backup"/>
+  <text x="280" y="265" text-anchor="middle" class="text">Push C</text>
+  
+  <!-- Data loss scenario -->
+  <text x="350" y="200" class="title">⚠ Data Loss Event</text>
+  <line x1="292" y1="120" x2="380" y2="120" stroke="#FF4444" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="336" y="115" text-anchor="middle" style="fill: #FF4444; font-size: 12px;">Local drive failure</text>
+  
+  <!-- Recovery process -->
+  <text x="450" y="200" class="title">Recovery Process</text>
+  <circle cx="500" cy="240" r="12" class="recovery"/>
+  <text x="500" y="265" text-anchor="middle" class="text">Clone</text>
+  
+  <line x1="292" y1="240" x2="488" y2="240" class="backup-line"/>
+  
+  <line x1="512" y1="240" x2="548" y2="120" class="branch-line"/>
+  <circle cx="560" cy="120" r="12" class="commit"/>
+  <text x="560" y="145" text-anchor="middle" class="text">D': Restored</text>
+  
+  <line x1="572" y1="120" x2="608" y2="120" class="branch-line"/>
+  <circle cx="620" cy="120" r="12" class="commit"/>
+  <text x="620" y="145" text-anchor="middle" class="text">E: Continue</text>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="350" width="700" height="120" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="375" class="title">Mathematical Properties:</text>
+  <text x="60" y="395" class="text">• Distributed redundancy: Repository exists at multiple locations (local + remote)</text>
+  <text x="60" y="410" class="text">• Content addressing: SHA hashes ensure data integrity across copies</text>
+  <text x="60" y="425" class="text">• Recovery invariant: restore(backup(state)) = state (up to last push)</text>
+  <text x="60" y="440" class="text">• DAG preservation: Remote clone maintains complete commit history and relationships</text>
+  <text x="60" y="455" class="text">• Data loss bounded by: time_since_last_push and local_uncommitted_changes</text>
+  
+</svg>

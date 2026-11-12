@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offset"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="24" font-weight="bold" fill="#2c3e50">
+    Email Security S/MIME Workflow
+  </text>
+  
+  <!-- Phase 1: Certificate Issuance -->
+  <rect x="50" y="70" width="140" height="80" rx="10" fill="#e3f2fd" 
+        stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
+  <text x="120" y="95" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="12" font-weight="bold" fill="#1976d2">Certificate Issuance</text>
+  <text x="120" y="110" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">S/MIME CSR</text>
+  <text x="120" y="125" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Email Validation</text>
+  <text x="120" y="140" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">PKCS#12 Bundle</text>
+  
+  <!-- Phase 2: Email Client Setup -->
+  <rect x="230" y="70" width="140" height="80" rx="10" fill="#fff3e0" 
+        stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="300" y="95" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="12" font-weight="bold" fill="#f57c00">Client Configuration</text>
+  <text x="300" y="110" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Certificate Import</text>
+  <text x="300" y="125" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">S/MIME Settings</text>
+  <text x="300" y="140" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Key Storage</text>
+  
+  <!-- Phase 3: Digital Signatures -->
+  <rect x="410" y="70" width="140" height="80" rx="10" fill="#e8f5e8" 
+        stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="480" y="95" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="12" font-weight="bold" fill="#388e3c">Digital Signatures</text>
+  <text x="480" y="110" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Message Hash</text>
+  <text x="480" y="125" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Signature Creation</text>
+  <text x="480" y="140" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Verification</text>
+  
+  <!-- Phase 4: Message Encryption -->
+  <rect x="590" y="70" width="140" height="80" rx="10" fill="#fce4ec" 
+        stroke="#c2185b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="660" y="95" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="12" font-weight="bold" fill="#c2185b">Encryption</text>
+  <text x="660" y="110" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Session Key Gen</text>
+  <text x="660" y="125" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">AES Encryption</text>
+  <text x="660" y="140" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="10" fill="#333">Key Wrapping</text>
+  
+  <!-- Email Client Examples -->
+  <g transform="translate(50, 200)">
+    <!-- Thunderbird -->
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#fff8e1" 
+          stroke="#ffa000" stroke-width="2"/>
+    <text x="80" y="20" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#ffa000">Thunderbird</text>
+    <text x="10" y="40" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Certificate Import
+    </text>
+    <text x="10" y="55" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • S/MIME Settings
+    </text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Auto-Signing
+    </text>
+    <text x="10" y="85" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Key Exchange
+    </text>
+    
+    <!-- Outlook -->
+    <rect x="200" y="0" width="160" height="100" rx="8" fill="#f3e5f5" 
+          stroke="#7b1fa2" stroke-width="2"/>
+    <text x="280" y="20" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#7b1fa2">Outlook</text>
+    <text x="210" y="40" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Windows Store Integration
+    </text>
+    <text x="210" y="55" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Exchange Server
+    </text>
+    <text x="210" y="70" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • GAL Certificates
+    </text>
+    <text x="210" y="85" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Policy Enforcement
+    </text>
+    
+    <!-- Apple Mail -->
+    <rect x="400" y="0" width="160" height="100" rx="8" fill="#e0f2f1" 
+          stroke="#00695c" stroke-width="2"/>
+    <text x="480" y="20" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#00695c">Apple Mail</text>
+    <text x="410" y="40" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Keychain Integration
+    </text>
+    <text x="410" y="55" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Certificate Assistant
+    </text>
+    <text x="410" y="70" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • Touch ID Support
+    </text>
+    <text x="410" y="85" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      • iCloud Sync</text>
+  </g>
+  
+  <!-- S/MIME Operations -->
+  <g transform="translate(50, 340)">
+    <rect x="0" y="0" width="700" height="120" rx="10" fill="#f5f5f5" 
+          stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="350" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="16" font-weight="bold" fill="#333">S/MIME Security Operations</text>
+    
+    <!-- Message Signing -->
+    <circle cx="120" cy="70" r="35" fill="#e1f5fe" stroke="#0277bd" stroke-width="2"/>
+    <text x="120" y="65" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="11" font-weight="bold" fill="#0277bd">Signing</text>
+    <text x="120" y="78" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">SHA-256 hash</text>
+    <text x="120" y="90" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">RSA signature</text>
+    
+    <!-- Message Encryption -->
+    <circle cx="280" cy="70" r="35" fill="#f9fbe7" stroke="#827717" stroke-width="2"/>
+    <text x="280" y="65" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="11" font-weight="bold" fill="#827717">Encryption</text>
+    <text x="280" y="78" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">AES session key</text>
+    <text x="280" y="90" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">RSA key wrap</text>
+    
+    <!-- Certificate Discovery -->
+    <circle cx="440" cy="70" r="35" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+    <text x="440" y="65" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="11" font-weight="bold" fill="#c62828">Discovery</text>
+    <text x="440" y="78" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">LDAP lookup</text>
+    <text x="440" y="90" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">Address book</text>
+    
+    <!-- Trust Validation -->
+    <circle cx="600" cy="70" r="35" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2"/>
+    <text x="600" y="65" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="11" font-weight="bold" fill="#6a1b9a">Validation</text>
+    <text x="600" y="78" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">Chain building</text>
+    <text x="600" y="90" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#333">CRL check</text>
+  </g>
+  
+  <!-- Flow arrows -->
+  <line x1="190" y1="110" x2="230" y2="110" stroke="#333" stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  <line x1="370" y1="110" x2="410" y2="110" stroke="#333" stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="110" x2="590" y2="110" stroke="#333" stroke-width="2" 
+        marker-end="url(#arrowhead)"/>
+  
+  <!-- Vertical connection to email clients -->
+  <line x1="400" y1="150" x2="400" y2="200" stroke="#666" stroke-width="2" 
+        stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Mathematical Foundation Box -->
+  <g transform="translate(50, 500)">
+    <rect x="0" y="0" width="700" height="80" rx="8" fill="#f8f9fa" 
+          stroke="#495057" stroke-width="2"/>
+    <text x="350" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#495057">S/MIME Mathematical Foundation</text>
+    <text x="20" y="45" font-family="Arial, sans-serif" font-size="12" fill="#333">
+      Digital Signature: S = RSA_sign_d(SHA-256(message)), Verification: RSA_verify_e(S) = SHA-256(message)
+    </text>
+    <text x="20" y="60" font-family="Arial, sans-serif" font-size="12" fill="#333">
+      Message Encryption: C = AES_encrypt(K, message), K_encrypted = RSA_encrypt_recipient(K)
+    </text>
+  </g>
+</svg>

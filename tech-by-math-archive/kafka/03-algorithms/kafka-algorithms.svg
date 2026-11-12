@@ -1,0 +1,236 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e67e22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d35400;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1abc9c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a085;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Kafka Core Algorithms
+  </text>
+  
+  <!-- Partitioning Algorithms -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad1)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Partitioning
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Hash Partitioner
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Round Robin
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Custom Partitioners
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Sticky Partitioner
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Load Balancing
+    </text>
+  </g>
+  
+  <!-- Replication Algorithms -->
+  <g transform="translate(240, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad2)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Replication
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Leader Election
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • ISR Management
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Follower Sync
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Quorum-based Writes
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Failover Protocol
+    </text>
+  </g>
+  
+  <!-- Consumer Algorithms -->
+  <g transform="translate(430, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad3)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Consumer Groups
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Range Assignment
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Round Robin Assignment
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Sticky Assignment
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Rebalancing Protocol
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Offset Management
+    </text>
+  </g>
+  
+  <!-- Log Management -->
+  <g transform="translate(620, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad4)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Log Management
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Log Compaction
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Segment Rolling
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Index Building
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Cleanup Policies
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Retention Management
+    </text>
+  </g>
+  
+  <!-- Algorithm Complexities -->
+  <g transform="translate(100, 280)">
+    <rect x="0" y="0" width="600" height="160" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="300" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Algorithm Complexity Analysis
+    </text>
+    
+    <!-- Hash Partitioning -->
+    <text x="50" y="55" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2ecc71">
+      Hash Partitioning:
+    </text>
+    <text x="180" y="55" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      O(1) - Constant time key-to-partition mapping
+    </text>
+    
+    <!-- Leader Election -->
+    <text x="50" y="80" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">
+      Leader Election:
+    </text>
+    <text x="170" y="80" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      O(n) - Linear time in number of brokers
+    </text>
+    
+    <!-- Consumer Rebalancing -->
+    <text x="50" y="105" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e67e22">
+      Rebalancing:
+    </text>
+    <text x="150" y="105" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      O(n log n) - Depends on consumers and partitions
+    </text>
+    
+    <!-- Log Compaction -->
+    <text x="50" y="130" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1abc9c">
+      Log Compaction:
+    </text>
+    <text x="170" y="130" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      O(n) - Linear scan with key deduplication
+    </text>
+  </g>
+  
+  <!-- Algorithm Flow Diagram -->
+  <g transform="translate(50, 470)">
+    <rect x="0" y="0" width="700" height="110" fill="#ffffff" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="350" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Producer-to-Consumer Algorithm Flow
+    </text>
+    
+    <!-- Flow Steps -->
+    <circle cx="80" cy="65" r="20" fill="#2ecc71"/>
+    <text x="80" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Hash
+    </text>
+    <text x="80" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      Partition
+    </text>
+    
+    <circle cx="200" cy="65" r="20" fill="#9b59b6"/>
+    <text x="200" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Replicate
+    </text>
+    <text x="200" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      ISR Sync
+    </text>
+    
+    <circle cx="320" cy="65" r="20" fill="#1abc9c"/>
+    <text x="320" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Store
+    </text>
+    <text x="320" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      Log Append
+    </text>
+    
+    <circle cx="440" cy="65" r="20" fill="#f39c12"/>
+    <text x="440" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Index
+    </text>
+    <text x="440" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      Update
+    </text>
+    
+    <circle cx="560" cy="65" r="20" fill="#e67e22"/>
+    <text x="560" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Fetch
+    </text>
+    <text x="560" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      Consumer
+    </text>
+    
+    <circle cx="620" cy="65" r="20" fill="#e74c3c"/>
+    <text x="620" y="70" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="white">
+      Commit
+    </text>
+    <text x="620" y="90" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#2c3e50">
+      Offset
+    </text>
+    
+    <!-- Arrows -->
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+      </marker>
+    </defs>
+    
+    <line x1="100" y1="65" x2="180" y2="65" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="220" y1="65" x2="300" y2="65" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="340" y1="65" x2="420" y2="65" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="460" y1="65" x2="540" y2="65" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="580" y1="65" x2="600" y2="65" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Connecting arrows from top sections -->
+  <line x1="130" y1="220" x2="200" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="320" y1="220" x2="300" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="220" x2="400" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="700" y1="220" x2="500" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

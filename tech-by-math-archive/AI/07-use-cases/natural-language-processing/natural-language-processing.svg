@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4caf50;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tokenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff9800;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="embeddingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2196f3;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="transformerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="attentionGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff5722;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ff5722;stop-opacity:0.2" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fafafa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">Natural Language Processing: Mathematical Foundations</text>
+  
+  <!-- Input Text Section -->
+  <g id="input-text">
+    <rect x="30" y="60" width="120" height="80" fill="url(#textGradient)" stroke="#4caf50" stroke-width="2" rx="8"/>
+    <text x="90" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">Input Text</text>
+    <text x="90" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">"Hello AI"</text>
+    <text x="90" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Raw String</text>
+  </g>
+  
+  <!-- Arrow to tokenization -->
+  <path d="M 160 100 L 190 100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Tokenization Section -->
+  <g id="tokenization">
+    <rect x="200" y="60" width="120" height="80" fill="url(#tokenGradient)" stroke="#ff9800" stroke-width="2" rx="8"/>
+    <text x="260" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">Tokenization</text>
+    <text x="260" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">[101, 7592, 8484, 102]</text>
+    <text x="260" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Token IDs</text>
+  </g>
+  
+  <!-- Arrow to embeddings -->
+  <path d="M 330 100 L 360 100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Embeddings Section -->
+  <g id="embeddings">
+    <rect x="370" y="60" width="120" height="80" fill="url(#embeddingGradient)" stroke="#2196f3" stroke-width="2" rx="8"/>
+    <text x="430" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">Embeddings</text>
+    <text x="430" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">E ∈ ℝᵈ</text>
+    <text x="430" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Dense Vectors</text>
+    
+    <!-- Embedding vectors visualization -->
+    <g transform="translate(390, 125)">
+      <rect width="3" height="10" fill="#2196f3"/>
+      <rect width="3" height="15" x="5" fill="#2196f3"/>
+      <rect width="3" height="8" x="10" fill="#2196f3"/>
+      <rect width="3" height="12" x="15" fill="#2196f3"/>
+      <rect width="3" height="6" x="20" fill="#2196f3"/>
+      <rect width="3" height="14" x="25" fill="#2196f3"/>
+      <rect width="3" height="9" x="30" fill="#2196f3"/>
+      <rect width="3" height="11" x="35" fill="#2196f3"/>
+      <rect width="3" height="7" x="40" fill="#2196f3"/>
+      <rect width="3" height="13" x="45" fill="#2196f3"/>
+      <rect width="3" height="10" x="50" fill="#2196f3"/>
+      <rect width="3" height="16" x="55" fill="#2196f3"/>
+    </g>
+  </g>
+  
+  <!-- Arrow to transformer -->
+  <path d="M 500 100 L 530 100" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Transformer Section -->
+  <g id="transformer">
+    <rect x="540" y="60" width="150" height="80" fill="url(#transformerGradient)" stroke="#9c27b0" stroke-width="2" rx="8"/>
+    <text x="615" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">Transformer</text>
+    <text x="615" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#fff">Self-Attention</text>
+    <text x="615" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">Multi-Head</text>
+  </g>
+  
+  <!-- Attention Mechanism Detail -->
+  <g id="attention-detail">
+    <rect x="30" y="170" width="320" height="200" fill="#ffffff" stroke="#ff5722" stroke-width="2" rx="10"/>
+    <text x="190" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ff5722">Self-Attention Mechanism</text>
+    
+    <!-- Q, K, V matrices -->
+    <g id="qkv-matrices">
+      <rect x="60" y="210" width="60" height="40" fill="#ffcdd2" stroke="#f44336" stroke-width="1" rx="5"/>
+      <text x="90" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d32f2f">Query (Q)</text>
+      <text x="90" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">W_Q × X</text>
+      
+      <rect x="140" y="210" width="60" height="40" fill="#c8e6c9" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="170" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#388e3c">Key (K)</text>
+      <text x="170" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">W_K × X</text>
+      
+      <rect x="220" y="210" width="60" height="40" fill="#bbdefb" stroke="#2196f3" stroke-width="1" rx="5"/>
+      <text x="250" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Value (V)</text>
+      <text x="250" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">W_V × X</text>
+    </g>
+    
+    <!-- Attention computation -->
+    <g id="attention-computation">
+      <text x="60" y="275" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Attention Computation:</text>
+      <text x="60" y="295" font-family="Arial, sans-serif" font-size="11" fill="#555">1. Attention Scores: QK^T</text>
+      <text x="60" y="310" font-family="Arial, sans-serif" font-size="11" fill="#555">2. Scale: QK^T / √d_k</text>
+      <text x="60" y="325" font-family="Arial, sans-serif" font-size="11" fill="#555">3. Softmax: softmax(QK^T / √d_k)</text>
+      <text x="60" y="340" font-family="Arial, sans-serif" font-size="11" fill="#555">4. Weighted Values: Attention × V</text>
+      
+      <!-- Attention weights visualization -->
+      <g transform="translate(200, 270)">
+        <rect width="100" height="80" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="5"/>
+        <text x="50" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#f57c00">Attention Matrix</text>
+        
+        <!-- Heat map representation -->
+        <rect x="10" y="20" width="12" height="12" fill="#ff5722" opacity="0.8"/>
+        <rect x="25" y="20" width="12" height="12" fill="#ff9800" opacity="0.6"/>
+        <rect x="40" y="20" width="12" height="12" fill="#ffc107" opacity="0.4"/>
+        <rect x="55" y="20" width="12" height="12" fill="#ffeb3b" opacity="0.3"/>
+        <rect x="70" y="20" width="12" height="12" fill="#4caf50" opacity="0.2"/>
+        
+        <rect x="10" y="35" width="12" height="12" fill="#ff9800" opacity="0.6"/>
+        <rect x="25" y="35" width="12" height="12" fill="#ff5722" opacity="0.8"/>
+        <rect x="40" y="35" width="12" height="12" fill="#ff9800" opacity="0.6"/>
+        <rect x="55" y="35" width="12" height="12" fill="#ffc107" opacity="0.4"/>
+        <rect x="70" y="35" width="12" height="12" fill="#ffeb3b" opacity="0.3"/>
+        
+        <rect x="10" y="50" width="12" height="12" fill="#ffc107" opacity="0.4"/>
+        <rect x="25" y="50" width="12" height="12" fill="#ff9800" opacity="0.6"/>
+        <rect x="40" y="50" width="12" height="12" fill="#ff5722" opacity="0.8"/>
+        <rect x="55" y="50" width="12" height="12" fill="#ff9800" opacity="0.6"/>
+        <rect x="70" y="50" width="12" height="12" fill="#ffc107" opacity="0.4"/>
+        
+        <text x="50" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Token-to-Token Attention</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Transformer Architecture -->
+  <g id="transformer-architecture">
+    <rect x="370" y="170" width="400" height="200" fill="#ffffff" stroke="#9c27b0" stroke-width="2" rx="10"/>
+    <text x="570" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9c27b0">Transformer Architecture</text>
+    
+    <!-- Encoder stack -->
+    <g id="encoder-stack">
+      <text x="420" y="220" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Encoder Stack:</text>
+      
+      <!-- Layer 1 -->
+      <rect x="420" y="230" width="80" height="25" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="3"/>
+      <text x="460" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Multi-Head Attention</text>
+      
+      <rect x="420" y="260" width="80" height="20" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="3"/>
+      <text x="460" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Feed Forward</text>
+      
+      <!-- Layer 2 -->
+      <rect x="520" y="230" width="80" height="25" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="3"/>
+      <text x="560" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Multi-Head Attention</text>
+      
+      <rect x="520" y="260" width="80" height="20" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="3"/>
+      <text x="560" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Feed Forward</text>
+      
+      <!-- More layers indicator -->
+      <text x="630" y="250" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#666">...</text>
+      
+      <!-- Layer N -->
+      <rect x="650" y="230" width="80" height="25" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="3"/>
+      <text x="690" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Multi-Head Attention</text>
+      
+      <rect x="650" y="260" width="80" height="20" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="3"/>
+      <text x="690" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Feed Forward</text>
+    </g>
+    
+    <!-- Key innovations -->
+    <g id="innovations">
+      <text x="420" y="310" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Key Innovations:</text>
+      <text x="420" y="330" font-family="Arial, sans-serif" font-size="11" fill="#555">• Residual Connections: x + Attention(x)</text>
+      <text x="420" y="345" font-family="Arial, sans-serif" font-size="11" fill="#555">• Layer Normalization: LayerNorm(x)</text>
+      <text x="420" y="360" font-family="Arial, sans-serif" font-size="11" fill="#555">• Positional Encoding: PE(pos, 2i) = sin(pos/10000^(2i/d))</text>
+    </g>
+  </g>
+  
+  <!-- Mathematical Formulas -->
+  <g id="math-formulas">
+    <rect x="30" y="390" width="740" height="180" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="10"/>
+    <text x="400" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Mathematical Foundations</text>
+    
+    <!-- Self-Attention Formula -->
+    <g id="attention-formula">
+      <text x="50" y="440" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ff5722">Self-Attention:</text>
+      <text x="50" y="460" font-family="Arial, sans-serif" font-size="13" fill="#333">Attention(Q, K, V) = softmax(QK^T / √d_k)V</text>
+      <text x="50" y="475" font-family="Arial, sans-serif" font-size="11" fill="#555">where d_k is the dimension of key vectors</text>
+    </g>
+    
+    <!-- Multi-Head Attention -->
+    <g id="multihead-formula">
+      <text x="400" y="440" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9c27b0">Multi-Head Attention:</text>
+      <text x="400" y="460" font-family="Arial, sans-serif" font-size="13" fill="#333">MultiHead(Q,K,V) = Concat(head₁,...,headₕ)W^O</text>
+      <text x="400" y="475" font-family="Arial, sans-serif" font-size="11" fill="#555">where headᵢ = Attention(QWᵢQ, KWᵢK, VWᵢV)</text>
+    </g>
+    
+    <!-- Positional Encoding -->
+    <g id="positional-formula">
+      <text x="50" y="500" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2196f3">Positional Encoding:</text>
+      <text x="50" y="520" font-family="Arial, sans-serif" font-size="13" fill="#333">PE(pos, 2i) = sin(pos / 10000^(2i/d_model))</text>
+      <text x="50" y="535" font-family="Arial, sans-serif" font-size="13" fill="#333">PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</text>
+    </g>
+    
+    <!-- Layer Normalization -->
+    <g id="layernorm-formula">
+      <text x="450" y="500" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4caf50">Layer Normalization:</text>
+      <text x="450" y="520" font-family="Arial, sans-serif" font-size="13" fill="#333">LayerNorm(x) = γ((x - μ)/σ) + β</text>
+      <text x="450" y="535" font-family="Arial, sans-serif" font-size="11" fill="#555">where μ and σ are computed across features</text>
+    </g>
+    
+    <!-- Feed Forward Network -->
+    <g id="ffn-formula">
+      <text x="50" y="555" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ff9800">Feed Forward Network:</text>
+      <text x="50" y="575" font-family="Arial, sans-serif" font-size="13" fill="#333">FFN(x) = max(0, xW₁ + b₁)W₂ + b₂</text>
+    </g>
+    
+    <!-- Loss Function -->
+    <g id="loss-formula">
+      <text x="400" y="555" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e91e63">Cross-Entropy Loss:</text>
+      <text x="400" y="575" font-family="Arial, sans-serif" font-size="13" fill="#333">L = -∑ᵢ yᵢ log(ŷᵢ)</text>
+    </g>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

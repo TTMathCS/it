@@ -1,0 +1,349 @@
+<svg width="800" height="650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faultToleranceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9a9e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fecfef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="recoveryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a18cd1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fbc2eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="reliabilityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fad0c4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd1ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="probabilityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fed6e3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="650" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">
+    Failure Models and Fault Tolerance in Apache Spark
+  </text>
+  
+  <!-- Fault Tolerance Mechanisms Section -->
+  <g id="fault-tolerance">
+    <rect x="20" y="60" width="370" height="150" rx="10" fill="url(#faultToleranceGradient)" opacity="0.2" stroke="#ff9a9e" stroke-width="2"/>
+    <text x="205" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Fault Tolerance Mechanisms
+    </text>
+    
+    <!-- Lineage-based Recovery -->
+    <g id="lineage-recovery">
+      <text x="40" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Lineage-based Recovery:</text>
+      <text x="40" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Recompute lost partitions from lineage</text>
+      
+      <!-- Lineage chain visualization -->
+      <circle cx="60" cy="140" r="8" fill="#ff9a9e" opacity="0.8"/>
+      <text x="60" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">RDD₁</text>
+      
+      <path d="M 68 140 L 82 140" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="75" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">f₁</text>
+      
+      <circle cx="90" cy="140" r="8" fill="#ff9a9e" opacity="0.8"/>
+      <text x="90" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">RDD₂</text>
+      
+      <path d="M 98 140 L 112 140" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="105" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">f₂</text>
+      
+      <!-- Failed partition -->
+      <circle cx="120" cy="140" r="8" fill="#d63031" opacity="0.8" stroke="#d63031" stroke-width="2" stroke-dasharray="3,3"/>
+      <text x="120" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">RDD₃</text>
+      <text x="120" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#d63031">LOST</text>
+      
+      <!-- Recovery arrow -->
+      <path d="M 110 148 Q 105 155 110 162 Q 115 155 110 148" stroke="#00b894" stroke-width="2" fill="none"/>
+      <text x="110" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#00b894">Recompute</text>
+      
+      <!-- Mathematical formula -->
+      <text x="40" y="190" font-family="Arial, sans-serif" font-size="9" fill="#666">Recovery Cost = D × T_avg_transformation</text>
+    </g>
+    
+    <!-- Checkpointing -->
+    <g id="checkpointing">
+      <text x="200" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Checkpointing Strategy:</text>
+      <text x="200" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Periodic snapshots for recovery</text>
+      
+      <!-- Checkpoint visualization -->
+      <rect x="200" y="135" width="15" height="8" fill="#fecfef" opacity="0.8"/>
+      <rect x="220" y="135" width="15" height="8" fill="#fecfef" opacity="0.6"/>
+      <rect x="240" y="135" width="15" height="8" fill="#fecfef" opacity="0.8"/>
+      <rect x="260" y="135" width="15" height="8" fill="#fecfef" opacity="0.6"/>
+      
+      <!-- Checkpoint markers -->
+      <text x="207" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">C₁</text>
+      <text x="247" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">C₂</text>
+      
+      <text x="230" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Checkpoint Interval</text>
+      
+      <!-- Optimization formula -->
+      <text x="200" y="175" font-family="Arial, sans-serif" font-size="9" fill="#666">Optimal T_c = √(2C_checkpoint/(λ×C_recovery))</text>
+      <text x="200" y="190" font-family="Arial, sans-serif" font-size="8" fill="#888">Minimize total expected cost</text>
+    </g>
+  </g>
+  
+  <!-- Recovery Strategies Section -->
+  <g id="recovery-strategies">
+    <rect x="410" y="60" width="370" height="150" rx="10" fill="url(#recoveryGradient)" opacity="0.2" stroke="#a18cd1" stroke-width="2"/>
+    <text x="595" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Recovery Strategies
+    </text>
+    
+    <!-- Speculative Execution -->
+    <g id="speculative-execution">
+      <text x="430" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Speculative Execution:</text>
+      <text x="430" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Launch backup tasks for stragglers</text>
+      
+      <!-- Task execution visualization -->
+      <g id="task-timeline">
+        <!-- Normal tasks -->
+        <rect x="430" y="135" width="20" height="8" fill="#a18cd1" opacity="0.8"/>
+        <rect x="455" y="135" width="20" height="8" fill="#a18cd1" opacity="0.8"/>
+        <rect x="480" y="135" width="20" height="8" fill="#a18cd1" opacity="0.8"/>
+        
+        <!-- Straggler task -->
+        <rect x="505" y="135" width="40" height="8" fill="#d63031" opacity="0.6"/>
+        <text x="525" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">Straggler</text>
+        
+        <!-- Speculative task -->
+        <rect x="525" y="148" width="15" height="8" fill="#00b894" opacity="0.8"/>
+        <text x="532" y="154" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">Spec</text>
+        
+        <!-- Time axis -->
+        <line x1="430" y1="165" x2="550" y2="165" stroke="#333" stroke-width="1"/>
+        <text x="490" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Time</text>
+      </g>
+      
+      <!-- Straggler detection formula -->
+      <text x="430" y="190" font-family="Arial, sans-serif" font-size="9" fill="#666">Straggler if task_time &gt; β × median_time</text>
+    </g>
+    
+    <!-- Dynamic Replication -->
+    <g id="dynamic-replication">
+      <text x="580" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Dynamic Replication:</text>
+      <text x="580" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Adaptive replication based on risk</text>
+      
+      <!-- Replication visualization -->
+      <g id="replication-levels">
+        <circle cx="590" cy="145" r="6" fill="#fbc2eb" opacity="0.8"/>
+        <text x="590" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" fill="white">P</text>
+        
+        <!-- Replica arrows -->
+        <path d="M 596 145 L 610 138" stroke="#333" stroke-width="1"/>
+        <path d="M 596 145 L 610 152" stroke="#333" stroke-width="1"/>
+        
+        <!-- Replicas -->
+        <circle cx="615" cy="135" r="4" fill="#fbc2eb" opacity="0.6"/>
+        <circle cx="615" cy="155" r="4" fill="#fbc2eb" opacity="0.6"/>
+        <text x="615" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="4" fill="white">R₁</text>
+        <text x="615" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="4" fill="white">R₂</text>
+      </g>
+      
+      <!-- Risk formula -->
+      <text x="580" y="175" font-family="Arial, sans-serif" font-size="9" fill="#666">Risk = failure_rate × recovery_time × access_freq</text>
+      <text x="580" y="190" font-family="Arial, sans-serif" font-size="8" fill="#888">Replication factor = f(risk_score)</text>
+    </g>
+  </g>
+  
+  <!-- Failure Probability Models Section -->
+  <g id="probability-models">
+    <rect x="20" y="230" width="370" height="160" rx="10" fill="url(#probabilityGradient)" opacity="0.2" stroke="#a8edea" stroke-width="2"/>
+    <text x="205" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Failure Probability Models
+    </text>
+    
+    <!-- Exponential Failure Model -->
+    <g id="exponential-model">
+      <text x="40" y="280" font-family="Arial, sans-serif" font-size="12" fill="#333">Exponential Failure Distribution:</text>
+      <text x="40" y="295" font-family="Arial, sans-serif" font-size="10" fill="#666">f(t) = λe^(-λt)</text>
+      
+      <!-- Exponential curve -->
+      <path d="M 40 310 Q 60 305 80 315 Q 100 325 120 335" 
+            stroke="#a8edea" stroke-width="2" fill="none"/>
+      <text x="80" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Time</text>
+      
+      <!-- Parameters -->
+      <text x="40" y="365" font-family="Arial, sans-serif" font-size="9" fill="#666">MTTF = 1/λ, Reliability R(t) = e^(-λt)</text>
+    </g>
+    
+    <!-- Weibull Model -->
+    <g id="weibull-model">
+      <text x="200" y="280" font-family="Arial, sans-serif" font-size="12" fill="#333">Weibull Model (Aging):</text>
+      <text x="200" y="295" font-family="Arial, sans-serif" font-size="10" fill="#666">f(t) = (β/η)(t/η)^(β-1)e^(-(t/η)^β)</text>
+      
+      <!-- Weibull curve -->
+      <path d="M 200 310 Q 220 308 240 315 Q 260 330 280 345" 
+            stroke="#fed6e3" stroke-width="2" fill="none"/>
+      <text x="240" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Increasing failure rate</text>
+      
+      <!-- Shape parameter -->
+      <text x="200" y="375" font-family="Arial, sans-serif" font-size="9" fill="#666">β &gt; 1: wear-out, β &lt; 1: early failure</text>
+    </g>
+  </g>
+  
+  <!-- Reliability Analysis Section -->
+  <g id="reliability-analysis">
+    <rect x="410" y="230" width="370" height="160" rx="10" fill="url(#reliabilityGradient)" opacity="0.2" stroke="#fad0c4" stroke-width="2"/>
+    <text x="595" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      System Reliability Analysis
+    </text>
+    
+    <!-- Availability Calculation -->
+    <g id="availability">
+      <text x="430" y="280" font-family="Arial, sans-serif" font-size="12" fill="#333">System Availability:</text>
+      <text x="430" y="295" font-family="Arial, sans-serif" font-size="10" fill="#666">A = MTBF / (MTBF + MTTR)</text>
+      
+      <!-- Availability visualization -->
+      <rect x="430" y="305" width="60" height="8" fill="#00b894" opacity="0.8"/>
+      <rect x="490" y="305" width="10" height="8" fill="#d63031" opacity="0.8"/>
+      <text x="460" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#00b894">Uptime</text>
+      <text x="495" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d63031">Down</text>
+      
+      <!-- With replication -->
+      <text x="430" y="340" font-family="Arial, sans-serif" font-size="10" fill="#666">With replication r:</text>
+      <text x="430" y="355" font-family="Arial, sans-serif" font-size="10" fill="#666">A_cluster = 1 - (1 - A_node)^r</text>
+    </g>
+    
+    <!-- Network Partition -->
+    <g id="network-partition">
+      <text x="580" y="280" font-family="Arial, sans-serif" font-size="12" fill="#333">Network Partitions:</text>
+      <text x="580" y="295" font-family="Arial, sans-serif" font-size="10" fill="#666">CAP Theorem implications</text>
+      
+      <!-- Network partition visualization -->
+      <g id="partition-visualization">
+        <circle cx="590" cy="310" r="8" fill="#ffd1ff" opacity="0.8"/>
+        <circle cx="610" cy="310" r="8" fill="#ffd1ff" opacity="0.8"/>
+        <circle cx="630" cy="310" r="8" fill="#ffd1ff" opacity="0.8"/>
+        
+        <!-- Partition line -->
+        <line x1="605" y1="300" x2="605" y2="320" stroke="#d63031" stroke-width="3"/>
+        <text x="605" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#d63031">Partition</text>
+        
+        <text x="590" y="314" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" fill="white">N₁</text>
+        <text x="620" y="314" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" fill="white">N₂,₃</text>
+      </g>
+      
+      <!-- CAP choices -->
+      <text x="580" y="335" font-family="Arial, sans-serif" font-size="9" fill="#666">Spark: Availability + Partition tolerance</text>
+      <text x="580" y="350" font-family="Arial, sans-serif" font-size="9" fill="#666">Eventually consistent via lineage</text>
+      <text x="580" y="365" font-family="Arial, sans-serif" font-size="8" fill="#888">Timeout detection: max_delay × safety_factor</text>
+    </g>
+  </g>
+  
+  <!-- Memory Management Failures Section -->
+  <g id="memory-failures">
+    <rect x="20" y="410" width="370" height="120" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="205" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Memory Management Failures
+    </text>
+    
+    <!-- OOM Prevention -->
+    <g id="oom-prevention">
+      <text x="40" y="460" font-family="Arial, sans-serif" font-size="12" fill="#333">Out-of-Memory Prevention:</text>
+      <text x="40" y="475" font-family="Arial, sans-serif" font-size="10" fill="#666">Predictive spilling based on usage trends</text>
+      
+      <!-- Memory usage visualization -->
+      <rect x="40" y="485" width="100" height="15" fill="none" stroke="#4A90E2" stroke-width="1"/>
+      <rect x="40" y="485" width="70" height="15" fill="#4A90E2" opacity="0.6"/>
+      <rect x="110" y="485" width="30" height="15" fill="#d63031" opacity="0.4"/>
+      
+      <text x="75" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Used</text>
+      <text x="125" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Danger</text>
+      
+      <!-- Spill threshold -->
+      <line x1="120" y1="480" x2="120" y2="505" stroke="#e17055" stroke-width="2"/>
+      <text x="125" y="515" font-family="Arial, sans-serif" font-size="8" fill="#e17055">Spill Threshold</text>
+    </g>
+    
+    <!-- GC Impact -->
+    <g id="gc-impact">
+      <text x="200" y="460" font-family="Arial, sans-serif" font-size="12" fill="#333">GC Pause Impact:</text>
+      <text x="200" y="475" font-family="Arial, sans-serif" font-size="10" fill="#666">T_gc = c × heap_size^α × garbage_ratio^β</text>
+      
+      <!-- GC pause visualization -->
+      <path d="M 200 485 L 210 485 L 212 490 L 218 490 L 220 485 L 230 485 L 232 492 L 240 492 L 242 485 L 280 485" 
+            stroke="#e17055" stroke-width="2" fill="none"/>
+      <text x="240" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">GC Pauses</text>
+      
+      <!-- Mitigation -->
+      <text x="200" y="520" font-family="Arial, sans-serif" font-size="9" fill="#666">Effective CPU = (1 - T_gc/T_total) × nominal_CPU</text>
+    </g>
+  </g>
+  
+  <!-- Monitoring and Prediction Section -->
+  <g id="monitoring">
+    <rect x="410" y="410" width="370" height="120" rx="10" fill="#FFF2E8" stroke="#E17055" stroke-width="2"/>
+    <text x="595" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Failure Prediction &amp; Monitoring
+    </text>
+    
+    <!-- Predictive Models -->
+    <g id="predictive-models">
+      <text x="430" y="460" font-family="Arial, sans-serif" font-size="12" fill="#333">ML-based Failure Prediction:</text>
+      <text x="430" y="475" font-family="Arial, sans-serif" font-size="10" fill="#666">Logistic regression on system metrics</text>
+      
+      <!-- Prediction features -->
+      <text x="430" y="490" font-family="Arial, sans-serif" font-size="9" fill="#666">Features: CPU, memory, disk I/O, network latency</text>
+      <text x="430" y="505" font-family="Arial, sans-serif" font-size="9" fill="#666">P(failure) = sigmoid(Σ wᵢ × feature_i + bias)</text>
+      <text x="430" y="520" font-family="Arial, sans-serif" font-size="8" fill="#888">Early warning when P(failure) &gt; threshold</text>
+    </g>
+    
+    <!-- Statistical Control Charts -->
+    <g id="control-charts">
+      <text x="620" y="460" font-family="Arial, sans-serif" font-size="12" fill="#333">Statistical Control Charts:</text>
+      <text x="620" y="475" font-family="Arial, sans-serif" font-size="10" fill="#666">Anomaly detection using control limits</text>
+      
+      <!-- Control chart visualization -->
+      <line x1="620" y1="485" x2="720" y2="485" stroke="#333" stroke-width="1"/>
+      <line x1="620" y1="480" x2="720" y2="480" stroke="#e17055" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="620" y1="490" x2="720" y2="490" stroke="#e17055" stroke-width="1" stroke-dasharray="3,3"/>
+      
+      <text x="725" y="483" font-family="Arial, sans-serif" font-size="8" fill="#333">μ</text>
+      <text x="725" y="478" font-family="Arial, sans-serif" font-size="8" fill="#e17055">UCL</text>
+      <text x="725" y="493" font-family="Arial, sans-serif" font-size="8" fill="#e17055">LCL</text>
+      
+      <!-- Data points -->
+      <circle cx="640" cy="486" r="2" fill="#4A90E2"/>
+      <circle cx="660" cy="484" r="2" fill="#4A90E2"/>
+      <circle cx="680" cy="487" r="2" fill="#4A90E2"/>
+      <circle cx="700" cy="478" r="2" fill="#d63031"/> <!-- Anomaly -->
+      
+      <!-- Formulas -->
+      <text x="620" y="510" font-family="Arial, sans-serif" font-size="9" fill="#666">UCL/LCL = μ ± k×σ where k=2 or 3</text>
+      <text x="620" y="525" font-family="Arial, sans-serif" font-size="8" fill="#888">Alert if metric &gt; UCL or metric &lt; LCL</text>
+    </g>
+  </g>
+  
+  <!-- Mathematical Summary -->
+  <g id="mathematical-summary">
+    <rect x="20" y="550" width="760" height="80" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="2"/>
+    <text x="400" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Mathematical Fault Tolerance Guarantees
+    </text>
+    
+    <!-- Key formulas -->
+    <g id="key-formulas">
+      <text x="60" y="600" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff9a9e">Recovery Time:</text>
+      <text x="60" y="615" font-family="Arial, sans-serif" font-size="10" fill="#333">E[T_recovery] = D × T_avg ± confidence_interval</text>
+      
+      <text x="280" y="600" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#a18cd1">Availability:</text>
+      <text x="280" y="615" font-family="Arial, sans-serif" font-size="10" fill="#333">A_system = 1 - P(failure)^replication_factor</text>
+      
+      <text x="520" y="600" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#a8edea">Fault Probability:</text>
+      <text x="520" y="615" font-family="Arial, sans-serif" font-size="10" fill="#333">P(k failures in n nodes) = C(n,k) × p^k × (1-p)^(n-k)</text>
+    </g>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c0392b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#27ae60;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#229954;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8e44ad;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Popular Kafka Use Cases
+  </text>
+  
+  <!-- Real-time Analytics -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="140" height="120" fill="url(#grad1)" rx="10"/>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Real-time Analytics
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Stream Processing
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Live Dashboards
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Fraud Detection
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • A/B Testing
+    </text>
+  </g>
+  
+  <!-- Event-driven Architecture -->
+  <g transform="translate(210, 80)">
+    <rect x="0" y="0" width="140" height="120" fill="url(#grad2)" rx="10"/>
+    <text x="70" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Event-driven
+    </text>
+    <text x="70" y="35" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Architecture
+    </text>
+    <text x="15" y="55" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Microservices
+    </text>
+    <text x="15" y="75" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Event Sourcing
+    </text>
+    <text x="15" y="95" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • CQRS Pattern
+    </text>
+    <text x="15" y="115" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Saga Pattern
+    </text>
+  </g>
+  
+  <!-- IoT Data Processing -->
+  <g transform="translate(370, 80)">
+    <rect x="0" y="0" width="140" height="120" fill="url(#grad3)" rx="10"/>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      IoT Data Processing
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Sensor Data
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Time Series
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Device Monitoring
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Edge Computing
+    </text>
+  </g>
+  
+  <!-- Log Aggregation -->
+  <g transform="translate(530, 80)">
+    <rect x="0" y="0" width="140" height="120" fill="url(#grad4)" rx="10"/>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Log Aggregation
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • System Logs
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Application Logs
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Centralized Logging
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • ELK Stack Integration
+    </text>
+  </g>
+  
+  <!-- Change Data Capture -->
+  <g transform="translate(290, 220)">
+    <rect x="0" y="0" width="140" height="120" fill="url(#grad5)" rx="10"/>
+    <text x="70" y="20" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Change Data
+    </text>
+    <text x="70" y="35" font-family="Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="white">
+      Capture (CDC)
+    </text>
+    <text x="15" y="60" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Database Sync
+    </text>
+    <text x="15" y="80" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Data Replication
+    </text>
+    <text x="15" y="100" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • ETL Pipelines
+    </text>
+    <text x="15" y="120" font-family="Arial, sans-serif" font-size="10" fill="white">
+      • Data Warehousing
+    </text>
+  </g>
+  
+  <!-- Use Case Benefits -->
+  <g transform="translate(100, 380)">
+    <rect x="0" y="0" width="600" height="160" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="300" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Mathematical Benefits by Use Case
+    </text>
+    
+    <!-- Real-time Analytics -->
+    <text x="50" y="55" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">
+      Real-time Analytics:
+    </text>
+    <text x="190" y="55" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">
+      Low latency (sub-100ms), High throughput (millions events/sec)
+    </text>
+    
+    <!-- Event-driven -->
+    <text x="50" y="80" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">
+      Event-driven:
+    </text>
+    <text x="150" y="80" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">
+      Loose coupling, Eventual consistency, Horizontal scalability
+    </text>
+    
+    <!-- IoT Processing -->
+    <text x="50" y="105" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f39c12">
+      IoT Processing:
+    </text>
+    <text x="160" y="105" font-family="Arial, sans-serif" font-size="11" fill="white">
+      Time-series optimization, Compression (70-90%), Batch processing
+    </text>
+    
+    <!-- Log Aggregation -->
+    <text x="50" y="130" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#27ae60">
+      Log Aggregation:
+    </text>
+    <text x="180" y="130" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">
+      Sequential I/O, Log compaction, Retention policies
+    </text>
+    
+    <!-- CDC -->
+    <text x="50" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9b59b6">
+      Change Data Capture:
+    </text>
+    <text x="210" y="155" font-family="Arial, sans-serif" font-size="11" fill="#2c3e50">
+      ACID compliance, Order preservation, Exactly-once delivery
+    </text>
+  </g>
+  
+  <!-- Use Case Flow -->
+  <g transform="translate(50, 560)">
+    <rect x="0" y="0" width="700" height="30" fill="#ffffff" stroke="#bdc3c7" stroke-width="2" rx="5"/>
+    <text x="350" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Data Sources → Kafka → Stream Processing → Data Sinks → Analytics/Actions
+    </text>
+  </g>
+  
+  <!-- Connecting arrows between use cases -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  
+  <!-- Arrows showing relationships -->
+  <line x1="120" y1="200" x2="300" y2="220" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="200" x2="320" y2="220" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="200" x2="400" y2="220" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="200" x2="420" y2="220" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrows from use cases to benefits -->
+  <line x1="120" y1="200" x2="200" y2="380" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="200" x2="250" y2="380" stroke="#3498db" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="200" x2="300" y2="380" stroke="#f39c12" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="200" x2="350" y2="380" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="360" y1="340" x2="400" y2="380" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

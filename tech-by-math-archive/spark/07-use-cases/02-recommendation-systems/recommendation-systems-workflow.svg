@@ -1,0 +1,379 @@
+<svg width="800" height="650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dataGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="alsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="matrixGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="servingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="evalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="650" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">
+    Large-Scale Recommendation Systems Workflow
+  </text>
+  
+  <!-- User-Item Interaction Data -->
+  <g id="user-item-data">
+    <rect x="50" y="60" width="140" height="100" rx="10" fill="url(#dataGradient)" opacity="0.8"/>
+    <text x="120" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      User-Item Interactions
+    </text>
+    
+    <!-- Rating Matrix Visualization -->
+    <g id="rating-matrix">
+      <rect x="70" y="100" width="100" height="40" fill="none" stroke="white" stroke-width="1"/>
+      <line x1="85" y1="100" x2="85" y2="140" stroke="white" stroke-width="0.5"/>
+      <line x1="100" y1="100" x2="100" y2="140" stroke="white" stroke-width="0.5"/>
+      <line x1="115" y1="100" x2="115" y2="140" stroke="white" stroke-width="0.5"/>
+      <line x1="130" y1="100" x2="130" y2="140" stroke="white" stroke-width="0.5"/>
+      <line x1="145" y1="100" x2="145" y2="140" stroke="white" stroke-width="0.5"/>
+      <line x1="160" y1="100" x2="160" y2="140" stroke="white" stroke-width="0.5"/>
+      
+      <line x1="70" y1="113" x2="170" y2="113" stroke="white" stroke-width="0.5"/>
+      <line x1="70" y1="126" x2="170" y2="126" stroke="white" stroke-width="0.5"/>
+      
+      <!-- Matrix entries -->
+      <text x="77" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">5</text>
+      <text x="92" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="107" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">3</text>
+      <text x="122" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="137" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">4</text>
+      <text x="152" y="110" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      
+      <text x="77" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="92" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">2</text>
+      <text x="107" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="122" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">5</text>
+      <text x="137" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="152" y="123" font-family="Arial, sans-serif" font-size="6" fill="white">1</text>
+      
+      <text x="77" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">4</text>
+      <text x="92" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="107" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+      <text x="122" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">3</text>
+      <text x="137" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">2</text>
+      <text x="152" y="136" font-family="Arial, sans-serif" font-size="6" fill="white">?</text>
+    </g>
+    
+    <!-- Data Statistics -->
+    <text x="120" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+      100M+ ratings, 1M users, 100K items
+    </text>
+  </g>
+  
+  <!-- Data Preprocessing -->
+  <g id="preprocessing">
+    <rect x="220" y="60" width="120" height="100" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="280" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">
+      Data Preprocessing
+    </text>
+    
+    <!-- Preprocessing Steps -->
+    <text x="240" y="105" font-family="Arial, sans-serif" font-size="9" fill="#333">• Implicit → Explicit</text>
+    <text x="240" y="118" font-family="Arial, sans-serif" font-size="9" fill="#333">• Data Cleaning</text>
+    <text x="240" y="131" font-family="Arial, sans-serif" font-size="9" fill="#333">• Sparsity Analysis</text>
+    <text x="240" y="144" font-family="Arial, sans-serif" font-size="9" fill="#333">• Train/Test Split</text>
+    
+    <!-- Sparsity Formula -->
+    <text x="280" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">
+      Sparsity = 1 - nnz(R) / (|U| × |I|)
+    </text>
+  </g>
+  
+  <!-- ALS Training -->
+  <g id="als-training">
+    <rect x="370" y="60" width="180" height="100" rx="10" fill="url(#alsGradient)" opacity="0.8"/>
+    <text x="460" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      ALS Matrix Factorization
+    </text>
+    
+    <!-- ALS Algorithm Steps -->
+    <g id="als-steps">
+      <rect x="390" y="95" width="50" height="20" rx="3" fill="#f093fb" opacity="0.9"/>
+      <text x="415" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Initialize</text>
+      <text x="415" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">P, Q random</text>
+      
+      <rect x="450" y="95" width="50" height="20" rx="3" fill="#f5576c" opacity="0.9"/>
+      <text x="475" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Alternate</text>
+      <text x="475" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">User/Item</text>
+      
+      <rect x="510" y="95" width="30" height="20" rx="3" fill="#f093fb" opacity="0.9"/>
+      <text x="525" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Conv</text>
+      <text x="525" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">Check</text>
+    </g>
+    
+    <!-- ALS Mathematical Formula -->
+    <text x="460" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+      pᵤ = (QᵀQ + λI)⁻¹QᵀRᵤ
+    </text>
+    <text x="460" y="152" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+      qᵢ = (PᵀP + λI)⁻¹PᵀRᵢ
+    </text>
+  </g>
+  
+  <!-- Factorized Matrices -->
+  <g id="factorized-matrices">
+    <rect x="580" y="60" width="170" height="100" rx="10" fill="url(#matrixGradient)" opacity="0.8"/>
+    <text x="665" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      Factorized Matrices
+    </text>
+    
+    <!-- User Matrix P -->
+    <g id="user-matrix">
+      <rect x="600" y="95" width="30" height="25" rx="3" fill="#4facfe" opacity="0.9"/>
+      <text x="615" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">P</text>
+      <text x="615" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Users</text>
+      <text x="615" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">|U|×k</text>
+    </g>
+    
+    <!-- Multiplication symbol -->
+    <text x="645" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">×</text>
+    
+    <!-- Item Matrix Q -->
+    <g id="item-matrix">
+      <rect x="670" y="95" width="30" height="25" rx="3" fill="#00f2fe" opacity="0.9"/>
+      <text x="685" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Qᵀ</text>
+      <text x="685" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Items</text>
+      <text x="685" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">k×|I|</text>
+    </g>
+    
+    <!-- Latent Factors -->
+    <text x="665" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+      k = 100 latent factors
+    </text>
+  </g>
+  
+  <!-- Model Evaluation -->
+  <g id="model-evaluation">
+    <rect x="50" y="190" width="160" height="120" rx="10" fill="url(#evalGradient)" opacity="0.8"/>
+    <text x="130" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      Model Evaluation
+    </text>
+    
+    <!-- Evaluation Metrics -->
+    <g id="eval-metrics">
+      <text x="70" y="235" font-family="Arial, sans-serif" font-size="10" fill="white">RMSE:</text>
+      <text x="110" y="235" font-family="Arial, sans-serif" font-size="10" fill="white">0.85</text>
+      
+      <text x="70" y="250" font-family="Arial, sans-serif" font-size="10" fill="white">MAE:</text>
+      <text x="110" y="250" font-family="Arial, sans-serif" font-size="10" fill="white">0.67</text>
+      
+      <text x="70" y="265" font-family="Arial, sans-serif" font-size="10" fill="white">Precision@10:</text>
+      <text x="140" y="265" font-family="Arial, sans-serif" font-size="10" fill="white">0.23</text>
+      
+      <text x="70" y="280" font-family="Arial, sans-serif" font-size="10" fill="white">Recall@10:</text>
+      <text x="130" y="280" font-family="Arial, sans-serif" font-size="10" fill="white">0.18</text>
+      
+      <text x="70" y="295" font-family="Arial, sans-serif" font-size="10" fill="white">NDCG@10:</text>
+      <text x="125" y="295" font-family="Arial, sans-serif" font-size="10" fill="white">0.31</text>
+    </g>
+  </g>
+  
+  <!-- Similarity Computation -->
+  <g id="similarity-computation">
+    <rect x="240" y="190" width="180" height="120" rx="10" fill="#FFF2E8" stroke="#E17055" stroke-width="2"/>
+    <text x="330" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">
+      Similarity Computation
+    </text>
+    
+    <!-- Similarity Metrics -->
+    <g id="similarity-metrics">
+      <text x="250" y="235" font-family="Arial, sans-serif" font-size="9" fill="#333">Cosine Similarity:</text>
+      <text x="250" y="248" font-family="Arial, sans-serif" font-size="8" fill="#666">sim(u,v) = (u·v) / (||u|| × ||v||)</text>
+      
+      <text x="250" y="265" font-family="Arial, sans-serif" font-size="9" fill="#333">Pearson Correlation:</text>
+      <text x="250" y="278" font-family="Arial, sans-serif" font-size="8" fill="#666">ρ = Σ(rᵤᵢ-r̄ᵤ)(rᵥᵢ-r̄ᵥ) / σᵤσᵥ</text>
+      
+      <text x="250" y="295" font-family="Arial, sans-serif" font-size="9" fill="#333">Jaccard Index:</text>
+      <text x="250" y="305" font-family="Arial, sans-serif" font-size="8" fill="#666">J(A,B) = |A ∩ B| / |A ∪ B|</text>
+    </g>
+  </g>
+  
+  <!-- Recommendation Generation -->
+  <g id="recommendation-generation">
+    <rect x="450" y="190" width="160" height="120" rx="10" fill="url(#servingGradient)" opacity="0.8"/>
+    <text x="530" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      Recommendation
+    </text>
+    <text x="530" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+      Generation
+    </text>
+    
+    <!-- Recommendation Process -->
+    <g id="rec-process">
+      <circle cx="480" cy="255" r="15" fill="#43e97b" opacity="0.9"/>
+      <text x="480" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">User</text>
+      <text x="480" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">Profile</text>
+      
+      <!-- Arrow to scoring -->
+      <path d="M 495 255 L 510 255" stroke="white" stroke-width="2" marker-end="url(#whiteArrow)"/>
+      
+      <!-- Scoring -->
+      <rect x="515" y="245" width="30" height="20" rx="3" fill="#38f9d7" opacity="0.9"/>
+      <text x="530" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Score</text>
+      
+      <!-- Arrow to ranking -->
+      <path d="M 545 255 L 560 255" stroke="white" stroke-width="2" marker-end="url(#whiteArrow)"/>
+      
+      <!-- Top-K Selection -->
+      <rect x="565" y="245" width="30" height="20" rx="3" fill="#43e97b" opacity="0.9"/>
+      <text x="580" y="258" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Top-K</text>
+    </g>
+    
+    <!-- Prediction Formula -->
+    <text x="530" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">
+      r̂ᵤᵢ = μ + bᵤ + bᵢ + pᵤᵀqᵢ
+    </text>
+    <text x="530" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#E8F4FD">
+      Rating prediction formula
+    </text>
+  </g>
+  
+  <!-- Real-time Serving -->
+  <g id="realtime-serving">
+    <rect x="640" y="190" width="110" height="120" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="695" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">
+      Real-time
+    </text>
+    <text x="695" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">
+      Serving
+    </text>
+    
+    <!-- Serving Architecture -->
+    <g id="serving-arch">
+      <rect x="655" y="245" width="80" height="15" rx="3" fill="#4A90E2" opacity="0.7"/>
+      <text x="695" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Cached Factors</text>
+      
+      <rect x="655" y="265" width="80" height="15" rx="3" fill="#4A90E2" opacity="0.5"/>
+      <text x="695" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">Fast Lookup</text>
+      
+      <text x="695" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">
+        Latency: &lt; 50ms
+      </text>
+      <text x="695" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">
+        10K+ QPS
+      </text>
+    </g>
+  </g>
+  
+  <!-- Performance Analysis -->
+  <g id="performance-analysis">
+    <rect x="50" y="340" width="700" height="120" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="2"/>
+    <text x="400" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Mathematical Performance Analysis
+    </text>
+    
+    <!-- Scalability Metrics -->
+    <g id="scalability-metrics">
+      <text x="120" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Training Time:</text>
+      <text x="120" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">O(nnz(R) × k × iter)</text>
+      <text x="120" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Linear scaling</text>
+      <text x="120" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">100M ratings: 45 min</text>
+      
+      <text x="280" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f093fb">Memory Usage:</text>
+      <text x="280" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">O((|U| + |I|) × k)</text>
+      <text x="280" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Factor matrices</text>
+      <text x="280" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">1M users: 400MB</text>
+      
+      <text x="440" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4facfe">Convergence:</text>
+      <text x="440" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">||R - PQᵀ||²_F</text>
+      <text x="440" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Exponential decay</text>
+      <text x="440" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">~20 iterations</text>
+      
+      <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#43e97b">Serving:</text>
+      <text x="600" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">O(k) per prediction</text>
+      <text x="600" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Dot product</text>
+      <text x="600" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">10K+ QPS</text>
+    </g>
+  </g>
+  
+  <!-- Mathematical Formulas -->
+  <g id="mathematical-formulas">
+    <rect x="50" y="480" width="700" height="140" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="400" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Key Mathematical Formulas
+    </text>
+    
+    <!-- Matrix Factorization -->
+    <text x="150" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Matrix Factorization:</text>
+    <text x="150" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">R ≈ P × Qᵀ</text>
+    <text x="150" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">min ||R - PQᵀ||²_F + λ(||P||² + ||Q||²)</text>
+    <text x="150" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Regularized objective function</text>
+    
+    <!-- ALS Updates -->
+    <text x="400" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f093fb">ALS Updates:</text>
+    <text x="400" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">pᵤ = (QᵀQ + λI)⁻¹QᵀRᵤ</text>
+    <text x="400" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">qᵢ = (PᵀP + λI)⁻¹PᵀRᵢ</text>
+    <text x="400" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Alternating least squares</text>
+    
+    <!-- Evaluation Metrics -->
+    <text x="650" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4facfe">Evaluation:</text>
+    <text x="650" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">RMSE = √(Σ(rᵤᵢ - r̂ᵤᵢ)² / n)</text>
+    <text x="650" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Precision@K = |relevant ∩ rec|@K / K</text>
+    <text x="650" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Accuracy and ranking metrics</text>
+    
+    <!-- Business Impact -->
+    <text x="150" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#43e97b">Business Impact:</text>
+    <text x="150" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">CTR = clicks / impressions</text>
+    
+    <text x="400" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fa709a">Scalability:</text>
+    <text x="400" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Communication: O(k × (|U| + |I|))</text>
+    
+    <text x="650" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#E17055">Complexity:</text>
+    <text x="650" y="615" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Training: O(nnz(R) × k × iter)</text>
+  </g>
+  
+  <!-- Data Flow Arrows -->
+  <g id="data-flow">
+    <!-- Data to Preprocessing -->
+    <path d="M 190 110 L 220 110" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+    
+    <!-- Preprocessing to ALS -->
+    <path d="M 340 110 L 370 110" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+    
+    <!-- ALS to Matrices -->
+    <path d="M 550 110 L 580 110" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+    
+    <!-- To Evaluation -->
+    <path d="M 460 160 Q 460 180 200 190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    
+    <!-- To Similarity -->
+    <path d="M 460 160 Q 460 175 330 190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    
+    <!-- To Recommendation -->
+    <path d="M 550 160 Q 550 175 530 190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    
+    <!-- To Serving -->
+    <path d="M 665 160 Q 665 175 695 190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <marker id="whiteArrow" markerWidth="8" markerHeight="5" 
+     refX="7" refY="2.5" orient="auto">
+      <polygon points="0 0, 8 2.5, 0 5" fill="white" />
+    </marker>
+  </defs>
+</svg>

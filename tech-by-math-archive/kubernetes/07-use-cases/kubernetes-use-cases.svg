@@ -1,0 +1,249 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Popular Kubernetes Use Cases
+  </text>
+  
+  <!-- Microservices Architecture -->
+  <g transform="translate(50, 70)">
+    <rect width="220" height="110" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="110" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      Microservices
+    </text>
+    
+    <!-- Service boxes -->
+    <rect x="20" y="35" width="40" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">API</text>
+    
+    <rect x="70" y="35" width="40" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="90" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">User</text>
+    
+    <rect x="120" y="35" width="40" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="140" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Order</text>
+    
+    <rect x="170" y="35" width="40" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="190" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pay</text>
+    
+    <!-- Load balancer -->
+    <rect x="80" y="75" width="60" height="15" fill="#4caf50" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="110" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Load Balancer</text>
+    
+    <text x="110" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Auto-scaling Services
+    </text>
+  </g>
+  
+  <!-- CI/CD Pipeline -->
+  <g transform="translate(300, 70)">
+    <rect width="220" height="110" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="110" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      CI/CD Pipeline
+    </text>
+    
+    <!-- Pipeline stages -->
+    <circle cx="40" cy="50" r="12" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1976d2">Git</text>
+    
+    <rect x="70" y="40" width="30" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="85" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1976d2">Build</text>
+    
+    <rect x="110" y="40" width="30" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="125" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1976d2">Test</text>
+    
+    <rect x="150" y="40" width="30" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="165" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#1976d2">Deploy</text>
+    
+    <!-- Arrows -->
+    <path d="M 52 50 L 70 50" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 100 50 L 110 50" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 140 50 L 150 50" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="110" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Jenkins Auto-scaling
+    </text>
+    <text x="110" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Build Agents: 2-20 pods
+    </text>
+  </g>
+  
+  <!-- Data Processing -->
+  <g transform="translate(550, 70)">
+    <rect width="200" height="110" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="100" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f57900">
+      Data Processing
+    </text>
+    
+    <!-- Data flow -->
+    <rect x="20" y="35" width="35" height="20" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="37" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f57900">S3</text>
+    
+    <rect x="70" y="35" width="35" height="20" fill="#ffb74d" stroke="#f57900" stroke-width="2" rx="3"/>
+    <text x="87" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f57900">Spark</text>
+    
+    <rect x="120" y="35" width="35" height="20" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="137" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f57900">DB</text>
+    
+    <!-- CronJob -->
+    <rect x="60" y="70" width="80" height="15" fill="#ff9800" stroke="#f57900" stroke-width="2" rx="3"/>
+    <text x="100" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">CronJob: 0 2 * * *</text>
+    
+    <text x="100" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      10TB in 2 hours
+    </text>
+  </g>
+  
+  <!-- Multi-tenant SaaS -->
+  <g transform="translate(50, 210)">
+    <rect width="220" height="110" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="110" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#7b1fa2">
+      Multi-tenant SaaS
+    </text>
+    
+    <!-- Tenant namespaces -->
+    <rect x="20" y="35" width="60" height="40" fill="#e1bee7" stroke="#7b1fa2" stroke-width="1" rx="5"/>
+    <text x="50" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">Tenant A</text>
+    <text x="50" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">4 CPU, 8GB</text>
+    
+    <rect x="90" y="35" width="60" height="40" fill="#e1bee7" stroke="#7b1fa2" stroke-width="1" rx="5"/>
+    <text x="120" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">Tenant B</text>
+    <text x="120" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">2 CPU, 4GB</text>
+    
+    <rect x="160" y="35" width="40" height="40" fill="#e1bee7" stroke="#7b1fa2" stroke-width="1" rx="5"/>
+    <text x="180" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">Tenant C</text>
+    <text x="180" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">1 CPU, 2GB</text>
+    
+    <text x="110" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Resource Quotas &amp; Isolation
+    </text>
+  </g>
+  
+  <!-- Machine Learning -->
+  <g transform="translate(300, 210)">
+    <rect width="220" height="110" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="110" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d32f2f">
+      ML Model Serving
+    </text>
+    
+    <!-- ML pipeline -->
+    <rect x="30" y="35" width="50" height="25" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1" rx="3"/>
+    <text x="55" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">TensorFlow</text>
+    
+    <rect x="90" y="35" width="50" height="25" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1" rx="3"/>
+    <text x="115" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Serving</text>
+    
+    <rect x="150" y="35" width="50" height="25" fill="#ffcdd2" stroke="#d32f2f" stroke-width="1" rx="3"/>
+    <text x="175" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Auto-scale</text>
+    
+    <!-- Performance metrics -->
+    <text x="110" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      10K+ requests/sec
+    </text>
+    <text x="110" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      2-50 replicas (HPA)
+    </text>
+  </g>
+  
+  <!-- IoT Data Processing -->
+  <g transform="translate(550, 210)">
+    <rect width="200" height="110" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="100" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      IoT Processing
+    </text>
+    
+    <!-- IoT flow -->
+    <circle cx="40" cy="50" r="12" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+    <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Sensors</text>
+    
+    <rect x="70" y="40" width="30" height="20" fill="#a5d6a7" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="85" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">MQTT</text>
+    
+    <rect x="110" y="40" width="30" height="20" fill="#81c784" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="125" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Stream</text>
+    
+    <rect x="150" y="40" width="30" height="20" fill="#66bb6a" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="165" y="53" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Alert</text>
+    
+    <text x="100" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      1M+ events/sec
+    </text>
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      &lt;100ms latency
+    </text>
+  </g>
+  
+  <!-- E-commerce High Availability -->
+  <g transform="translate(200, 350)">
+    <rect width="400" height="120" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="200" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1976d2">
+      E-commerce High Availability
+    </text>
+    
+    <!-- Multi-region setup -->
+    <rect x="30" y="45" width="100" height="50" fill="#bbdefb" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="80" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">Region A</text>
+    <text x="80" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">20 replicas</text>
+    <text x="80" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Anti-affinity</text>
+    
+    <rect x="150" y="45" width="100" height="50" fill="#90caf9" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="200" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">Region B</text>
+    <text x="200" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">15 replicas</text>
+    <text x="200" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Standby</text>
+    
+    <rect x="270" y="45" width="100" height="50" fill="#64b5f6" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="320" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">Database HA</text>
+    <text x="320" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">StatefulSet</text>
+    <text x="320" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Replication</text>
+    
+    <text x="200" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1976d2">
+      99.99% Uptime • 100K+ Users • 50ms Response Time
+    </text>
+  </g>
+  
+  <!-- Mathematical Models Section -->
+  <g transform="translate(50, 490)">
+    <rect width="700" height="80" fill="#ffd54f" stroke="#f9a825" stroke-width="3" rx="10"/>
+    <text x="350" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f9a825">
+      Mathematical Models Applied Across All Use Cases
+    </text>
+    
+    <!-- Formula boxes -->
+    <rect x="20" y="35" width="150" height="25" fill="#fff59d" stroke="#f9a825" stroke-width="1" rx="3"/>
+    <text x="95" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57f17">
+      HPA: replicas × (current/target)
+    </text>
+    
+    <rect x="180" y="35" width="150" height="25" fill="#fff59d" stroke="#f9a825" stroke-width="1" rx="3"/>
+    <text x="255" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57f17">
+      Load Balancing: O(1) selection
+    </text>
+    
+    <rect x="340" y="35" width="150" height="25" fill="#fff59d" stroke="#f9a825" stroke-width="1" rx="3"/>
+    <text x="415" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57f17">
+      Bin Packing: Resource efficiency
+    </text>
+    
+    <rect x="500" y="35" width="150" height="25" fill="#fff59d" stroke="#f9a825" stroke-width="1" rx="3"/>
+    <text x="575" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57f17">
+      MTTR: Detection + Recovery
+    </text>
+    
+    <text x="350" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57f17">
+      Real-world implementations of mathematical foundations from previous sections
+    </text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1976d2"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    Popular Kubernetes use cases demonstrating mathematical concepts in practice
+  </text>
+</svg>

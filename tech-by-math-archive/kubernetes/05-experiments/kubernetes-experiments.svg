@@ -1,0 +1,205 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Kubernetes Experiments &amp; Testing
+  </text>
+  
+  <!-- Performance Testing -->
+  <g transform="translate(50, 80)">
+    <rect width="200" height="120" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      Performance Testing
+    </text>
+    
+    <circle cx="100" cy="60" r="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+    <text x="100" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Scheduler</text>
+    
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Latency &amp; Throughput
+    </text>
+    <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Scalability Limits
+    </text>
+  </g>
+  
+  <!-- Auto-scaling Tests -->
+  <g transform="translate(300, 80)">
+    <rect width="200" height="120" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      Auto-scaling Tests
+    </text>
+    
+    <!-- Scaling visualization -->
+    <rect x="30" y="45" width="15" height="30" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="50" y="35" width="15" height="40" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="70" y="25" width="15" height="50" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="90" y="35" width="15" height="40" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="110" y="45" width="15" height="30" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="130" y="50" width="15" height="25" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    <rect x="150" y="55" width="15" height="20" fill="#bbdefb" stroke="#1976d2" stroke-width="1"/>
+    
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      HPA Formula Validation
+    </text>
+    <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Load Response Analysis
+    </text>
+  </g>
+  
+  <!-- Failure Testing -->
+  <g transform="translate(550, 80)">
+    <rect width="200" height="120" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d32f2f">
+      Failure Testing
+    </text>
+    
+    <!-- Failure scenarios -->
+    <circle cx="60" cy="55" r="12" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2"/>
+    <text x="60" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">Node</text>
+    <text x="60" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d32f2f">✗</text>
+    
+    <circle cx="100" cy="55" r="12" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2"/>
+    <text x="100" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">Pod</text>
+    <text x="100" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d32f2f">✗</text>
+    
+    <circle cx="140" cy="55" r="12" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2"/>
+    <text x="140" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">Net</text>
+    <text x="140" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d32f2f">✗</text>
+    
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      MTTR Measurement
+    </text>
+    <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      Recovery Validation
+    </text>
+  </g>
+  
+  <!-- Load Balancing -->
+  <g transform="translate(50, 230)">
+    <rect width="200" height="120" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#7b1fa2">
+      Load Distribution
+    </text>
+    
+    <!-- Traffic flow -->
+    <circle cx="50" cy="55" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+    <circle cx="100" cy="45" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+    <circle cx="150" cy="55" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+    <circle cx="100" cy="75" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+    
+    <!-- Central load balancer -->
+    <rect x="85" y="85" width="30" height="15" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="3"/>
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">LB</text>
+    
+    <text x="100" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Round-robin Analysis
+    </text>
+  </g>
+  
+  <!-- Network Policy Testing -->
+  <g transform="translate(300, 230)">
+    <rect width="200" height="120" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f57900">
+      Network Policies
+    </text>
+    
+    <!-- Policy enforcement -->
+    <rect x="30" y="45" width="50" height="25" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="55" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57900">Frontend</text>
+    
+    <rect x="120" y="45" width="50" height="25" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="145" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57900">Backend</text>
+    
+    <!-- Connection -->
+    <path d="M 80 57 L 120 57" stroke="#4caf50" stroke-width="3" marker-end="url(#arrowhead)"/>
+    <text x="100" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4caf50">✓</text>
+    
+    <!-- Blocked connection -->
+    <path d="M 55 85 L 145 85" stroke="#f44336" stroke-width="2" stroke-dasharray="3,3"/>
+    <text x="100" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f44336">✗</text>
+    
+    <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Traffic Validation
+    </text>
+  </g>
+  
+  <!-- Chaos Engineering -->
+  <g transform="translate(550, 230)">
+    <rect width="200" height="120" fill="#fce4ec" stroke="#e91e63" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e91e63">
+      Chaos Engineering
+    </text>
+    
+    <!-- Chaos monkey -->
+    <circle cx="100" cy="60" r="20" fill="#f8bbd9" stroke="#e91e63" stroke-width="2"/>
+    <text x="100" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#e91e63">🐒</text>
+    
+    <text x="100" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e91e63">
+      Random Failures
+    </text>
+    <text x="100" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e91e63">
+      Resilience Testing
+    </text>
+  </g>
+  
+  <!-- Mathematical Validation -->
+  <g transform="translate(150, 380)">
+    <rect width="500" height="150" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="250" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#388e3c">
+      Mathematical Model Validation
+    </text>
+    
+    <!-- Formulas and validation -->
+    <rect x="30" y="50" width="140" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="5"/>
+    <text x="100" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Availability = MTBF/(MTBF+MTTR)
+    </text>
+    
+    <rect x="180" y="50" width="140" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="5"/>
+    <text x="250" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      HPA Formula Testing
+    </text>
+    
+    <rect x="330" y="50" width="140" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="5"/>
+    <text x="400" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Distribution Analysis
+    </text>
+    
+    <!-- Results comparison -->
+    <text x="250" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">
+      Theoretical vs Observed Results
+    </text>
+    
+    <rect x="100" y="115" width="100" height="20" fill="#a5d6a7" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="150" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Predicted: 95.2%</text>
+    
+    <rect x="300" y="115" width="100" height="20" fill="#a5d6a7" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="350" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Observed: 94.8%</text>
+  </g>
+  
+  <!-- Central Integration -->
+  <g transform="translate(350, 280)">
+    <ellipse cx="50" cy="50" rx="50" ry="30" fill="#ffd54f" stroke="#f9a825" stroke-width="3"/>
+    <text x="50" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f9a825">
+      Kubernetes
+    </text>
+    <text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f9a825">
+      Experiments
+    </text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4caf50"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    Hands-on experiments to validate Kubernetes mathematical models
+  </text>
+</svg>

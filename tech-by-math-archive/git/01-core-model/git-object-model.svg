@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+    refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">Git Object Model: Merkle DAG Structure</text>
+  
+  <!-- Commit Objects -->
+  <g id="commits">
+    <!-- Commit C3 -->
+    <rect x="50" y="80" width="120" height="80" rx="8" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="110" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Commit C3</text>
+    <text x="110" y="115" text-anchor="middle" font-size="10" fill="white">abc123...</text>
+    <text x="110" y="130" text-anchor="middle" font-size="9" fill="white">tree: def456</text>
+    <text x="110" y="145" text-anchor="middle" font-size="9" fill="white">parent: C2</text>
+    
+    <!-- Commit C2 -->
+    <rect x="250" y="80" width="120" height="80" rx="8" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="310" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Commit C2</text>
+    <text x="310" y="115" text-anchor="middle" font-size="10" fill="white">ghi789...</text>
+    <text x="310" y="130" text-anchor="middle" font-size="9" fill="white">tree: jkl012</text>
+    <text x="310" y="145" text-anchor="middle" font-size="9" fill="white">parent: C1</text>
+    
+    <!-- Commit C1 -->
+    <rect x="450" y="80" width="120" height="80" rx="8" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="510" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Commit C1</text>
+    <text x="510" y="115" text-anchor="middle" font-size="10" fill="white">mno345...</text>
+    <text x="510" y="130" text-anchor="middle" font-size="9" fill="white">tree: pqr678</text>
+    <text x="510" y="145" text-anchor="middle" font-size="9" fill="white">parent: null</text>
+  </g>
+  
+  <!-- Tree Objects -->
+  <g id="trees">
+    <!-- Tree T3 -->
+    <rect x="50" y="220" width="120" height="100" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="110" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tree T3</text>
+    <text x="110" y="255" text-anchor="middle" font-size="10" fill="white">def456...</text>
+    <text x="110" y="275" text-anchor="middle" font-size="9" fill="white">file1.txt</text>
+    <text x="110" y="290" text-anchor="middle" font-size="9" fill="white">file2.txt</text>
+    <text x="110" y="305" text-anchor="middle" font-size="9" fill="white">subdir/</text>
+    
+    <!-- Tree T2 -->
+    <rect x="250" y="220" width="120" height="100" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="310" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tree T2</text>
+    <text x="310" y="255" text-anchor="middle" font-size="10" fill="white">jkl012...</text>
+    <text x="310" y="275" text-anchor="middle" font-size="9" fill="white">file1.txt</text>
+    <text x="310" y="290" text-anchor="middle" font-size="9" fill="white">subdir/</text>
+    
+    <!-- Tree T1 -->
+    <rect x="450" y="220" width="120" height="100" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="510" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tree T1</text>
+    <text x="510" y="255" text-anchor="middle" font-size="10" fill="white">pqr678...</text>
+    <text x="510" y="275" text-anchor="middle" font-size="9" fill="white">file1.txt</text>
+  </g>
+  
+  <!-- Blob Objects -->
+  <g id="blobs">
+    <!-- Blob B1 -->
+    <rect x="50" y="380" width="100" height="60" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+    <text x="100" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Blob B1</text>
+    <text x="100" y="415" text-anchor="middle" font-size="10" fill="white">stu901...</text>
+    <text x="100" y="430" text-anchor="middle" font-size="9" fill="white">"Hello Git"</text>
+    
+    <!-- Blob B2 -->
+    <rect x="200" y="380" width="100" height="60" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+    <text x="250" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Blob B2</text>
+    <text x="250" y="415" text-anchor="middle" font-size="10" fill="white">vwx234...</text>
+    <text x="250" y="430" text-anchor="middle" font-size="9" fill="white">"File 2"</text>
+    
+    <!-- Blob B3 -->
+    <rect x="350" y="380" width="100" height="60" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+    <text x="400" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Blob B3</text>
+    <text x="400" y="415" text-anchor="middle" font-size="10" fill="white">yz5678...</text>
+    <text x="400" y="430" text-anchor="middle" font-size="9" fill="white">"Updated"</text>
+  </g>
+  
+  <!-- References -->
+  <g id="references">
+    <!-- Branch main -->
+    <rect x="620" y="90" width="80" height="30" rx="15" fill="#f39c12" stroke="#e67e22" stroke-width="2"/>
+    <text x="660" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="white">main</text>
+    
+    <!-- Branch feature -->
+    <rect x="620" y="130" width="80" height="30" rx="15" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+    <text x="660" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="white">feature</text>
+    
+    <!-- HEAD -->
+    <rect x="620" y="50" width="80" height="30" rx="15" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+    <text x="660" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="white">HEAD</text>
+  </g>
+  
+  <!-- Arrows showing relationships -->
+  <!-- Commit parent relationships -->
+  <line x1="170" y1="120" x2="250" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="370" y1="120" x2="450" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Commit to tree relationships -->
+  <line x1="110" y1="160" x2="110" y2="220" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="160" x2="310" y2="220" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="160" x2="510" y2="220" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Tree to blob relationships -->
+  <line x1="110" y1="320" x2="100" y2="380" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="110" y1="320" x2="250" y2="380" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="310" y1="320" x2="400" y2="380" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Reference arrows -->
+  <line x1="620" y1="105" x2="170" y2="120" stroke="#f39c12" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <line x1="620" y1="65" x2="620" y2="90" stroke="#34495e" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Legend -->
+  <g id="legend">
+    <text x="50" y="520" font-size="16" font-weight="bold" fill="#2c3e50">Legend:</text>
+    
+    <rect x="50" y="535" width="20" height="15" fill="#3498db"/>
+    <text x="80" y="547" font-size="12" fill="#2c3e50">Commit Objects</text>
+    
+    <rect x="200" y="535" width="20" height="15" fill="#27ae60"/>
+    <text x="230" y="547" font-size="12" fill="#2c3e50">Tree Objects</text>
+    
+    <rect x="340" y="535" width="20" height="15" fill="#e74c3c"/>
+    <text x="370" y="547" font-size="12" fill="#2c3e50">Blob Objects</text>
+    
+    <rect x="470" y="535" width="20" height="15" fill="#f39c12"/>
+    <text x="500" y="547" font-size="12" fill="#2c3e50">References</text>
+    
+    <line x1="580" y1="542" x2="620" y2="542" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="630" y="547" font-size="12" fill="#2c3e50">Points to</text>
+  </g>
+  
+  <!-- Mathematical properties -->
+  <text x="50" y="580" font-size="12" font-weight="bold" fill="#2c3e50">Key Properties: Content-Addressable • Immutable • Cryptographically Secure • Merkle Tree Structure</text>
+</svg>

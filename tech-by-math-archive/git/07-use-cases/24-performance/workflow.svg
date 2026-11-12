@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .slow { fill: #F44336; stroke: #B71C1C; stroke-width: 2; }
+      .fast { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .optimize { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .lfs { fill: #2196F3; stroke: #0D47A1; stroke-width: 2; }
+      .gc { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .perf-line { stroke: #4CAF50; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .slow-line { stroke: #F44336; stroke-width: 2; fill: none; stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 9px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Performance Optimization Workflow</text>
+  
+  <!-- Before optimization -->
+  <text x="50" y="70" class="title" fill="#F44336">Before: Slow Repository (47GB, 28min clone)</text>
+  
+  <circle cx="80" cy="100" r="15" class="slow"/>
+  <text x="80" y="130" text-anchor="middle" class="text">🐌 Huge files</text>
+  
+  <line x1="95" y1="100" x2="145" y2="100" class="slow-line"/>
+  <circle cx="160" cy="100" r="15" class="slow"/>
+  <text x="160" y="130" text-anchor="middle" class="text">📦 15 packs</text>
+  
+  <line x1="175" y1="100" x2="225" y2="100" class="slow-line"/>
+  <circle cx="240" cy="100" r="15" class="slow"/>
+  <text x="240" y="130" text-anchor="middle" class="text">🗂️ 974 refs</text>
+  
+  <line x1="255" y1="100" x2="305" y2="100" class="slow-line"/>
+  <circle cx="320" cy="100" r="15" class="slow"/>
+  <text x="320" y="130" text-anchor="middle" class="text">🚫 No bitmap</text>
+  
+  <!-- Optimization process -->
+  <text x="50" y="200" class="title" fill="#FF9800">Optimization Process</text>
+  
+  <!-- Step 1: Git LFS migration -->
+  <text x="50" y="230" class="branch-label" fill="#2196F3">1. Git LFS Migration</text>
+  <line x1="80" y1="115" x2="100" y2="250" class="branch-line"/>
+  <circle cx="120" cy="250" r="12" class="lfs"/>
+  <text x="120" y="275" text-anchor="middle" class="text">Large files</text>
+  <text x="120" y="290" text-anchor="middle" class="text">→ LFS</text>
+  
+  <!-- Step 2: Pack optimization -->
+  <text x="200" y="230" class="branch-label" fill="#FF9800">2. Pack Optimization</text>
+  <line x1="160" y1="115" x2="200" y2="250" class="branch-line"/>
+  <circle cx="220" cy="250" r="12" class="optimize"/>
+  <text x="220" y="275" text-anchor="middle" class="text">Repack</text>
+  <text x="220" y="290" text-anchor="middle" class="text">--depth=50</text>
+  
+  <!-- Step 3: Reference cleanup -->
+  <text x="300" y="230" class="branch-label" fill="#9C27B0">3. Reference Cleanup</text>
+  <line x1="240" y1="115" x2="300" y2="250" class="branch-line"/>
+  <circle cx="320" cy="250" r="12" class="gc"/>
+  <text x="320" y="275" text-anchor="middle" class="text">Prune</text>
+  <text x="320" y="290" text-anchor="middle" class="text">stale refs</text>
+  
+  <!-- Step 4: Bitmap index -->
+  <text x="400" y="230" class="branch-label" fill="#4CAF50">4. Bitmap Index</text>
+  <line x1="320" y1="115" x2="400" y2="250" class="branch-line"/>
+  <circle cx="420" cy="250" r="12" class="fast"/>
+  <text x="420" y="275" text-anchor="middle" class="text">Write</text>
+  <text x="420" y="290" text-anchor="middle" class="text">bitmap</text>
+  
+  <!-- Optimization convergence -->
+  <line x1="130" y1="250" x2="480" y2="320" class="perf-line"/>
+  <line x1="230" y1="250" x2="480" y2="320" class="perf-line"/>
+  <line x1="330" y1="250" x2="480" y2="320" class="perf-line"/>
+  <line x1="430" y1="250" x2="480" y2="320" class="perf-line"/>
+  
+  <circle cx="500" cy="320" r="15" class="fast"/>
+  <text x="500" y="350" text-anchor="middle" class="text">🚀 Optimized</text>
+  
+  <!-- After optimization -->
+  <text x="550" y="70" class="title" fill="#4CAF50">After: Fast Repository (8GB, 45sec clone)</text>
+  
+  <line x1="515" y1="320" x2="565" y2="100" class="perf-line"/>
+  <circle cx="580" cy="100" r="15" class="fast"/>
+  <text x="580" y="130" text-anchor="middle" class="text">📁 Small files</text>
+  
+  <line x1="595" y1="100" x2="645" y2="100" class="perf-line"/>
+  <circle cx="660" cy="100" r="15" class="fast"/>
+  <text x="660" y="130" text-anchor="middle" class="text">📦 1 pack</text>
+  
+  <line x1="675" y1="100" x2="725" y2="100" class="perf-line"/>
+  <circle cx="740" cy="100" r="15" class="fast"/>
+  <text x="740" y="130" text-anchor="middle" class="text">🗂️ 89 refs</text>
+  
+  <line x1="755" y1="100" x2="805" y2="100" class="perf-line"/>
+  <circle cx="820" cy="100" r="15" class="fast"/>
+  <text x="820" y="130" text-anchor="middle" class="text">⚡ Bitmap</text>
+  
+  <!-- Performance metrics -->
+  <rect x="50" y="380" width="800" height="200" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="400" class="title">Performance Improvements:</text>
+  
+  <rect x="60" y="420" width="180" height="140" fill="#ffebee" stroke="#f44336"/>
+  <text x="70" y="440" class="title" fill="#F44336">Before Optimization:</text>
+  <text x="70" y="460" class="text">Repository Size: 47.3 GB</text>
+  <text x="70" y="475" class="text">Clone Time: 28 minutes</text>
+  <text x="70" y="490" class="text">Pack Files: 15 separate</text>
+  <text x="70" y="505" class="text">References: 974 total</text>
+  <text x="70" y="520" class="text">Objects: 2.8M (unoptimized)</text>
+  <text x="70" y="535" class="text">Network Transfer: Full repo</text>
+  <text x="70" y="550" class="text">Developer Experience: 😞</text>
+  
+  <rect x="260" y="420" width="180" height="140" fill="#e8f5e8" stroke="#4caf50"/>
+  <text x="270" y="440" class="title" fill="#4CAF50">After Optimization:</text>
+  <text x="270" y="460" class="text">Repository Size: 8.2 GB</text>
+  <text x="270" y="475" class="text">Clone Time: 45 seconds</text>
+  <text x="270" y="490" class="text">Pack Files: 1 optimized</text>
+  <text x="270" y="505" class="text">References: 89 active</text>
+  <text x="270" y="520" class="text">Objects: 2.8M (compressed)</text>
+  <text x="270" y="535" class="text">Network Transfer: Minimal</text>
+  <text x="270" y="550" class="text">Developer Experience: 😊</text>
+  
+  <rect x="460" y="420" width="180" height="140" fill="#fff3e0" stroke="#ff9800"/>
+  <text x="470" y="440" class="title" fill="#FF9800">Optimization Techniques:</text>
+  <text x="470" y="460" class="text">• Git LFS for large binaries</text>
+  <text x="470" y="475" class="text">• Aggressive repacking</text>
+  <text x="470" y="490" class="text">• Stale reference pruning</text>
+  <text x="470" y="505" class="text">• Bitmap index generation</text>
+  <text x="470" y="520" class="text">• Shallow clone support</text>
+  <text x="470" y="535" class="text">• Automated maintenance</text>
+  <text x="470" y="550" class="text">• Performance monitoring</text>
+  
+  <rect x="660" y="420" width="180" height="140" fill="#e3f2fd" stroke="#2196f3"/>
+  <text x="670" y="440" class="title" fill="#2196F3">Performance Gains:</text>
+  <text x="670" y="460" class="text">📉 Size: 83% reduction</text>
+  <text x="670" y="475" class="text">⚡ Speed: 98% faster clone</text>
+  <text x="670" y="490" class="text">🗜️ Compression: 91% refs</text>
+  <text x="670" y="505" class="text">💾 Storage: Efficient packs</text>
+  <text x="670" y="520" class="text">🌐 Network: Less bandwidth</text>
+  <text x="670" y="535" class="text">👥 Developer: Higher productivity</text>
+  <text x="670" y="550" class="text">💰 Cost: Lower infrastructure</text>
+</svg>

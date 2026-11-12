@@ -1,0 +1,223 @@
+<svg width="900" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <linearGradient id="lfsGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="700" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#212529">
+    Git LFS: Large File Management Workflow
+  </text>
+  
+  <!-- Developer Workstation Section -->
+  <rect x="50" y="60" width="350" height="280" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="10"/>
+  <text x="225" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#856404">
+    Developer Workstation
+  </text>
+  
+  <!-- Local Git Repo -->
+  <rect x="70" y="100" width="150" height="100" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="145" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">
+    Git Repository
+  </text>
+  <text x="145" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">
+    Code + LFS Pointers
+  </text>
+  
+  <!-- LFS Pointers -->
+  <rect x="80" y="150" width="130" height="40" fill="#f8f9fa" stroke="#6c757d" stroke-width="1" rx="3"/>
+  <text x="145" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">
+    version https://git-lfs...
+  </text>
+  <text x="145" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">
+    oid sha256:4d7a21...
+  </text>
+  <text x="145" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">
+    size 134217728
+  </text>
+  
+  <!-- Local LFS Cache -->
+  <rect x="240" y="100" width="140" height="100" fill="url(#lfsGradient)" stroke="#0dcaf0" stroke-width="2" rx="5"/>
+  <text x="310" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#055160">
+    LFS Cache
+  </text>
+  <text x="310" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#055160">
+    Binary Assets
+  </text>
+  
+  <!-- Asset Files -->
+  <circle cx="270" cy="160" r="12" fill="#6f42c1" stroke="#59359a" stroke-width="2"/>
+  <text x="270" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">PSD</text>
+  
+  <circle cx="310" cy="160" r="12" fill="#dc3545" stroke="#721c24" stroke-width="2"/>
+  <text x="310" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">FBX</text>
+  
+  <circle cx="350" cy="160" r="12" fill="#fd7e14" stroke="#dc3545" stroke-width="2"/>
+  <text x="350" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">WAV</text>
+  
+  <!-- Working Directory -->
+  <rect x="70" y="220" width="310" height="60" fill="#e2e3e5" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="225" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">
+    Working Directory
+  </text>
+  <text x="100" y="260" font-family="Arial, sans-serif" font-size="10" fill="#495057">src/main.cpp</text>
+  <text x="200" y="260" font-family="Arial, sans-serif" font-size="10" fill="#495057">assets/texture.psd</text>
+  <text x="320" y="260" font-family="Arial, sans-serif" font-size="10" fill="#495057">models/hero.fbx</text>
+  
+  <!-- Developer Operations -->
+  <rect x="70" y="300" width="310" height="30" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="3"/>
+  <text x="100" y="320" font-family="Arial, sans-serif" font-size="11" fill="#495057">git add • git commit • git lfs pull • git lfs push</text>
+  
+  <!-- Remote Repository Section -->
+  <rect x="500" y="60" width="350" height="280" fill="#d1ecf1" stroke="#0dcaf0" stroke-width="2" rx="10"/>
+  <text x="675" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#055160">
+    Remote Git Repository
+  </text>
+  
+  <!-- Remote Git Objects -->
+  <rect x="520" y="100" width="150" height="100" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="595" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">
+    Git Objects
+  </text>
+  <text x="595" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">
+    Commits + Trees
+  </text>
+  <text x="595" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">
+    + LFS Pointers
+  </text>
+  <text x="595" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#155724">
+    Size: ~50MB
+  </text>
+  
+  <!-- LFS Storage Server -->
+  <rect x="690" y="100" width="140" height="100" fill="#ffe6e6" stroke="#dc3545" stroke-width="2" rx="5"/>
+  <text x="760" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#721c24">
+    LFS Storage
+  </text>
+  <text x="760" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">
+    Binary Objects
+  </text>
+  <text x="760" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#721c24">
+    Size: ~5GB
+  </text>
+  
+  <!-- Large Files -->
+  <rect x="700" y="155" width="120" height="35" fill="#f8f9fa" stroke="#6c757d" stroke-width="1" rx="2"/>
+  <text x="710" y="170" font-family="Arial, sans-serif" font-size="9" fill="#495057">texture_4k.psd</text>
+  <text x="710" y="180" font-family="Arial, sans-serif" font-size="9" fill="#495057">character.fbx</text>
+  
+  <!-- Remote Operations -->
+  <rect x="520" y="220" width="310" height="60" fill="#e7f1ff" stroke="#0d6efd" stroke-width="1" rx="5"/>
+  <text x="675" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#084298">
+    Remote Operations
+  </text>
+  <text x="540" y="260" font-family="Arial, sans-serif" font-size="10" fill="#084298">• Push/Pull Git objects (fast)</text>
+  <text x="540" y="275" font-family="Arial, sans-serif" font-size="10" fill="#084298">• LFS transfer on-demand (selective)</text>
+  
+  <!-- Network Operations -->
+  <rect x="520" y="300" width="310" height="30" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="3"/>
+  <text x="550" y="320" font-family="Arial, sans-serif" font-size="11" fill="#495057">git push • git pull • git lfs fetch • git lfs upload</text>
+  
+  <!-- Connection Arrows -->
+  <!-- Pointer to LFS -->
+  <line x1="220" y1="150" x2="240" y2="150" stroke="#0dcaf0" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="230" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#0dcaf0">resolve</text>
+  
+  <!-- Git Operations -->
+  <line x1="400" y1="150" x2="520" y2="150" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="460" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#28a745">git push/pull</text>
+  
+  <!-- LFS Operations -->
+  <line x1="380" y1="180" x2="690" y2="180" stroke="#dc3545" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="535" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#dc3545">lfs upload/download</text>
+  
+  <!-- Workflow Steps Section -->
+  <rect x="50" y="360" width="800" height="140" fill="#fff" stroke="#dee2e6" stroke-width="1" rx="10"/>
+  <text x="450" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#212529">
+    LFS Workflow Steps
+  </text>
+  
+  <!-- Step boxes -->
+  <rect x="70" y="400" width="140" height="80" fill="#e7f3ff" stroke="#007bff" stroke-width="1" rx="5"/>
+  <text x="140" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#084298">1. Configure LFS</text>
+  <text x="140" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#084298">git lfs install</text>
+  <text x="140" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#084298">git lfs track "*.psd"</text>
+  <text x="140" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#084298">git add .gitattributes</text>
+  
+  <rect x="230" y="400" width="140" height="80" fill="#f0f8e7" stroke="#28a745" stroke-width="1" rx="5"/>
+  <text x="300" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#155724">2. Add Assets</text>
+  <text x="300" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#155724">cp large_file.psd .</text>
+  <text x="300" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#155724">git add large_file.psd</text>
+  <text x="300" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#155724">git commit -m "Add"</text>
+  
+  <rect x="390" y="400" width="140" height="80" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="5"/>
+  <text x="460" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#e65100">3. Push Changes</text>
+  <text x="460" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">git push origin main</text>
+  <text x="460" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">(auto LFS upload)</text>
+  <text x="460" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e65100">Pointers in Git</text>
+  
+  <rect x="550" y="400" width="140" height="80" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1" rx="5"/>
+  <text x="620" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#4a148c">4. Clone Repo</text>
+  <text x="620" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">git clone repo.git</text>
+  <text x="620" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">git lfs pull</text>
+  <text x="620" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a148c">(selective download)</text>
+  
+  <rect x="710" y="400" width="140" height="80" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+  <text x="780" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#1b5e20">5. Work Locally</text>
+  <text x="780" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1b5e20">Edit large files</text>
+  <text x="780" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1b5e20">LFS manages sync</text>
+  <text x="780" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1b5e20">Fast operations</text>
+  
+  <!-- Arrows between steps -->
+  <line x1="210" y1="440" x2="230" y2="440" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="370" y1="440" x2="390" y2="440" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="530" y1="440" x2="550" y2="440" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="690" y1="440" x2="710" y2="440" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Benefits Section -->
+  <rect x="50" y="520" width="800" height="120" fill="#f8f9fa" stroke="#6c757d" stroke-width="1" rx="10"/>
+  <text x="450" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#212529">
+    LFS Benefits &amp; Performance
+  </text>
+  
+  <!-- Performance metrics -->
+  <rect x="70" y="560" width="180" height="70" fill="#e3f2fd" stroke="#2196f3" stroke-width="1" rx="5"/>
+  <text x="160" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Repository Size</text>
+  <text x="160" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Traditional: 5TB</text>
+  <text x="160" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">With LFS: 5GB</text>
+  <text x="160" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#1976d2">99.9% savings</text>
+  
+  <rect x="270" y="560" width="180" height="70" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+  <text x="360" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2e7d32">Clone Speed</text>
+  <text x="360" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2e7d32">Code only: 8 sec</text>
+  <text x="360" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2e7d32">Full assets: 45 sec</text>
+  <text x="360" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#2e7d32">5x faster</text>
+  
+  <rect x="470" y="560" width="180" height="70" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="5"/>
+  <text x="560" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f57c00">Storage Efficiency</text>
+  <text x="560" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57c00">Deduplication: 70%</text>
+  <text x="560" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57c00">Bandwidth savings</text>
+  <text x="560" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#f57c00">Selective download</text>
+  
+  <rect x="670" y="560" width="180" height="70" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1" rx="5"/>
+  <text x="760" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">Collaboration</text>
+  <text x="760" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Asset locking</text>
+  <text x="760" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Version control</text>
+  <text x="760" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#7b1fa2">Binary diff tracking</text>
+  
+  <!-- Mathematical Foundation -->
+  <rect x="50" y="660" width="800" height="30" fill="#e9ecef" stroke="#adb5bd" stroke-width="1" rx="5"/>
+  <text x="450" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">
+    Mathematical Foundation: Content Addressing with External Storage • SHA-256 Deduplication • Selective Transfer Optimization
+  </text>
+  
+</svg>

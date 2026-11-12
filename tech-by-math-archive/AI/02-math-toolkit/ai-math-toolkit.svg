@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="matrixGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="vectorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e1bee7;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="gaussianGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4caf50;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fafafa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">AI Mathematical Toolkit</text>
+  
+  <!-- Linear Algebra Section -->
+  <g id="linear-algebra">
+    <rect x="30" y="60" width="350" height="250" fill="#ffffff" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="205" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1976d2">Linear Algebra</text>
+    
+    <!-- Matrix Representation -->
+    <g id="matrix">
+      <rect x="50" y="100" width="120" height="80" fill="url(#matrixGradient)" stroke="#1976d2" stroke-width="1"/>
+      <text x="110" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Matrix A</text>
+      
+      <!-- Matrix elements -->
+      <text x="70" y="125" font-family="Arial, sans-serif" font-size="10" fill="#333">a₁₁  a₁₂</text>
+      <text x="70" y="140" font-family="Arial, sans-serif" font-size="10" fill="#333">a₂₁  a₂₂</text>
+      <text x="70" y="155" font-family="Arial, sans-serif" font-size="10" fill="#333">a₃₁  a₃₂</text>
+      <text x="70" y="170" font-family="Arial, sans-serif" font-size="10" fill="#333">a₄₁  a₄₂</text>
+    </g>
+    
+    <!-- Vector Representation -->
+    <g id="vector">
+      <rect x="190" y="100" width="60" height="80" fill="url(#vectorGradient)" stroke="#9c27b0" stroke-width="1"/>
+      <text x="220" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9c27b0">Vector x</text>
+      
+      <text x="210" y="125" font-family="Arial, sans-serif" font-size="10" fill="#333">x₁</text>
+      <text x="210" y="140" font-family="Arial, sans-serif" font-size="10" fill="#333">x₂</text>
+      <text x="210" y="155" font-family="Arial, sans-serif" font-size="10" fill="#333">x₃</text>
+      <text x="210" y="170" font-family="Arial, sans-serif" font-size="10" fill="#333">x₄</text>
+    </g>
+    
+    <!-- Equals sign -->
+    <text x="270" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">=</text>
+    
+    <!-- Result Vector -->
+    <g id="result-vector">
+      <rect x="300" y="100" width="60" height="80" fill="#ffecb3" stroke="#f57c00" stroke-width="1"/>
+      <text x="330" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f57c00">Result b</text>
+      
+      <text x="320" y="125" font-family="Arial, sans-serif" font-size="10" fill="#333">b₁</text>
+      <text x="320" y="140" font-family="Arial, sans-serif" font-size="10" fill="#333">b₂</text>
+      <text x="320" y="155" font-family="Arial, sans-serif" font-size="10" fill="#333">b₃</text>
+      <text x="320" y="170" font-family="Arial, sans-serif" font-size="10" fill="#333">b₄</text>
+    </g>
+    
+    <!-- Linear algebra operations -->
+    <text x="50" y="210" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Key Operations:</text>
+    <text x="50" y="225" font-family="Arial, sans-serif" font-size="10" fill="#555">• Matrix Multiplication: C = AB</text>
+    <text x="50" y="240" font-family="Arial, sans-serif" font-size="10" fill="#555">• Eigendecomposition: Av = λv</text>
+    <text x="50" y="255" font-family="Arial, sans-serif" font-size="10" fill="#555">• SVD: A = UΣVᵀ</text>
+    <text x="50" y="270" font-family="Arial, sans-serif" font-size="10" fill="#555">• Inverse: A⁻¹A = I</text>
+    <text x="50" y="285" font-family="Arial, sans-serif" font-size="10" fill="#555">• Norm: ||x||₂ = √(∑xᵢ²)</text>
+  </g>
+  
+  <!-- Calculus Section -->
+  <g id="calculus">
+    <rect x="420" y="60" width="350" height="250" fill="#ffffff" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="595" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#d32f2f">Calculus &amp; Optimization</text>
+    
+    <!-- Gradient visualization -->
+    <g id="gradient">
+      <circle cx="500" cy="140" r="50" fill="none" stroke="#ff5722" stroke-width="1"/>
+      <circle cx="500" cy="140" r="35" fill="none" stroke="#ff5722" stroke-width="1"/>
+      <circle cx="500" cy="140" r="20" fill="none" stroke="#ff5722" stroke-width="1"/>
+      <circle cx="500" cy="140" r="5" fill="#ff5722"/>
+      
+      <!-- Gradient arrows -->
+      <path d="M 500 140 L 480 120" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <path d="M 500 140 L 520 120" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <path d="M 500 140 L 470 160" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <path d="M 500 140 L 530 160" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <text x="500" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d32f2f">Gradient Descent</text>
+      <text x="500" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">∇f(x) = [∂f/∂x₁, ∂f/∂x₂, ...]</text>
+    </g>
+    
+    <!-- 3D Surface -->
+    <g id="surface" transform="translate(600, 110)">
+      <path d="M 0 60 Q 30 30, 60 40 Q 90 20, 120 50" stroke="#4caf50" stroke-width="2" fill="none"/>
+      <path d="M 0 50 Q 30 20, 60 30 Q 90 10, 120 40" stroke="#4caf50" stroke-width="2" fill="none"/>
+      <path d="M 0 40 Q 30 10, 60 20 Q 90 0, 120 30" stroke="#4caf50" stroke-width="2" fill="none"/>
+      <text x="60" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">Loss Surface</text>
+    </g>
+    
+    <!-- Calculus operations -->
+    <text x="440" y="250" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Key Concepts:</text>
+    <text x="440" y="265" font-family="Arial, sans-serif" font-size="10" fill="#555">• Partial Derivatives: ∂f/∂x</text>
+    <text x="440" y="280" font-family="Arial, sans-serif" font-size="10" fill="#555">• Chain Rule: ∂f/∂x = ∂f/∂u · ∂u/∂x</text>
+    <text x="440" y="295" font-family="Arial, sans-serif" font-size="10" fill="#555">• Optimization: min f(x) s.t. g(x) ≤ 0</text>
+  </g>
+  
+  <!-- Probability & Statistics Section -->
+  <g id="probability">
+    <rect x="30" y="330" width="350" height="240" fill="#ffffff" stroke="#4caf50" stroke-width="2" rx="10"/>
+    <text x="205" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#4caf50">Probability &amp; Statistics</text>
+    
+    <!-- Gaussian Distribution -->
+    <g id="gaussian">
+      <ellipse cx="150" cy="420" rx="80" ry="40" fill="url(#gaussianGradient)" stroke="#4caf50" stroke-width="1"/>
+      <path d="M 70 440 Q 150 380, 230 440" stroke="#2e7d32" stroke-width="3" fill="none"/>
+      <text x="150" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4caf50">Normal Distribution</text>
+      <text x="150" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">N(μ, σ²)</text>
+    </g>
+    
+    <!-- Statistical measures -->
+    <g id="stats">
+      <text x="260" y="380" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Key Measures:</text>
+      <text x="260" y="395" font-family="Arial, sans-serif" font-size="10" fill="#555">• Mean: μ = E[X]</text>
+      <text x="260" y="410" font-family="Arial, sans-serif" font-size="10" fill="#555">• Variance: σ² = E[(X-μ)²]</text>
+      <text x="260" y="425" font-family="Arial, sans-serif" font-size="10" fill="#555">• Covariance: Cov(X,Y)</text>
+      <text x="260" y="440" font-family="Arial, sans-serif" font-size="10" fill="#555">• Bayes' Rule: P(A|B) = P(B|A)P(A)/P(B)</text>
+      <text x="260" y="455" font-family="Arial, sans-serif" font-size="10" fill="#555">• Maximum Likelihood: max L(θ)</text>
+    </g>
+    
+    <!-- Information Theory -->
+    <text x="50" y="520" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Information Theory:</text>
+    <text x="50" y="535" font-family="Arial, sans-serif" font-size="10" fill="#555">• Entropy: H(X) = -∑ P(x) log P(x)</text>
+    <text x="50" y="550" font-family="Arial, sans-serif" font-size="10" fill="#555">• Cross-entropy: H(p,q) = -∑ p(x) log q(x)</text>
+  </g>
+  
+  <!-- Numerical Methods Section -->
+  <g id="numerical-methods">
+    <rect x="420" y="330" width="350" height="240" fill="#ffffff" stroke="#ff9800" stroke-width="2" rx="10"/>
+    <text x="595" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ff9800">Numerical Methods</text>
+    
+    <!-- Optimization algorithms visualization -->
+    <g id="optimization-path">
+      <!-- Starting point -->
+      <circle cx="480" cy="400" r="5" fill="#f44336"/>
+      <text x="465" y="390" font-family="Arial, sans-serif" font-size="10" fill="#f44336">Start</text>
+      
+      <!-- Path with steps -->
+      <path d="M 480 400 L 500 385 L 520 375 L 540 370 L 560 368 L 580 367" 
+            stroke="#ff9800" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+      
+      <!-- End point -->
+      <circle cx="580" cy="367" r="5" fill="#4caf50"/>
+      <text x="585" y="357" font-family="Arial, sans-serif" font-size="10" fill="#4caf50">Optimum</text>
+      
+      <text x="530" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff9800">Optimization Path</text>
+    </g>
+    
+    <!-- Numerical methods list -->
+    <text x="440" y="450" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Key Algorithms:</text>
+    <text x="440" y="465" font-family="Arial, sans-serif" font-size="10" fill="#555">• Gradient Descent: θ = θ - α∇J(θ)</text>
+    <text x="440" y="480" font-family="Arial, sans-serif" font-size="10" fill="#555">• Newton's Method: θ = θ - H⁻¹∇J(θ)</text>
+    <text x="440" y="495" font-family="Arial, sans-serif" font-size="10" fill="#555">• Adam: m = β₁m + (1-β₁)g</text>
+    <text x="440" y="510" font-family="Arial, sans-serif" font-size="10" fill="#555">• Stochastic Methods: Mini-batch SGD</text>
+    <text x="440" y="525" font-family="Arial, sans-serif" font-size="10" fill="#555">• Regularization: L₁, L₂ penalties</text>
+    <text x="440" y="540" font-family="Arial, sans-serif" font-size="10" fill="#555">• Numerical Integration: Monte Carlo</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d32f2f"/>
+    </marker>
+  </defs>
+</svg>

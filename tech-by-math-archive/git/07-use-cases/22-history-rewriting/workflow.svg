@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .messy { fill: #F44336; stroke: #B71C1C; stroke-width: 2; }
+      .clean { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .wip { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .debug { fill: #9E9E9E; stroke: #424242; stroke-width: 2; }
+      .feature { fill: #2196F3; stroke: #0D47A1; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .rewrite-line { stroke: #4CAF50; stroke-width: 3; fill: none; stroke-dasharray: 8,4; marker-end: url(#arrowhead); }
+      .drop-line { stroke: #F44336; stroke-width: 2; fill: none; stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 9px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">History Rewriting Workflow</text>
+  
+  <!-- Original messy history -->
+  <text x="50" y="80" class="title" fill="#F44336">Before: Messy Development History</text>
+  
+  <circle cx="80" cy="120" r="8" class="feature"/>
+  <text x="80" y="140" text-anchor="middle" class="text">A: Initial</text>
+  
+  <line x1="88" y1="120" x2="112" y2="120" class="branch-line"/>
+  <circle cx="120" cy="120" r="8" class="wip"/>
+  <text x="120" y="140" text-anchor="middle" class="text">B: WIP</text>
+  
+  <line x1="128" y1="120" x2="152" y2="120" class="branch-line"/>
+  <circle cx="160" cy="120" r="8" class="messy"/>
+  <text x="160" y="140" text-anchor="middle" class="text">C: Fix typo</text>
+  
+  <line x1="168" y1="120" x2="192" y2="120" class="branch-line"/>
+  <circle cx="200" cy="120" r="8" class="feature"/>
+  <text x="200" y="140" text-anchor="middle" class="text">D: Feature</text>
+  
+  <line x1="208" y1="120" x2="232" y2="120" class="branch-line"/>
+  <circle cx="240" cy="120" r="8" class="debug"/>
+  <text x="240" y="140" text-anchor="middle" class="text">E: Debug</text>
+  
+  <line x1="248" y1="120" x2="272" y2="120" class="branch-line"/>
+  <circle cx="280" cy="120" r="8" class="debug"/>
+  <text x="280" y="140" text-anchor="middle" class="text">F: Remove logs</text>
+  
+  <line x1="288" y1="120" x2="312" y2="120" class="branch-line"/>
+  <circle cx="320" cy="120" r="8" class="messy"/>
+  <text x="320" y="140" text-anchor="middle" class="text">G: Oops</text>
+  
+  <line x1="328" y1="120" x2="352" y2="120" class="branch-line"/>
+  <circle cx="360" cy="120" r="8" class="feature"/>
+  <text x="360" y="140" text-anchor="middle" class="text">H: Polish</text>
+  
+  <!-- Interactive rebase transformation -->
+  <text x="450" y="200" class="title" fill="#9C27B0">git rebase -i HEAD~8</text>
+  
+  <!-- Rebase plan -->
+  <rect x="400" y="220" width="400" height="150" fill="#f8f9fa" stroke="#6c757d" stroke-width="1"/>
+  <text x="410" y="240" class="branch-label" fill="#9C27B0">Interactive Rebase Plan:</text>
+  
+  <text x="410" y="260" class="text">pick A123456 Initial commit</text>
+  <text x="410" y="275" class="text" fill="#FF9800">squash B789012 WIP: working on feature</text>
+  <text x="410" y="290" class="text" fill="#F44336">drop C345678 Fix typo in comment</text>
+  <text x="410" y="305" class="text">pick D901234 Add user authentication</text>
+  <text x="410" y="320" class="text" fill="#F44336">drop E567890 Add debug console.log</text>
+  <text x="410" y="335" class="text" fill="#F44336">drop F123456 Remove debug code</text>
+  <text x="410" y="350" class="text" fill="#FF9800">fixup G789012 Oops forgot to add file</text>
+  <text x="410" y="365" class="text">reword H345678 Polish user interface</text>
+  
+  <!-- Clean history result -->
+  <text x="50" y="420" class="title" fill="#4CAF50">After: Clean Professional History</text>
+  
+  <circle cx="80" cy="460" r="10" class="clean"/>
+  <text x="80" y="485" text-anchor="middle" class="text">A': Initial setup</text>
+  
+  <line x1="90" y1="460" x2="170" y2="460" class="rewrite-line"/>
+  <circle cx="180" cy="460" r="10" class="clean"/>
+  <text x="180" y="485" text-anchor="middle" class="text">B': Authentication</text>
+  <text x="180" y="500" text-anchor="middle" class="text">(A+B+D)</text>
+  
+  <line x1="190" y1="460" x2="270" y2="460" class="rewrite-line"/>
+  <circle cx="280" cy="460" r="10" class="clean"/>
+  <text x="280" y="485" text-anchor="middle" class="text">C': UI enhancements</text>
+  <text x="280" y="500" text-anchor="middle" class="text">(G+H)</text>
+  
+  <!-- Transformation arrows -->
+  <line x1="120" y1="160" x2="120" y2="220" stroke="#9C27B0" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <line x1="240" y1="160" x2="240" y2="220" stroke="#9C27B0" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <line x1="600" y1="380" x2="180" y2="440" class="rewrite-line"/>
+  <line x1="600" y1="380" x2="280" y2="440" class="rewrite-line"/>
+  
+  <!-- Operation legend -->
+  <rect x="50" y="520" width="800" height="60" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="540" class="title">Rebase Operations:</text>
+  
+  <text x="60" y="560" class="text">• pick: Keep commit as-is • squash: Combine with previous • fixup: Combine, discard message</text>
+  <text x="60" y="575" class="text">• reword: Change commit message • drop: Remove commit entirely • edit: Modify commit content</text>
+</svg>

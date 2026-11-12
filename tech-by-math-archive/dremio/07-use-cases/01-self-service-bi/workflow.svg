@@ -1,0 +1,248 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dataSourceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E86AB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A23B72;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dremioGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F18F01;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C73E1D;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="analyticsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#415A77;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#778DA9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2d3748">
+    Self-Service BI Workflow
+  </text>
+  
+  <!-- Data Sources Layer -->
+  <text x="50" y="80" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3748">
+    Data Sources
+  </text>
+  
+  <!-- S3 Data Lake -->
+  <rect x="50" y="100" width="120" height="80" rx="10" fill="url(#dataSourceGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="110" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    S3 Data Lake
+  </text>
+  <text x="110" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Order History
+  </text>
+  <text x="110" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Web Analytics
+  </text>
+  <text x="110" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Parquet Files
+  </text>
+  
+  <!-- Snowflake DW -->
+  <rect x="200" y="100" width="120" height="80" rx="10" fill="url(#dataSourceGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="260" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Snowflake DW
+  </text>
+  <text x="260" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Customer Data
+  </text>
+  <text x="260" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Segments
+  </text>
+  <text x="260" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Demographics
+  </text>
+  
+  <!-- PostgreSQL -->
+  <rect x="350" y="100" width="120" height="80" rx="10" fill="url(#dataSourceGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="410" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    PostgreSQL CRM
+  </text>
+  <text x="410" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Product Catalog
+  </text>
+  <text x="410" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Supplier Info
+  </text>
+  <text x="410" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Pricing Rules
+  </text>
+  
+  <!-- Arrows from Data Sources to Dremio -->
+  <path d="M110 180 L250 250" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M260 180 L300 250" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M410 180 L350 250" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Dremio Lakehouse Layer -->
+  <text x="300" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3748">
+    Dremio Lakehouse Platform
+  </text>
+  
+  <!-- Dremio Cluster -->
+  <rect x="200" y="250" width="400" height="150" rx="15" fill="url(#dremioGradient)" stroke="#fff" stroke-width="3"/>
+  
+  <!-- Coordinator -->
+  <rect x="220" y="280" width="100" height="90" rx="8" fill="rgba(255,255,255,0.9)" stroke="#C73E1D" stroke-width="2"/>
+  <text x="270" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#C73E1D">
+    Coordinator
+  </text>
+  <text x="270" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Query Planning
+  </text>
+  <text x="270" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Metadata Mgmt
+  </text>
+  <text x="270" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Security
+  </text>
+  <text x="270" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • VDS Creation
+  </text>
+  
+  <!-- Executor Node 1 -->
+  <rect x="350" y="280" width="100" height="90" rx="8" fill="rgba(255,255,255,0.9)" stroke="#C73E1D" stroke-width="2"/>
+  <text x="400" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#C73E1D">
+    Executor 1
+  </text>
+  <text x="400" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Query Execution
+  </text>
+  <text x="400" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Reflections
+  </text>
+  <text x="400" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Caching
+  </text>
+  <text x="400" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Join Processing
+  </text>
+  
+  <!-- Executor Node 2 -->
+  <rect x="480" y="280" width="100" height="90" rx="8" fill="rgba(255,255,255,0.9)" stroke="#C73E1D" stroke-width="2"/>
+  <text x="530" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#C73E1D">
+    Executor 2
+  </text>
+  <text x="530" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Query Execution
+  </text>
+  <text x="530" y="333" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Reflections
+  </text>
+  <text x="530" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Caching
+  </text>
+  <text x="530" y="363" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">
+    • Aggregation
+  </text>
+  
+  <!-- Arrows from Dremio to Analytics -->
+  <path d="M300 400 L200 480" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M400 400 L400 480" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M500 400 L600 480" stroke="#666" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Analytics & Visualization Layer -->
+  <text x="400" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3748">
+    Self-Service Analytics
+  </text>
+  
+  <!-- Tableau -->
+  <rect x="120" y="480" width="120" height="80" rx="10" fill="url(#analyticsGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="180" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Tableau
+  </text>
+  <text x="180" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Executive Dashboards
+  </text>
+  <text x="180" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Strategic Planning
+  </text>
+  <text x="180" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Ad-hoc Analysis
+  </text>
+  
+  <!-- Power BI -->
+  <rect x="340" y="480" width="120" height="80" rx="10" fill="url(#analyticsGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="400" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Power BI
+  </text>
+  <text x="400" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Sales Reports
+  </text>
+  <text x="400" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Regional Analysis
+  </text>
+  <text x="400" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Customer 360
+  </text>
+  
+  <!-- Custom Dashboards -->
+  <rect x="560" y="480" width="120" height="80" rx="10" fill="url(#analyticsGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="620" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Custom Apps
+  </text>
+  <text x="620" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Real-time KPIs
+  </text>
+  <text x="620" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Operational Metrics
+  </text>
+  <text x="620" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Alerts &amp; Monitoring
+  </text>
+  
+  <!-- Key Benefits Box -->
+  <rect x="520" y="50" width="260" height="140" rx="10" fill="rgba(65, 90, 119, 0.1)" stroke="#415A77" stroke-width="2"/>
+  <text x="650" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#415A77">
+    Self-Service Benefits
+  </text>
+  <text x="530" y="95" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ 97.6% reduction in ETL development time
+  </text>
+  <text x="530" y="110" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ 56x faster query response (3.2s vs 180s)
+  </text>
+  <text x="530" y="125" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ 78% of analysts create own datasets
+  </text>
+  <text x="530" y="140" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ 68% reduction in infrastructure costs
+  </text>
+  <text x="530" y="155" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ Near real-time data access
+  </text>
+  <text x="530" y="170" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ✓ Unified governance &amp; security
+  </text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Data Flow Labels -->
+  <text x="180" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(-20 180 215)">
+    Real-time Data Access
+  </text>
+  <text x="280" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(-10 280 215)">
+    No ETL Required
+  </text>
+  <text x="380" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(10 380 215)">
+    Virtual Datasets
+  </text>
+  
+  <text x="250" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(20 250 450)">
+    Self-Service Analytics
+  </text>
+  <text x="400" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">
+    SQL Interface
+  </text>
+  <text x="550" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(-20 550 450)">
+    Real-time Insights
+  </text>
+</svg>

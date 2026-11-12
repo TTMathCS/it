@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .windows { fill: #0078D4; stroke: #106EBE; stroke-width: 2; }
+      .macos { fill: #007AFF; stroke: #0056CC; stroke-width: 2; }
+      .linux { fill: #FD7E14; stroke: #E8590C; stroke-width: 2; }
+      .ci { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 9px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Multi-Platform Development Workflow</text>
+  
+  <!-- Main cross-platform branch -->
+  <text x="30" y="80" class="branch-label" fill="#2E7D32">main</text>
+  <circle cx="80" cy="100" r="10" class="main"/>
+  <text x="80" y="125" text-anchor="middle" class="text">Init</text>
+  
+  <line x1="90" y1="100" x2="170" y2="100" class="branch-line"/>
+  <circle cx="180" cy="100" r="10" class="main"/>
+  <text x="180" y="125" text-anchor="middle" class="text">Core</text>
+  
+  <line x1="190" y1="100" x2="370" y2="100" class="branch-line"/>
+  <circle cx="380" cy="100" r="10" class="main"/>
+  <text x="380" y="125" text-anchor="middle" class="text">Merge Win</text>
+  
+  <line x1="390" y1="100" x2="570" y2="100" class="branch-line"/>
+  <circle cx="580" cy="100" r="10" class="main"/>
+  <text x="580" y="125" text-anchor="middle" class="text">Merge Mac</text>
+  
+  <line x1="590" y1="100" x2="770" y2="100" class="branch-line"/>
+  <circle cx="780" cy="100" r="10" class="main"/>
+  <text x="780" y="125" text-anchor="middle" class="text">v1.0</text>
+  
+  <!-- Windows development -->
+  <text x="30" y="180" class="branch-label" fill="#0078D4">🪟 windows/native-ui</text>
+  <line x1="190" y1="100" x2="210" y2="200" class="branch-line"/>
+  <circle cx="220" cy="200" r="10" class="windows"/>
+  <text x="220" y="225" text-anchor="middle" class="text">WinUI</text>
+  
+  <line x1="230" y1="200" x2="270" y2="200" class="branch-line"/>
+  <circle cx="280" cy="200" r="10" class="windows"/>
+  <text x="280" y="225" text-anchor="middle" class="text">MSI</text>
+  
+  <line x1="290" y1="200" x2="330" y2="200" class="branch-line"/>
+  <circle cx="340" cy="200" r="10" class="windows"/>
+  <text x="340" y="225" text-anchor="middle" class="text">Test</text>
+  
+  <line x1="350" y1="200" x2="370" y2="100" class="merge-line"/>
+  
+  <!-- macOS development -->
+  <text x="30" y="280" class="branch-label" fill="#007AFF">🍎 macos/cocoa-ui</text>
+  <line x1="390" y1="100" x2="410" y2="300" class="branch-line"/>
+  <circle cx="420" cy="300" r="10" class="macos"/>
+  <text x="420" y="325" text-anchor="middle" class="text">Cocoa</text>
+  
+  <line x1="430" y1="300" x2="470" y2="300" class="branch-line"/>
+  <circle cx="480" cy="300" r="10" class="macos"/>
+  <text x="480" y="325" text-anchor="middle" class="text">DMG</text>
+  
+  <line x1="490" y1="300" x2="530" y2="300" class="branch-line"/>
+  <circle cx="540" cy="300" r="10" class="macos"/>
+  <text x="540" y="325" text-anchor="middle" class="text">Test</text>
+  
+  <line x1="550" y1="300" x2="570" y2="100" class="merge-line"/>
+  
+  <!-- Linux development -->
+  <text x="30" y="380" class="branch-label" fill="#FD7E14">🐧 linux/gtk-ui</text>
+  <line x1="590" y1="100" x2="610" y2="400" class="branch-line"/>
+  <circle cx="620" cy="400" r="10" class="linux"/>
+  <text x="620" y="425" text-anchor="middle" class="text">GTK</text>
+  
+  <line x1="630" y1="400" x2="670" y2="400" class="branch-line"/>
+  <circle cx="680" cy="400" r="10" class="linux"/>
+  <text x="680" y="425" text-anchor="middle" class="text">DEB</text>
+  
+  <line x1="690" y1="400" x2="730" y2="400" class="branch-line"/>
+  <circle cx="740" cy="400" r="10" class="linux"/>
+  <text x="740" y="425" text-anchor="middle" class="text">Test</text>
+  
+  <line x1="750" y1="400" x2="770" y2="100" class="merge-line"/>
+  
+  <!-- CI/CD Pipeline -->
+  <text x="30" y="480" class="branch-label" fill="#9C27B0">🔄 CI/CD Matrix</text>
+  <line x1="90" y1="100" x2="110" y2="500" class="branch-line"/>
+  <circle cx="120" cy="500" r="8" class="ci"/>
+  <text x="120" y="520" text-anchor="middle" class="text">Win Build</text>
+  
+  <line x1="190" y1="100" x2="210" y2="500" class="branch-line"/>
+  <circle cx="220" cy="500" r="8" class="ci"/>
+  <text x="220" y="520" text-anchor="middle" class="text">Mac Build</text>
+  
+  <line x1="390" y1="100" x2="410" y2="500" class="branch-line"/>
+  <circle cx="420" cy="500" r="8" class="ci"/>
+  <text x="420" y="520" text-anchor="middle" class="text">Linux Build</text>
+  
+  <line x1="590" y1="100" x2="610" y2="500" class="branch-line"/>
+  <circle cx="620" cy="500" r="8" class="ci"/>
+  <text x="620" y="520" text-anchor="middle" class="text">All Tests</text>
+  
+  <!-- Platform compatibility matrix -->
+  <rect x="450" y="180" width="300" height="250" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="460" y="200" class="title">Platform Matrix</text>
+  
+  <text x="460" y="220" class="branch-label" fill="#0078D4">Windows:</text>
+  <text x="460" y="235" class="text">• CRLF line endings</text>
+  <text x="460" y="250" class="text">• Case-insensitive filesystem</text>
+  <text x="460" y="265" class="text">• WinUI native components</text>
+  
+  <text x="460" y="285" class="branch-label" fill="#007AFF">macOS:</text>
+  <text x="460" y="300" class="text">• LF line endings</text>
+  <text x="460" y="315" class="text">• Case-insensitive filesystem</text>
+  <text x="460" y="330" class="text">• Cocoa native framework</text>
+  
+  <text x="460" y="350" class="branch-label" fill="#FD7E14">Linux:</text>
+  <text x="460" y="365" class="text">• LF line endings</text>
+  <text x="460" y="380" class="text">• Case-sensitive filesystem</text>
+  <text x="460" y="395" class="text">• GTK cross-desktop UI</text>
+  
+  <text x="460" y="415" class="branch-label" fill="#9C27B0">Git Config:</text>
+  <text x="460" y="430" text-anchor="start" class="text">core.autocrlf = input/true</text>
+  
+  <!-- Build matrix visualization -->
+  <rect x="450" y="450" width="300" height="120" fill="#fff3cd" stroke="#ffc107" stroke-width="1"/>
+  <text x="460" y="470" class="title">Build Matrix</text>
+  
+  <text x="460" y="490" class="text">✓ Windows 10/11 + MSVC</text>
+  <text x="460" y="505" class="text">✓ macOS 12+ + Xcode</text>
+  <text x="460" y="520" class="text">✓ Ubuntu 20.04+ + GCC</text>
+  <text x="460" y="535" class="text">✓ Cross-compilation tests</text>
+  <text x="460" y="550" class="text">✓ Platform-specific packaging</text>
+</svg>

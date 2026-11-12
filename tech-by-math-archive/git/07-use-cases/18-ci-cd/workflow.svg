@@ -1,0 +1,233 @@
+<svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <linearGradient id="pipelineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="successGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="800" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="500" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#212529">
+    CI/CD Pipeline: Automated Build, Test, and Deploy Workflow
+  </text>
+  
+  <!-- Git Repository Section -->
+  <rect x="50" y="60" width="200" height="120" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="10"/>
+  <text x="150" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#856404">
+    Git Repository
+  </text>
+  
+  <!-- Git commits -->
+  <circle cx="80" cy="110" r="12" fill="#28a745" stroke="#1e7e34" stroke-width="2"/>
+  <text x="80" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">A</text>
+  
+  <circle cx="120" cy="110" r="12" fill="#28a745" stroke="#1e7e34" stroke-width="2"/>
+  <text x="120" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">B</text>
+  
+  <circle cx="160" cy="110" r="12" fill="#dc3545" stroke="#721c24" stroke-width="2"/>
+  <text x="160" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">C</text>
+  
+  <circle cx="200" cy="110" r="12" fill="#28a745" stroke="#1e7e34" stroke-width="2"/>
+  <text x="200" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">D</text>
+  
+  <!-- Git arrows -->
+  <line x1="92" y1="110" x2="108" y2="110" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="132" y1="110" x2="148" y2="110" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="172" y1="110" x2="188" y2="110" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <text x="80" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#28a745">feat</text>
+  <text x="120" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#28a745">fix</text>
+  <text x="160" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#dc3545">fail</text>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#28a745">main</text>
+  
+  <text x="150" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#856404">Push triggers webhook</text>
+  
+  <!-- Trigger Arrow -->
+  <line x1="250" y1="120" x2="300" y2="120" stroke="#007bff" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="275" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#007bff">Webhook</text>
+  
+  <!-- Pipeline Stages -->
+  <rect x="320" y="60" width="630" height="500" fill="url(#pipelineGradient)" stroke="#007bff" stroke-width="2" rx="10"/>
+  <text x="635" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#084298">
+    Automated CI/CD Pipeline
+  </text>
+  
+  <!-- Stage 1: Build -->
+  <rect x="340" y="110" width="120" height="80" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="400" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">1. Build</text>
+  <text x="400" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Checkout code</text>
+  <text x="400" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Install deps</text>
+  <text x="400" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Compile/Build</text>
+  
+  <!-- Stage 2: Test -->
+  <rect x="480" y="110" width="120" height="80" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="540" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">2. Test</text>
+  <text x="540" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Unit tests</text>
+  <text x="540" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Integration</text>
+  <text x="540" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Coverage</text>
+  
+  <!-- Stage 3: Quality Gates -->
+  <rect x="620" y="110" width="120" height="80" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="680" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">3. Quality</text>
+  <text x="680" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Code analysis</text>
+  <text x="680" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Security scan</text>
+  <text x="680" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Lint check</text>
+  
+  <!-- Stage 4: Deploy Staging -->
+  <rect x="760" y="110" width="120" height="80" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="820" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">4. Deploy</text>
+  <text x="820" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Staging env</text>
+  <text x="820" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Smoke tests</text>
+  <text x="820" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">Validation</text>
+  
+  <!-- Pipeline Flow Arrows -->
+  <line x1="460" y1="150" x2="480" y2="150" stroke="#007bff" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="150" x2="620" y2="150" stroke="#007bff" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <line x1="740" y1="150" x2="760" y2="150" stroke="#007bff" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Parallel Testing -->
+  <rect x="340" y="210" width="280" height="100" fill="#f8f9fa" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="480" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">
+    Parallel Test Matrix
+  </text>
+  
+  <!-- Test Matrix -->
+  <rect x="360" y="240" width="70" height="60" fill="url(#successGradient)" stroke="#28a745" stroke-width="1" rx="3"/>
+  <text x="395" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Node 16</text>
+  <text x="395" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Ubuntu</text>
+  <text x="395" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#28a745">✓ Pass</text>
+  
+  <rect x="440" y="240" width="70" height="60" fill="url(#successGradient)" stroke="#28a745" stroke-width="1" rx="3"/>
+  <text x="475" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Node 18</text>
+  <text x="475" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Ubuntu</text>
+  <text x="475" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#28a745">✓ Pass</text>
+  
+  <rect x="520" y="240" width="70" height="60" fill="#ffebee" stroke="#dc3545" stroke-width="1" rx="3"/>
+  <text x="555" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Node 20</text>
+  <text x="555" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Ubuntu</text>
+  <text x="555" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc3545">✗ Fail</text>
+  
+  <!-- Environment-specific Deployments -->
+  <rect x="640" y="210" width="280" height="100" fill="#f8f9fa" stroke="#ffc107" stroke-width="2" rx="5"/>
+  <text x="780" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#856404">
+    Environment Strategy
+  </text>
+  
+  <!-- Environments -->
+  <rect x="660" y="245" width="80" height="25" fill="#e3f2fd" stroke="#2196f3" stroke-width="1" rx="3"/>
+  <text x="700" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">develop → staging</text>
+  
+  <rect x="660" y="275" width="80" height="25" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="3"/>
+  <text x="700" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#2e7d32">main → production</text>
+  
+  <rect x="750" y="245" width="80" height="25" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="3"/>
+  <text x="790" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57c00">feature/* → preview</text>
+  
+  <rect x="840" y="245" width="80" height="25" fill="#fce4ec" stroke="#e91e63" stroke-width="1" rx="3"/>
+  <text x="880" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ad1457">hotfix → emergency</text>
+  
+  <!-- Production Deployment -->
+  <rect x="340" y="330" width="580" height="80" fill="#e8f5e8" stroke="#28a745" stroke-width="2" rx="8"/>
+  <text x="630" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#155724">
+    Production Deployment (Blue-Green Strategy)
+  </text>
+  
+  <!-- Blue-Green boxes -->
+  <rect x="400" y="370" width="100" height="30" fill="#2196f3" stroke="#1976d2" stroke-width="2" rx="5"/>
+  <text x="450" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Blue (Live)</text>
+  
+  <rect x="520" y="370" width="100" height="30" fill="#4caf50" stroke="#2e7d32" stroke-width="2" rx="5"/>
+  <text x="570" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Green (Deploy)</text>
+  
+  <rect x="640" y="370" width="100" height="30" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+  <text x="690" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Traffic Switch</text>
+  
+  <rect x="760" y="370" width="100" height="30" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="5"/>
+  <text x="810" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">Monitoring</text>
+  
+  <!-- Arrows between blue-green stages -->
+  <line x1="500" y1="385" x2="520" y2="385" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="620" y1="385" x2="640" y2="385" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="740" y1="385" x2="760" y2="385" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Feedback and Monitoring -->
+  <rect x="340" y="430" width="580" height="100" fill="#fff" stroke="#6c757d" stroke-width="1" rx="8"/>
+  <text x="630" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#495057">
+    Monitoring and Feedback
+  </text>
+  
+  <!-- Monitoring components -->
+  <rect x="370" y="470" width="120" height="50" fill="#e3f2fd" stroke="#2196f3" stroke-width="1" rx="5"/>
+  <text x="430" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">Performance</text>
+  <text x="430" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">Metrics</text>
+  
+  <rect x="510" y="470" width="120" height="50" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1" rx="5"/>
+  <text x="570" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7b1fa2">Error</text>
+  <text x="570" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7b1fa2">Tracking</text>
+  
+  <rect x="650" y="470" width="120" height="50" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="5"/>
+  <text x="710" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57c00">Health</text>
+  <text x="710" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57c00">Checks</text>
+  
+  <rect x="790" y="470" width="120" height="50" fill="#ffebee" stroke="#dc3545" stroke-width="1" rx="5"/>
+  <text x="850" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#721c24">Alerts &amp;</text>
+  <text x="850" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#721c24">Rollback</text>
+  
+  <!-- Pipeline Status and Notifications -->
+  <rect x="50" y="580" width="900" height="120" fill="#f8f9fa" stroke="#6c757d" stroke-width="1" rx="10"/>
+  <text x="500" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#212529">
+    Pipeline Status and Team Notifications
+  </text>
+  
+  <!-- Success Path -->
+  <rect x="80" y="620" width="200" height="70" fill="url(#successGradient)" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="180" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">✓ Success Path</text>
+  <text x="180" y="655" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">All tests pass</text>
+  <text x="180" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Deploy to production</text>
+  <text x="180" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#28a745">Slack: ✅ Deployed v1.2.3</text>
+  
+  <!-- Failure Path -->
+  <rect x="300" y="620" width="200" height="70" fill="#ffebee" stroke="#dc3545" stroke-width="2" rx="5"/>
+  <text x="400" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#721c24">✗ Failure Path</text>
+  <text x="400" y="655" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Tests fail or quality gate</text>
+  <text x="400" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Block deployment</text>
+  <text x="400" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc3545">Slack: ❌ Build failed #1234</text>
+  
+  <!-- Rollback Scenario -->
+  <rect x="520" y="620" width="200" height="70" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="5"/>
+  <text x="620" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">↶ Rollback</text>
+  <text x="620" y="655" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e65100">Production issues detected</text>
+  <text x="620" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e65100">Auto-rollback triggered</text>
+  <text x="620" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ff9800">Teams: 🚨 Rolled back to v1.2.2</text>
+  
+  <!-- Performance Metrics -->
+  <rect x="740" y="620" width="200" height="70" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="5"/>
+  <text x="840" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">📊 Metrics</text>
+  <text x="840" y="655" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Build time: 8m 32s</text>
+  <text x="840" y="670" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Success rate: 94.7%</text>
+  <text x="840" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2196f3">MTTR: 12 minutes</text>
+  
+  <!-- Mathematical Foundation -->
+  <rect x="50" y="720" width="900" height="60" fill="#e9ecef" stroke="#adb5bd" stroke-width="1" rx="5"/>
+  <text x="500" y="745" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">
+    Mathematical Foundation: Event-Driven DAG Execution
+  </text>
+  <text x="500" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#495057">
+    Pipeline Success Rate: P = ∏(Stage Success Rates) • Parallel Execution: T = max(T₁, T₂, ..., Tₙ) • Cost Optimization: C = Time × Resources × Rate
+  </text>
+  <text x="500" y="773" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#6c757d">
+    Failure Detection: Early stages fail fast • Recovery Time: MTTR = Σ(P_failure × T_recovery) • Quality Gates: Threshold functions block progression
+  </text>
+  
+</svg>

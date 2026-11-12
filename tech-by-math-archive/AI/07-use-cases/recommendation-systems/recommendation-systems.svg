@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="userGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2196f3;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="itemGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff9800;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="matrixGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4caf50;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="factorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="recommendationGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff5722;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ff5722;stop-opacity:0.3" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fafafa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">Recommendation Systems: Mathematical Foundations</text>
+  
+  <!-- User-Item Interaction Matrix -->
+  <g id="interaction-matrix">
+    <rect x="30" y="60" width="200" height="150" fill="#ffffff" stroke="#666" stroke-width="2" rx="10"/>
+    <text x="130" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">User-Item Matrix R</text>
+    
+    <!-- Matrix visualization -->
+    <g transform="translate(50, 100)">
+      <!-- Headers -->
+      <text x="0" y="0" font-family="Arial, sans-serif" font-size="10" fill="#666">Users</text>
+      <text x="90" y="-10" font-family="Arial, sans-serif" font-size="10" fill="#666">Items</text>
+      
+      <!-- Matrix grid -->
+      <g fill="#e0e0e0" stroke="#bbb" stroke-width="0.5">
+        <rect x="20" y="10" width="15" height="15"/>
+        <rect x="35" y="10" width="15" height="15"/>
+        <rect x="50" y="10" width="15" height="15"/>
+        <rect x="65" y="10" width="15" height="15"/>
+        <rect x="80" y="10" width="15" height="15"/>
+        <rect x="95" y="10" width="15" height="15"/>
+        <rect x="110" y="10" width="15" height="15"/>
+        <rect x="125" y="10" width="15" height="15"/>
+        
+        <rect x="20" y="25" width="15" height="15"/>
+        <rect x="35" y="25" width="15" height="15"/>
+        <rect x="50" y="25" width="15" height="15"/>
+        <rect x="65" y="25" width="15" height="15"/>
+        <rect x="80" y="25" width="15" height="15"/>
+        <rect x="95" y="25" width="15" height="15"/>
+        <rect x="110" y="25" width="15" height="15"/>
+        <rect x="125" y="25" width="15" height="15"/>
+        
+        <rect x="20" y="40" width="15" height="15"/>
+        <rect x="35" y="40" width="15" height="15"/>
+        <rect x="50" y="40" width="15" height="15"/>
+        <rect x="65" y="40" width="15" height="15"/>
+        <rect x="80" y="40" width="15" height="15"/>
+        <rect x="95" y="40" width="15" height="15"/>
+        <rect x="110" y="40" width="15" height="15"/>
+        <rect x="125" y="40" width="15" height="15"/>
+        
+        <rect x="20" y="55" width="15" height="15"/>
+        <rect x="35" y="55" width="15" height="15"/>
+        <rect x="50" y="55" width="15" height="15"/>
+        <rect x="65" y="55" width="15" height="15"/>
+        <rect x="80" y="55" width="15" height="15"/>
+        <rect x="95" y="55" width="15" height="15"/>
+        <rect x="110" y="55" width="15" height="15"/>
+        <rect x="125" y="55" width="15" height="15"/>
+        
+        <rect x="20" y="70" width="15" height="15"/>
+        <rect x="35" y="70" width="15" height="15"/>
+        <rect x="50" y="70" width="15" height="15"/>
+        <rect x="65" y="70" width="15" height="15"/>
+        <rect x="80" y="70" width="15" height="15"/>
+        <rect x="95" y="70" width="15" height="15"/>
+        <rect x="110" y="70" width="15" height="15"/>
+        <rect x="125" y="70" width="15" height="15"/>
+      </g>
+      
+      <!-- Sample ratings -->
+      <g font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="#333">
+        <text x="27.5" y="21">5</text>
+        <text x="42.5" y="21">?</text>
+        <text x="57.5" y="21">3</text>
+        <text x="72.5" y="21">?</text>
+        <text x="87.5" y="21">4</text>
+        
+        <text x="27.5" y="36">?</text>
+        <text x="42.5" y="36">4</text>
+        <text x="57.5" y="36">?</text>
+        <text x="72.5" y="36">5</text>
+        <text x="87.5" y="36">?</text>
+        
+        <text x="27.5" y="51">2</text>
+        <text x="42.5" y="51">?</text>
+        <text x="57.5" y="51">?</text>
+        <text x="72.5" y="51">3</text>
+        <text x="87.5" y="51">1</text>
+        
+        <text x="27.5" y="66">?</text>
+        <text x="42.5" y="66">3</text>
+        <text x="57.5" y="66">4</text>
+        <text x="72.5" y="66">?</text>
+        <text x="87.5" y="66">5</text>
+      </g>
+      
+      <!-- User and item labels -->
+      <g font-family="Arial, sans-serif" font-size="9" fill="#666">
+        <text x="10" y="21">U₁</text>
+        <text x="10" y="36">U₂</text>
+        <text x="10" y="51">U₃</text>
+        <text x="10" y="66">U₄</text>
+        
+        <text x="27.5" y="5">I₁</text>
+        <text x="42.5" y="5">I₂</text>
+        <text x="57.5" y="5">I₃</text>
+        <text x="72.5" y="5">I₄</text>
+        <text x="87.5" y="5">I₅</text>
+      </g>
+    </g>
+    
+    <text x="130" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#555">Sparse Rating Matrix (many missing values)</text>
+  </g>
+  
+  <!-- Matrix Factorization -->
+  <g id="matrix-factorization">
+    <rect x="280" y="60" width="490" height="150" fill="#ffffff" stroke="#666" stroke-width="2" rx="10"/>
+    <text x="525" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Matrix Factorization: R ≈ UV^T</text>
+    
+    <!-- User factors matrix U -->
+    <g transform="translate(310, 110)">
+      <rect width="80" height="60" fill="url(#userGradient)" stroke="#1976d2" stroke-width="2" rx="5"/>
+      <text x="40" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fff">User Factors</text>
+      <text x="40" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">U</text>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">m × k</text>
+    </g>
+    
+    <!-- Multiplication sign -->
+    <text x="410" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">×</text>
+    
+    <!-- Item factors matrix V^T -->
+    <g transform="translate(440, 110)">
+      <rect width="80" height="60" fill="url(#itemGradient)" stroke="#f57c00" stroke-width="2" rx="5"/>
+      <text x="40" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fff">Item Factors</text>
+      <text x="40" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">V^T</text>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">k × n</text>
+    </g>
+    
+    <!-- Equals sign -->
+    <text x="540" y="145" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">≈</text>
+    
+    <!-- Reconstructed matrix -->
+    <g transform="translate(570, 110)">
+      <rect width="80" height="60" fill="url(#matrixGradient)" stroke="#4caf50" stroke-width="2" rx="5"/>
+      <text x="40" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fff">Predicted</text>
+      <text x="40" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#fff">R̂</text>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">m × n</text>
+    </g>
+    
+    <!-- Factor interpretation -->
+    <g transform="translate(320, 180)">
+      <text x="0" y="0" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Latent Factors:</text>
+      <text x="0" y="15" font-family="Arial, sans-serif" font-size="10" fill="#555">• User preferences (U): comedy, action, drama, ...</text>
+      <text x="0" y="28" font-family="Arial, sans-serif" font-size="10" fill="#555">• Item features (V): genre, director, year, ...</text>
+    </g>
+  </g>
+  
+  <!-- Collaborative Filtering -->
+  <g id="collaborative-filtering">
+    <rect x="30" y="230" width="340" height="180" fill="#ffffff" stroke="#9c27b0" stroke-width="2" rx="10"/>
+    <text x="200" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#9c27b0">Collaborative Filtering</text>
+    
+    <!-- User-based CF -->
+    <g id="user-based-cf">
+      <text x="50" y="280" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">User-Based CF:</text>
+      
+      <!-- User similarity visualization -->
+      <g transform="translate(60, 290)">
+        <circle cx="20" cy="20" r="15" fill="#e1bee7" stroke="#9c27b0" stroke-width="2"/>
+        <text x="20" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">U₁</text>
+        
+        <circle cx="80" cy="15" r="12" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">U₂</text>
+        
+        <circle cx="80" cy="45" r="12" fill="#ffcdd2" stroke="#f44336" stroke-width="2"/>
+        <text x="80" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">U₃</text>
+        
+        <circle cx="140" cy="20" r="15" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+        <text x="140" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Item</text>
+        
+        <!-- Similarity lines -->
+        <line x1="35" y1="20" x2="65" y2="15" stroke="#4caf50" stroke-width="3"/>
+        <text x="50" y="12" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4caf50">0.8</text>
+        
+        <line x1="35" y1="25" x2="65" y2="40" stroke="#f44336" stroke-width="2"/>
+        <text x="50" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f44336">0.3</text>
+        
+        <!-- Recommendation arrow -->
+        <path d="M 95 15 L 125 20" stroke="#ff9800" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <text x="110" y="10" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ff9800">Recommend</text>
+      </g>
+      
+      <text x="50" y="350" font-family="Arial, sans-serif" font-size="11" fill="#555">Find similar users → recommend their liked items</text>
+    </g>
+    
+    <!-- Item-based CF -->
+    <g id="item-based-cf">
+      <text x="200" y="280" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Item-Based CF:</text>
+      
+      <!-- Item similarity visualization -->
+      <g transform="translate(210, 290)">
+        <circle cx="20" cy="20" r="15" fill="#e1bee7" stroke="#9c27b0" stroke-width="2"/>
+        <text x="20" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">User</text>
+        
+        <circle cx="80" cy="15" r="12" fill="#c8e6c9" stroke="#4caf50" stroke-width="2"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">I₁</text>
+        
+        <circle cx="80" cy="45" r="12" fill="#ffcdd2" stroke="#f44336" stroke-width="2"/>
+        <text x="80" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">I₂</text>
+        
+        <circle cx="140" cy="30" r="12" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+        <text x="140" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">I₃</text>
+        
+        <!-- User-item interactions -->
+        <line x1="35" y1="20" x2="65" y2="15" stroke="#4caf50" stroke-width="3"/>
+        <text x="50" y="12" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4caf50">Liked</text>
+        
+        <!-- Item similarity -->
+        <line x1="92" y1="20" x2="128" y2="25" stroke="#ff9800" stroke-width="2" stroke-dasharray="3,3"/>
+        <text x="110" y="18" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ff9800">Similar</text>
+        
+        <!-- Recommendation arrow -->
+        <path d="M 35 25 Q 70 55, 125 35" stroke="#ff9800" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <text x="80" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ff9800">Recommend</text>
+      </g>
+      
+      <text x="200" y="350" font-family="Arial, sans-serif" font-size="11" fill="#555">Find similar items → recommend to users who liked them</text>
+    </g>
+    
+    <!-- Similarity metrics -->
+    <g id="similarity-metrics">
+      <text x="50" y="375" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Similarity Metrics:</text>
+      <text x="50" y="390" font-family="Arial, sans-serif" font-size="10" fill="#555">• Cosine: cos(u,v) = u·v / (||u|| × ||v||)</text>
+      <text x="50" y="405" font-family="Arial, sans-serif" font-size="10" fill="#555">• Pearson: r = Σ(rᵤᵢ - r̄ᵤ)(rᵥᵢ - r̄ᵥ) / √(Σ(rᵤᵢ - r̄ᵤ)²Σ(rᵥᵢ - r̄ᵥ)²)</text>
+    </g>
+  </g>
+  
+  <!-- Content-Based Filtering -->
+  <g id="content-based">
+    <rect x="400" y="230" width="370" height="180" fill="#ffffff" stroke="#607d8b" stroke-width="2" rx="10"/>
+    <text x="585" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#607d8b">Content-Based Filtering</text>
+    
+    <!-- Feature extraction -->
+    <g id="feature-extraction">
+      <text x="420" y="280" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Feature Extraction:</text>
+      
+      <!-- Item features -->
+      <g transform="translate(430, 290)">
+        <rect width="100" height="60" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" rx="5"/>
+        <text x="50" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3f51b5">Item Features</text>
+        <text x="10" y="30" font-family="Arial, sans-serif" font-size="9" fill="#333">Genre: [0,1,0,1,0]</text>
+        <text x="10" y="42" font-family="Arial, sans-serif" font-size="9" fill="#333">Year: 2020</text>
+        <text x="10" y="54" font-family="Arial, sans-serif" font-size="9" fill="#333">Director: "Nolan"</text>
+      </g>
+      
+      <!-- Arrow -->
+      <path d="M 540 320 L 570 320" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- User profile -->
+      <g transform="translate(580, 290)">
+        <rect width="100" height="60" fill="#fff3e0" stroke="#f57c00" stroke-width="2" rx="5"/>
+        <text x="50" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f57c00">User Profile</text>
+        <text x="10" y="30" font-family="Arial, sans-serif" font-size="9" fill="#333">Action: 0.8</text>
+        <text x="10" y="42" font-family="Arial, sans-serif" font-size="9" fill="#333">Sci-Fi: 0.6</text>
+        <text x="10" y="54" font-family="Arial, sans-serif" font-size="9" fill="#333">Nolan: 0.9</text>
+      </g>
+    </g>
+    
+    <!-- TF-IDF representation -->
+    <g id="tfidf">
+      <text x="420" y="370" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">TF-IDF Vectorization:</text>
+      <text x="420" y="385" font-family="Arial, sans-serif" font-size="10" fill="#555">• Term Frequency: TF(t,d) = f(t,d) / max{f(w,d) : w ∈ d}</text>
+      <text x="420" y="398" font-family="Arial, sans-serif" font-size="10" fill="#555">• Inverse Document Frequency: IDF(t) = log(N / df(t))</text>
+    </g>
+  </g>
+  
+  <!-- Mathematical Formulations -->
+  <g id="math-formulations">
+    <rect x="30" y="430" width="740" height="140" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="10"/>
+    <text x="400" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Mathematical Foundations</text>
+    
+    <!-- Matrix Factorization Loss -->
+    <g id="mf-loss">
+      <text x="50" y="480" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9c27b0">Matrix Factorization Loss:</text>
+      <text x="50" y="500" font-family="Arial, sans-serif" font-size="12" fill="#333">L = Σ(rᵤᵢ - uᵤᵀvᵢ)² + λ(||uᵤ||² + ||vᵢ||²)</text>
+      <text x="50" y="515" font-family="Arial, sans-serif" font-size="10" fill="#555">Minimize reconstruction error with regularization</text>
+    </g>
+    
+    <!-- Cosine Similarity -->
+    <g id="cosine-similarity">
+      <text x="420" y="480" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4caf50">Cosine Similarity:</text>
+      <text x="420" y="500" font-family="Arial, sans-serif" font-size="12" fill="#333">sim(u,v) = (u · v) / (||u|| × ||v||)</text>
+      <text x="420" y="515" font-family="Arial, sans-serif" font-size="10" fill="#555">Measure angle between user/item vectors</text>
+    </g>
+    
+    <!-- Prediction Formula -->
+    <g id="prediction">
+      <text x="50" y="540" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ff9800">Rating Prediction:</text>
+      <text x="50" y="560" font-family="Arial, sans-serif" font-size="12" fill="#333">r̂ᵤᵢ = r̄ᵤ + (Σ sim(u,v) × (rᵥᵢ - r̄ᵥ)) / Σ |sim(u,v)|</text>
+    </g>
+    
+    <!-- Evaluation Metrics -->
+    <g id="evaluation">
+      <text x="420" y="540" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e91e63">Evaluation:</text>
+      <text x="420" y="560" font-family="Arial, sans-serif" font-size="12" fill="#333">RMSE = √(Σ(rᵤᵢ - r̂ᵤᵢ)² / |Test|)</text>
+    </g>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

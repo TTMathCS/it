@@ -1,0 +1,218 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rddGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7ED321;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dagGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D0021B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="memoryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9013FE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#50E3C2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">
+    Apache Spark Core Mathematical Models
+  </text>
+  
+  <!-- RDD Lineage Section -->
+  <g id="rdd-section">
+    <rect x="20" y="60" width="240" height="180" rx="10" fill="url(#rddGradient)" opacity="0.2" stroke="#4A90E2" stroke-width="2"/>
+    <text x="140" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      RDD Lineage Model
+    </text>
+    
+    <!-- RDD Chain -->
+    <circle cx="60" cy="130" r="20" fill="#4A90E2" opacity="0.8"/>
+    <text x="60" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">RDD₁</text>
+    
+    <path d="M 80 130 L 100 130" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="90" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">map</text>
+    
+    <circle cx="120" cy="130" r="20" fill="#4A90E2" opacity="0.8"/>
+    <text x="120" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">RDD₂</text>
+    
+    <path d="M 140 130 L 160 130" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="150" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">filter</text>
+    
+    <circle cx="180" cy="130" r="20" fill="#4A90E2" opacity="0.8"/>
+    <text x="180" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">RDD₃</text>
+    
+    <!-- Mathematical Formula -->
+    <text x="140" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">
+      Recovery Cost = D × T_compute
+    </text>
+    <text x="140" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">
+      D: lineage depth, T: transformation time
+    </text>
+    
+    <!-- Partition representation -->
+    <rect x="30" y="200" width="15" height="8" fill="#7ED321" opacity="0.7"/>
+    <rect x="50" y="200" width="15" height="8" fill="#7ED321" opacity="0.7"/>
+    <rect x="70" y="200" width="15" height="8" fill="#7ED321" opacity="0.7"/>
+    <text x="60" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Partitions</text>
+  </g>
+  
+  <!-- DAG Scheduler Section -->
+  <g id="dag-section">
+    <rect x="280" y="60" width="240" height="180" rx="10" fill="url(#dagGradient)" opacity="0.2" stroke="#F5A623" stroke-width="2"/>
+    <text x="400" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      DAG Scheduler Model
+    </text>
+    
+    <!-- DAG Structure -->
+    <circle cx="320" cy="120" r="15" fill="#F5A623" opacity="0.8"/>
+    <text x="320" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">S₁</text>
+    
+    <circle cx="380" cy="110" r="15" fill="#F5A623" opacity="0.8"/>
+    <text x="380" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">S₂</text>
+    
+    <circle cx="380" cy="150" r="15" fill="#F5A623" opacity="0.8"/>
+    <text x="380" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">S₃</text>
+    
+    <circle cx="460" cy="130" r="15" fill="#F5A623" opacity="0.8"/>
+    <text x="460" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">S₄</text>
+    
+    <!-- DAG Edges -->
+    <path d="M 335 120 L 365 115" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 335 125 L 365 145" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 395 115 L 445 125" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 395 145 L 445 135" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Mathematical Formula -->
+    <text x="400" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">
+      Critical Path = max(Σ stage_times)
+    </text>
+    <text x="400" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">
+      Optimal execution scheduling
+    </text>
+    
+    <!-- Stage Legend -->
+    <text x="400" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Stages (narrow/wide dependencies)</text>
+  </g>
+  
+  <!-- Memory Management Section -->
+  <g id="memory-section">
+    <rect x="540" y="60" width="240" height="180" rx="10" fill="url(#memoryGradient)" opacity="0.2" stroke="#9013FE" stroke-width="2"/>
+    <text x="660" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Memory Management
+    </text>
+    
+    <!-- Memory Layout -->
+    <rect x="560" y="100" width="200" height="20" fill="#9013FE" opacity="0.3"/>
+    <text x="660" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#333">Execution Memory (60%)</text>
+    
+    <rect x="560" y="125" width="130" height="15" fill="#50E3C2" opacity="0.5"/>
+    <text x="625" y="137" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Storage (40%)</text>
+    
+    <rect x="560" y="145" width="70" height="10" fill="#7ED321" opacity="0.6"/>
+    <text x="595" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">Cached RDDs</text>
+    
+    <!-- LRU Cache Formula -->
+    <text x="660" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      LRU Score = α×freq + β×(1/age) + γ×(1/cost)
+    </text>
+    <text x="660" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">
+      Optimal cache replacement policy
+    </text>
+    
+    <!-- Memory Spill Indicator -->
+    <path d="M 700 145 L 720 155 L 700 165 Z" fill="#D0021B" opacity="0.7"/>
+    <text x="730" y="157" font-family="Arial, sans-serif" font-size="9" fill="#333">Spill</text>
+  </g>
+  
+  <!-- Distributed Computing Foundation -->
+  <g id="distributed-section">
+    <rect x="20" y="280" width="760" height="120" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="400" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Distributed Computing Mathematical Foundation
+    </text>
+    
+    <!-- Cluster Nodes -->
+    <g id="cluster">
+      <rect x="50" y="320" width="60" height="40" rx="5" fill="#4A90E2" opacity="0.6"/>
+      <text x="80" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Driver</text>
+      <text x="80" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Scheduler</text>
+      
+      <rect x="150" y="320" width="60" height="40" rx="5" fill="#7ED321" opacity="0.6"/>
+      <text x="180" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Worker 1</text>
+      <text x="180" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Executor</text>
+      
+      <rect x="250" y="320" width="60" height="40" rx="5" fill="#7ED321" opacity="0.6"/>
+      <text x="280" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Worker 2</text>
+      <text x="280" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Executor</text>
+      
+      <rect x="350" y="320" width="60" height="40" rx="5" fill="#7ED321" opacity="0.6"/>
+      <text x="380" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Worker N</text>
+      <text x="380" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Executor</text>
+      
+      <!-- Connection lines -->
+      <path d="M 110 340 L 150 340" stroke="#333" stroke-width="1.5"/>
+      <path d="M 110 340 L 250 340" stroke="#333" stroke-width="1.5"/>
+      <path d="M 110 340 L 350 340" stroke="#333" stroke-width="1.5"/>
+    </g>
+    
+    <!-- Mathematical Properties -->
+    <g id="properties">
+      <text x="500" y="340" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        • Fault Tolerance: P(recovery) = f(lineage_depth)
+      </text>
+      <text x="500" y="355" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        • Scalability: Speedup ≈ O(n) for embarrassingly parallel
+      </text>
+      <text x="500" y="370" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        • Load Balancing: Coefficient of Variation ≈ 1/√n
+      </text>
+    </g>
+  </g>
+  
+  <!-- Performance Metrics -->
+  <g id="metrics">
+    <rect x="20" y="430" width="760" height="140" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="1"/>
+    <text x="400" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Mathematical Performance Analysis
+    </text>
+    
+    <!-- Efficiency Formulas -->
+    <g id="formulas">
+      <text x="60" y="485" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4A90E2">Memory Efficiency:</text>
+      <text x="60" y="505" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        η_memory = (1 - spill_ratio) × cache_hit_rate
+      </text>
+      
+      <text x="300" y="485" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#F5A623">Task Scheduling:</text>
+      <text x="300" y="505" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        T_total = max(T_stage_i) + Σ shuffle_overhead
+      </text>
+      
+      <text x="540" y="485" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9013FE">Fault Recovery:</text>
+      <text x="540" y="505" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        T_recovery = lineage_depth × avg_recompute_time
+      </text>
+      
+      <!-- Complexity Analysis -->
+      <text x="60" y="535" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#D0021B">Complexity Bounds:</text>
+      <text x="60" y="555" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        • Narrow transformations: O(n) where n = partition size
+      </text>
+      <text x="400" y="555" font-family="Arial, sans-serif" font-size="12" fill="#333">
+        • Wide transformations: O(n log n) due to shuffle
+      </text>
+    </g>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+</svg>

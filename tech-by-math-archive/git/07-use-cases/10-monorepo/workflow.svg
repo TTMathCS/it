@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .commit { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .service1 { fill: #2196F3; stroke: #1976D2; stroke-width: 2; }
+      .service2 { fill: #FF9800; stroke: #F57C00; stroke-width: 2; }
+      .shared { fill: #9C27B0; stroke: #7B1FA2; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <text x="400" y="30" text-anchor="middle" class="title">Monorepo Management Workflow</text>
+  
+  <!-- Main timeline -->
+  <text x="50" y="70" class="title">main</text>
+  <circle cx="100" cy="100" r="10" class="commit"/>
+  <text x="100" y="125" text-anchor="middle" class="text">Init</text>
+  <line x1="110" y1="100" x2="140" y2="100" class="branch-line"/>
+  <circle cx="150" cy="100" r="10" class="commit"/>
+  <text x="150" y="125" text-anchor="middle" class="text">Base</text>
+  <line x1="160" y1="100" x2="190" y2="100" class="branch-line"/>
+  <circle cx="200" cy="100" r="10" class="commit"/>
+  <text x="200" y="125" text-anchor="middle" class="text">Shared</text>
+  <line x1="210" y1="100" x2="240" y2="100" class="branch-line"/>
+  <circle cx="250" cy="100" r="10" class="commit"/>
+  <text x="250" y="125" text-anchor="middle" class="text">Merge</text>
+  
+  <!-- Service 1 changes -->
+  <text x="50" y="170" class="title">service1/</text>
+  <line x1="160" y1="100" x2="180" y2="150" class="branch-line"/>
+  <circle cx="190" cy="160" r="10" class="service1"/>
+  <text x="190" y="185" text-anchor="middle" class="text">API v1</text>
+  <line x1="200" y1="160" x2="230" y2="160" class="branch-line"/>
+  <circle cx="240" cy="160" r="10" class="service1"/>
+  <text x="240" y="185" text-anchor="middle" class="text">Fix</text>
+  
+  <!-- Service 2 changes -->
+  <text x="50" y="220" class="title">service2/</text>
+  <line x1="160" y1="100" x2="180" y2="200" class="branch-line"/>
+  <circle cx="190" cy="210" r="10" class="service2"/>
+  <text x="190" y="235" text-anchor="middle" class="text">UI v1</text>
+  <line x1="200" y1="210" x2="230" y2="210" class="branch-line"/>
+  <circle cx="240" cy="210" r="10" class="service2"/>
+  <text x="240" y="235" text-anchor="middle" class="text">Style</text>
+  
+  <!-- Shared library changes -->
+  <text x="50" y="270" class="title">shared/</text>
+  <line x1="210" y1="100" x2="230" y2="250" class="branch-line"/>
+  <circle cx="240" cy="260" r="10" class="shared"/>
+  <text x="240" y="285" text-anchor="middle" class="text">Utils</text>
+  
+  <!-- Merge lines -->
+  <line x1="250" y1="160" x2="240" y2="100" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="210" x2="240" y2="100" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="260" x2="240" y2="100" stroke="#666" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  
+  <!-- File structure -->
+  <rect x="400" y="80" width="350" height="200" fill="#f9f9f9" stroke="#ddd"/>
+  <text x="410" y="100" class="title">Monorepo Structure</text>
+  <text x="410" y="120" class="text">├── service1/</text>
+  <text x="410" y="135" class="text">│   ├── src/</text>
+  <text x="410" y="150" class="text">│   └── package.json</text>
+  <text x="410" y="165" class="text">├── service2/</text>
+  <text x="410" y="180" class="text">│   ├── src/</text>
+  <text x="410" y="195" class="text">│   └── package.json</text>
+  <text x="410" y="210" class="text">├── shared/</text>
+  <text x="410" y="225" class="text">│   └── utils/</text>
+  <text x="410" y="240" class="text">├── tools/</text>
+  <text x="410" y="255" class="text">└── BUILD.bazel</text>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="300" width="700" height="80" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="320" class="title">Monorepo Properties:</text>
+  <text x="60" y="335" class="text">• Single DAG: All projects share one commit history</text>
+  <text x="60" y="350" class="text">• Atomic commits: Changes across multiple services in single commit</text>
+  <text x="60" y="365" class="text">• Shared dependencies: Common libraries updated simultaneously</text>
+</svg>

@@ -1,0 +1,254 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    CI/CD Pipeline Auto-scaling Workflow
+  </text>
+  
+  <!-- Source Control Layer -->
+  <g transform="translate(50, 80)">
+    <rect width="120" height="80" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      Source Control
+    </text>
+    
+    <!-- Git repositories -->
+    <circle cx="35" cy="50" r="12" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+    <text x="35" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Git</text>
+    
+    <circle cx="85" cy="50" r="12" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+    <text x="85" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">GitHub</text>
+    
+    <text x="60" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Code Repository
+    </text>
+  </g>
+  
+  <!-- Jenkins Master -->
+  <g transform="translate(250, 80)">
+    <rect width="150" height="80" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="75" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      Jenkins Master
+    </text>
+    
+    <rect x="25" y="35" width="100" height="30" fill="#bbdefb" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="75" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1976d2">Orchestrator</text>
+    
+    <text x="75" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Pipeline Controller
+    </text>
+  </g>
+  
+  <!-- Build Queue -->
+  <g transform="translate(480, 80)">
+    <rect width="100" height="80" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="50" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f57900">
+      Build Queue
+    </text>
+    
+    <!-- Queue items -->
+    <rect x="20" y="35" width="60" height="8" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="2"/>
+    <rect x="20" y="45" width="60" height="8" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="2"/>
+    <rect x="20" y="55" width="60" height="8" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="2"/>
+    
+    <text x="50" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Job Scheduling
+    </text>
+  </g>
+  
+  <!-- Auto-scaling Build Agents -->
+  <g transform="translate(100, 220)">
+    <rect width="600" height="160" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="300" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#7b1fa2">
+      Auto-scaling Build Agents (Kubernetes Pods)
+    </text>
+    
+    <!-- Build Agent Groups -->
+    <g transform="translate(50, 50)">
+      <rect width="150" height="80" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+        Maven Agents
+      </text>
+      
+      <!-- Agent pods -->
+      <circle cx="30" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="30" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">A1</text>
+      
+      <circle cx="60" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="60" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">A2</text>
+      
+      <circle cx="90" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="90" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">A3</text>
+      
+      <circle cx="120" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="120" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">A4</text>
+      
+      <text x="75" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">HPA: 2-10</text>
+    </g>
+    
+    <g transform="translate(225, 50)">
+      <rect width="150" height="80" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+        Docker Agents
+      </text>
+      
+      <!-- Agent pods -->
+      <circle cx="30" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="30" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">D1</text>
+      
+      <circle cx="60" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="60" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">D2</text>
+      
+      <circle cx="90" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="90" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">D3</text>
+      
+      <text x="75" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">HPA: 1-8</text>
+    </g>
+    
+    <g transform="translate(400, 50)">
+      <rect width="150" height="80" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+        Test Agents
+      </text>
+      
+      <!-- Agent pods -->
+      <circle cx="30" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="30" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T1</text>
+      
+      <circle cx="60" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="60" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T2</text>
+      
+      <circle cx="90" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="90" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T3</text>
+      
+      <circle cx="120" cy="40" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="120" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T4</text>
+      
+      <circle cx="45" cy="60" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="45" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T5</text>
+      
+      <circle cx="75" cy="60" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="75" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T6</text>
+      
+      <circle cx="105" cy="60" r="8" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="105" y="64" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#7b1fa2">T7</text>
+      
+      <text x="75" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">HPA: 3-15</text>
+    </g>
+  </g>
+  
+  <!-- Pipeline Stages -->
+  <g transform="translate(50, 420)">
+    <rect width="700" height="100" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="350" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#d32f2f">
+      Pipeline Stages
+    </text>
+    
+    <!-- Stage boxes -->
+    <rect x="50" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="90" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Build</text>
+    <text x="90" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Compile</text>
+    
+    <rect x="150" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="190" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Test</text>
+    <text x="190" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Unit/Integration</text>
+    
+    <rect x="250" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="290" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Quality</text>
+    <text x="290" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Code Analysis</text>
+    
+    <rect x="350" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="390" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Package</text>
+    <text x="390" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Docker Build</text>
+    
+    <rect x="450" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="490" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Deploy</text>
+    <text x="490" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Rolling Update</text>
+    
+    <rect x="550" y="40" width="80" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="590" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Monitor</text>
+    <text x="590" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Prometheus</text>
+    
+    <!-- Stage flow arrows -->
+    <path d="M 130 60 L 150 60" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 230 60 L 250 60" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 330 60 L 350 60" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 430 60 L 450 60" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 530 60 L 550 60" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <!-- Traffic Flow Arrows -->
+  <!-- Git to Jenkins -->
+  <path d="M 170 120 L 250 120" stroke="#388e3c" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="210" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Webhook</text>
+  
+  <!-- Jenkins to Queue -->
+  <path d="M 400 120 L 480 120" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Queue to Agents -->
+  <path d="M 530 160 L 400 220" stroke="#f57900" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Agents to Pipeline -->
+  <path d="M 400 380 L 400 420" stroke="#7b1fa2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Performance Metrics -->
+  <g transform="translate(600, 80)">
+    <rect width="150" height="120" fill="#e8f4fd" stroke="#0288d1" stroke-width="2" rx="8"/>
+    <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0288d1">
+      Performance
+    </text>
+    
+    <text x="15" y="40" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Build Time: 5min avg
+    </text>
+    <text x="15" y="55" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Queue Wait: &lt;2min
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Success Rate: 95%+
+    </text>
+    <text x="15" y="85" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Utilization: 70-80%
+    </text>
+    <text x="15" y="100" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Cost Savings: 40%
+    </text>
+  </g>
+  
+  <!-- Mathematical Foundation -->
+  <g transform="translate(50, 540)">
+    <rect width="700" height="40" fill="#fff8e1" stroke="#ffa000" stroke-width="2" rx="8"/>
+    <text x="350" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffa000">
+      Mathematical Models
+    </text>
+    
+    <text x="30" y="35" font-family="Arial, sans-serif" font-size="10" fill="#ffa000">
+      HPA: replicas × (current/target) | Speedup: S(n) = T(1)/T(n) | Cost: (AgentHours × Rate) + (IdleTime × Waste) | Efficiency: S(n)/n
+    </text>
+  </g>
+  
+  <!-- Auto-scaling indicators -->
+  <g transform="translate(630, 250)">
+    <circle cx="20" cy="20" r="15" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+    <text x="20" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">↑</text>
+    <text x="20" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2e7d32">Scale Up</text>
+    
+    <circle cx="60" cy="20" r="15" fill="#ff9800" stroke="#f57c00" stroke-width="2"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">↓</text>
+    <text x="60" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f57c00">Scale Down</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    CI/CD pipeline with auto-scaling build agents, parallel processing, and quality gates
+  </text>
+</svg>

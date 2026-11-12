@@ -1,0 +1,280 @@
+<svg width="800" height="650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="foundationalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="systemsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="algorithmsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="650" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">
+    Mathematical References and Research Papers for Apache Spark
+  </text>
+  
+  <!-- Foundational Papers Section -->
+  <g id="foundational-papers">
+    <rect x="20" y="60" width="370" height="140" rx="10" fill="url(#foundationalGradient)" opacity="0.2" stroke="#667eea" stroke-width="2"/>
+    <text x="205" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Foundational Spark Papers
+    </text>
+    
+    <!-- Original RDD Paper -->
+    <g id="rdd-paper">
+      <text x="40" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">RDD Paper (NSDI 2012):</text>
+      <text x="40" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Zaharia et al. - Fault-tolerant abstraction</text>
+      
+      <!-- Citation visualization -->
+      <rect x="40" y="135" width="60" height="8" fill="#667eea" opacity="0.8"/>
+      <text x="70" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">Citations: 8000+</text>
+      
+      <!-- Mathematical contribution -->
+      <text x="40" y="155" font-family="Arial, sans-serif" font-size="9" fill="#666">Recovery Cost = Σ(lost_partitions) × Depth × T_avg</text>
+      <text x="40" y="170" font-family="Arial, sans-serif" font-size="8" fill="#888">Lineage graph theory foundations</text>
+    </g>
+    
+    <!-- Spark SQL Paper -->
+    <g id="spark-sql-paper">
+      <text x="200" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Spark SQL (SIGMOD 2015):</text>
+      <text x="200" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Armbrust et al. - Catalyst optimizer</text>
+      
+      <!-- Citation visualization -->
+      <rect x="200" y="135" width="60" height="8" fill="#764ba2" opacity="0.8"/>
+      <text x="230" y="141" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">Citations: 2000+</text>
+      
+      <!-- Mathematical contribution -->
+      <text x="200" y="155" font-family="Arial, sans-serif" font-size="9" fill="#666">Cost(plan) = CPU + I/O + Network costs</text>
+      <text x="200" y="170" font-family="Arial, sans-serif" font-size="8" fill="#888">Rule-based optimization theory</text>
+    </g>
+  </g>
+  
+  <!-- Distributed Systems Theory Section -->
+  <g id="systems-theory">
+    <rect x="410" y="60" width="370" height="140" rx="10" fill="url(#systemsGradient)" opacity="0.2" stroke="#f093fb" stroke-width="2"/>
+    <text x="595" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Distributed Systems Theory
+    </text>
+    
+    <!-- CAP Theorem -->
+    <g id="cap-theorem">
+      <text x="430" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">CAP Theorem (Brewer 2000):</text>
+      <text x="430" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Consistency, Availability, Partition tolerance</text>
+      
+      <!-- CAP triangle visualization -->
+      <g id="cap-triangle">
+        <path d="M 450 140 L 465 165 L 435 165 Z" stroke="#f093fb" stroke-width="2" fill="none"/>
+        <text x="450" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">C</text>
+        <text x="432" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">A</text>
+        <text x="468" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="#333">P</text>
+      </g>
+      
+      <!-- Spark's choice -->
+      <text x="480" y="150" font-family="Arial, sans-serif" font-size="9" fill="#666">Spark: A + P</text>
+      <text x="480" y="165" font-family="Arial, sans-serif" font-size="8" fill="#888">Eventually consistent</text>
+    </g>
+    
+    <!-- Consensus Theory -->
+    <g id="consensus-theory">
+      <text x="580" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Consensus (Raft 2014):</text>
+      <text x="580" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Ongaro &amp; Ousterhout - Leader election</text>
+      
+      <!-- Mathematical properties -->
+      <text x="580" y="145" font-family="Arial, sans-serif" font-size="9" fill="#666">Safety: n ≥ 2f + 1</text>
+      <text x="580" y="160" font-family="Arial, sans-serif" font-size="9" fill="#666">Byzantine: n ≥ 3f + 1</text>
+      <text x="580" y="175" font-family="Arial, sans-serif" font-size="8" fill="#888">Used in cluster coordination</text>
+    </g>
+  </g>
+  
+  <!-- Algorithms and Data Structures Section -->
+  <g id="algorithms-theory">
+    <rect x="20" y="220" width="370" height="150" rx="10" fill="url(#algorithmsGradient)" opacity="0.2" stroke="#4facfe" stroke-width="2"/>
+    <text x="205" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Algorithms and Data Structures
+    </text>
+    
+    <!-- CLRS -->
+    <g id="clrs">
+      <text x="40" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">CLRS (4th Edition):</text>
+      <text x="40" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Cormen, Leiserson, Rivest, Stein</text>
+      
+      <!-- Algorithm complexities -->
+      <text x="40" y="305" font-family="Arial, sans-serif" font-size="9" fill="#666">External Sort: O(n log n)</text>
+      <text x="40" y="320" font-family="Arial, sans-serif" font-size="9" fill="#666">Hash Tables: O(1) expected</text>
+      <text x="40" y="335" font-family="Arial, sans-serif" font-size="8" fill="#888">Foundation for Spark algorithms</text>
+    </g>
+    
+    <!-- Streaming Algorithms -->
+    <g id="streaming-algorithms">
+      <text x="200" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Streaming Algorithms:</text>
+      <text x="200" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Muthukrishnan - Data stream processing</text>
+      
+      <!-- Sketch algorithms -->
+      <text x="200" y="305" font-family="Arial, sans-serif" font-size="9" fill="#666">HyperLogLog: O(log log n) space</text>
+      <text x="200" y="320" font-family="Arial, sans-serif" font-size="9" fill="#666">Count-Min Sketch: ε-δ guarantees</text>
+      <text x="200" y="335" font-family="Arial, sans-serif" font-size="8" fill="#888">Approximate counting algorithms</text>
+    </g>
+    
+    <!-- Graph Algorithms -->
+    <g id="graph-algorithms">
+      <text x="40" y="355" font-family="Arial, sans-serif" font-size="10" fill="#666">PageRank (Page et al. 1999): PR(u) = (1-d)/N + d×Σ(v∈M(u))PR(v)/L(v)</text>
+    </g>
+  </g>
+  
+  <!-- Mathematical Foundations Section -->
+  <g id="math-foundations">
+    <rect x="410" y="220" width="370" height="150" rx="10" fill="url(#mathGradient)" opacity="0.2" stroke="#43e97b" stroke-width="2"/>
+    <text x="595" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Mathematical Foundations
+    </text>
+    
+    <!-- Linear Algebra -->
+    <g id="linear-algebra">
+      <text x="430" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Matrix Computations:</text>
+      <text x="430" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Golub &amp; Van Loan - Numerical methods</text>
+      
+      <!-- Mathematical operations -->
+      <text x="430" y="305" font-family="Arial, sans-serif" font-size="9" fill="#666">SVD: A = UΣVᵀ</text>
+      <text x="430" y="320" font-family="Arial, sans-serif" font-size="9" fill="#666">QR Algorithm: O(n³)</text>
+      <text x="430" y="335" font-family="Arial, sans-serif" font-size="8" fill="#888">Distributed matrix operations</text>
+    </g>
+    
+    <!-- Optimization Theory -->
+    <g id="optimization">
+      <text x="580" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Convex Optimization:</text>
+      <text x="580" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Boyd &amp; Vandenberghe</text>
+      
+      <!-- Optimization methods -->
+      <text x="580" y="305" font-family="Arial, sans-serif" font-size="9" fill="#666">L-BFGS: Quasi-Newton</text>
+      <text x="580" y="320" font-family="Arial, sans-serif" font-size="9" fill="#666">SGD: θₜ₊₁ = θₜ - η∇f(θₜ)</text>
+      <text x="580" y="335" font-family="Arial, sans-serif" font-size="8" fill="#888">MLlib optimization backbone</text>
+    </g>
+    
+    <!-- Information Theory -->
+    <g id="information-theory">
+      <text x="430" y="355" font-family="Arial, sans-serif" font-size="10" fill="#666">Information Theory: H(X) = -Σᵢ p(xᵢ) log p(xᵢ) (Shannon 1948)</text>
+    </g>
+  </g>
+  
+  <!-- Machine Learning Theory Section -->
+  <g id="ml-theory">
+    <rect x="20" y="390" width="370" height="120" rx="10" fill="url(#mlGradient)" opacity="0.2" stroke="#fa709a" stroke-width="2"/>
+    <text x="205" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Machine Learning Theory
+    </text>
+    
+    <!-- Statistical Learning -->
+    <g id="statistical-learning">
+      <text x="40" y="440" font-family="Arial, sans-serif" font-size="12" fill="#333">Elements of Statistical Learning:</text>
+      <text x="40" y="455" font-family="Arial, sans-serif" font-size="10" fill="#666">Hastie, Tibshirani, Friedman</text>
+      
+      <!-- Learning theory -->
+      <text x="40" y="475" font-family="Arial, sans-serif" font-size="9" fill="#666">Bias-variance: E[(y-ŷ)²] = Bias² + Variance + ε</text>
+      <text x="40" y="490" font-family="Arial, sans-serif" font-size="8" fill="#888">Fundamental ML trade-offs</text>
+    </g>
+    
+    <!-- PAC Learning -->
+    <g id="pac-learning">
+      <text x="220" y="440" font-family="Arial, sans-serif" font-size="12" fill="#333">PAC Learning Theory:</text>
+      <text x="220" y="455" font-family="Arial, sans-serif" font-size="10" fill="#666">Valiant - Computational learning</text>
+      
+      <!-- PAC bounds -->
+      <text x="220" y="475" font-family="Arial, sans-serif" font-size="9" fill="#666">Sample complexity: m ≥ (ln(|H|/δ))/ε</text>
+      <text x="220" y="490" font-family="Arial, sans-serif" font-size="8" fill="#888">Generalization guarantees</text>
+    </g>
+  </g>
+  
+  <!-- Performance and Systems Section -->
+  <g id="performance-systems">
+    <rect x="410" y="390" width="370" height="120" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="595" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Performance and Systems
+    </text>
+    
+    <!-- Computer Architecture -->
+    <g id="architecture">
+      <text x="430" y="440" font-family="Arial, sans-serif" font-size="12" fill="#333">Computer Architecture:</text>
+      <text x="430" y="455" font-family="Arial, sans-serif" font-size="10" fill="#666">Hennessy &amp; Patterson</text>
+      
+      <!-- Performance metrics -->
+      <text x="430" y="475" font-family="Arial, sans-serif" font-size="9" fill="#666">Amdahl's Law: Speedup = 1/(s + (1-s)/n)</text>
+      <text x="430" y="490" font-family="Arial, sans-serif" font-size="8" fill="#888">Parallel processing fundamentals</text>
+    </g>
+    
+    <!-- Database Systems -->
+    <g id="database-systems">
+      <text x="620" y="440" font-family="Arial, sans-serif" font-size="12" fill="#333">Database Systems:</text>
+      <text x="620" y="455" font-family="Arial, sans-serif" font-size="10" fill="#666">Query optimization theory</text>
+      
+      <!-- Query costs -->
+      <text x="620" y="475" font-family="Arial, sans-serif" font-size="9" fill="#666">Join selectivity: σ = |R⋈S| / (|R|×|S|)</text>
+      <text x="620" y="490" font-family="Arial, sans-serif" font-size="8" fill="#888">Cost-based optimization</text>
+    </g>
+  </g>
+  
+  <!-- Research Timeline and Impact -->
+  <g id="research-timeline">
+    <rect x="20" y="530" width="760" height="100" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="2"/>
+    <text x="400" y="555" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Research Timeline and Mathematical Impact
+    </text>
+    
+    <!-- Timeline -->
+    <g id="timeline">
+      <line x1="60" y1="580" x2="740" y2="580" stroke="#333" stroke-width="2"/>
+      
+      <!-- Timeline markers -->
+      <circle cx="120" cy="580" r="4" fill="#667eea"/>
+      <text x="120" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">2009</text>
+      <text x="120" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Berkeley</text>
+      
+      <circle cx="250" cy="580" r="4" fill="#f093fb"/>
+      <text x="250" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">2012</text>
+      <text x="250" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">RDD Paper</text>
+      
+      <circle cx="380" cy="580" r="4" fill="#4facfe"/>
+      <text x="380" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">2013</text>
+      <text x="380" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Apache</text>
+      
+      <circle cx="510" cy="580" r="4" fill="#43e97b"/>
+      <text x="510" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">2015</text>
+      <text x="510" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Spark SQL</text>
+      
+      <circle cx="640" cy="580" r="4" fill="#fa709a"/>
+      <text x="640" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">2020+</text>
+      <text x="640" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#666">Modern</text>
+    </g>
+    
+    <!-- Impact metrics -->
+    <g id="impact-metrics">
+      <text x="60" y="615" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Citations:</text>
+      <text x="60" y="625" font-family="Arial, sans-serif" font-size="10" fill="#333">RDD: 8000+, SQL: 2000+</text>
+      
+      <text x="250" y="615" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f093fb">Adoption:</text>
+      <text x="250" y="625" font-family="Arial, sans-serif" font-size="10" fill="#333">Fortune 500: 80%+</text>
+      
+      <text x="450" y="615" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4facfe">Performance:</text>
+      <text x="450" y="625" font-family="Arial, sans-serif" font-size="10" fill="#333">10-100x over MapReduce</text>
+      
+      <text x="650" y="615" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#43e97b">Scale:</text>
+      <text x="650" y="625" font-family="Arial, sans-serif" font-size="10" fill="#333">Petabyte+ datasets</text>
+    </g>
+  </g>
+</svg>

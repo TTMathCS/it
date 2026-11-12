@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .commit { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .review-commit { fill: #FF9800; stroke: #F57C00; stroke-width: 2; }
+      .approved-commit { fill: #2196F3; stroke: #1565C0; stroke-width: 2; }
+      .branch-line { stroke: #2196F3; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .review-line { stroke: #FF9800; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #4CAF50; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: 'Courier New', monospace; font-size: 11px; fill: #333; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; font-weight: bold; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .review-box { fill: #FFF3E0; stroke: #FF9800; stroke-width: 1; }
+      .approval-box { fill: #E3F2FD; stroke: #2196F3; stroke-width: 1; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Enterprise Code Review Workflow</text>
+  
+  <!-- Main branch -->
+  <circle cx="80" cy="100" r="12" class="commit"/>
+  <text x="80" y="85" text-anchor="middle" class="text">A</text>
+  <line x1="92" y1="100" x2="148" y2="100" class="branch-line"/>
+  
+  <circle cx="160" cy="100" r="12" class="commit"/>
+  <text x="160" y="85" text-anchor="middle" class="text">B</text>
+  <line x1="172" y1="100" x2="228" y2="100" class="branch-line"/>
+  
+  <!-- Feature development branch -->
+  <line x1="172" y1="100" x2="228" y2="200" class="branch-line"/>
+  <circle cx="240" cy="200" r="12" class="commit"/>
+  <text x="240" y="185" text-anchor="middle" class="text">C</text>
+  <text x="240" y="220" text-anchor="middle" class="branch-label">Feature Dev</text>
+  
+  <line x1="252" y1="200" x2="308" y2="200" class="branch-line"/>
+  <circle cx="320" cy="200" r="12" class="commit"/>
+  <text x="320" y="185" text-anchor="middle" class="text">D</text>
+  <text x="320" y="220" text-anchor="middle" class="branch-label">Implementation</text>
+  
+  <line x1="332" y1="200" x2="388" y2="200" class="branch-line"/>
+  <circle cx="400" cy="200" r="12" class="commit"/>
+  <text x="400" y="185" text-anchor="middle" class="text">E</text>
+  <text x="400" y="220" text-anchor="middle" class="branch-label">Tests Added</text>
+  
+  <!-- Review process branch -->
+  <line x1="412" y1="200" x2="468" y2="300" class="review-line"/>
+  <circle cx="480" cy="300" r="12" class="review-commit"/>
+  <text x="480" y="285" text-anchor="middle" class="text">F</text>
+  <text x="480" y="320" text-anchor="middle" class="branch-label">Code Review</text>
+  
+  <!-- Review iteration -->
+  <line x1="492" y1="300" x2="548" y2="300" class="review-line"/>
+  <circle cx="560" cy="300" r="12" class="review-commit"/>
+  <text x="560" y="285" text-anchor="middle" class="text">G</text>
+  <text x="560" y="320" text-anchor="middle" class="branch-label">Address Feedback</text>
+  
+  <!-- Security review branch -->
+  <line x1="572" y1="300" x2="628" y2="400" class="review-line"/>
+  <circle cx="640" cy="400" r="12" class="review-commit"/>
+  <text x="640" y="385" text-anchor="middle" class="text">H</text>
+  <text x="640" y="420" text-anchor="middle" class="branch-label">Security Review</text>
+  
+  <!-- Final approval -->
+  <line x1="652" y1="400" x2="708" y2="300" class="branch-line"/>
+  <circle cx="720" cy="300" r="12" class="approved-commit"/>
+  <text x="720" y="285" text-anchor="middle" class="text">I</text>
+  <text x="720" y="320" text-anchor="middle" class="branch-label">Approved</text>
+  
+  <!-- Merge back to main -->
+  <circle cx="240" cy="100" r="12" class="commit"/>
+  <text x="240" y="85" text-anchor="middle" class="text">J</text>
+  <line x1="732" y1="300" x2="252" y2="100" class="merge-line"/>
+  
+  <line x1="252" y1="100" x2="308" y2="100" class="branch-line"/>
+  <circle cx="320" cy="100" r="12" class="commit"/>
+  <text x="320" y="85" text-anchor="middle" class="text">K</text>
+  
+  <!-- Branch labels -->
+  <text x="30" y="90" class="branch-label">main</text>
+  <text x="180" y="190" class="branch-label">feature/oauth2-integration</text>
+  <text x="450" y="290" class="branch-label">review/code-review</text>
+  <text x="580" y="390" class="branch-label">review/security-audit</text>
+  
+  <!-- Review process boxes -->
+  <rect x="400" y="450" width="150" height="80" class="review-box"/>
+  <text x="410" y="470" class="branch-label">Review Gates:</text>
+  <text x="410" y="485" class="text">• Code Quality</text>
+  <text x="410" y="500" class="text">• Security Scan</text>
+  <text x="410" y="515" class="text">• Performance Test</text>
+  
+  <rect x="580" y="450" width="150" height="80" class="approval-box"/>
+  <text x="590" y="470" class="branch-label">Approval Process:</text>
+  <text x="590" y="485" class="text">• 2+ Senior Reviews</text>
+  <text x="590" y="500" class="text">• Security Sign-off</text>
+  <text x="590" y="515" class="text">• CI/CD Validation</text>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="550" width="800" height="120" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="570" class="title">Enterprise Review DAG Properties:</text>
+  <text x="60" y="590" class="text">• Multi-stage validation creates review branch hierarchy (C→D→E→F→G→H→I)</text>
+  <text x="60" y="605" class="text">• Each review gate must pass before proceeding to next stage</text>
+  <text x="60" y="620" class="text">• Cryptographic signatures ensure non-repudiation of approvals</text>
+  <text x="60" y="635" class="text">• Merge to main (J→K) only after all approval gates satisfied</text>
+  <text x="60" y="650" class="text">• Complete audit trail preserved in DAG for compliance requirements</text>
+  
+</svg>

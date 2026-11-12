@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .commit { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .lost { fill: #F44336; stroke: #B71C1C; stroke-width: 2; opacity: 0.3; }
+      .recovered { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .reflog { fill: #2196F3; stroke: #0D47A1; stroke-width: 2; }
+      .remote { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .lost-line { stroke: #F44336; stroke-width: 2; fill: none; stroke-dasharray: 3,3; opacity: 0.5; }
+      .recovery-line { stroke: #FF9800; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: 'Courier New', monospace; font-size: 9px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Repository Recovery Workflow</text>
+  
+  <!-- Original repository state -->
+  <text x="50" y="70" class="title" fill="#4CAF50">Normal Repository State</text>
+  
+  <circle cx="80" cy="100" r="10" class="commit"/>
+  <text x="80" y="125" text-anchor="middle" class="text">A: v1.0</text>
+  
+  <line x1="90" y1="100" x2="170" y2="100" class="branch-line"/>
+  <circle cx="180" cy="100" r="10" class="commit"/>
+  <text x="180" y="125" text-anchor="middle" class="text">B: Feature</text>
+  
+  <line x1="190" y1="100" x2="270" y2="100" class="branch-line"/>
+  <circle cx="280" cy="100" r="10" class="commit"/>
+  <text x="280" y="125" text-anchor="middle" class="text">C: Fix</text>
+  
+  <line x1="290" y1="100" x2="370" y2="100" class="branch-line"/>
+  <circle cx="380" cy="100" r="10" class="commit"/>
+  <text x="380" y="125" text-anchor="middle" class="text">D: Latest</text>
+  
+  <!-- Disaster scenario -->
+  <text x="450" y="70" class="title" fill="#F44336">💥 Repository Corruption</text>
+  
+  <circle cx="480" cy="100" r="10" class="lost"/>
+  <text x="480" y="125" text-anchor="middle" class="text">A: v1.0</text>
+  
+  <line x1="490" y1="100" x2="570" y2="100" class="lost-line"/>
+  <circle cx="580" cy="100" r="10" class="lost"/>
+  <text x="580" y="125" text-anchor="middle" class="text">B: Missing</text>
+  
+  <line x1="590" y1="100" x2="670" y2="100" class="lost-line"/>
+  <circle cx="680" cy="100" r="10" class="lost"/>
+  <text x="680" y="125" text-anchor="middle" class="text">C: Corrupt</text>
+  
+  <line x1="690" y1="100" x2="770" y2="100" class="lost-line"/>
+  <circle cx="780" cy="100" r="10" class="lost"/>
+  <text x="780" y="125" text-anchor="middle" class="text">D: Lost</text>
+  
+  <!-- Recovery sources -->
+  <text x="50" y="180" class="title" fill="#2196F3">Recovery Sources</text>
+  
+  <!-- Reflog recovery -->
+  <text x="50" y="210" class="branch-label" fill="#2196F3">1. Reflog Recovery</text>
+  <circle cx="120" cy="230" r="8" class="reflog"/>
+  <text x="120" y="250" text-anchor="middle" class="text">HEAD@{0}</text>
+  
+  <line x1="128" y1="230" x2="152" y2="230" class="branch-line"/>
+  <circle cx="160" cy="230" r="8" class="reflog"/>
+  <text x="160" y="250" text-anchor="middle" class="text">HEAD@{1}</text>
+  
+  <line x1="168" y1="230" x2="192" y2="230" class="branch-line"/>
+  <circle cx="200" cy="230" r="8" class="reflog"/>
+  <text x="200" y="250" text-anchor="middle" class="text">HEAD@{2}</text>
+  
+  <line x1="208" y1="230" x2="232" y2="230" class="branch-line"/>
+  <circle cx="240" cy="230" r="8" class="reflog"/>
+  <text x="240" y="250" text-anchor="middle" class="text">HEAD@{3}</text>
+  
+  <!-- Remote recovery -->
+  <text x="50" y="290" class="branch-label" fill="#9C27B0">2. Remote Repository</text>
+  <circle cx="120" cy="310" r="8" class="remote"/>
+  <text x="120" y="330" text-anchor="middle" class="text">origin/A</text>
+  
+  <line x1="128" y1="310" x2="152" y2="310" class="branch-line"/>
+  <circle cx="160" cy="310" r="8" class="remote"/>
+  <text x="160" y="330" text-anchor="middle" class="text">origin/B</text>
+  
+  <line x1="168" y1="310" x2="192" y2="310" class="branch-line"/>
+  <circle cx="200" cy="310" r="8" class="remote"/>
+  <text x="200" y="330" text-anchor="middle" class="text">origin/C</text>
+  
+  <line x1="208" y1="310" x2="232" y2="310" class="branch-line"/>
+  <circle cx="240" cy="310" r="8" class="remote"/>
+  <text x="240" y="330" text-anchor="middle" class="text">origin/D</text>
+  
+  <!-- Recovery process -->
+  <text x="350" y="180" class="title" fill="#FF9800">Recovery Process</text>
+  
+  <!-- Step 1: Reflog recovery -->
+  <line x1="240" y1="230" x2="350" y2="230" class="recovery-line"/>
+  <circle cx="360" cy="230" r="10" class="recovered"/>
+  <text x="360" y="255" text-anchor="middle" class="text">Reflog scan</text>
+  
+  <!-- Step 2: Remote clone -->
+  <line x1="240" y1="310" x2="350" y2="310" class="recovery-line"/>
+  <circle cx="360" cy="310" r="10" class="recovered"/>
+  <text x="360" y="335" text-anchor="middle" class="text">Fresh clone</text>
+  
+  <!-- Step 3: Merge recovery -->
+  <line x1="370" y1="230" x2="450" y2="270" class="recovery-line"/>
+  <line x1="370" y1="310" x2="450" y2="270" class="recovery-line"/>
+  <circle cx="460" cy="270" r="12" class="recovered"/>
+  <text x="460" y="295" text-anchor="middle" class="text">Merge sources</text>
+  
+  <!-- Final recovered state -->
+  <text x="550" y="180" class="title" fill="#4CAF50">Recovered Repository</text>
+  
+  <line x1="472" y1="270" x2="550" y2="270" class="recovery-line"/>
+  <circle cx="560" cy="270" r="10" class="commit"/>
+  <text x="560" y="295" text-anchor="middle" class="text">A: Restored</text>
+  
+  <line x1="570" y1="270" x2="610" y2="270" class="branch-line"/>
+  <circle cx="620" cy="270" r="10" class="commit"/>
+  <text x="620" y="295" text-anchor="middle" class="text">B: Restored</text>
+  
+  <line x1="630" y1="270" x2="670" y2="270" class="branch-line"/>
+  <circle cx="680" cy="270" r="10" class="commit"/>
+  <text x="680" y="295" text-anchor="middle" class="text">C: Restored</text>
+  
+  <line x1="690" y1="270" x2="730" y2="270" class="branch-line"/>
+  <circle cx="740" cy="270" r="10" class="commit"/>
+  <text x="740" y="295" text-anchor="middle" class="text">D: Restored</text>
+  
+  <!-- Recovery techniques -->
+  <rect x="50" y="380" width="800" height="200" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="400" class="title">Recovery Techniques:</text>
+  
+  <text x="60" y="425" class="branch-label" fill="#2196F3">1. Reflog Recovery (git reflog)</text>
+  <text x="60" y="440" class="text">• Local reference history: HEAD@{n}, branch@{n}</text>
+  <text x="60" y="455" class="text">• Recent commits recoverable for ~90 days</text>
+  <text x="60" y="470" class="text">• Command: git reset --hard HEAD@{n}</text>
+  
+  <text x="60" y="495" class="branch-label" fill="#9C27B0">2. Remote Recovery (git clone)</text>
+  <text x="60" y="510" class="text">• Fresh clone from remote repository</text>
+  <text x="60" y="525" class="text">• Distributed nature provides backup</text>
+  <text x="60" y="540" class="text">• Command: git clone &lt;remote-url&gt;</text>
+  
+  <text x="450" y="425" class="branch-label" fill="#FF9800">3. Object Database Recovery</text>
+  <text x="450" y="440" class="text">• Direct hash-based object access</text>
+  <text x="450" y="455" class="text">• git fsck --full for integrity check</text>
+  <text x="450" y="470" class="text">• git cat-file for object inspection</text>
+  
+  <text x="450" y="495" class="branch-label" fill="#F44336">4. Emergency Techniques</text>
+  <text x="450" y="510" class="text">• File system recovery (extundelete)</text>
+  <text x="450" y="525" class="text">• Manual object reconstruction</text>
+  <text x="450" y="540" class="text">• Backup restoration from external sources</text>
+  
+  <text x="60" y="565" class="title" fill="#4CAF50">Recovery Success Rate: ~95% with proper Git practices</text>
+</svg>

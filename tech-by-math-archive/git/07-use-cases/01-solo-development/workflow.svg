@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+    refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50" />
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" 
+    refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="500" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">Solo Development Workflow: Git DAG Evolution</text>
+  
+  <!-- Timeline -->
+  <line x1="50" y1="60" x2="950" y2="60" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="50" y="50" font-size="12" fill="#7f8c8d">Day 1</text>
+  <text x="250" y="50" font-size="12" fill="#7f8c8d">Day 3</text>
+  <text x="450" y="50" font-size="12" fill="#7f8c8d">Day 5</text>
+  <text x="650" y="50" font-size="12" fill="#7f8c8d">Day 7</text>
+  <text x="850" y="50" font-size="12" fill="#7f8c8d">Day 10</text>
+  
+  <!-- Main Branch Development -->
+  <g id="main-branch">
+    <!-- Commit A: Initial -->
+    <circle cx="100" cy="120" r="15" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="100" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">A</text>
+    <text x="100" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Initial</text>
+    <text x="100" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">a1b2c3d</text>
+    
+    <!-- Commit B: Navigation -->
+    <circle cx="200" cy="120" r="15" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="200" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">B</text>
+    <text x="200" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Navigation</text>
+    <text x="200" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">b2c3d4e</text>
+    
+    <!-- Commit C: Styling -->
+    <circle cx="300" cy="120" r="15" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="300" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">C</text>
+    <text x="300" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Dark Theme</text>
+    <text x="300" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">c3d4e5f</text>
+    
+    <!-- Commit D: Portfolio -->
+    <circle cx="400" cy="120" r="15" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+    <text x="400" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">D</text>
+    <text x="400" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Portfolio</text>
+    <text x="400" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">d4e5f6g</text>
+    
+    <!-- Commit G: Cherry-picked -->
+    <circle cx="700" cy="120" r="15" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="700" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">G</text>
+    <text x="700" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Gradient BG</text>
+    <text x="700" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">g7h8i9j</text>
+    
+    <!-- Commit H: Final -->
+    <circle cx="800" cy="120" r="15" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="800" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">H</text>
+    <text x="800" y="145" text-anchor="middle" font-size="10" fill="#2c3e50">Nav Polish</text>
+    <text x="800" y="155" text-anchor="middle" font-size="9" fill="#7f8c8d">h8i9j0k</text>
+  </g>
+  
+  <!-- Experimental Branch -->
+  <g id="experimental-branch">
+    <!-- Commit E: Experiment 1 -->
+    <circle cx="500" cy="220" r="15" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+    <text x="500" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">E</text>
+    <text x="500" y="245" text-anchor="middle" font-size="10" fill="#2c3e50">Bright Colors</text>
+    <text x="500" y="255" text-anchor="middle" font-size="9" fill="#7f8c8d">e5f6g7h</text>
+    
+    <!-- Commit F: Experiment 2 -->
+    <circle cx="600" cy="220" r="15" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+    <text x="600" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">F</text>
+    <text x="600" y="245" text-anchor="middle" font-size="10" fill="#2c3e50">Coral Nav</text>
+    <text x="600" y="255" text-anchor="middle" font-size="9" fill="#7f8c8d">f6g7h8i</text>
+  </g>
+  
+  <!-- Arrows showing commit relationships -->
+  <!-- Main branch progression -->
+  <line x1="115" y1="120" x2="185" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="215" y1="120" x2="285" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="315" y1="120" x2="385" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Branch creation -->
+  <line x1="400" y1="135" x2="485" y2="205" stroke="#e67e22" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Experimental branch progression -->
+  <line x1="515" y1="220" x2="585" y2="220" stroke="#e67e22" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Cherry-pick arrow -->
+  <path d="M 500 205 Q 600 160 685 135" stroke="#e74c3c" stroke-width="3" fill="none" stroke-dasharray="8,4" marker-end="url(#arrowhead-red)"/>
+  
+  <!-- Continue main branch -->
+  <line x1="715" y1="120" x2="785" y2="120" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Branch labels -->
+  <text x="300" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">main branch</text>
+  <text x="550" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#e67e22">color-experiment</text>
+  
+  <!-- Branch indicators -->
+  <rect x="80" y="170" width="120" height="20" rx="10" fill="#3498db" opacity="0.2"/>
+  <text x="140" y="183" text-anchor="middle" font-size="11" fill="#2980b9">Linear Development</text>
+  
+  <rect x="480" y="270" width="140" height="20" rx="10" fill="#e67e22" opacity="0.2"/>
+  <text x="550" y="283" text-anchor="middle" font-size="11" fill="#d35400">Experimental Branch</text>
+  
+  <rect x="680" y="170" width="140" height="20" rx="10" fill="#27ae60" opacity="0.2"/>
+  <text x="750" y="183" text-anchor="middle" font-size="11" fill="#229954">Selective Integration</text>
+  
+  <!-- Mathematical annotations -->
+  <g id="mathematical-notes">
+    <text x="50" y="330" font-size="14" font-weight="bold" fill="#2c3e50">Mathematical Properties:</text>
+    
+    <!-- DAG Structure -->
+    <text x="50" y="350" font-size="12" fill="#2c3e50">• DAG Structure: A → B → C → D → G → H (main)</text>
+    <text x="50" y="365" font-size="12" fill="#2c3e50">                    \</text>
+    <text x="50" y="380" font-size="12" fill="#2c3e50">                     → E → F (experiment)</text>
+    
+    <!-- Content Addressing -->
+    <text x="50" y="405" font-size="12" fill="#2c3e50">• Content Addressing: Each commit hash = SHA1(tree + parent + metadata)</text>
+    
+    <!-- Immutability -->
+    <text x="50" y="425" font-size="12" fill="#2c3e50">• Immutability: Once created, commit hashes never change</text>
+    
+    <!-- Cherry-pick -->
+    <text x="50" y="445" font-size="12" fill="#2c3e50">• Cherry-pick: G applies diff(D, E) to create new commit with different parent</text>
+    
+    <!-- Reachability -->
+    <text x="50" y="465" font-size="12" fill="#2c3e50">• Reachability: From H, can reach {A, B, C, D, G} but not {E, F}</text>
+  </g>
+  
+  <!-- Operation annotations -->
+  <g id="operations">
+    <!-- Branch creation -->
+    <text x="420" y="180" font-size="10" fill="#e67e22" transform="rotate(-25 420 180)">git checkout -b</text>
+    <text x="430" y="190" font-size="10" fill="#e67e22" transform="rotate(-25 430 190)">color-experiment</text>
+    
+    <!-- Cherry-pick -->
+    <text x="580" y="150" font-size="10" fill="#e74c3c">git cherry-pick E</text>
+    
+    <!-- Branch deletion indicator -->
+    <line x1="600" y1="240" x2="600" y2="260" stroke="#95a5a6" stroke-width="2" stroke-dasharray="3,3"/>
+    <text x="600" y="275" text-anchor="middle" font-size="10" fill="#95a5a6">branch deleted</text>
+  </g>
+  
+  <!-- Performance metrics -->
+  <g id="performance">
+    <rect x="50" y="500" width="400" height="150" rx="5" fill="#ecf0f1" stroke="#bdc3c7"/>
+    <text x="70" y="520" font-size="14" font-weight="bold" fill="#2c3e50">Performance Analysis</text>
+    
+    <text x="70" y="540" font-size="11" fill="#2c3e50">Operations Complexity:</text>
+    <text x="70" y="555" font-size="10" fill="#7f8c8d">• git commit: O(n) where n = changed files</text>
+    <text x="70" y="570" font-size="10" fill="#7f8c8d">• git checkout: O(n) to update working directory</text>
+    <text x="70" y="585" font-size="10" fill="#7f8c8d">• git branch: O(1) creates pointer to commit</text>
+    <text x="70" y="600" font-size="10" fill="#7f8c8d">• git cherry-pick: O(n) applies diff + creates commit</text>
+    
+    <text x="70" y="620" font-size="11" fill="#2c3e50">Storage Efficiency:</text>
+    <text x="70" y="635" font-size="10" fill="#7f8c8d">• ~60% space savings vs. copying directories</text>
+  </g>
+  
+  <!-- Workflow phases -->
+  <g id="phases">
+    <rect x="500" y="500" width="450" height="150" rx="5" fill="#f8f9fa" stroke="#dee2e6"/>
+    <text x="520" y="520" font-size="14" font-weight="bold" fill="#2c3e50">Workflow Phases</text>
+    
+    <text x="520" y="540" font-size="11" fill="#2c3e50">Phase 1: Linear Development (A → B → C → D)</text>
+    <text x="520" y="555" font-size="10" fill="#7f8c8d">Building core functionality incrementally</text>
+    
+    <text x="520" y="575" font-size="11" fill="#2c3e50">Phase 2: Experimental Branching (D → E → F)</text>
+    <text x="520" y="590" font-size="10" fill="#7f8c8d">Risk-free exploration of design alternatives</text>
+    
+    <text x="520" y="610" font-size="11" fill="#2c3e50">Phase 3: Selective Integration (E → G, then G → H)</text>
+    <text x="520" y="625" font-size="10" fill="#7f8c8d">Cherry-picking successful experiments back to main</text>
+  </g>
+  
+  <!-- Legend -->
+  <g id="legend">
+    <rect x="750" y="350" width="200" height="120" rx="5" fill="#ffffff" stroke="#bdc3c7"/>
+    <text x="760" y="370" font-size="12" font-weight="bold" fill="#2c3e50">Legend</text>
+    
+    <circle cx="770" cy="385" r="8" fill="#3498db"/>
+    <text x="785" y="390" font-size="10" fill="#2c3e50">Initial Development</text>
+    
+    <circle cx="770" cy="405" r="8" fill="#e67e22"/>
+    <text x="785" y="410" font-size="10" fill="#2c3e50">Experimental Work</text>
+    
+    <circle cx="770" cy="425" r="8" fill="#27ae60"/>
+    <text x="785" y="430" font-size="10" fill="#2c3e50">Integrated Features</text>
+    
+    <line x1="770" y1="445" x2="790" y2="445" stroke="#e74c3c" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="795" y="450" font-size="10" fill="#2c3e50">Cherry-pick</text>
+  </g>
+  
+</svg>

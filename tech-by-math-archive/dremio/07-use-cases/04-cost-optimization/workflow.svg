@@ -1,0 +1,343 @@
+<svg width="1000" height="700" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="legacyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C44569;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="migrationGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dremioGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="savingsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#96E6A1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4F1A0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="700" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#2d3748">
+    Cost-Optimized Data Warehouse Migration Workflow
+  </text>
+  
+  <!-- Timeline Arrow -->
+  <path d="M80 80 L920 80" stroke="#4a5568" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="500" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#718096">
+    8-Month Migration Timeline
+  </text>
+  
+  <!-- Phase 1: Legacy State -->
+  <text x="150" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#e53e3e">
+    BEFORE: Legacy DW Crisis
+  </text>
+  
+  <!-- Traditional Data Warehouse -->
+  <rect x="80" y="120" width="140" height="140" rx="15" fill="url(#legacyGradient)" stroke="#fff" stroke-width="3"/>
+  <text x="150" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    Teradata DW
+  </text>
+  <text x="150" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    $2.1M Annual Cost
+  </text>
+  <text x="150" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    25% Growth Rate
+  </text>
+  <text x="150" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    $850/TB Storage
+  </text>
+  <text x="150" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    Limited Scalability
+  </text>
+  <text x="150" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    Rigid Architecture
+  </text>
+  <text x="150" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    High Maintenance
+  </text>
+  
+  <!-- Cost Breakdown -->
+  <rect x="80" y="280" width="140" height="120" rx="8" fill="rgba(255, 107, 107, 0.1)" stroke="#FF6B6B" stroke-width="2"/>
+  <text x="150" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e53e3e">
+    Cost Breakdown
+  </text>
+  <text x="90" y="325" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Licenses: $1.2M (60%)
+  </text>
+  <text x="90" y="340" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Hardware: $480K (24%)
+  </text>
+  <text x="90" y="355" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Support: $240K (12%)
+  </text>
+  <text x="90" y="370" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Services: $180K (4%)
+  </text>
+  <text x="90" y="385" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#e53e3e">
+    5-Year TCO: $8.24M
+  </text>
+  
+  <!-- Phase 2: Migration Process -->
+  <text x="400" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#4ECDC4">
+    DURING: Migration Process
+  </text>
+  
+  <!-- Migration Phases -->
+  <rect x="300" y="120" width="200" height="200" rx="15" fill="url(#migrationGradient)" stroke="#fff" stroke-width="3"/>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    3-Phase Migration
+  </text>
+  
+  <!-- Phase Details -->
+  <rect x="310" y="160" width="180" height="45" rx="5" fill="rgba(255,255,255,0.9)" stroke="#4ECDC4" stroke-width="1"/>
+  <text x="400" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4ECDC4">
+    Phase 1: Assessment (Month 1)
+  </text>
+  <text x="400" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Usage analysis & migration planning
+  </text>
+  
+  <rect x="310" y="210" width="180" height="45" rx="5" fill="rgba(255,255,255,0.9)" stroke="#4ECDC4" stroke-width="1"/>
+  <text x="400" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4ECDC4">
+    Phase 2: Pilot (Months 2-3)
+  </text>
+  <text x="400" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Setup Dremio & connect sources
+  </text>
+  
+  <rect x="310" y="260" width="180" height="45" rx="5" fill="rgba(255,255,255,0.9)" stroke="#4ECDC4" stroke-width="1"/>
+  <text x="400" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4ECDC4">
+    Phase 3: Full Migration (Months 4-8)
+  </text>
+  <text x="400" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Complete data & workload migration
+  </text>
+  
+  <!-- Migration Strategy -->
+  <rect x="300" y="340" width="200" height="100" rx="8" fill="rgba(76, 204, 196, 0.1)" stroke="#4ECDC4" stroke-width="2"/>
+  <text x="400" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4ECDC4">
+    Key Strategies
+  </text>
+  <text x="310" y="385" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    ✓ Federated queries during transition
+  </text>
+  <text x="310" y="400" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    ✓ Zero downtime migration
+  </text>
+  <text x="310" y="415" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    ✓ 99.97% data fidelity maintained
+  </text>
+  <text x="310" y="430" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    ✓ Performance optimization with reflections
+  </text>
+  
+  <!-- Phase 3: Final State -->
+  <text x="700" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0ea5e9">
+    AFTER: Dremio Lakehouse
+  </text>
+  
+  <!-- Dremio Architecture -->
+  <rect x="600" y="120" width="200" height="180" rx="15" fill="url(#dremioGradient)" stroke="#fff" stroke-width="3"/>
+  <text x="700" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">
+    Dremio Lakehouse
+  </text>
+  
+  <!-- Architecture Components -->
+  <rect x="615" y="160" width="80" height="60" rx="5" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="655" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0ea5e9">
+    Coordinator
+  </text>
+  <text x="655" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a5568">
+    Query Planning
+  </text>
+  <text x="655" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a5568">
+    Metadata Mgmt
+  </text>
+  
+  <rect x="705" y="160" width="80" height="60" rx="5" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="745" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0ea5e9">
+    Executors
+  </text>
+  <text x="745" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a5568">
+    Query Execution
+  </text>
+  <text x="745" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4a5568">
+    Reflections
+  </text>
+  
+  <!-- S3 Data Lake -->
+  <rect x="615" y="230" width="170" height="60" rx="5" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="700" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#0ea5e9">
+    S3 Data Lake Storage
+  </text>
+  <text x="700" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    $23/TB vs $850/TB (97.2% savings)
+  </text>
+  <text x="700" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    Elastic scaling & governance
+  </text>
+  
+  <!-- New Cost Structure -->
+  <rect x="600" y="320" width="200" height="120" rx="8" fill="rgba(79, 172, 254, 0.1)" stroke="#4facfe" stroke-width="2"/>
+  <text x="700" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0ea5e9">
+    New Cost Structure
+  </text>
+  <text x="610" y="365" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Dremio Subscription: $240K
+  </text>
+  <text x="610" y="380" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • S3 Storage: $55K
+  </text>
+  <text x="610" y="395" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • EC2 Compute: $120K
+  </text>
+  <text x="610" y="410" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    • Professional Services: $80K
+  </text>
+  <text x="610" y="425" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#0ea5e9">
+    Annual Total: $495K (76% savings)
+  </text>
+  
+  <!-- Migration Arrows -->
+  <path d="M220 190 L300 190" stroke="#4a5568" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M500 190 L600 190" stroke="#4a5568" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Key Benefits Section -->
+  <rect x="80" y="470" width="840" height="200" rx="15" fill="url(#savingsGradient)" stroke="#fff" stroke-width="3"/>
+  <text x="500" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2d3748">
+    Business Impact &amp; Cost Savings
+  </text>
+  
+  <!-- TCO Comparison -->
+  <rect x="120" y="520" width="200" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#38a169" stroke-width="2"/>
+  <text x="220" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#38a169">
+    5-Year TCO Analysis
+  </text>
+  <text x="130" y="565" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Legacy DW: $8.24M
+  </text>
+  <text x="130" y="585" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Dremio: $2.77M
+  </text>
+  <text x="130" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#38a169">
+    Savings: $5.47M (66%)
+  </text>
+  <text x="130" y="625" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    ROI: 2.97x • Payback: 14 months
+  </text>
+  
+  <!-- Performance Metrics -->
+  <rect x="340" y="520" width="200" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#38a169" stroke-width="2"/>
+  <text x="440" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#38a169">
+    Performance Gains
+  </text>
+  <text x="350" y="565" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Query Speed: +40% improvement
+  </text>
+  <text x="350" y="585" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Storage Cost: -97.2% reduction
+  </text>
+  <text x="350" y="605" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Scalability: 10x capacity growth
+  </text>
+  <text x="350" y="625" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    SLA Compliance: 98%
+  </text>
+  
+  <!-- Migration Success -->
+  <rect x="560" y="520" width="200" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#38a169" stroke-width="2"/>
+  <text x="660" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#38a169">
+    Migration Success
+  </text>
+  <text x="570" y="565" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Data Fidelity: 99.97%
+  </text>
+  <text x="570" y="585" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Zero Downtime Migration
+  </text>
+  <text x="570" y="605" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    100% BI Report Migration
+  </text>
+  <text x="570" y="625" font-family="Arial, sans-serif" font-size="11" fill="#2d3748">
+    Full Compliance Maintained
+  </text>
+  
+  <!-- Future Outlook -->
+  <rect x="780" y="520" width="140" height="120" rx="10" fill="rgba(255,255,255,0.9)" stroke="#38a169" stroke-width="2"/>
+  <text x="850" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#38a169">
+    Future Ready
+  </text>
+  <text x="790" y="565" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    Elastic scaling
+  </text>
+  <text x="790" y="580" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    Cloud native
+  </text>
+  <text x="790" y="595" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    AI/ML ready
+  </text>
+  <text x="790" y="610" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    Multi-cloud
+  </text>
+  <text x="790" y="625" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    Self-service
+  </text>
+  
+  <!-- Mathematical Formula -->
+  <rect x="850" y="120" width="130" height="140" rx="10" fill="rgba(56, 161, 105, 0.1)" stroke="#38a169" stroke-width="2"/>
+  <text x="915" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#38a169">
+    Cost Mathematics
+  </text>
+  <text x="860" y="165" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    TCO = Initial + Operating + Growth
+  </text>
+  <text x="860" y="180" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Savings% = (Old - New)/Old
+  </text>
+  <text x="860" y="195" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    ROI = Benefits / Investment
+  </text>
+  <text x="860" y="210" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Payback = Investment / 
+  </text>
+  <text x="915" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Annual Savings
+  </text>
+  <text x="860" y="245" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#38a169">
+    Result: 66% cost reduction
+  </text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+  </defs>
+  
+  <!-- Migration Labels -->
+  <text x="260" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(0 260 175)">
+    Assess &amp; Plan
+  </text>
+  <text x="550" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(0 550 175)">
+    Migrate &amp; Deploy
+  </text>
+  
+  <!-- Timeline Labels -->
+  <text x="100" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096">
+    Month 0
+  </text>
+  <text x="300" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096">
+    Months 1-3
+  </text>
+  <text x="600" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096">
+    Months 4-8
+  </text>
+  <text x="900" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096">
+    Ongoing
+  </text>
+</svg>

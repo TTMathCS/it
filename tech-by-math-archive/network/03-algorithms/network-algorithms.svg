@@ -1,0 +1,150 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7b68ee;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="boxGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#ffffff"/>
+
+  <!-- Title -->
+  <rect x="20" y="20" width="760" height="60" fill="url(#headerGradient)" rx="10" filter="url(#shadow)"/>
+  <text x="400" y="55" text-anchor="middle" fill="white" font-size="24" font-family="Arial, sans-serif" font-weight="bold">
+    Network Algorithms Workflow
+  </text>
+
+  <!-- Routing Algorithms -->
+  <rect x="50" y="100" width="180" height="80" fill="url(#boxGradient)" stroke="#4a90e2" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="140" y="125" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Routing Algorithms
+  </text>
+  <text x="140" y="145" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Dijkstra, Bellman-Ford
+  </text>
+  <text x="140" y="160" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Path Finding
+  </text>
+
+  <!-- Flow Control -->
+  <rect x="310" y="100" width="180" height="80" fill="url(#boxGradient)" stroke="#4a90e2" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="400" y="125" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Flow Control
+  </text>
+  <text x="400" y="145" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    TCP Congestion Control
+  </text>
+  <text x="400" y="160" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    AIMD Algorithm
+  </text>
+
+  <!-- Network Security -->
+  <rect x="570" y="100" width="180" height="80" fill="url(#boxGradient)" stroke="#4a90e2" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="660" y="125" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Security Algorithms
+  </text>
+  <text x="660" y="145" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Encryption &amp; Auth
+  </text>
+  <text x="660" y="160" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Cryptographic Protocols
+  </text>
+
+  <!-- Graph Algorithms -->
+  <rect x="50" y="250" width="180" height="80" fill="url(#boxGradient)" stroke="#7b68ee" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="140" y="275" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Graph Algorithms
+  </text>
+  <text x="140" y="295" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    MST, Max Flow
+  </text>
+  <text x="140" y="310" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Network Topology
+  </text>
+
+  <!-- Scheduling -->
+  <rect x="310" y="250" width="180" height="80" fill="url(#boxGradient)" stroke="#7b68ee" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="400" y="275" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Scheduling Algorithms
+  </text>
+  <text x="400" y="295" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    QoS &amp; Priority Queues
+  </text>
+  <text x="400" y="310" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Traffic Management
+  </text>
+
+  <!-- Load Balancing -->
+  <rect x="570" y="250" width="180" height="80" fill="url(#boxGradient)" stroke="#7b68ee" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="660" y="275" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Load Balancing
+  </text>
+  <text x="660" y="295" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Round Robin &amp; Weighted
+  </text>
+  <text x="660" y="310" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Resource Distribution
+  </text>
+
+  <!-- Network Optimization -->
+  <rect x="180" y="400" width="200" height="80" fill="url(#boxGradient)" stroke="#28a745" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="280" y="425" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Network Optimization
+  </text>
+  <text x="280" y="445" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Resource Allocation
+  </text>
+  <text x="280" y="460" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    Performance Tuning
+  </text>
+
+  <!-- Protocol Implementation -->
+  <rect x="420" y="400" width="200" height="80" fill="url(#boxGradient)" stroke="#28a745" stroke-width="2" rx="5" filter="url(#shadow)"/>
+  <text x="520" y="425" text-anchor="middle" fill="#333" font-size="14" font-family="Arial, sans-serif" font-weight="bold">
+    Protocol Implementation
+  </text>
+  <text x="520" y="445" text-anchor="middle" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Real-World Applications
+  </text>
+  <text x="520" y="460" text-anchor="middle" fill="#666" font-size="10" font-family="Arial, sans-serif">
+    System Integration
+  </text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+
+  <!-- Flow arrows -->
+  <line x1="140" y1="180" x2="140" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="180" x2="400" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="660" y1="180" x2="660" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <line x1="230" y1="290" x2="270" y2="290" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="490" y1="290" x2="530" y2="290" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <line x1="280" y1="330" x2="280" y2="390" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="520" y1="330" x2="520" y2="390" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Legend -->
+  <rect x="50" y="520" width="700" height="60" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="5"/>
+  <text x="70" y="540" fill="#333" font-size="12" font-family="Arial, sans-serif" font-weight="bold">
+    Workflow Legend:
+  </text>
+  <text x="70" y="555" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    Blue: Core Algorithms → Purple: Advanced Techniques → Green: Practical Implementation
+  </text>
+  <text x="70" y="570" fill="#666" font-size="11" font-family="Arial, sans-serif">
+    This workflow shows how network algorithms progress from theory to practical applications.
+  </text>
+</svg>

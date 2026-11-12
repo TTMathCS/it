@@ -1,0 +1,243 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Kubernetes Failure Models
+  </text>
+  
+  <!-- Node Failures -->
+  <g transform="translate(50, 70)">
+    <rect width="200" height="150" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#d32f2f">
+      Node Failures
+    </text>
+    
+    <!-- Failed nodes -->
+    <rect x="30" y="40" width="40" height="30" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="3"/>
+    <text x="50" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Node1</text>
+    <text x="50" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#d32f2f">✗</text>
+    
+    <rect x="80" y="40" width="40" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="100" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Node2</text>
+    <text x="100" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">✓</text>
+    
+    <rect x="130" y="40" width="40" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="150" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Node3</text>
+    <text x="150" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">✓</text>
+    
+    <text x="100" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      Hardware, Network, Resource
+    </text>
+    <text x="100" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      MTBF Analysis
+    </text>
+    <text x="100" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">
+      Auto-recovery
+    </text>
+  </g>
+  
+  <!-- Pod Failures -->
+  <g transform="translate(300, 70)">
+    <rect width="200" height="150" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f57900">
+      Pod Failures
+    </text>
+    
+    <!-- Pod states -->
+    <circle cx="60" cy="60" r="15" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2"/>
+    <text x="60" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Crash</text>
+    
+    <circle cx="100" cy="60" r="15" fill="#fff9c4" stroke="#fbc02d" stroke-width="2"/>
+    <text x="100" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57c00">OOM</text>
+    
+    <circle cx="140" cy="60" r="15" fill="#c8e6c9" stroke="#388e3c" stroke-width="2"/>
+    <text x="140" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Healthy</text>
+    
+    <!-- Restart policy -->
+    <rect x="30" y="90" width="140" height="20" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">Restart Policy: Always</text>
+    
+    <text x="100" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Exponential Backoff
+    </text>
+    <text x="100" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Health Checks
+    </text>
+  </g>
+  
+  <!-- Control Plane Failures -->
+  <g transform="translate(550, 70)">
+    <rect width="200" height="150" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#7b1fa2">
+      Control Plane
+    </text>
+    
+    <!-- Control plane components -->
+    <rect x="20" y="45" width="50" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="45" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">API Server</text>
+    
+    <rect x="75" y="45" width="50" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="100" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">etcd</text>
+    
+    <rect x="130" y="45" width="50" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="155" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">Scheduler</text>
+    
+    <text x="100" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      High Availability
+    </text>
+    <text x="100" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Leader Election
+    </text>
+    <text x="100" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Multi-Master
+    </text>
+  </g>
+  
+  <!-- Reliability Mathematics -->
+  <g transform="translate(50, 250)">
+    <rect width="350" height="180" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="175" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#388e3c">
+      Reliability Mathematics
+    </text>
+    
+    <!-- Availability formula -->
+    <rect x="30" y="45" width="290" height="30" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="5"/>
+    <text x="175" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">
+      Availability = MTBF / (MTBF + MTTR)
+    </text>
+    
+    <!-- Distribution models -->
+    <text x="80" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#388e3c">
+      Exponential Distribution
+    </text>
+    <text x="80" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      P(t) = λe^(-λt)
+    </text>
+    
+    <text x="270" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#388e3c">
+      Weibull Distribution
+    </text>
+    <text x="270" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      F(t) = 1 - e^(-(t/η)^β)
+    </text>
+    
+    <!-- System reliability -->
+    <rect x="60" y="130" width="230" height="25" fill="#a5d6a7" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="175" y="147" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#388e3c">
+      R_system = 1 - (1 - R_component)^n
+    </text>
+    
+    <text x="175" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Redundancy &amp; Fault Tolerance Models
+    </text>
+  </g>
+  
+  <!-- Detection &amp; Recovery -->
+  <g transform="translate(450, 250)">
+    <rect width="300" height="180" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="150" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1976d2">
+      Detection &amp; Recovery
+    </text>
+    
+    <!-- Detection flow -->
+    <circle cx="75" cy="70" r="20" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="75" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Monitor</text>
+    
+    <circle cx="150" cy="70" r="20" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="150" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Detect</text>
+    
+    <circle cx="225" cy="70" r="20" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="225" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Recover</text>
+    
+    <!-- Arrows -->
+    <path d="M 95 70 L 130 70" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 170 70 L 205 70" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Recovery strategies -->
+    <rect x="30" y="110" width="80" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="70" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">Health Checks</text>
+    
+    <rect x="120" y="110" width="80" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="160" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">Circuit Breaker</text>
+    
+    <rect x="210" y="110" width="70" height="20" fill="#90caf9" stroke="#1976d2" stroke-width="1" rx="3"/>
+    <text x="245" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">Backoff</text>
+    
+    <text x="150" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Automated Recovery Mechanisms
+    </text>
+  </g>
+  
+  <!-- Chaos Engineering -->
+  <g transform="translate(50, 460)">
+    <rect width="300" height="120" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="150" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f57900">
+      Chaos Engineering
+    </text>
+    
+    <!-- Chaos monkey -->
+    <circle cx="100" cy="70" r="25" fill="#ffcc80" stroke="#f57900" stroke-width="2"/>
+    <text x="100" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#f57900">🐒</text>
+    <text x="100" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">Chaos Monkey</text>
+    
+    <!-- Failure injection -->
+    <rect x="160" y="50" width="120" height="40" fill="#ffb74d" stroke="#f57900" stroke-width="1" rx="5"/>
+    <text x="220" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57900">Failure Injection</text>
+    <text x="220" y="83" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">Resilience Testing</text>
+    
+    <text x="150" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Proactive failure simulation for system hardening
+    </text>
+  </g>
+  
+  <!-- Disaster Recovery -->
+  <g transform="translate(450, 460)">
+    <rect width="300" height="120" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="150" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#7b1fa2">
+      Disaster Recovery
+    </text>
+    
+    <!-- Multi-region -->
+    <rect x="30" y="45" width="80" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="70" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Region A</text>
+    
+    <rect x="120" y="45" width="80" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="160" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Region B</text>
+    
+    <rect x="210" y="45" width="70" height="25" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+    <text x="245" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Backup</text>
+    
+    <!-- RTO/RPO -->
+    <text x="150" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      RTO/RPO Objectives
+    </text>
+    <text x="150" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Geographic Distribution
+    </text>
+  </g>
+  
+  <!-- Central focus -->
+  <g transform="translate(350, 350)">
+    <ellipse cx="50" cy="50" rx="50" ry="30" fill="#ffd54f" stroke="#f9a825" stroke-width="3"/>
+    <text x="50" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f9a825">
+      Fault
+    </text>
+    <text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f9a825">
+      Tolerance
+    </text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="590" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    Mathematical models for analyzing and preventing failures in Kubernetes
+  </text>
+</svg>

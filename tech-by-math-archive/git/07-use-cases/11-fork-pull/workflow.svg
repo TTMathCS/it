@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .upstream { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .fork { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .feature { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .pr { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .fork-line { stroke: #1976D2; stroke-width: 2; fill: none; stroke-dasharray: 5,5; }
+      .pr-line { stroke: #9C27B0; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Fork and Pull Request Workflow</text>
+  
+  <!-- Upstream repository -->
+  <text x="50" y="80" class="branch-label" fill="#2E7D32">upstream/main</text>
+  <circle cx="100" cy="100" r="10" class="upstream"/>
+  <text x="100" y="125" text-anchor="middle" class="text">A: v1.0</text>
+  
+  <line x1="110" y1="100" x2="190" y2="100" class="branch-line"/>
+  <circle cx="200" cy="100" r="10" class="upstream"/>
+  <text x="200" y="125" text-anchor="middle" class="text">B: Feature</text>
+  
+  <line x1="210" y1="100" x2="490" y2="100" class="branch-line"/>
+  <circle cx="500" cy="100" r="10" class="upstream"/>
+  <text x="500" y="125" text-anchor="middle" class="text">F: Merged</text>
+  
+  <line x1="510" y1="100" x2="590" y2="100" class="branch-line"/>
+  <circle cx="600" cy="100" r="10" class="upstream"/>
+  <text x="600" y="125" text-anchor="middle" class="text">G: v1.1</text>
+  
+  <line x1="610" y1="100" x2="690" y2="100" class="branch-line"/>
+  <circle cx="700" cy="100" r="10" class="upstream"/>
+  <text x="700" y="125" text-anchor="middle" class="text">H: Latest</text>
+  
+  <!-- Fork repository -->
+  <text x="50" y="180" class="branch-label" fill="#1976D2">origin/main (fork)</text>
+  <line x1="110" y1="100" x2="130" y2="200" class="fork-line"/>
+  <circle cx="140" cy="200" r="10" class="fork"/>
+  <text x="140" y="225" text-anchor="middle" class="text">A': Fork</text>
+  
+  <line x1="150" y1="200" x2="230" y2="200" class="branch-line"/>
+  <circle cx="240" cy="200" r="10" class="fork"/>
+  <text x="240" y="225" text-anchor="middle" class="text">Sync</text>
+  
+  <!-- Feature branch -->
+  <text x="50" y="280" class="branch-label" fill="#FF9800">feature/contribution</text>
+  <line x1="150" y1="200" x2="170" y2="300" class="branch-line"/>
+  <circle cx="180" cy="300" r="10" class="feature"/>
+  <text x="180" y="325" text-anchor="middle" class="text">C: Start</text>
+  
+  <line x1="190" y1="300" x2="270" y2="300" class="branch-line"/>
+  <circle cx="280" cy="300" r="10" class="feature"/>
+  <text x="280" y="325" text-anchor="middle" class="text">D: Code</text>
+  
+  <line x1="290" y1="300" x2="370" y2="300" class="branch-line"/>
+  <circle cx="380" cy="300" r="10" class="feature"/>
+  <text x="380" y="325" text-anchor="middle" class="text">E: Test</text>
+  
+  <!-- Pull Request -->
+  <text x="420" y="280" class="branch-label" fill="#9C27B0">Pull Request</text>
+  <line x1="390" y1="300" x2="470" y2="200" class="pr-line"/>
+  <circle cx="480" cy="200" r="10" class="pr"/>
+  <text x="480" y="225" text-anchor="middle" class="text">PR</text>
+  
+  <!-- Merge to upstream -->
+  <line x1="490" y1="200" x2="490" y2="100" class="pr-line"/>
+  
+  <!-- Sync back to fork -->
+  <line x1="510" y1="100" x2="530" y2="200" class="fork-line"/>
+  <circle cx="540" cy="200" r="10" class="fork"/>
+  <text x="540" y="225" text-anchor="middle" class="text">Sync</text>
+  
+  <!-- Update local -->
+  <line x1="550" y1="200" x2="570" y2="300" class="branch-line"/>
+  <circle cx="580" cy="300" r="10" class="feature"/>
+  <text x="580" y="325" text-anchor="middle" class="text">Update</text>
+  
+  <!-- Process annotations -->
+  <rect x="50" y="380" width="800" height="100" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="400" class="title">Fork and PR Process:</text>
+  <text x="60" y="420" class="text">1. Fork upstream repository → Creates independent copy</text>
+  <text x="60" y="435" class="text">2. Create feature branch → Isolated development</text>
+  <text x="60" y="450" class="text">3. Submit Pull Request → Propose changes for review</text>
+  <text x="60" y="465" class="text">4. Merge after approval → Changes integrated into upstream</text>
+</svg>

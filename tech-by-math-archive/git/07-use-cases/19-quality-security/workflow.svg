@@ -1,0 +1,217 @@
+<svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <linearGradient id="securityGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffebee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffcdd2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="qualityGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e8f5e8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="700" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="500" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#212529">
+    Security &amp; Quality Assurance: Multi-Layer Validation Pipeline
+  </text>
+  
+  <!-- Developer Section -->
+  <rect x="50" y="60" width="180" height="180" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="10"/>
+  <text x="140" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#856404">
+    Developer Workspace
+  </text>
+  
+  <!-- Pre-commit Hooks -->
+  <rect x="70" y="100" width="140" height="60" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="5"/>
+  <text x="140" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Pre-commit Hooks</text>
+  <text x="140" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">• Lint checks</text>
+  <text x="140" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">• Secret detection</text>
+  
+  <!-- Code Commit -->
+  <rect x="70" y="170" width="140" height="60" fill="#d4edda" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="140" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">Git Commit</text>
+  <text x="140" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Signed commits</text>
+  <text x="140" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Audit trail</text>
+  
+  <!-- Trigger Arrow -->
+  <line x1="230" y1="150" x2="270" y2="150" stroke="#007bff" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="250" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#007bff">Push</text>
+  
+  <!-- Security Pipeline -->
+  <rect x="290" y="60" width="320" height="300" fill="url(#securityGradient)" stroke="#dc3545" stroke-width="2" rx="10"/>
+  <text x="450" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#721c24">
+    Security Validation Pipeline
+  </text>
+  
+  <!-- SAST -->
+  <rect x="310" y="100" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="370" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">SAST</text>
+  <text x="370" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Static Analysis</text>
+  <text x="370" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Code Security</text>
+  
+  <!-- Secret Scan -->
+  <rect x="450" y="100" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="510" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Secret Scan</text>
+  <text x="510" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">TruffleHog</text>
+  <text x="510" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">GitLeaks</text>
+  
+  <!-- Dependency Scan -->
+  <rect x="310" y="180" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="370" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Dependency</text>
+  <text x="370" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Vulnerability</text>
+  <text x="370" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Snyk/NPM Audit</text>
+  
+  <!-- Container Scan -->
+  <rect x="450" y="180" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="510" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Container</text>
+  <text x="510" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Image Security</text>
+  <text x="510" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Trivy/Clair</text>
+  
+  <!-- DAST -->
+  <rect x="310" y="260" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="370" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">DAST</text>
+  <text x="370" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Dynamic Test</text>
+  <text x="370" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">OWASP ZAP</text>
+  
+  <!-- Penetration Test -->
+  <rect x="450" y="260" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="510" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Pen Test</text>
+  <text x="510" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Automated</text>
+  <text x="510" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Security Tests</text>
+  
+  <!-- Security Flow Arrows -->
+  <line x1="430" y1="130" x2="450" y2="130" stroke="#dc3545" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="430" y1="210" x2="450" y2="210" stroke="#dc3545" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="430" y1="290" x2="450" y2="290" stroke="#dc3545" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Quality Pipeline -->
+  <rect x="630" y="60" width="320" height="300" fill="url(#qualityGradient)" stroke="#28a745" stroke-width="2" rx="10"/>
+  <text x="790" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#155724">
+    Quality Assurance Pipeline
+  </text>
+  
+  <!-- SonarQube -->
+  <rect x="650" y="100" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="710" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">SonarQube</text>
+  <text x="710" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Code Quality</text>
+  <text x="710" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Technical Debt</text>
+  
+  <!-- Test Coverage -->
+  <rect x="790" y="100" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="850" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Coverage</text>
+  <text x="850" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Unit Tests</text>
+  <text x="850" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Integration</text>
+  
+  <!-- Complexity Analysis -->
+  <rect x="650" y="180" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="710" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Complexity</text>
+  <text x="710" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Cyclomatic</text>
+  <text x="710" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Maintainability</text>
+  
+  <!-- Code Duplication -->
+  <rect x="790" y="180" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="850" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Duplication</text>
+  <text x="850" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Copy-Paste</text>
+  <text x="850" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Detection</text>
+  
+  <!-- Performance Test -->
+  <rect x="650" y="260" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="710" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Performance</text>
+  <text x="710" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Load Testing</text>
+  <text x="710" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Benchmarks</text>
+  
+  <!-- Accessibility -->
+  <rect x="790" y="260" width="120" height="60" fill="#fff" stroke="#6c757d" stroke-width="1" rx="5"/>
+  <text x="850" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#495057">Accessibility</text>
+  <text x="850" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">WCAG 2.1</text>
+  <text x="850" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#495057">Axe Testing</text>
+  
+  <!-- Quality Flow Arrows -->
+  <line x1="770" y1="130" x2="790" y2="130" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="770" y1="210" x2="790" y2="210" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="770" y1="290" x2="790" y2="290" stroke="#28a745" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Pipeline Connection -->
+  <line x1="610" y1="210" x2="630" y2="210" stroke="#6f42c1" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="620" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#6f42c1">Gates</text>
+  
+  <!-- Compliance Section -->
+  <rect x="50" y="380" width="900" height="120" fill="#f8f9fa" stroke="#ffc107" stroke-width="2" rx="10"/>
+  <text x="500" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#856404">
+    Compliance &amp; Regulatory Validation
+  </text>
+  
+  <!-- Compliance boxes -->
+  <rect x="80" y="420" width="150" height="70" fill="#fff3cd" stroke="#ffc107" stroke-width="1" rx="5"/>
+  <text x="155" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#856404">PCI DSS</text>
+  <text x="155" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#856404">Payment Card Industry</text>
+  <text x="155" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#856404">Data Security Standard</text>
+  <text x="155" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">Score: 96.2%</text>
+  
+  <rect x="250" y="420" width="150" height="70" fill="#e8f5e8" stroke="#28a745" stroke-width="1" rx="5"/>
+  <text x="325" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">SOX</text>
+  <text x="325" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Sarbanes-Oxley Act</text>
+  <text x="325" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Financial Reporting</text>
+  <text x="325" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#28a745">Score: 98.5%</text>
+  
+  <rect x="420" y="420" width="150" height="70" fill="#e3f2fd" stroke="#2196f3" stroke-width="1" rx="5"/>
+  <text x="495" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">GDPR</text>
+  <text x="495" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">General Data Protection</text>
+  <text x="495" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Regulation</text>
+  <text x="495" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#2196f3">Score: 94.8%</text>
+  
+  <rect x="590" y="420" width="150" height="70" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1" rx="5"/>
+  <text x="665" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">ISO 27001</text>
+  <text x="665" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Information Security</text>
+  <text x="665" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">Management</text>
+  <text x="665" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#9c27b0">Score: 92.1%</text>
+  
+  <rect x="760" y="420" width="150" height="70" fill="#ffebee" stroke="#dc3545" stroke-width="1" rx="5"/>
+  <text x="835" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#721c24">NIST</text>
+  <text x="835" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Cybersecurity</text>
+  <text x="835" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Framework</text>
+  <text x="835" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#dc3545">Score: 89.7%</text>
+  
+  <!-- Results Section -->
+  <rect x="50" y="520" width="900" height="100" fill="#fff" stroke="#6c757d" stroke-width="1" rx="10"/>
+  <text x="500" y="545" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#212529">
+    Validation Results &amp; Actions
+  </text>
+  
+  <!-- Pass Result -->
+  <rect x="80" y="560" width="200" height="50" fill="url(#qualityGradient)" stroke="#28a745" stroke-width="2" rx="5"/>
+  <text x="180" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#155724">✓ All Gates Passed</text>
+  <text x="180" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#155724">Deploy to Production</text>
+  
+  <!-- Fail Result -->
+  <rect x="300" y="560" width="200" height="50" fill="#ffebee" stroke="#dc3545" stroke-width="2" rx="5"/>
+  <text x="400" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#721c24">✗ Security Issues</text>
+  <text x="400" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#721c24">Block &amp; Notify Team</text>
+  
+  <!-- Quality Fail -->
+  <rect x="520" y="560" width="200" height="50" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="5"/>
+  <text x="620" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">⚠ Quality Warning</text>
+  <text x="620" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e65100">Review Required</text>
+  
+  <!-- Monitoring -->
+  <rect x="740" y="560" width="200" height="50" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="5"/>
+  <text x="840" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">📊 Continuous</text>
+  <text x="840" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Security Monitoring</text>
+  
+  <!-- Mathematical Foundation -->
+  <rect x="50" y="640" width="900" height="50" fill="#e9ecef" stroke="#adb5bd" stroke-width="1" rx="5"/>
+  <text x="500" y="660" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#495057">
+    Mathematical Foundation: Multi-Layer Security Validation
+  </text>
+  <text x="500" y="675" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#495057">
+    Security Score: S = ∏(Security_Layer_i) • Quality Score: Q = Σ(w_i × metric_i) • Gate Function: Pass = S ∧ Q ∧ Compliance ≥ threshold
+  </text>
+  
+</svg>

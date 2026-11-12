@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+      <feOffset dx="2" dy="2" result="offset"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="24" font-weight="bold" fill="#2c3e50">
+    Web Authentication TLS Handshake and Certificate Validation
+  </text>
+  
+  <!-- TLS Handshake Flow -->
+  <g transform="translate(50, 70)">
+    <!-- Client -->
+    <rect x="0" y="0" width="120" height="400" rx="10" fill="#e3f2fd" 
+          stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#1976d2">Client</text>
+    <text x="60" y="45" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="12" fill="#333">Browser/App</text>
+    
+    <!-- Server -->
+    <rect x="300" y="0" width="120" height="400" rx="10" fill="#e8f5e8" 
+          stroke="#4caf50" stroke-width="2" filter="url(#shadow)"/>
+    <text x="360" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#4caf50">Server</text>
+    <text x="360" y="45" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="12" fill="#333">Web Server</text>
+    
+    <!-- CA -->
+    <rect x="500" y="0" width="120" height="400" rx="10" fill="#fff3e0" 
+          stroke="#ff8f00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="560" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#ff8f00">Certificate</text>
+    <text x="560" y="45" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="12" fill="#333">Authority</text>
+    
+    <!-- OCSP -->
+    <rect x="700" y="0" width="120" height="400" rx="10" fill="#f3e5f5" 
+          stroke="#9c27b0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="760" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="14" font-weight="bold" fill="#9c27b0">OCSP</text>
+    <text x="760" y="45" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="12" fill="#333">Responder</text>
+    
+    <!-- Handshake Steps -->
+    <!-- 1. Client Hello -->
+    <line x1="120" y1="80" x2="300" y2="80" stroke="#1976d2" stroke-width="2" 
+          marker-end="url(#arrowhead)"/>
+    <text x="210" y="75" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#1976d2">1. Client Hello</text>
+    <text x="210" y="90" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#666">Cipher suites, TLS version</text>
+    
+    <!-- 2. Server Hello + Certificate -->
+    <line x1="300" y1="110" x2="120" y2="110" stroke="#4caf50" stroke-width="2" 
+          marker-end="url(#arrowhead)"/>
+    <text x="210" y="105" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#4caf50">2. Server Hello + Certificate</text>
+    <text x="210" y="120" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#666">Server cert chain</text>
+    
+    <!-- 3. Certificate Validation -->
+    <line x1="120" y1="140" x2="500" y2="140" stroke="#1976d2" stroke-width="2" 
+          stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+    <text x="310" y="135" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#1976d2">3. Certificate Chain Validation</text>
+    <text x="310" y="150" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#666">Verify signatures to root CA</text>
+    
+    <!-- 4. OCSP Check -->
+    <line x1="120" y1="170" x2="700" y2="170" stroke="#1976d2" stroke-width="2" 
+          stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+    <text x="410" y="165" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#1976d2">4. OCSP Status Check</text>
+    <text x="410" y="180" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#666">Certificate revocation status</text>
+    
+    <!-- 5. OCSP Response -->
+    <line x1="700" y1="190" x2="120" y2="190" stroke="#9c27b0" stroke-width="2" 
+          stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+    <text x="410" y="185" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#9c27b0">5. OCSP Good Response</text>
+    
+    <!-- 6. Key Exchange -->
+    <line x1="120" y1="220" x2="300" y2="220" stroke="#1976d2" stroke-width="2" 
+          marker-end="url(#arrowhead)"/>
+    <text x="210" y="215" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#1976d2">6. Key Exchange</text>
+    <text x="210" y="230" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="9" fill="#666">ECDHE, pre-master secret</text>
+    
+    <!-- 7. Finished Messages -->
+    <line x1="120" y1="250" x2="300" y2="250" stroke="#1976d2" stroke-width="2" 
+          marker-end="url(#arrowhead)"/>
+    <line x1="300" y1="270" x2="120" y2="270" stroke="#4caf50" stroke-width="2" 
+          marker-end="url(#arrowhead)"/>
+    <text x="210" y="245" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#1976d2">7. Client Finished</text>
+    <text x="210" y="285" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#4caf50">8. Server Finished</text>
+    
+    <!-- 8. Application Data -->
+    <rect x="120" y="300" width="180" height="30" rx="5" fill="#c8e6c9" 
+          stroke="#4caf50" stroke-width="2"/>
+    <text x="210" y="320" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="12" font-weight="bold" fill="#4caf50">Encrypted Application Data</text>
+    <text x="210" y="340" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="10" fill="#666">HTTPS Traffic (AES-GCM)</text>
+    
+    <!-- Certificate Details -->
+    <g transform="translate(450, 300)">
+      <rect x="0" y="0" width="200" height="90" rx="8" fill="#fff8e1" 
+            stroke="#ffa000" stroke-width="2"/>
+      <text x="100" y="20" text-anchor="middle" font-family="Arial, sans-serif" 
+            font-size="12" font-weight="bold" fill="#ffa000">Certificate Details</text>
+      <text x="10" y="35" font-family="Arial, sans-serif" font-size="10" fill="#333">
+        Subject: CN=cloudtech.example.com
+      </text>
+      <text x="10" y="48" font-family="Arial, sans-serif" font-size="10" fill="#333">
+        Issuer: Let's Encrypt Authority X3
+      </text>
+      <text x="10" y="61" font-family="Arial, sans-serif" font-size="10" fill="#333">
+        SAN: www.cloudtech.example.com
+      </text>
+      <text x="10" y="74" font-family="Arial, sans-serif" font-size="10" fill="#333">
+        Validity: 90 days (ACME renewal)
+      </text>
+      <text x="10" y="87" font-family="Arial, sans-serif" font-size="10" fill="#333">
+        Algorithm: ECDSA P-256 + SHA-256
+      </text>
+    </g>
+  </g>
+  
+  <!-- Certificate Validation Process -->
+  <g transform="translate(50, 500)">
+    <rect x="0" y="0" width="800" height="80" rx="10" fill="#f5f5f5" 
+          stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="400" y="25" text-anchor="middle" font-family="Arial, sans-serif" 
+          font-size="16" font-weight="bold" fill="#333">Certificate Validation Steps</text>
+    
+    <!-- Validation Steps -->
+    <text x="20" y="45" font-family="Arial, sans-serif" font-size="11" 
+          font-weight="bold" fill="#1976d2">1. Signature Verification:</text>
+    <text x="20" y="58" font-family="Arial, sans-serif" font-size="10" fill="#333">
+      Verify_CA_public_key(cert_signature, cert_content) = valid
+    </text>
+    
+    <text x="280" y="45" font-family="Arial, sans-serif" font-size="11" 
+          font-weight="bold" fill="#4caf50">2. Hostname Matching:</text>
+    <text x="280" y="58" font-family="Arial, sans-serif" font-size="10" fill="#333">
+      requested_host ∈ {CN, SAN_entries}
+    </text>
+    
+    <text x="520" y="45" font-family="Arial, sans-serif" font-size="11" 
+          font-weight="bold" fill="#ff8f00">3. Validity Period:</text>
+    <text x="520" y="58" font-family="Arial, sans-serif" font-size="10" fill="#333">
+      current_time ∈ [not_before, not_after]
+    </text>
+    
+    <text x="680" y="45" font-family="Arial, sans-serif" font-size="11" 
+          font-weight="bold" fill="#9c27b0">4. Revocation:</text>
+    <text x="680" y="58" font-family="Arial, sans-serif" font-size="10" fill="#333">
+      OCSP_status = good
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,397 @@
+<svg width="800" height="650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="partitionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sortGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="joinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="aggGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cacheGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fa709a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fee140;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="650" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">
+    Core Algorithms in Apache Spark
+  </text>
+  
+  <!-- Partitioning Algorithms Section -->
+  <g id="partitioning">
+    <rect x="20" y="60" width="370" height="140" rx="10" fill="url(#partitionGradient)" opacity="0.2" stroke="#667eea" stroke-width="2"/>
+    <text x="205" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Partitioning Algorithms
+    </text>
+    
+    <!-- Hash Partitioning -->
+    <g id="hash-partition">
+      <text x="40" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Hash Partitioning:</text>
+      <text x="40" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">p(key) = hash(key) mod n</text>
+      
+      <!-- Hash visualization -->
+      <rect x="40" y="135" width="15" height="8" fill="#667eea" opacity="0.7"/>
+      <rect x="60" y="135" width="15" height="8" fill="#667eea" opacity="0.7"/>
+      <rect x="80" y="135" width="15" height="8" fill="#667eea" opacity="0.7"/>
+      <rect x="100" y="135" width="15" height="8" fill="#667eea" opacity="0.7"/>
+      <text x="77" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">Uniform Distribution</text>
+      
+      <!-- Load Balance Formula -->
+      <text x="40" y="175" font-family="Arial, sans-serif" font-size="9" fill="#666">E[|Pᵢ|] = N/n, σ ≈ √(N/n)</text>
+    </g>
+    
+    <!-- Range Partitioning -->
+    <g id="range-partition">
+      <text x="200" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">Range Partitioning:</text>
+      <text x="200" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Sorted by key ranges</text>
+      
+      <!-- Range visualization -->
+      <rect x="200" y="135" width="25" height="8" fill="#764ba2" opacity="0.7"/>
+      <rect x="230" y="135" width="35" height="8" fill="#764ba2" opacity="0.7"/>
+      <rect x="270" y="135" width="20" height="8" fill="#764ba2" opacity="0.7"/>
+      <rect x="295" y="135" width="30" height="8" fill="#764ba2" opacity="0.7"/>
+      <text x="247" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">Data-Aware Distribution</text>
+      
+      <!-- Quantile Formula -->
+      <text x="200" y="175" font-family="Arial, sans-serif" font-size="9" fill="#666">Quantiles: q_i = S[⌊i × n/k⌋]</text>
+    </g>
+  </g>
+  
+  <!-- Sorting Algorithms Section -->
+  <g id="sorting">
+    <rect x="410" y="60" width="370" height="140" rx="10" fill="url(#sortGradient)" opacity="0.2" stroke="#f093fb" stroke-width="2"/>
+    <text x="595" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Sorting Algorithms
+    </text>
+    
+    <!-- External Sort -->
+    <g id="external-sort">
+      <text x="430" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">External Sort:</text>
+      <text x="430" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Phase 1: Create sorted runs</text>
+      <text x="430" y="140" font-family="Arial, sans-serif" font-size="10" fill="#666">Phase 2: Merge runs</text>
+      
+      <!-- Sort visualization -->
+      <g id="sort-phases">
+        <!-- Unsorted data -->
+        <rect x="430" y="150" width="8" height="15" fill="#f5576c" opacity="0.8"/>
+        <rect x="440" y="150" width="8" height="10" fill="#f5576c" opacity="0.8"/>
+        <rect x="450" y="150" width="8" height="20" fill="#f5576c" opacity="0.8"/>
+        <rect x="460" y="150" width="8" height="8" fill="#f5576c" opacity="0.8"/>
+        
+        <!-- Arrow -->
+        <path d="M 475 157 L 490 157" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        
+        <!-- Sorted data -->
+        <rect x="495" y="150" width="8" height="8" fill="#f093fb" opacity="0.8"/>
+        <rect x="505" y="150" width="8" height="10" fill="#f093fb" opacity="0.8"/>
+        <rect x="515" y="150" width="8" height="15" fill="#f093fb" opacity="0.8"/>
+        <rect x="525" y="150" width="8" height="20" fill="#f093fb" opacity="0.8"/>
+      </g>
+      
+      <!-- Complexity -->
+      <text x="430" y="185" font-family="Arial, sans-serif" font-size="9" fill="#666">O(n log n), I/O: 2N per phase</text>
+    </g>
+    
+    <!-- TimSort -->
+    <g id="timsort">
+      <text x="580" y="110" font-family="Arial, sans-serif" font-size="12" fill="#333">TimSort:</text>
+      <text x="580" y="125" font-family="Arial, sans-serif" font-size="10" fill="#666">Adaptive merge sort</text>
+      <text x="580" y="140" font-family="Arial, sans-serif" font-size="10" fill="#666">Best: O(n), Worst: O(n log n)</text>
+      
+      <!-- Natural runs visualization -->
+      <path d="M 580 150 L 590 155 L 600 150 L 610 145 L 620 150" 
+            stroke="#f093fb" stroke-width="2" fill="none"/>
+      <text x="600" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Natural Runs</text>
+      
+      <!-- Stability -->
+      <text x="580" y="185" font-family="Arial, sans-serif" font-size="9" fill="#666">Stable, preserves order</text>
+    </g>
+  </g>
+  
+  <!-- Join Algorithms Section -->
+  <g id="joins">
+    <rect x="20" y="220" width="370" height="160" rx="10" fill="url(#joinGradient)" opacity="0.2" stroke="#4facfe" stroke-width="2"/>
+    <text x="205" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Join Algorithms
+    </text>
+    
+    <!-- Broadcast Hash Join -->
+    <g id="broadcast-join">
+      <text x="40" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Broadcast Hash Join:</text>
+      <text x="40" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Small table broadcast to all nodes</text>
+      
+      <!-- Broadcast visualization -->
+      <circle cx="60" cy="305" r="8" fill="#4facfe" opacity="0.8"/>
+      <text x="60" y="309" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="white">R</text>
+      
+      <!-- Arrows to multiple nodes -->
+      <path d="M 68 305 L 85 295" stroke="#333" stroke-width="1.5"/>
+      <path d="M 68 305 L 85 305" stroke="#333" stroke-width="1.5"/>
+      <path d="M 68 305 L 85 315" stroke="#333" stroke-width="1.5"/>
+      
+      <!-- Worker nodes -->
+      <rect x="90" y="290" width="15" height="10" fill="#00f2fe" opacity="0.6"/>
+      <rect x="90" y="300" width="15" height="10" fill="#00f2fe" opacity="0.6"/>
+      <rect x="90" y="310" width="15" height="10" fill="#00f2fe" opacity="0.6"/>
+      <text x="97" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">W₁</text>
+      <text x="97" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">W₂</text>
+      <text x="97" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white">W₃</text>
+      
+      <!-- Complexity -->
+      <text x="40" y="335" font-family="Arial, sans-serif" font-size="9" fill="#666">O(|R| + |S|), when |R| &lt;&lt; |S|</text>
+    </g>
+    
+    <!-- Sort-Merge Join -->
+    <g id="sortmerge-join">
+      <text x="200" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Sort-Merge Join:</text>
+      <text x="200" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">Sort both relations, then merge</text>
+      
+      <!-- Sort-merge visualization -->
+      <g id="sorted-lists">
+        <!-- Left sorted list -->
+        <rect x="200" y="295" width="8" height="8" fill="#4facfe" opacity="0.7"/>
+        <rect x="200" y="305" width="8" height="8" fill="#4facfe" opacity="0.7"/>
+        <rect x="200" y="315" width="8" height="8" fill="#4facfe" opacity="0.7"/>
+        <text x="215" y="310" font-family="Arial, sans-serif" font-size="9" fill="#333">R</text>
+        
+        <!-- Right sorted list -->
+        <rect x="240" y="295" width="8" height="8" fill="#00f2fe" opacity="0.7"/>
+        <rect x="240" y="305" width="8" height="8" fill="#00f2fe" opacity="0.7"/>
+        <rect x="240" y="315" width="8" height="8" fill="#00f2fe" opacity="0.7"/>
+        <text x="255" y="310" font-family="Arial, sans-serif" font-size="9" fill="#333">S</text>
+        
+        <!-- Merge arrow -->
+        <path d="M 225 310 L 235 310" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        
+        <!-- Result -->
+        <rect x="270" y="300" width="8" height="8" fill="#667eea" opacity="0.7"/>
+        <rect x="280" y="300" width="8" height="8" fill="#667eea" opacity="0.7"/>
+        <text x="285" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#333">Result</text>
+      </g>
+      
+      <!-- Complexity -->
+      <text x="200" y="350" font-family="Arial, sans-serif" font-size="9" fill="#666">O(|R| log |R| + |S| log |S|)</text>
+    </g>
+    
+    <!-- Join Selection Criteria -->
+    <text x="205" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      Selection: Broadcast if |R| &lt; threshold, Sort-Merge for large tables
+    </text>
+  </g>
+  
+  <!-- Aggregation Algorithms Section -->
+  <g id="aggregation">
+    <rect x="410" y="220" width="370" height="160" rx="10" fill="url(#aggGradient)" opacity="0.2" stroke="#43e97b" stroke-width="2"/>
+    <text x="595" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Aggregation Algorithms
+    </text>
+    
+    <!-- Hash-based Aggregation -->
+    <g id="hash-agg">
+      <text x="430" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Hash-based Aggregation:</text>
+      <text x="430" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">HashMap: key → aggregate_value</text>
+      
+      <!-- Hash table visualization -->
+      <g id="hash-table">
+        <rect x="430" y="295" width="40" height="8" fill="none" stroke="#333" stroke-width="1"/>
+        <line x1="445" y1="295" x2="445" y2="303" stroke="#333" stroke-width="0.5"/>
+        <line x1="460" y1="295" x2="460" y2="303" stroke="#333" stroke-width="0.5"/>
+        
+        <text x="437" y="301" font-family="Arial, sans-serif" font-size="7" fill="#333">k₁</text>
+        <text x="452" y="301" font-family="Arial, sans-serif" font-size="7" fill="#333">k₂</text>
+        <text x="467" y="301" font-family="Arial, sans-serif" font-size="7" fill="#333">...</text>
+        
+        <!-- Values below -->
+        <rect x="430" y="308" width="12" height="8" fill="#43e97b" opacity="0.7"/>
+        <rect x="445" y="308" width="12" height="8" fill="#43e97b" opacity="0.7"/>
+        <rect x="460" y="308" width="12" height="8" fill="#43e97b" opacity="0.7"/>
+        
+        <text x="436" y="314" font-family="Arial, sans-serif" font-size="6" fill="white">v₁</text>
+        <text x="451" y="314" font-family="Arial, sans-serif" font-size="6" fill="white">v₂</text>
+        <text x="466" y="314" font-family="Arial, sans-serif" font-size="6" fill="white">v₃</text>
+      </g>
+      
+      <!-- Spill Strategy -->
+      <text x="430" y="330" font-family="Arial, sans-serif" font-size="10" fill="#666">Spill when memory > threshold</text>
+      <text x="430" y="345" font-family="Arial, sans-serif" font-size="9" fill="#666">External merge of spilled files</text>
+    </g>
+    
+    <!-- Tree-based Aggregation -->
+    <g id="tree-agg">
+      <text x="580" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Tree-based (Ordered):</text>
+      <text x="580" y="285" font-family="Arial, sans-serif" font-size="10" fill="#666">TreeMap for sorted aggregation</text>
+      
+      <!-- Tree visualization -->
+      <g id="tree-structure">
+        <circle cx="620" cy="300" r="6" fill="#38f9d7" opacity="0.8"/>
+        <circle cx="605" cy="315" r="5" fill="#38f9d7" opacity="0.8"/>
+        <circle cx="635" cy="315" r="5" fill="#38f9d7" opacity="0.8"/>
+        
+        <!-- Tree edges -->
+        <line x1="620" y1="306" x2="605" y2="310" stroke="#333" stroke-width="1"/>
+        <line x1="620" y1="306" x2="635" y2="310" stroke="#333" stroke-width="1"/>
+        
+        <text x="620" y="304" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" fill="white">root</text>
+      </g>
+      
+      <!-- Complexity -->
+      <text x="580" y="335" font-family="Arial, sans-serif" font-size="9" fill="#666">O(log n) insert/lookup</text>
+      <text x="580" y="350" font-family="Arial, sans-serif" font-size="9" fill="#666">Maintains sort order</text>
+    </g>
+    
+    <!-- Mathematical Properties -->
+    <text x="595" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">
+      Memory-efficient aggregation with spill-to-disk capability
+    </text>
+  </g>
+  
+  <!-- Caching Algorithms Section -->
+  <g id="caching">
+    <rect x="20" y="400" width="370" height="140" rx="10" fill="url(#cacheGradient)" opacity="0.2" stroke="#fa709a" stroke-width="2"/>
+    <text x="205" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Caching &amp; Storage Algorithms
+    </text>
+    
+    <!-- LRU Cache -->
+    <g id="lru-cache">
+      <text x="40" y="450" font-family="Arial, sans-serif" font-size="12" fill="#333">LRU Cache Replacement:</text>
+      <text x="40" y="465" font-family="Arial, sans-serif" font-size="10" fill="#666">Least Recently Used eviction</text>
+      
+      <!-- LRU visualization -->
+      <g id="lru-list">
+        <!-- Cache entries -->
+        <rect x="40" y="475" width="20" height="12" fill="#fa709a" opacity="0.8"/>
+        <rect x="65" y="475" width="20" height="12" fill="#fa709a" opacity="0.6"/>
+        <rect x="90" y="475" width="20" height="12" fill="#fa709a" opacity="0.4"/>
+        <rect x="115" y="475" width="20" height="12" fill="#fa709a" opacity="0.2"/>
+        
+        <text x="50" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">MRU</text>
+        <text x="125" y="485" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">LRU</text>
+        
+        <!-- Arrows showing order -->
+        <path d="M 60 481 L 65 481" stroke="#333" stroke-width="1" marker-end="url(#smallArrow)"/>
+        <path d="M 85 481 L 90 481" stroke="#333" stroke-width="1" marker-end="url(#smallArrow)"/>
+        <path d="M 110 481 L 115 481" stroke="#333" stroke-width="1" marker-end="url(#smallArrow)"/>
+      </g>
+      
+      <!-- LRU Formula -->
+      <text x="40" y="505" font-family="Arial, sans-serif" font-size="9" fill="#666">Score = α×freq + β×(1/age) + γ×(1/cost)</text>
+      <text x="40" y="520" font-family="Arial, sans-serif" font-size="9" fill="#666">O(1) access and eviction</text>
+    </g>
+    
+    <!-- Storage Levels -->
+    <g id="storage-levels">
+      <text x="200" y="450" font-family="Arial, sans-serif" font-size="12" fill="#333">Storage Level Optimization:</text>
+      
+      <!-- Storage options -->
+      <rect x="200" y="460" width="80" height="8" fill="#fee140" opacity="0.8"/>
+      <text x="240" y="468" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">MEMORY_ONLY</text>
+      
+      <rect x="200" y="472" width="60" height="8" fill="#fee140" opacity="0.6"/>
+      <text x="230" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">MEMORY_SER</text>
+      
+      <rect x="200" y="484" width="100" height="8" fill="#fee140" opacity="0.4"/>
+      <text x="250" y="492" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">MEMORY_AND_DISK</text>
+      
+      <!-- Selection criteria -->
+      <text x="200" y="510" font-family="Arial, sans-serif" font-size="9" fill="#666">Selection based on:</text>
+      <text x="200" y="525" font-family="Arial, sans-serif" font-size="9" fill="#666">• Memory availability</text>
+      <text x="280" y="525" font-family="Arial, sans-serif" font-size="9" fill="#666">• CPU cost</text>
+    </g>
+  </g>
+  
+  <!-- Scheduling Algorithms Section -->
+  <g id="scheduling">
+    <rect x="410" y="400" width="370" height="140" rx="10" fill="#E8F4FD" stroke="#4A90E2" stroke-width="2"/>
+    <text x="595" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+      Task Scheduling Algorithms
+    </text>
+    
+    <!-- Locality-Aware Scheduling -->
+    <g id="locality-scheduling">
+      <text x="430" y="450" font-family="Arial, sans-serif" font-size="12" fill="#333">Locality-Aware Scheduling:</text>
+      <text x="430" y="465" font-family="Arial, sans-serif" font-size="10" fill="#666">Preference: PROCESS > NODE > RACK > ANY</text>
+      
+      <!-- Locality levels -->
+      <circle cx="440" cy="480" r="4" fill="#4A90E2" opacity="1.0"/>
+      <circle cx="460" cy="480" r="4" fill="#4A90E2" opacity="0.8"/>
+      <circle cx="480" cy="480" r="4" fill="#4A90E2" opacity="0.6"/>
+      <circle cx="500" cy="480" r="4" fill="#4A90E2" opacity="0.4"/>
+      
+      <text x="440" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#333">PROC</text>
+      <text x="460" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#333">NODE</text>
+      <text x="480" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#333">RACK</text>
+      <text x="500" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" fill="#333">ANY</text>
+      
+      <!-- Delay scheduling -->
+      <text x="430" y="510" font-family="Arial, sans-serif" font-size="9" fill="#666">Delay scheduling for better locality</text>
+      <text x="430" y="525" font-family="Arial, sans-serif" font-size="9" fill="#666">Score = locality_weight × locality_level</text>
+    </g>
+    
+    <!-- Dynamic Resource Allocation -->
+    <g id="dynamic-allocation">
+      <text x="580" y="450" font-family="Arial, sans-serif" font-size="12" fill="#333">Dynamic Allocation:</text>
+      <text x="580" y="465" font-family="Arial, sans-serif" font-size="10" fill="#666">Scale executors based on demand</text>
+      
+      <!-- Resource scaling visualization -->
+      <path d="M 580 475 L 590 470 L 600 475 L 610 465 L 620 470 L 630 460" 
+            stroke="#4A90E2" stroke-width="2" fill="none"/>
+      <text x="605" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Workload</text>
+      
+      <!-- Formula -->
+      <text x="580" y="505" font-family="Arial, sans-serif" font-size="9" fill="#666">Target = ceil(pending_tasks / tasks_per_executor)</text>
+      <text x="580" y="520" font-family="Arial, sans-serif" font-size="9" fill="#666">Scale up/down based on utilization</text>
+    </g>
+  </g>
+  
+  <!-- Complexity Analysis Summary -->
+  <g id="complexity-summary">
+    <rect x="20" y="560" width="760" height="70" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="2"/>
+    <text x="400" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
+      Algorithm Complexity Analysis
+    </text>
+    
+    <!-- Complexity table -->
+    <g id="complexity-table">
+      <text x="60" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Partitioning:</text>
+      <text x="60" y="620" font-family="Arial, sans-serif" font-size="10" fill="#333">Hash O(1), Range O(log n)</text>
+      
+      <text x="200" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f093fb">Sorting:</text>
+      <text x="200" y="620" font-family="Arial, sans-serif" font-size="10" fill="#333">External O(n log n)</text>
+      
+      <text x="320" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4facfe">Joins:</text>
+      <text x="320" y="620" font-family="Arial, sans-serif" font-size="10" fill="#333">Broadcast O(|R|+|S|)</text>
+      
+      <text x="460" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#43e97b">Aggregation:</text>
+      <text x="460" y="620" font-family="Arial, sans-serif" font-size="10" fill="#333">Hash O(n), Tree O(n log n)</text>
+      
+      <text x="620" y="605" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fa709a">Caching:</text>
+      <text x="620" y="620" font-family="Arial, sans-serif" font-size="10" fill="#333">LRU O(1) access</text>
+    </g>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <marker id="smallArrow" markerWidth="6" markerHeight="4" 
+     refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="#333" />
+    </marker>
+  </defs>
+</svg>

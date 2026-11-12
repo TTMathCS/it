@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520">
+  <defs>
+    <style>
+      .title{font:700 20px Arial, sans-serif;fill:#222}
+      .step{fill:#f6f8fa;stroke:#9aa7b0}
+      .label{font:600 13px Arial, sans-serif;fill:#222}
+      .text{font:12px Arial, sans-serif;fill:#333}
+      .arrow{stroke:#6b6f76;stroke-width:1.6;marker-end:url(#m)}
+    </style>
+    <marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b6f76" />
+    </marker>
+  </defs>
+  <text x="20" y="30" class="title">AI Agent Development Lifecycle</text>
+
+  <!-- Row 1 -->
+  <rect x="20" y="60" width="220" height="90" rx="8" class="step"/>
+  <text x="35" y="83" class="label">1) Frame Problem &amp; KPIs</text>
+  <text x="35" y="103" class="text">Users, constraints, risks, success</text>
+
+  <rect x="260" y="60" width="220" height="90" rx="8" class="step"/>
+  <text x="275" y="83" class="label">2) Model Tasks &amp; Workflow</text>
+  <text x="275" y="103" class="text">Steps, tools, HITL, decisions</text>
+
+  <rect x="500" y="60" width="220" height="90" rx="8" class="step"/>
+  <text x="515" y="83" class="label">3) Knowledge &amp; Data</text>
+  <text x="515" y="103" class="text">RAG, embeddings, privacy</text>
+
+  <rect x="740" y="60" width="220" height="90" rx="8" class="step"/>
+  <text x="755" y="83" class="label">4) Architecture &amp; Tools</text>
+  <text x="755" y="103" class="text">Framework, memory, policies</text>
+
+  <!-- Row 2 -->
+  <rect x="20" y="180" width="220" height="90" rx="8" class="step"/>
+  <text x="35" y="203" class="label">5) Prompts &amp; Policies</text>
+  <text x="35" y="223" class="text">Roles, constraints, refusals</text>
+
+  <rect x="260" y="180" width="220" height="90" rx="8" class="step"/>
+  <text x="275" y="203" class="label">6) Evaluation &amp; Tests</text>
+  <text x="275" y="223" class="text">Golden sets, adversarial</text>
+
+  <rect x="500" y="180" width="220" height="90" rx="8" class="step"/>
+  <text x="515" y="203" class="label">7) Implement &amp; Scaffold</text>
+  <text x="515" y="223" class="text">Planning, reflection, budgets</text>
+
+  <rect x="740" y="180" width="220" height="90" rx="8" class="step"/>
+  <text x="755" y="203" class="label">8) Safety &amp; Governance</text>
+  <text x="755" y="223" class="text">AuthZ, PII, approvals</text>
+
+  <!-- Row 3 -->
+  <rect x="20" y="300" width="220" height="90" rx="8" class="step"/>
+  <text x="35" y="323" class="label">9) Observability &amp; Feedback</text>
+  <text x="35" y="343" class="text">Tracing, costs, user signals</text>
+
+  <rect x="260" y="300" width="220" height="90" rx="8" class="step"/>
+  <text x="275" y="323" class="label">10) Pilot &amp; Scale</text>
+  <text x="275" y="343" class="text">HITL, SLOs, drift</text>
+
+  <!-- Flow arrows -->
+  <line x1="240" y1="105" x2="260" y2="105" class="arrow"/>
+  <line x1="480" y1="105" x2="500" y2="105" class="arrow"/>
+  <line x1="720" y1="105" x2="740" y2="105" class="arrow"/>
+
+  <line x1="130" y1="150" x2="130" y2="180" class="arrow"/>
+  <line x1="370" y1="150" x2="370" y2="180" class="arrow"/>
+  <line x1="610" y1="150" x2="610" y2="180" class="arrow"/>
+  <line x1="850" y1="150" x2="850" y2="180" class="arrow"/>
+
+  <line x1="240" y1="225" x2="260" y2="225" class="arrow"/>
+  <line x1="480" y1="225" x2="500" y2="225" class="arrow"/>
+  <line x1="720" y1="225" x2="740" y2="225" class="arrow"/>
+
+  <line x1="130" y1="270" x2="130" y2="300" class="arrow"/>
+  <line x1="240" y1="345" x2="260" y2="345" class="arrow"/>
+</svg>

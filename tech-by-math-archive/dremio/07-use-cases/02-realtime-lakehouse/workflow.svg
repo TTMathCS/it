@@ -1,0 +1,356 @@
+<svg width="900" height="700" viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="streamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="historicalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="dremioGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="appGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fed6e3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="700" fill="#f7fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#2d3748">
+    Real-Time Lakehouse Analytics Workflow
+  </text>
+  
+  <!-- Real-time Data Sources Section -->
+  <text x="50" y="80" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3748">
+    Real-time Data Sources
+  </text>
+  
+  <!-- Kafka Stream -->
+  <rect x="50" y="100" width="130" height="100" rx="10" fill="url(#streamGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="115" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Kafka Stream
+  </text>
+  <text x="115" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Sensor Data
+  </text>
+  <text x="115" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Device Status
+  </text>
+  <text x="115" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Alerts/Alarms
+  </text>
+  <text x="115" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e2e8f0">
+    100K events/sec
+  </text>
+  
+  <!-- IoT Sensors -->
+  <rect x="200" y="100" width="130" height="100" rx="10" fill="url(#streamGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="265" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    IoT Sensors
+  </text>
+  <text x="265" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Temperature
+  </text>
+  <text x="265" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Pressure
+  </text>
+  <text x="265" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Vibration
+  </text>
+  <text x="265" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e2e8f0">
+    50GB/hour
+  </text>
+  
+  <!-- Event Stream -->
+  <rect x="350" y="100" width="130" height="100" rx="10" fill="url(#streamGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="415" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    Event Stream
+  </text>
+  <text x="415" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • User Actions
+  </text>
+  <text x="415" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • System Events
+  </text>
+  <text x="415" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Transactions
+  </text>
+  <text x="415" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e2e8f0">
+    Real-time
+  </text>
+  
+  <!-- Historical Data Sources Section -->
+  <text x="520" y="80" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3748">
+    Historical Data Sources
+  </text>
+  
+  <!-- S3 Data Lake -->
+  <rect x="520" y="100" width="130" height="100" rx="10" fill="url(#historicalGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="585" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    S3 Data Lake
+  </text>
+  <text x="585" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Historical Sensors
+  </text>
+  <text x="585" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • ML Training Data
+  </text>
+  <text x="585" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Parquet Files
+  </text>
+  <text x="585" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e2e8f0">
+    2 years history
+  </text>
+  
+  <!-- InfluxDB -->
+  <rect x="670" y="100" width="130" height="100" rx="10" fill="url(#historicalGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="735" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    InfluxDB
+  </text>
+  <text x="735" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Time Series Metrics
+  </text>
+  <text x="735" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Performance Data
+  </text>
+  <text x="735" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">
+    • Aggregated Stats
+  </text>
+  <text x="735" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#e2e8f0">
+    High frequency
+  </text>
+  
+  <!-- Arrows to Dremio -->
+  <path d="M115 200 L300 280" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M265 200 L350 280" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M415 200 L400 280" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M585 200 L500 280" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M735 200 L550 280" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Dremio Lakehouse Platform -->
+  <text x="450" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+    Dremio Unified Lakehouse Platform
+  </text>
+  
+  <rect x="200" y="280" width="500" height="180" rx="15" fill="url(#dremioGradient)" stroke="#fff" stroke-width="3"/>
+  
+  <!-- Coordinator -->
+  <rect x="220" y="310" width="120" height="120" rx="8" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="280" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0ea5e9">
+    Coordinator
+  </text>
+  <text x="280" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Stream Processing
+  </text>
+  <text x="280" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Query Planning
+  </text>
+  <text x="280" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Metadata Management
+  </text>
+  <text x="280" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Anomaly Detection
+  </text>
+  <text x="280" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Security &amp; Governance
+  </text>
+  
+  <!-- Executor 1 -->
+  <rect x="360" y="310" width="120" height="120" rx="8" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="420" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0ea5e9">
+    Executor 1
+  </text>
+  <text x="420" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Real-time Processing
+  </text>
+  <text x="420" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Stream Analytics
+  </text>
+  <text x="420" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Reflections
+  </text>
+  <text x="420" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • ML Feature Eng
+  </text>
+  <text x="420" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Caching
+  </text>
+  
+  <!-- Executor 2 -->
+  <rect x="500" y="310" width="120" height="120" rx="8" fill="rgba(255,255,255,0.95)" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="560" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0ea5e9">
+    Executor 2
+  </text>
+  <text x="560" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Historical Analytics
+  </text>
+  <text x="560" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Complex Aggregations
+  </text>
+  <text x="560" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Time Series Analysis
+  </text>
+  <text x="560" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Statistical Models
+  </text>
+  <text x="560" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#4a5568">
+    • Predictive Analytics
+  </text>
+  
+  <!-- Unified Processing Label -->
+  <text x="450" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Unified Real-time + Historical Processing (1.2s latency)
+  </text>
+  
+  <!-- Arrows to Applications -->
+  <path d="M300 460 L200 550" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M450 460 L450 550" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M600 460 L700 550" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Real-time Applications Section -->
+  <text x="450" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+    Real-time Applications &amp; Insights
+  </text>
+  
+  <!-- Real-time Dashboards -->
+  <rect x="120" y="550" width="140" height="100" rx="10" fill="url(#appGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="190" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2d3748">
+    Real-time Dashboards
+  </text>
+  <text x="190" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Live Metrics
+  </text>
+  <text x="190" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Trend Analysis
+  </text>
+  <text x="190" y="625" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Comparative Views
+  </text>
+  <text x="190" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#718096">
+    &lt; 30s refresh
+  </text>
+  
+  <!-- ML Inference Pipeline -->
+  <rect x="380" y="550" width="140" height="100" rx="10" fill="url(#appGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="450" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2d3748">
+    ML Inference Pipeline
+  </text>
+  <text x="450" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Anomaly Detection
+  </text>
+  <text x="450" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Predictive Maintenance
+  </text>
+  <text x="450" y="625" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Risk Scoring
+  </text>
+  <text x="450" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#718096">
+    98.5% accuracy
+  </text>
+  
+  <!-- Operational Alerts -->
+  <rect x="640" y="550" width="140" height="100" rx="10" fill="url(#appGradient)" stroke="#fff" stroke-width="2"/>
+  <text x="710" y="575" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2d3748">
+    Operational Alerts
+  </text>
+  <text x="710" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Threshold Violations
+  </text>
+  <text x="710" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • System Health
+  </text>
+  <text x="710" y="625" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#4a5568">
+    • Performance Issues
+  </text>
+  <text x="710" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#718096">
+    Real-time alerts
+  </text>
+  
+  <!-- Benefits Box -->
+  <rect x="50" y="250" width="140" height="160" rx="10" fill="rgba(102, 126, 234, 0.1)" stroke="#667eea" stroke-width="2"/>
+  <text x="120" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#667eea">
+    Key Benefits
+  </text>
+  <text x="60" y="295" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ Unified real-time + historical
+  </text>
+  <text x="60" y="310" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ 1.2s query latency (P95)
+  </text>
+  <text x="60" y="325" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ 98.5% anomaly accuracy
+  </text>
+  <text x="60" y="340" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ 45% infrastructure cost reduction
+  </text>
+  <text x="60" y="355" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ No Lambda architecture
+  </text>
+  <text x="60" y="370" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ $2.3M predictive savings
+  </text>
+  <text x="60" y="385" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ 78% faster issue detection
+  </text>
+  <text x="60" y="400" font-family="Arial, sans-serif" font-size="10" fill="#2d3748">
+    ✓ Single SQL interface
+  </text>
+  
+  <!-- Mathematical Formula Box -->
+  <rect x="750" y="250" width="140" height="120" rx="10" fill="rgba(245, 87, 108, 0.1)" stroke="#f5576c" stroke-width="2"/>
+  <text x="820" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f5576c">
+    Math Foundation
+  </text>
+  <text x="760" y="295" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Z-score: Z = (X - μ) / σ
+  </text>
+  <text x="760" y="310" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Little's Law: L = λW
+  </text>
+  <text x="760" y="325" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Mahalanobis: D² = (x-μ)ᵀΣ⁻¹(x-μ)
+  </text>
+  <text x="760" y="340" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Sigmoid: 1/(1+e⁻ˣ)
+  </text>
+  <text x="760" y="355" font-family="Arial, sans-serif" font-size="9" fill="#2d3748">
+    Window optimization
+  </text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+    </marker>
+  </defs>
+  
+  <!-- Data Flow Labels -->
+  <text x="200" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(-15 200 240)">
+    Streaming Data
+  </text>
+  <text x="320" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(-10 320 240)">
+    Real-time Events
+  </text>
+  <text x="480" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(10 480 240)">
+    Historical Context
+  </text>
+  <text x="620" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(15 620 240)">
+    Time Series Data
+  </text>
+  
+  <text x="250" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(15 250 510)">
+    Live Analytics
+  </text>
+  <text x="450" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096">
+    ML Predictions
+  </text>
+  <text x="650" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#718096" transform="rotate(-15 650 510)">
+    Proactive Alerts
+  </text>
+</svg>

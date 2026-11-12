@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+    refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#2c3e50">PKI Trust Model: Hierarchical Certificate Architecture</text>
+  
+  <!-- Root CA Layer -->
+  <g id="root-cas">
+    <text x="400" y="65" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">Root Certificate Authorities</text>
+    
+    <!-- Root CA 1 -->
+    <rect x="250" y="80" width="130" height="70" rx="8" fill="#8e44ad" stroke="#7d3c98" stroke-width="2"/>
+    <text x="315" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">GlobalSign Root</text>
+    <text x="315" y="115" text-anchor="middle" font-size="10" fill="white">Self-Signed</text>
+    <text x="315" y="130" text-anchor="middle" font-size="9" fill="white">RSA-4096</text>
+    <text x="315" y="142" text-anchor="middle" font-size="9" fill="white">Valid: 20 years</text>
+    
+    <!-- Root CA 2 -->
+    <rect x="420" y="80" width="130" height="70" rx="8" fill="#8e44ad" stroke="#7d3c98" stroke-width="2"/>
+    <text x="485" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">VeriSign Root</text>
+    <text x="485" y="115" text-anchor="middle" font-size="10" fill="white">Self-Signed</text>
+    <text x="485" y="130" text-anchor="middle" font-size="9" fill="white">RSA-4096</text>
+    <text x="485" y="142" text-anchor="middle" font-size="9" fill="white">Valid: 20 years</text>
+  </g>
+  
+  <!-- Intermediate CA Layer -->
+  <g id="intermediate-cas">
+    <text x="400" y="195" text-anchor="middle" font-size="14" font-weight="bold" fill="#2980b9">Intermediate Certificate Authorities</text>
+    
+    <!-- Intermediate CA 1 -->
+    <rect x="150" y="210" width="130" height="80" rx="8" fill="#2980b9" stroke="#2471a3" stroke-width="2"/>
+    <text x="215" y="230" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Company CA</text>
+    <text x="215" y="245" text-anchor="middle" font-size="10" fill="white">Signed by Root</text>
+    <text x="215" y="260" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="215" y="275" text-anchor="middle" font-size="9" fill="white">Valid: 10 years</text>
+    
+    <!-- Intermediate CA 2 -->
+    <rect x="320" y="210" width="130" height="80" rx="8" fill="#2980b9" stroke="#2471a3" stroke-width="2"/>
+    <text x="385" y="230" text-anchor="middle" font-size="11" font-weight="bold" fill="white">SSL CA</text>
+    <text x="385" y="245" text-anchor="middle" font-size="10" fill="white">Signed by Root</text>
+    <text x="385" y="260" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="385" y="275" text-anchor="middle" font-size="9" fill="white">Valid: 5 years</text>
+    
+    <!-- Intermediate CA 3 -->
+    <rect x="490" y="210" width="130" height="80" rx="8" fill="#2980b9" stroke="#2471a3" stroke-width="2"/>
+    <text x="555" y="230" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Email CA</text>
+    <text x="555" y="245" text-anchor="middle" font-size="10" fill="white">Signed by Root</text>
+    <text x="555" y="260" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="555" y="275" text-anchor="middle" font-size="9" fill="white">Valid: 3 years</text>
+  </g>
+  
+  <!-- End Entity Certificates -->
+  <g id="end-entities">
+    <text x="400" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">End Entity Certificates</text>
+    
+    <!-- Server Certificate -->
+    <rect x="50" y="350" width="120" height="85" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="110" y="370" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Web Server</text>
+    <text x="110" y="385" text-anchor="middle" font-size="9" fill="white">example.com</text>
+    <text x="110" y="400" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="110" y="415" text-anchor="middle" font-size="9" fill="white">Valid: 1 year</text>
+    <text x="110" y="428" text-anchor="middle" font-size="8" fill="white">SSL/TLS</text>
+    
+    <!-- User Certificate -->
+    <rect x="200" y="350" width="120" height="85" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="260" y="370" text-anchor="middle" font-size="11" font-weight="bold" fill="white">User Cert</text>
+    <text x="260" y="385" text-anchor="middle" font-size="9" fill="white">alice@company</text>
+    <text x="260" y="400" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="260" y="415" text-anchor="middle" font-size="9" fill="white">Valid: 2 years</text>
+    <text x="260" y="428" text-anchor="middle" font-size="8" fill="white">Client Auth</text>
+    
+    <!-- Email Certificate -->
+    <rect x="350" y="350" width="120" height="85" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="410" y="370" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Email Cert</text>
+    <text x="410" y="385" text-anchor="middle" font-size="9" fill="white">bob@company</text>
+    <text x="410" y="400" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="410" y="415" text-anchor="middle" font-size="9" fill="white">Valid: 1 year</text>
+    <text x="410" y="428" text-anchor="middle" font-size="8" fill="white">S/MIME</text>
+    
+    <!-- Code Signing Certificate -->
+    <rect x="500" y="350" width="120" height="85" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="560" y="370" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Code Sign</text>
+    <text x="560" y="385" text-anchor="middle" font-size="9" fill="white">Software Inc</text>
+    <text x="560" y="400" text-anchor="middle" font-size="9" fill="white">RSA-2048</text>
+    <text x="560" y="415" text-anchor="middle" font-size="9" fill="white">Valid: 3 years</text>
+    <text x="560" y="428" text-anchor="middle" font-size="8" fill="white">Code Signing</text>
+    
+    <!-- Device Certificate -->
+    <rect x="650" y="350" width="120" height="85" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2"/>
+    <text x="710" y="370" text-anchor="middle" font-size="11" font-weight="bold" fill="white">IoT Device</text>
+    <text x="710" y="385" text-anchor="middle" font-size="9" fill="white">device-001</text>
+    <text x="710" y="400" text-anchor="middle" font-size="9" fill="white">ECC-256</text>
+    <text x="710" y="415" text-anchor="middle" font-size="9" fill="white">Valid: 5 years</text>
+    <text x="710" y="428" text-anchor="middle" font-size="8" fill="white">Device Auth</text>
+  </g>
+  
+  <!-- Trust Store -->
+  <g id="trust-store">
+    <rect x="50" y="80" width="130" height="70" rx="8" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+    <text x="115" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Trust Store</text>
+    <text x="115" y="115" text-anchor="middle" font-size="10" fill="white">Root CAs</text>
+    <text x="115" y="130" text-anchor="middle" font-size="9" fill="white">Browser/OS</text>
+    <text x="115" y="142" text-anchor="middle" font-size="9" fill="white">Pre-installed</text>
+  </g>
+  
+  <!-- Arrows showing trust relationships -->
+  <!-- Trust store to roots -->
+  <line x1="180" y1="115" x2="250" y2="115" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Root to Intermediate relationships -->
+  <line x1="315" y1="150" x2="215" y2="210" stroke="#8e44ad" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="315" y1="150" x2="385" y2="210" stroke="#8e44ad" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="485" y1="150" x2="555" y2="210" stroke="#8e44ad" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Intermediate to End Entity relationships -->
+  <line x1="215" y1="290" x2="110" y2="350" stroke="#2980b9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="215" y1="290" x2="260" y2="350" stroke="#2980b9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="385" y1="290" x2="410" y2="350" stroke="#2980b9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="555" y1="290" x2="560" y2="350" stroke="#2980b9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="555" y1="290" x2="710" y2="350" stroke="#2980b9" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Legend -->
+  <g id="legend">
+    <text x="50" y="480" font-size="16" font-weight="bold" fill="#2c3e50">Legend:</text>
+    
+    <rect x="50" y="495" width="20" height="15" fill="#8e44ad"/>
+    <text x="80" y="507" font-size="12" fill="#2c3e50">Root CA (Self-Signed)</text>
+    
+    <rect x="220" y="495" width="20" height="15" fill="#2980b9"/>
+    <text x="250" y="507" font-size="12" fill="#2c3e50">Intermediate CA</text>
+    
+    <rect x="370" y="495" width="20" height="15" fill="#27ae60"/>
+    <text x="400" y="507" font-size="12" fill="#2c3e50">End Entity Certificate</text>
+    
+    <rect x="550" y="495" width="20" height="15" fill="#34495e"/>
+    <text x="580" y="507" font-size="12" fill="#2c3e50">Trust Store</text>
+    
+    <line x1="50" y1="525" x2="90" y2="525" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="100" y="530" font-size="12" fill="#2c3e50">Signs/Issues Certificate</text>
+  </g>
+  
+  <!-- Mathematical properties -->
+  <text x="50" y="550" font-size="12" font-weight="bold" fill="#2c3e50">Key Properties: Hierarchical Trust • Cryptographic Signatures • Certificate Chains • Scalable Validation</text>
+  <text x="50" y="570" font-size="11" fill="#2c3e50">Trust Propagation: Root CA → Intermediate CA → End Entity | Validation: Chain + Signature + Revocation</text>
+</svg>

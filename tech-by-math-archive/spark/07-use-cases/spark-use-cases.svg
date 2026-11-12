@@ -1,0 +1,158 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Popular Apache Spark Use Cases: Mathematical Foundations in Action
+  </text>
+  
+  <!-- Use Case 1: Fraud Detection -->
+  <g transform="translate(50, 100)">
+    <rect width="320" height="180" rx="15" fill="#e74c3c" stroke="#c0392b" stroke-width="3"/>
+    <text x="160" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+      Real-Time Fraud Detection
+    </text>
+    
+    <!-- Icon representation -->
+    <circle cx="80" cy="80" r="25" fill="white" opacity="0.9"/>
+    <text x="80" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#e74c3c">⚠</text>
+    
+    <!-- Mathematical formula -->
+    <rect x="120" y="60" width="180" height="40" rx="5" fill="white" opacity="0.9"/>
+    <text x="210" y="75" text-anchor="middle" font-family="monospace" font-size="11" fill="#2c3e50">
+      Score = Σᵢ wᵢ × deviation(fᵢ)
+    </text>
+    <text x="210" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">
+      Anomaly Detection Model
+    </text>
+    
+    <!-- Key benefits -->
+    <text x="20" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Sub-second latency</text>
+    <text x="20" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Memory caching</text>
+    <text x="20" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Stream processing</text>
+    
+    <text x="170" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ ML integration</text>
+    <text x="170" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Graph analytics</text>
+    <text x="170" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Real-time decisions</text>
+  </g>
+  
+  <!-- Use Case 2: Recommendation Systems -->
+  <g transform="translate(420, 100)">
+    <rect width="320" height="180" rx="15" fill="#9b59b6" stroke="#8e44ad" stroke-width="3"/>
+    <text x="160" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+      Large-Scale Recommendations
+    </text>
+    
+    <!-- Icon representation -->
+    <circle cx="80" cy="80" r="25" fill="white" opacity="0.9"/>
+    <text x="80" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#9b59b6">★</text>
+    
+    <!-- Mathematical formula -->
+    <rect x="120" y="60" width="180" height="40" rx="5" fill="white" opacity="0.9"/>
+    <text x="210" y="75" text-anchor="middle" font-family="monospace" font-size="11" fill="#2c3e50">
+      r̂ᵤᵢ = μ + bᵤ + bᵢ + qᵢᵀpᵤ
+    </text>
+    <text x="210" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">
+      Matrix Factorization Model
+    </text>
+    
+    <!-- Key benefits -->
+    <text x="20" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ ALS algorithm</text>
+    <text x="20" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Billion-scale ratings</text>
+    <text x="20" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ GraphX integration</text>
+    
+    <text x="170" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Distributed matrices</text>
+    <text x="170" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Factor caching</text>
+    <text x="170" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Real-time updates</text>
+  </g>
+  
+  <!-- Use Case 3: Time Series Forecasting -->
+  <g transform="translate(790, 100)">
+    <rect width="320" height="180" rx="15" fill="#3498db" stroke="#2980b9" stroke-width="3"/>
+    <text x="160" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">
+      Time Series Forecasting
+    </text>
+    
+    <!-- Icon representation -->
+    <circle cx="80" cy="80" r="25" fill="white" opacity="0.9"/>
+    <text x="80" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#3498db">📈</text>
+    
+    <!-- Mathematical formula -->
+    <rect x="120" y="60" width="180" height="40" rx="5" fill="white" opacity="0.9"/>
+    <text x="210" y="75" text-anchor="middle" font-family="monospace" font-size="10" fill="#2c3e50">
+      ARIMA(p,d,q): (1-φL)ᵖ(1-L)ᵈXₜ
+    </text>
+    <text x="210" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#7f8c8d">
+      Time Series Model
+    </text>
+    
+    <!-- Key benefits -->
+    <text x="20" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Parallel forecasting</text>
+    <text x="20" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Window functions</text>
+    <text x="20" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ MLlib models</text>
+    
+    <text x="170" y="125" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Million time series</text>
+    <text x="170" y="145" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Feature engineering</text>
+    <text x="170" y="165" font-family="Arial, sans-serif" font-size="12" fill="white">✓ Streaming updates</text>
+  </g>
+  
+  <!-- Mathematical Foundations Section -->
+  <rect x="50" y="320" width="1100" height="200" rx="10" fill="white" stroke="#bdc3c7" stroke-width="2"/>
+  <text x="600" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">
+    Mathematical Foundations Powering These Use Cases
+  </text>
+  
+  <!-- Foundation 1: Statistical Analysis -->
+  <g transform="translate(80, 370)">
+    <circle cx="30" cy="30" r="20" fill="#e67e22"/>
+    <text x="30" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">σ</text>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e67e22">Statistical Analysis</text>
+    <text x="70" y="45" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Anomaly detection, hypothesis testing</text>
+    <text x="70" y="60" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Distribution analysis, outlier detection</text>
+  </g>
+  
+  <!-- Foundation 2: Linear Algebra -->
+  <g transform="translate(350, 370)">
+    <circle cx="30" cy="30" r="20" fill="#27ae60"/>
+    <text x="30" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">⊗</text>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#27ae60">Linear Algebra</text>
+    <text x="70" y="45" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Matrix factorization, SVD decomposition</text>
+    <text x="70" y="60" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Distributed matrix operations</text>
+  </g>
+  
+  <!-- Foundation 3: Graph Theory -->
+  <g transform="translate(620, 370)">
+    <circle cx="30" cy="30" r="20" fill="#8e44ad"/>
+    <text x="30" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">◉</text>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#8e44ad">Graph Theory</text>
+    <text x="70" y="45" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Network analysis, PageRank algorithms</text>
+    <text x="70" y="60" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Community detection, graph traversal</text>
+  </g>
+  
+  <!-- Foundation 4: Optimization -->
+  <g transform="translate(890, 370)">
+    <circle cx="30" cy="30" r="20" fill="#e74c3c"/>
+    <text x="30" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">∇</text>
+    <text x="70" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#e74c3c">Optimization</text>
+    <text x="70" y="45" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Gradient descent, convex optimization</text>
+    <text x="70" y="60" font-family="Arial, sans-serif" font-size="11" fill="#7f8c8d">Parameter tuning, model optimization</text>
+  </g>
+  
+  <!-- Spark Advantages -->
+  <g transform="translate(80, 440)">
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Why Spark Excels in These Mathematical Applications:</text>
+    
+    <circle cx="20" cy="50" r="5" fill="#27ae60"/>
+    <text x="35" y="55" font-family="Arial, sans-serif" font-size="13" fill="#27ae60">Distributed computing enables processing at massive scale</text>
+    
+    <circle cx="420" cy="50" r="5" fill="#27ae60"/>
+    <text x="435" y="55" font-family="Arial, sans-serif" font-size="13" fill="#27ae60">In-memory caching accelerates iterative algorithms</text>
+    
+    <circle cx="20" cy="75" r="5" fill="#27ae60"/>
+    <text x="35" y="80" font-family="Arial, sans-serif" font-size="13" fill="#27ae60">Unified platform for batch, streaming, and ML workloads</text>
+    
+    <circle cx="420" cy="75" r="5" fill="#27ae60"/>
+    <text x="435" y="80" font-family="Arial, sans-serif" font-size="13" fill="#27ae60">Fault-tolerant execution with lineage-based recovery</text>
+  </g>
+</svg>

@@ -1,0 +1,179 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Kubernetes Core Mathematical Model
+  </text>
+  
+  <!-- Control Theory Section -->
+  <g transform="translate(50, 80)">
+    <rect width="320" height="200" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="160" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1976d2">
+      Control Theory
+    </text>
+    
+    <!-- Feedback Loop -->
+    <circle cx="80" cy="80" r="25" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="80" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1976d2">
+      Desired State
+    </text>
+    
+    <circle cx="240" cy="80" r="25" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="240" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1976d2">
+      Actual State
+    </text>
+    
+    <!-- Controller -->
+    <rect x="130" y="130" width="60" height="30" fill="#2196f3" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="160" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">
+      Controller
+    </text>
+    
+    <!-- Arrows -->
+    <path d="M 105 80 L 215 80" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 240 105 L 240 130 L 190 130" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 130 145 L 80 145 L 80 105" stroke="#1976d2" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="160" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">
+      PID Controllers, Reconciliation Loops
+    </text>
+  </g>
+  
+  <!-- Distributed Systems Section -->
+  <g transform="translate(430, 80)">
+    <rect width="320" height="200" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="160" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#7b1fa2">
+      Distributed Systems
+    </text>
+    
+    <!-- Nodes -->
+    <circle cx="80" cy="70" r="20" fill="#ce93d8" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="80" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      etcd
+    </text>
+    
+    <circle cx="160" cy="70" r="20" fill="#ce93d8" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="160" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Master
+    </text>
+    
+    <circle cx="240" cy="70" r="20" fill="#ce93d8" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="240" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+      Worker
+    </text>
+    
+    <!-- Connections -->
+    <line x1="100" y1="70" x2="140" y2="70" stroke="#7b1fa2" stroke-width="2"/>
+    <line x1="180" y1="70" x2="220" y2="70" stroke="#7b1fa2" stroke-width="2"/>
+    
+    <text x="160" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7b1fa2">
+      Raft Consensus, Leader Election
+    </text>
+    <text x="160" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#7b1fa2">
+      CAP Theorem Trade-offs
+    </text>
+  </g>
+  
+  <!-- Scheduling Section -->
+  <g transform="translate(50, 320)">
+    <rect width="320" height="200" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="160" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#388e3c">
+      Scheduling &amp; Optimization
+    </text>
+    
+    <!-- Scheduler Components -->
+    <rect x="30" y="50" width="80" height="40" fill="#a5d6a7" stroke="#388e3c" stroke-width="2" rx="5"/>
+    <text x="70" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">
+      Filter Phase
+    </text>
+    
+    <rect x="120" y="50" width="80" height="40" fill="#a5d6a7" stroke="#388e3c" stroke-width="2" rx="5"/>
+    <text x="160" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">
+      Score Phase
+    </text>
+    
+    <rect x="210" y="50" width="80" height="40" fill="#a5d6a7" stroke="#388e3c" stroke-width="2" rx="5"/>
+    <text x="250" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#388e3c">
+      Bind Phase
+    </text>
+    
+    <!-- Arrows -->
+    <path d="M 110 70 L 120 70" stroke="#388e3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M 200 70 L 210 70" stroke="#388e3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <text x="160" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#388e3c">
+      Bin Packing, Multi-Objective Optimization
+    </text>
+    <text x="160" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#388e3c">
+      Graph Theory, Constraint Satisfaction
+    </text>
+  </g>
+  
+  <!-- Resource Management Section -->
+  <g transform="translate(430, 320)">
+    <rect width="320" height="200" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="160" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f57900">
+      Resource Management
+    </text>
+    
+    <!-- QoS Classes -->
+    <rect x="20" y="50" width="80" height="30" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="60" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Guaranteed
+    </text>
+    
+    <rect x="120" y="50" width="80" height="30" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="160" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Burstable
+    </text>
+    
+    <rect x="220" y="50" width="80" height="30" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="260" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Best Effort
+    </text>
+    
+    <!-- Autoscalers -->
+    <ellipse cx="160" cy="120" rx="60" ry="20" fill="#ffb74d" stroke="#f57900" stroke-width="2"/>
+    <text x="160" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f57900">
+      HPA/VPA
+    </text>
+    
+    <text x="160" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57900">
+      Mathematical Scaling Models
+    </text>
+    <text x="160" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f57900">
+      Linear Programming, Optimization
+    </text>
+  </g>
+  
+  <!-- Central Integration -->
+  <g transform="translate(350, 250)">
+    <circle cx="50" cy="50" r="40" fill="#ffd54f" stroke="#f9a825" stroke-width="3"/>
+    <text x="50" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f9a825">
+      Kubernetes
+    </text>
+    <text x="50" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f9a825">
+      Core Model
+    </text>
+  </g>
+  
+  <!-- Connecting Lines to Center -->
+  <line x1="210" y1="180" x2="350" y2="270" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="590" y1="180" x2="450" y2="270" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="210" y1="420" x2="350" y2="330" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="590" y1="420" x2="450" y2="330" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    Mathematical foundations enabling scalable container orchestration
+  </text>
+</svg>

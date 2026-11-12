@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .pr1 { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .pr2 { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .pr3 { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .review { fill: #F44336; stroke: #B71C1C; stroke-width: 2; }
+      .release { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .pr-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 9px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Maintainer Workflow</text>
+  
+  <!-- Main branch -->
+  <text x="50" y="80" class="branch-label" fill="#2E7D32">main</text>
+  <circle cx="100" cy="100" r="10" class="main"/>
+  <text x="100" y="125" text-anchor="middle" class="text">v1.0</text>
+  
+  <line x1="110" y1="100" x2="240" y2="100" class="branch-line"/>
+  <circle cx="250" cy="100" r="10" class="main"/>
+  <text x="250" y="125" text-anchor="middle" class="text">Merge A</text>
+  
+  <line x1="260" y1="100" x2="390" y2="100" class="branch-line"/>
+  <circle cx="400" cy="100" r="10" class="main"/>
+  <text x="400" y="125" text-anchor="middle" class="text">Merge B</text>
+  
+  <line x1="410" y1="100" x2="540" y2="100" class="branch-line"/>
+  <circle cx="550" cy="100" r="10" class="main"/>
+  <text x="550" y="125" text-anchor="middle" class="text">Release</text>
+  
+  <line x1="560" y1="100" x2="690" y2="100" class="branch-line"/>
+  <circle cx="700" cy="100" r="10" class="main"/>
+  <text x="700" y="125" text-anchor="middle" class="text">Hotfix</text>
+  
+  <!-- Pull Request 1 -->
+  <text x="50" y="180" class="branch-label" fill="#1976D2">PR #123: Feature X</text>
+  <line x1="110" y1="100" x2="130" y2="200" class="branch-line"/>
+  <circle cx="140" cy="200" r="10" class="pr1"/>
+  <text x="140" y="225" text-anchor="middle" class="text">Start</text>
+  
+  <line x1="150" y1="200" x2="190" y2="200" class="branch-line"/>
+  <circle cx="200" cy="200" r="10" class="pr1"/>
+  <text x="200" y="225" text-anchor="middle" class="text">Code</text>
+  
+  <line x1="210" y1="200" x2="240" y2="180" class="pr-line"/>
+  <circle cx="250" cy="170" r="8" class="review"/>
+  <text x="250" y="160" text-anchor="middle" class="text">Review</text>
+  
+  <line x1="260" y1="170" x2="240" y2="100" class="pr-line"/>
+  
+  <!-- Pull Request 2 -->
+  <text x="50" y="280" class="branch-label" fill="#FF9800">PR #124: Bug Fix</text>
+  <line x1="260" y1="100" x2="280" y2="300" class="branch-line"/>
+  <circle cx="290" cy="300" r="10" class="pr2"/>
+  <text x="290" y="325" text-anchor="middle" class="text">Fix</text>
+  
+  <line x1="300" y1="300" x2="340" y2="300" class="branch-line"/>
+  <circle cx="350" cy="300" r="10" class="pr2"/>
+  <text x="350" y="325" text-anchor="middle" class="text">Test</text>
+  
+  <line x1="360" y1="300" x2="390" y2="180" class="pr-line"/>
+  <circle cx="400" cy="170" r="8" class="review"/>
+  <text x="400" y="160" text-anchor="middle" class="text">Review</text>
+  
+  <line x1="410" y1="170" x2="390" y2="100" class="pr-line"/>
+  
+  <!-- Pull Request 3 -->
+  <text x="50" y="380" class="branch-label" fill="#9C27B0">PR #125: Enhancement</text>
+  <line x1="410" y1="100" x2="430" y2="400" class="branch-line"/>
+  <circle cx="440" cy="400" r="10" class="pr3"/>
+  <text x="440" y="425" text-anchor="middle" class="text">Enhance</text>
+  
+  <line x1="450" y1="400" x2="490" y2="400" class="branch-line"/>
+  <circle cx="500" cy="400" r="10" class="pr3"/>
+  <text x="500" y="425" text-anchor="middle" class="text">Polish</text>
+  
+  <!-- Rejected PR indicator -->
+  <line x1="510" y1="400" x2="530" y2="380" stroke="#F44336" stroke-width="3" stroke-dasharray="5,5"/>
+  <text x="540" y="375" class="text" fill="#F44336">Rejected</text>
+  
+  <!-- Release process -->
+  <text x="550" y="180" class="branch-label" fill="#4CAF50">Release v1.1</text>
+  <line x1="560" y1="100" x2="580" y2="200" class="branch-line"/>
+  <circle cx="590" cy="200" r="10" class="release"/>
+  <text x="590" y="225" text-anchor="middle" class="text">Tag</text>
+  
+  <!-- Hotfix process -->
+  <text x="650" y="280" class="branch-label" fill="#F44336">hotfix/critical</text>
+  <line x1="560" y1="100" x2="630" y2="300" class="branch-line"/>
+  <circle cx="640" cy="300" r="10" class="review"/>
+  <text x="640" y="325" text-anchor="middle" class="text">Urgent</text>
+  
+  <line x1="650" y1="300" x2="690" y2="100" class="pr-line"/>
+  
+  <!-- Maintainer workflow stages -->
+  <rect x="50" y="480" width="800" height="100" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="500" class="title">Maintainer Process:</text>
+  <text x="60" y="520" class="text">1. Review incoming PRs → Quality gate and code standards</text>
+  <text x="60" y="535" class="text">2. Coordinate multiple contributions → Prevent conflicts and duplicated work</text>
+  <text x="60" y="550" class="text">3. Manage release cycle → Tag versions and maintain stable main branch</text>
+  <text x="60" y="565" class="text">4. Handle urgent issues → Fast-track critical fixes through review process</text>
+</svg>

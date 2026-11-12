@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .contrib1 { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .contrib2 { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .contrib3 { fill: #9C27B0; stroke: #4A148C; stroke-width: 2; }
+      .contrib4 { fill: #F44336; stroke: #B71C1C; stroke-width: 2; }
+      .contrib5 { fill: #00BCD4; stroke: #00838F; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 3,3; }
+      .text { font-family: 'Courier New', monospace; font-size: 8px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 9px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Community Collaboration Workflow</text>
+  
+  <!-- Main branch (project backbone) -->
+  <text x="30" y="80" class="branch-label" fill="#2E7D32">main</text>
+  <circle cx="80" cy="100" r="8" class="main"/>
+  <text x="80" y="120" text-anchor="middle" class="text">v2.0</text>
+  
+  <line x1="88" y1="100" x2="152" y2="100" class="branch-line"/>
+  <circle cx="160" cy="100" r="8" class="main"/>
+  <text x="160" y="120" text-anchor="middle" class="text">Merge#1</text>
+  
+  <line x1="168" y1="100" x2="232" y2="100" class="branch-line"/>
+  <circle cx="240" cy="100" r="8" class="main"/>
+  <text x="240" y="120" text-anchor="middle" class="text">Merge#2</text>
+  
+  <line x1="248" y1="100" x2="312" y2="100" class="branch-line"/>
+  <circle cx="320" cy="100" r="8" class="main"/>
+  <text x="320" y="120" text-anchor="middle" class="text">Merge#3</text>
+  
+  <line x1="328" y1="100" x2="472" y2="100" class="branch-line"/>
+  <circle cx="480" cy="100" r="8" class="main"/>
+  <text x="480" y="120" text-anchor="middle" class="text">v2.1</text>
+  
+  <line x1="488" y1="100" x2="552" y2="100" class="branch-line"/>
+  <circle cx="560" cy="100" r="8" class="main"/>
+  <text x="560" y="120" text-anchor="middle" class="text">Merge#4</text>
+  
+  <line x1="568" y1="100" x2="632" y2="100" class="branch-line"/>
+  <circle cx="640" cy="100" r="8" class="main"/>
+  <text x="640" y="120" text-anchor="middle" class="text">Merge#5</text>
+  
+  <line x1="648" y1="100" x2="712" y2="100" class="branch-line"/>
+  <circle cx="720" cy="100" r="8" class="main"/>
+  <text x="720" y="120" text-anchor="middle" class="text">v2.2</text>
+  
+  <!-- Contributor 1 -->
+  <text x="30" y="160" class="branch-label" fill="#1976D2">alice/feature-auth</text>
+  <line x1="88" y1="100" x2="108" y2="180" class="branch-line"/>
+  <circle cx="120" cy="180" r="8" class="contrib1"/>
+  <text x="120" y="200" text-anchor="middle" class="text">OAuth</text>
+  <line x1="128" y1="180" x2="152" y2="100" class="merge-line"/>
+  
+  <!-- Contributor 2 -->
+  <text x="30" y="220" class="branch-label" fill="#FF9800">bob/ui-redesign</text>
+  <line x1="168" y1="100" x2="188" y2="240" class="branch-line"/>
+  <circle cx="200" cy="240" r="8" class="contrib2"/>
+  <text x="200" y="260" text-anchor="middle" class="text">UI</text>
+  <line x1="208" y1="240" x2="232" y2="100" class="merge-line"/>
+  
+  <!-- Contributor 3 -->
+  <text x="30" y="280" class="branch-label" fill="#9C27B0">carol/api-v2</text>
+  <line x1="248" y1="100" x2="268" y2="300" class="branch-line"/>
+  <circle cx="280" cy="300" r="8" class="contrib3"/>
+  <text x="280" y="320" text-anchor="middle" class="text">API</text>
+  <line x1="288" y1="300" x2="312" y2="100" class="merge-line"/>
+  
+  <!-- Contributor 4 -->
+  <text x="30" y="340" class="branch-label" fill="#F44336">david/performance</text>
+  <line x1="488" y1="100" x2="508" y2="360" class="branch-line"/>
+  <circle cx="520" cy="360" r="8" class="contrib4"/>
+  <text x="520" y="380" text-anchor="middle" class="text">Perf</text>
+  <line x1="528" y1="360" x2="552" y2="100" class="merge-line"/>
+  
+  <!-- Contributor 5 -->
+  <text x="30" y="400" class="branch-label" fill="#00BCD4">eve/docs</text>
+  <line x1="568" y1="100" x2="588" y2="420" class="branch-line"/>
+  <circle cx="600" cy="420" r="8" class="contrib5"/>
+  <text x="600" y="440" text-anchor="middle" class="text">Docs</text>
+  <line x1="608" y1="420" x2="632" y2="100" class="merge-line"/>
+  
+  <!-- Concurrent development indicators -->
+  <rect x="350" y="180" width="200" height="120" fill="#fff3e0" stroke="#ff9800" stroke-dasharray="2,2"/>
+  <text x="360" y="200" class="branch-label" fill="#FF9800">Concurrent Development</text>
+  <text x="360" y="220" class="text">• Multiple contributors</text>
+  <text x="360" y="235" class="text">• Parallel feature work</text>
+  <text x="360" y="250" class="text">• Independent timelines</text>
+  <text x="360" y="265" class="text">• Automated testing</text>
+  <text x="360" y="280" class="text">• Continuous integration</text>
+  
+  <!-- Community statistics -->
+  <rect x="350" y="320" width="200" height="100" fill="#e8f5e8" stroke="#4caf50" stroke-dasharray="2,2"/>
+  <text x="360" y="340" class="branch-label" fill="#4CAF50">Community Stats</text>
+  <text x="360" y="360" class="text">📊 Contributors: 50+</text>
+  <text x="360" y="375" class="text">🔀 PRs/month: 100+</text>
+  <text x="360" y="390" class="text">🚀 Releases: Weekly</text>
+  <text x="360" y="405" class="text">🌍 Global timezone coverage</text>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="480" width="800" height="100" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="500" class="title">Community Collaboration Properties:</text>
+  <text x="60" y="520" class="text">• Distributed development: DAG branches represent independent contributor work streams</text>
+  <text x="60" y="535" class="text">• Parallel convergence: Multiple feature branches merge concurrently into main timeline</text>
+  <text x="60" y="550" class="text">• Scale invariance: Workflow patterns remain consistent from 10 to 1000+ contributors</text>
+  <text x="60" y="565" class="text">• Network effects: Community growth accelerates through contributor onboarding and retention</text>
+</svg>

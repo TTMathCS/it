@@ -1,0 +1,252 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Data Processing Pipeline Workflow
+  </text>
+  
+  <!-- Data Sources Layer -->
+  <g transform="translate(50, 80)">
+    <rect width="150" height="100" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="75" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      Data Sources
+    </text>
+    
+    <!-- Source types -->
+    <rect x="20" y="35" width="40" height="20" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="40" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">S3/HDFS</text>
+    
+    <rect x="70" y="35" width="40" height="20" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="90" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">APIs</text>
+    
+    <rect x="110" y="35" width="25" height="20" fill="#c8e6c9" stroke="#388e3c" stroke-width="1" rx="3"/>
+    <text x="122" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">DB</text>
+    
+    <rect x="45" y="65" width="60" height="20" fill="#a5d6a7" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="75" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Terabytes/Day</text>
+  </g>
+  
+  <!-- Ingestion Layer -->
+  <g transform="translate(250, 80)">
+    <rect width="120" height="100" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      Ingestion
+    </text>
+    
+    <!-- Kafka cluster -->
+    <circle cx="60" cy="55" r="20" fill="#bbdefb" stroke="#1976d2" stroke-width="2"/>
+    <text x="60" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#1976d2">Kafka</text>
+    
+    <text x="60" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Message Queue
+    </text>
+  </g>
+  
+  <!-- Job Scheduler -->
+  <g transform="translate(420, 80)">
+    <rect width="120" height="100" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f57900">
+      Scheduler
+    </text>
+    
+    <!-- CronJob indicator -->
+    <rect x="20" y="40" width="80" height="15" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="60" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57900">CronJob: 0 2 * * *</text>
+    
+    <rect x="20" y="60" width="80" height="15" fill="#ffcc80" stroke="#f57900" stroke-width="1" rx="3"/>
+    <text x="60" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57900">Batch Jobs</text>
+    
+    <text x="60" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">
+      Kubernetes Jobs
+    </text>
+  </g>
+  
+  <!-- Spark Processing Layer -->
+  <g transform="translate(100, 220)">
+    <rect width="600" height="180" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="10"/>
+    <text x="300" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#7b1fa2">
+      Distributed Processing Engine (Apache Spark on Kubernetes)
+    </text>
+    
+    <!-- Spark Driver -->
+    <g transform="translate(50, 50)">
+      <rect width="100" height="100" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+      <text x="50" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+        Spark Driver
+      </text>
+      
+      <circle cx="50" cy="50" r="15" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2"/>
+      <text x="50" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white">Driver</text>
+      
+      <text x="50" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#7b1fa2">
+        Job Coordination
+      </text>
+    </g>
+    
+    <!-- Spark Executors -->
+    <g transform="translate(200, 50)">
+      <rect width="350" height="100" fill="#e1bee7" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+      <text x="175" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+        Spark Executors (Auto-scaling Pods)
+      </text>
+      
+      <!-- Executor pods - showing dynamic scaling -->
+      <circle cx="40" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E1</text>
+      
+      <circle cx="80" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="80" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E2</text>
+      
+      <circle cx="120" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="120" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E3</text>
+      
+      <circle cx="160" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="160" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E4</text>
+      
+      <circle cx="200" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="200" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E5</text>
+      
+      <circle cx="240" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="240" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E6</text>
+      
+      <circle cx="280" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="280" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E7</text>
+      
+      <circle cx="320" cy="45" r="12" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="320" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">E8</text>
+      
+      <!-- Scaling indicator -->
+      <rect x="100" y="70" width="150" height="15" fill="#9c27b0" stroke="#7b1fa2" stroke-width="1" rx="3"/>
+      <text x="175" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">Dynamic Scaling: 1-50 Executors</text>
+    </g>
+  </g>
+  
+  <!-- Processing Types -->
+  <g transform="translate(50, 430)">
+    <rect width="300" height="100" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="150" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d32f2f">
+      Processing Patterns
+    </text>
+    
+    <!-- Batch Processing -->
+    <rect x="30" y="40" width="100" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="80" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#d32f2f">Batch Jobs</text>
+    <text x="80" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">10TB in 2 hours</text>
+    
+    <!-- Stream Processing -->
+    <rect x="150" y="40" width="120" height="40" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="5"/>
+    <text x="210" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#d32f2f">Stream Processing</text>
+    <text x="210" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">Real-time Analytics</text>
+  </g>
+  
+  <!-- Storage Layer -->
+  <g transform="translate(400, 430)">
+    <rect width="300" height="100" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="150" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      Storage &amp; Output
+    </text>
+    
+    <!-- Storage types -->
+    <rect x="30" y="40" width="70" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="65" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Data Lake</text>
+    
+    <rect x="110" y="40" width="70" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="145" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Database</text>
+    
+    <rect x="190" y="40" width="80" height="25" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="3"/>
+    <text x="230" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">Dashboards</text>
+    
+    <text x="150" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#388e3c">
+      Processed Results &amp; Analytics
+    </text>
+  </g>
+  
+  <!-- Data Flow Arrows -->
+  <!-- Sources to Ingestion -->
+  <path d="M 200 130 L 250 130" stroke="#388e3c" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Ingestion to Scheduler -->
+  <path d="M 370 130 L 420 130" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Scheduler to Processing -->
+  <path d="M 480 180 L 400 220" stroke="#f57900" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Processing to Storage -->
+  <path d="M 400 400 L 550 430" stroke="#7b1fa2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Stream Processing Flow -->
+  <path d="M 310 180 L 150 430" stroke="#1976d2" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="230" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">Real-time Stream</text>
+  
+  <!-- Performance Metrics -->
+  <g transform="translate(580, 80)">
+    <rect width="170" height="120" fill="#e8f4fd" stroke="#0288d1" stroke-width="2" rx="8"/>
+    <text x="85" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0288d1">
+      Performance Metrics
+    </text>
+    
+    <text x="15" y="40" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Processing: 10TB in 2 hours
+    </text>
+    <text x="15" y="55" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Throughput: 500GB/hour
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Reliability: 99.9% success
+    </text>
+    <text x="15" y="85" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • Cost Savings: 50%
+    </text>
+    <text x="15" y="100" font-family="Arial, sans-serif" font-size="9" fill="#0288d1">
+      • CPU Efficiency: 85%
+    </text>
+  </g>
+  
+  <!-- Mathematical Foundation -->
+  <g transform="translate(50, 550)">
+    <rect width="700" height="40" fill="#fff8e1" stroke="#ffa000" stroke-width="2" rx="8"/>
+    <text x="350" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffa000">
+      Mathematical Models
+    </text>
+    
+    <text x="30" y="35" font-family="Arial, sans-serif" font-size="10" fill="#ffa000">
+      Amdahl's Law: Speedup = 1/((1-P) + P/N) | Gustafson's Law: Speedup = N - α(N-1) | Cost = ComputeHours × Rate + StorageGB × Cost
+    </text>
+  </g>
+  
+  <!-- Scaling Indicators -->
+  <g transform="translate(600, 250)">
+    <circle cx="20" cy="20" r="12" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+    <text x="20" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">↗</text>
+    <text x="20" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#2e7d32">Auto-scale</text>
+    
+    <circle cx="60" cy="20" r="12" fill="#ff9800" stroke="#f57c00" stroke-width="2"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">⚡</text>
+    <text x="60" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f57c00">Parallel</text>
+  </g>
+  
+  <!-- Data Volume Indicator -->
+  <g transform="translate(580, 220)">
+    <rect width="80" height="50" fill="#f0f4c3" stroke="#827717" stroke-width="2" rx="5"/>
+    <text x="40" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#827717">
+      Data Volume
+    </text>
+    <text x="40" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#827717">
+      Petabyte Scale
+    </text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Footer -->
+  <text x="400" y="595" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    Scalable data processing pipeline with Apache Spark on Kubernetes, batch and stream processing
+  </text>
+</svg>

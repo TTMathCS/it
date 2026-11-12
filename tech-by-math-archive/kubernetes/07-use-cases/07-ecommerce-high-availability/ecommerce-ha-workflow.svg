@@ -1,0 +1,246 @@
+<svg width="800" height="650" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="650" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    E-commerce High Availability Workflow
+  </text>
+  
+  <!-- Global Load Balancer -->
+  <g transform="translate(300, 60)">
+    <rect width="200" height="80" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="100" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      Global Load Balancer
+    </text>
+    
+    <rect x="50" y="35" width="100" height="25" fill="#bbdefb" stroke="#1976d2" stroke-width="2" rx="5"/>
+    <text x="100" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1976d2">DNS Failover</text>
+    
+    <text x="100" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#1976d2">
+      Geographic Distribution
+    </text>
+  </g>
+  
+  <!-- Multi-Region Deployment -->
+  <g transform="translate(50, 180)">
+    <rect width="700" height="200" fill="#e8f5e8" stroke="#388e3c" stroke-width="2" rx="10"/>
+    <text x="350" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#388e3c">
+      Multi-Region Deployment (Active/Active)
+    </text>
+    
+    <!-- Region US-East -->
+    <g transform="translate(50, 50)">
+      <rect width="150" height="120" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#388e3c">
+        US-East Region
+      </text>
+      
+      <!-- Auto-scaling Pods -->
+      <circle cx="40" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod1</text>
+      
+      <circle cx="75" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="75" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod2</text>
+      
+      <circle cx="110" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="110" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod3</text>
+      
+      <circle cx="57" cy="70" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="57" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod4</text>
+      
+      <circle cx="92" cy="70" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="92" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod5</text>
+      
+      <rect x="25" y="90" width="100" height="15" fill="#4caf50" stroke="#388e3c" stroke-width="1" rx="3"/>
+      <text x="75" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">HPA: 5-50</text>
+    </g>
+    
+    <!-- Region US-West -->
+    <g transform="translate(250, 50)">
+      <rect width="150" height="120" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#388e3c">
+        US-West Region
+      </text>
+      
+      <!-- Auto-scaling Pods -->
+      <circle cx="40" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod1</text>
+      
+      <circle cx="75" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="75" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod2</text>
+      
+      <circle cx="110" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="110" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod3</text>
+      
+      <circle cx="57" cy="70" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="57" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod4</text>
+      
+      <rect x="25" y="90" width="100" height="15" fill="#4caf50" stroke="#388e3c" stroke-width="1" rx="3"/>
+      <text x="75" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">HPA: 4-40</text>
+    </g>
+    
+    <!-- Region EU -->
+    <g transform="translate(450, 50)">
+      <rect width="150" height="120" fill="#c8e6c9" stroke="#388e3c" stroke-width="2" rx="8"/>
+      <text x="75" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#388e3c">
+        EU Region
+      </text>
+      
+      <!-- Auto-scaling Pods -->
+      <circle cx="40" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="40" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod1</text>
+      
+      <circle cx="75" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="75" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod2</text>
+      
+      <circle cx="110" cy="45" r="12" fill="#81c784" stroke="#388e3c" stroke-width="2"/>
+      <text x="110" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">Pod3</text>
+      
+      <rect x="25" y="70" width="100" height="15" fill="#4caf50" stroke="#388e3c" stroke-width="1" rx="3"/>
+      <text x="75" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="white">HPA: 3-30</text>
+      
+      <text x="75" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#388e3c">
+        Pod Anti-Affinity
+      </text>
+    </g>
+  </g>
+  
+  <!-- High Availability Database -->
+  <g transform="translate(200, 420)">
+    <rect width="400" height="120" fill="#ffebee" stroke="#d32f2f" stroke-width="2" rx="10"/>
+    <text x="200" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#d32f2f">
+      High Availability Database Cluster
+    </text>
+    
+    <!-- Primary Database -->
+    <g transform="translate(50, 35)">
+      <rect width="80" height="60" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="8"/>
+      <text x="40" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d32f2f">
+        Master
+      </text>
+      <circle cx="40" cy="35" r="10" fill="#f44336" stroke="#d32f2f" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">DB1</text>
+      <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">US-East</text>
+    </g>
+    
+    <!-- Replica 1 -->
+    <g transform="translate(160, 35)">
+      <rect width="80" height="60" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="8"/>
+      <text x="40" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d32f2f">
+        Replica
+      </text>
+      <circle cx="40" cy="35" r="10" fill="#e57373" stroke="#d32f2f" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">DB2</text>
+      <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">US-West</text>
+    </g>
+    
+    <!-- Replica 2 -->
+    <g transform="translate(270, 35)">
+      <rect width="80" height="60" fill="#ffcdd2" stroke="#d32f2f" stroke-width="2" rx="8"/>
+      <text x="40" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#d32f2f">
+        Replica
+      </text>
+      <circle cx="40" cy="35" r="10" fill="#e57373" stroke="#d32f2f" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="white">DB3</text>
+      <text x="40" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#d32f2f">EU</text>
+    </g>
+  </g>
+  
+  <!-- Monitoring & Alerting -->
+  <g transform="translate(620, 60)">
+    <rect width="120" height="80" fill="#fff3e0" stroke="#f57900" stroke-width="2" rx="10"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f57900">
+      Monitoring
+    </text>
+    
+    <circle cx="60" cy="45" r="15" fill="#ffcc80" stroke="#f57900" stroke-width="2"/>
+    <text x="60" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f57900">Alert</text>
+    
+    <text x="60" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57900">
+      Observability
+    </text>
+  </g>
+  
+  <!-- Traffic Flow Arrows -->
+  <!-- Global LB to Regions -->
+  <path d="M 350 140 L 125 180" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 400 140 L 325 180" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <path d="M 450 140 L 525 180" stroke="#1976d2" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Regions to Database -->
+  <path d="M 125 300 L 280 420" stroke="#388e3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 325 300 L 360 420" stroke="#388e3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 525 300 L 440 420" stroke="#388e3c" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Database Replication -->
+  <path d="M 280 480 L 360 480" stroke="#d32f2f" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <path d="M 360 480 L 440 480" stroke="#d32f2f" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="360" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Replication</text>
+  
+  <!-- Monitoring Connections -->
+  <path d="M 620 100 L 550 120" stroke="#f57900" stroke-width="2" stroke-dasharray="3,3"/>
+  <path d="M 640 140 L 600 420" stroke="#f57900" stroke-width="2" stroke-dasharray="3,3"/>
+  
+  <!-- Performance Metrics -->
+  <g transform="translate(50, 560)">
+    <rect width="250" height="80" fill="#e8f4fd" stroke="#0288d1" stroke-width="2" rx="8"/>
+    <text x="125" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0288d1">
+      Performance Metrics
+    </text>
+    
+    <text x="20" y="40" font-family="Arial, sans-serif" font-size="10" fill="#0288d1">
+      • Availability: 99.99% (52.6 min/year downtime)
+    </text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="10" fill="#0288d1">
+      • Response Time: &lt;50ms (P99)
+    </text>
+    <text x="20" y="70" font-family="Arial, sans-serif" font-size="10" fill="#0288d1">
+      • Throughput: 1M+ concurrent users
+    </text>
+  </g>
+  
+  <!-- Mathematical Foundation -->
+  <g transform="translate(500, 560)">
+    <rect width="250" height="80" fill="#fff8e1" stroke="#ffa000" stroke-width="2" rx="8"/>
+    <text x="125" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffa000">
+      Mathematical Models
+    </text>
+    
+    <text x="20" y="40" font-family="Arial, sans-serif" font-size="9" fill="#ffa000">
+      • Availability: A = (1 - ∏(1 - Ai)) for parallel systems
+    </text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="9" fill="#ffa000">
+      • Load Distribution: Round-robin + Geographic
+    </text>
+    <text x="20" y="70" font-family="Arial, sans-serif" font-size="9" fill="#ffa000">
+      • RPO &lt; 5min, RTO &lt; 2min (Disaster Recovery)
+    </text>
+  </g>
+  
+  <!-- Failover Indicators -->
+  <g transform="translate(350, 560)">
+    <rect width="120" height="80" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+    <text x="60" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7b1fa2">
+      Failover
+    </text>
+    
+    <text x="20" y="40" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">
+      • Auto-failover
+    </text>
+    <text x="20" y="55" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">
+      • Zero downtime
+    </text>
+    <text x="20" y="70" font-family="Arial, sans-serif" font-size="9" fill="#7b1fa2">
+      • Health checks
+    </text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+</svg>

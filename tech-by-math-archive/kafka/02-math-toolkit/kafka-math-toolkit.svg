@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8e44ad;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6a1b9a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e74c3c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c0392b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3498db;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2980b9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f39c12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e67e22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Kafka Mathematical Toolkit
+  </text>
+  
+  <!-- Graph Theory -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad1)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Graph Theory
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Directed Graphs (DAG)
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Topological Ordering
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Network Flow Theory
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Bipartite Matching
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Graph Partitioning
+    </text>
+  </g>
+  
+  <!-- Information Theory -->
+  <g transform="translate(240, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad2)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Information Theory
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Shannon Entropy
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Compression Ratios
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Mutual Information
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Channel Capacity
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Error Correction
+    </text>
+  </g>
+  
+  <!-- Queueing Theory -->
+  <g transform="translate(430, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad3)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Queueing Theory
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Little's Law
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • M/M/1 Queues
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Jackson Networks
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Backpressure Models
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Performance Bounds
+    </text>
+  </g>
+  
+  <!-- Probability & Statistics -->
+  <g transform="translate(620, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad4)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Probability Theory
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Stochastic Processes
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Markov Chains
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Failure Distributions
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Statistical Inference
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Reliability Theory
+    </text>
+  </g>
+  
+  <!-- Mathematical Formulas -->
+  <g transform="translate(100, 280)">
+    <rect x="0" y="0" width="600" height="180" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="300" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Key Mathematical Formulas
+    </text>
+    
+    <!-- Little's Law -->
+    <text x="50" y="55" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#8e44ad">
+      Little's Law:
+    </text>
+    <text x="140" y="55" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      L = λW (Queue Length = Arrival Rate × Wait Time)
+    </text>
+    
+    <!-- Shannon Entropy -->
+    <text x="50" y="80" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e74c3c">
+      Shannon Entropy:
+    </text>
+    <text x="170" y="80" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      H(X) = -Σ p(x) log₂ p(x)
+    </text>
+    
+    <!-- Throughput Formula -->
+    <text x="50" y="105" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3498db">
+      Throughput:
+    </text>
+    <text x="130" y="105" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      T = min(Producer Rate, Consumer Rate, Network Capacity)
+    </text>
+    
+    <!-- Replication Factor -->
+    <text x="50" y="130" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f39c12">
+      Availability:
+    </text>
+    <text x="140" y="130" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      A = 1 - (1 - node_reliability)^replication_factor
+    </text>
+    
+    <!-- Partition Distribution -->
+    <text x="50" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#8e44ad">
+      Hash Function:
+    </text>
+    <text x="160" y="155" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      partition = hash(key) mod partition_count
+    </text>
+  </g>
+  
+  <!-- Tools and Applications -->
+  <g transform="translate(50, 490)">
+    <rect x="0" y="0" width="320" height="90" fill="#27ae60" opacity="0.1" stroke="#27ae60" stroke-width="2" rx="10"/>
+    <text x="160" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Analytical Tools
+    </text>
+    <text x="20" y="50" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      • Performance Modeling with M/M/1 queues
+    </text>
+    <text x="20" y="70" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      • Graph algorithms for partition assignment
+    </text>
+  </g>
+  
+  <!-- Optimization Techniques -->
+  <g transform="translate(430, 490)">
+    <rect x="0" y="0" width="320" height="90" fill="#8e44ad" opacity="0.1" stroke="#8e44ad" stroke-width="2" rx="10"/>
+    <text x="160" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Optimization Methods
+    </text>
+    <text x="20" y="50" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      • Linear programming for resource allocation
+    </text>
+    <text x="20" y="70" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      • Game theory for distributed consensus
+    </text>
+  </g>
+  
+  <!-- Connecting arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+    </marker>
+  </defs>
+  
+  <line x1="130" y1="220" x2="200" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="320" y1="220" x2="300" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="220" x2="400" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="700" y1="220" x2="500" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

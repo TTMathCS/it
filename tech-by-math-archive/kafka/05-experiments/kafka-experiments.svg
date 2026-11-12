@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#16a085;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#138d75;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d35400;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ba4a00;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7d3c98;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6c3483;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2874a6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#21618c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+    Kafka Experiments &amp; Validation
+  </text>
+  
+  <!-- Performance Testing -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad1)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Performance Tests
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Throughput Benchmarks
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Latency Measurements
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Scalability Tests
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Load Testing
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Stress Testing
+    </text>
+  </g>
+  
+  <!-- Fault Tolerance Testing -->
+  <g transform="translate(240, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad2)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Fault Tolerance
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Broker Failure Tests
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Network Partitioning
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Recovery Time Tests
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Data Consistency
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Split-brain Scenarios
+    </text>
+  </g>
+  
+  <!-- Algorithmic Validation -->
+  <g transform="translate(430, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad3)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Algorithm Tests
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Partitioning Fairness
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Leader Election
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Rebalancing Tests
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Consensus Validation
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Log Compaction
+    </text>
+  </g>
+  
+  <!-- Mathematical Validation -->
+  <g transform="translate(620, 80)">
+    <rect x="0" y="0" width="160" height="140" fill="url(#grad4)" rx="10"/>
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Math Validation
+    </text>
+    <text x="15" y="50" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Model Verification
+    </text>
+    <text x="15" y="70" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Statistical Analysis
+    </text>
+    <text x="15" y="90" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Queueing Theory
+    </text>
+    <text x="15" y="110" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Performance Models
+    </text>
+    <text x="15" y="130" font-family="Arial, sans-serif" font-size="11" fill="white">
+      • Theoretical Bounds
+    </text>
+  </g>
+  
+  <!-- Experimental Metrics -->
+  <g transform="translate(100, 280)">
+    <rect x="0" y="0" width="600" height="140" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="300" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Key Performance Metrics
+    </text>
+    
+    <!-- Throughput -->
+    <text x="50" y="55" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#16a085">
+      Throughput:
+    </text>
+    <text x="130" y="55" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      messages/sec, bytes/sec (Producer and Consumer rates)
+    </text>
+    
+    <!-- Latency -->
+    <text x="50" y="80" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d35400">
+      Latency:
+    </text>
+    <text x="110" y="80" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      p50, p95, p99 percentiles for end-to-end message delivery
+    </text>
+    
+    <!-- Availability -->
+    <text x="50" y="105" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7d3c98">
+      Availability:
+    </text>
+    <text x="140" y="105" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      Uptime percentage, Recovery time (RTO/RPO)
+    </text>
+    
+    <!-- Durability -->
+    <text x="50" y="130" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2874a6">
+      Durability:
+    </text>
+    <text x="130" y="130" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">
+      Message loss rate, Replication factor effectiveness
+    </text>
+  </g>
+  
+  <!-- Experimental Setup -->
+  <g transform="translate(50, 450)">
+    <rect x="0" y="0" width="700" height="130" fill="#ffffff" stroke="#bdc3c7" stroke-width="2" rx="10"/>
+    <text x="350" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2c3e50">
+      Typical Experimental Setup
+    </text>
+    
+    <!-- Setup Components -->
+    <rect x="60" y="45" width="80" height="60" fill="#3498db" opacity="0.8" rx="5"/>
+    <text x="100" y="65" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      Producers
+    </text>
+    <text x="100" y="80" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Load Generators
+    </text>
+    <text x="100" y="95" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Multiple Threads
+    </text>
+    
+    <rect x="180" y="45" width="80" height="60" fill="#e74c3c" opacity="0.8" rx="5"/>
+    <text x="220" y="65" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      Kafka Cluster
+    </text>
+    <text x="220" y="80" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      3-9 Brokers
+    </text>
+    <text x="220" y="95" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Replication=3
+    </text>
+    
+    <rect x="300" y="45" width="80" height="60" fill="#f39c12" opacity="0.8" rx="5"/>
+    <text x="340" y="65" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      ZooKeeper
+    </text>
+    <text x="340" y="80" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      3-5 Nodes
+    </text>
+    <text x="340" y="95" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Coordination
+    </text>
+    
+    <rect x="420" y="45" width="80" height="60" fill="#27ae60" opacity="0.8" rx="5"/>
+    <text x="460" y="65" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      Consumers
+    </text>
+    <text x="460" y="80" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Consumer Groups
+    </text>
+    <text x="460" y="95" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Multiple Instances
+    </text>
+    
+    <rect x="540" y="45" width="80" height="60" fill="#9b59b6" opacity="0.8" rx="5"/>
+    <text x="580" y="65" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      Monitoring
+    </text>
+    <text x="580" y="80" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      Metrics Collection
+    </text>
+    <text x="580" y="95" font-family="Arial, sans-serif" font-size="9" text-anchor="middle" fill="white">
+      JMX, Prometheus
+    </text>
+    
+    <!-- Arrows -->
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+      </marker>
+    </defs>
+    
+    <line x1="140" y1="75" x2="180" y2="75" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="260" y1="75" x2="300" y2="75" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="260" y1="85" x2="420" y2="85" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="500" y1="75" x2="540" y2="75" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Monitoring arrows pointing up -->
+    <line x1="580" y1="45" x2="580" y2="25" stroke="#9b59b6" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="220" y1="45" x2="580" y2="35" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="340" y1="45" x2="580" y2="35" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="460" y1="45" x2="580" y2="35" stroke="#9b59b6" stroke-width="1" stroke-dasharray="3,3"/>
+  </g>
+  
+  <!-- Connecting arrows from top sections -->
+  <line x1="130" y1="220" x2="200" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="320" y1="220" x2="300" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="220" x2="400" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="700" y1="220" x2="500" y2="280" stroke="#7f8c8d" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>

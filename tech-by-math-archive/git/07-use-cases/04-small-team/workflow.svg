@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .commit { fill: #4CAF50; stroke: #2E7D32; stroke-width: 2; }
+      .dev1 { fill: #2196F3; stroke: #1976D2; stroke-width: 2; }
+      .dev2 { fill: #FF9800; stroke: #F57C00; stroke-width: 2; }
+      .merge { fill: #9C27B0; stroke: #7B1FA2; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #9C27B0; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">Small Team Collaboration Workflow</text>
+  
+  <!-- Main branch -->
+  <text x="50" y="80" class="title">Main Branch</text>
+  <circle cx="100" cy="120" r="12" class="commit"/>
+  <text x="100" y="145" text-anchor="middle" class="text">A: Init</text>
+  
+  <line x1="112" y1="120" x2="148" y2="120" class="branch-line"/>
+  <circle cx="160" cy="120" r="12" class="commit"/>
+  <text x="160" y="145" text-anchor="middle" class="text">B: Base</text>
+  
+  <!-- Developer 1 branch -->
+  <text x="50" y="200" class="title">Dev1 (Alice)</text>
+  <line x1="172" y1="120" x2="208" y2="200" class="branch-line"/>
+  <circle cx="220" cy="200" r="12" class="dev1"/>
+  <text x="220" y="225" text-anchor="middle" class="text">C: Feature X</text>
+  
+  <line x1="232" y1="200" x2="268" y2="200" class="branch-line"/>
+  <circle cx="280" cy="200" r="12" class="dev1"/>
+  <text x="280" y="225" text-anchor="middle" class="text">D: Fix X</text>
+  
+  <!-- Developer 2 branch -->
+  <text x="50" y="280" class="title">Dev2 (Bob)</text>
+  <line x1="172" y1="120" x2="208" y2="280" class="branch-line"/>
+  <circle cx="220" cy="280" r="12" class="dev2"/>
+  <text x="220" y="305" text-anchor="middle" class="text">E: Feature Y</text>
+  
+  <line x1="232" y1="280" x2="268" y2="280" class="branch-line"/>
+  <circle cx="280" cy="280" r="12" class="dev2"/>
+  <text x="280" y="305" text-anchor="middle" class="text">F: Test Y</text>
+  
+  <!-- Merge back to main -->
+  <line x1="172" y1="120" x2="358" y2="120" class="branch-line"/>
+  <circle cx="370" cy="120" r="12" class="merge"/>
+  <text x="370" y="145" text-anchor="middle" class="text">G: Merge</text>
+  
+  <!-- Merge lines -->
+  <line x1="292" y1="200" x2="358" y2="120" class="merge-line"/>
+  <line x1="292" y1="280" x2="358" y2="120" class="merge-line"/>
+  
+  <!-- Continue development -->
+  <line x1="382" y1="120" x2="418" y2="120" class="branch-line"/>
+  <circle cx="430" cy="120" r="12" class="commit"/>
+  <text x="430" y="145" text-anchor="middle" class="text">H: Release</text>
+  
+  <!-- Conflict resolution example -->
+  <text x="500" y="200" class="title">Conflict Resolution</text>
+  <line x1="442" y1="120" x2="478" y2="200" class="branch-line"/>
+  <circle cx="490" cy="200" r="12" class="dev1"/>
+  <text x="490" y="225" text-anchor="middle" class="text">I: Hotfix</text>
+  
+  <line x1="442" y1="120" x2="478" y2="280" class="branch-line"/>
+  <circle cx="490" cy="280" r="12" class="dev2"/>
+  <text x="490" y="305" text-anchor="middle" class="text">J: Update</text>
+  
+  <line x1="442" y1="120" x2="578" y2="120" class="branch-line"/>
+  <circle cx="590" cy="120" r="12" class="merge"/>
+  <text x="590" y="145" text-anchor="middle" class="text">K: Resolve</text>
+  
+  <line x1="502" y1="200" x2="578" y2="120" class="merge-line"/>
+  <line x1="502" y1="280" x2="578" y2="120" class="merge-line"/>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="350" width="700" height="120" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="375" class="title">Mathematical Properties:</text>
+  <text x="60" y="395" class="text">• Three-way merge: merge(base, branch1, branch2) → resolved_commit</text>
+  <text x="60" y="410" class="text">• Conflict detection: overlapping_changes = changes1 ∩ changes2 ≠ ∅</text>
+  <text x="60" y="425" class="text">• DAG convergence: Multiple development paths merge into single history</text>
+  <text x="60" y="440" class="text">• Shared repository: All team members sync to common remote state</text>
+  <text x="60" y="455" class="text">• LCA algorithm: Finds optimal merge base for conflict resolution</text>
+  
+</svg>

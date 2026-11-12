@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="640" viewBox="0 0 980 640">
+  <defs>
+    <style>
+      .title{font:700 20px Arial, sans-serif;fill:#222}
+      .group{fill:#ffffff;stroke:#9aa7b0}
+      .label{font:600 13px Arial, sans-serif;fill:#222}
+      .text{font:12px Arial, sans-serif;fill:#333}
+    </style>
+  </defs>
+  <text x="20" y="30" class="title">AI Agent Use‑Case Landscape</text>
+
+  <!-- Customer & GTM -->
+  <rect x="20" y="60" width="450" height="160" rx="8" class="group"/>
+  <text x="35" y="83" class="label">Customer &amp; GTM</text>
+  <text x="35" y="105" class="text">• Support Autopilot (tickets, billing, KB)</text>
+  <text x="35" y="122" class="text">• Sales Assistant (enrichment, outreach)</text>
+  <text x="35" y="139" class="text">• Marketing Content Factory (on‑brand)</text>
+  <text x="35" y="156" class="text">• Research Analyst (web + citations)</text>
+
+  <!-- Engineering & Data -->
+  <rect x="500" y="60" width="450" height="160" rx="8" class="group"/>
+  <text x="515" y="83" class="label">Engineering &amp; Data</text>
+  <text x="515" y="105" class="text">• Dev Copilot (code, docs, migrations)</text>
+  <text x="515" y="122" class="text">• ETL Agent (build, monitor, repair)</text>
+  <text x="515" y="139" class="text">• Autonomous Research &amp; Experiments</text>
+  <text x="515" y="156" class="text">• QA &amp; Test Generation</text>
+
+  <!-- Operations & GRC -->
+  <rect x="20" y="240" width="450" height="160" rx="8" class="group"/>
+  <text x="35" y="263" class="label">Operations &amp; GRC</text>
+  <text x="35" y="285" class="text">• IT Helpdesk Automation</text>
+  <text x="35" y="302" class="text">• Security Triage &amp; Response</text>
+  <text x="35" y="319" class="text">• FinOps Reconciliation</text>
+  <text x="35" y="336" class="text">• Procurement &amp; Vendor Agents</text>
+
+  <!-- Industry verticals -->
+  <rect x="500" y="240" width="450" height="160" rx="8" class="group"/>
+  <text x="515" y="263" class="label">Industry Verticals</text>
+  <text x="515" y="285" class="text">• Healthcare Intake &amp; Care Navigation</text>
+  <text x="515" y="302" class="text">• Legal Document Assistant</text>
+  <text x="515" y="319" class="text">• Education Tutor &amp; Coach</text>
+  <text x="515" y="336" class="text">• Supply Chain Planner</text>
+
+  <!-- Governance note -->
+  <text x="20" y="430" class="text">All use‑cases require: policy guardrails, observability, approvals for risky actions, privacy &amp; compliance.</text>
+</svg>

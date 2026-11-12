@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="treeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#66bb6a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4caf50;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="clusterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#42a5f5;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#1e88e5;stop-opacity:0.7" />
+    </linearGradient>
+    <radialGradient id="svmGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff7043;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#ff7043;stop-opacity:0.2" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">AI Core Algorithms</text>
+  
+  <!-- Decision Tree Section -->
+  <g id="decision-tree">
+    <rect x="30" y="60" width="360" height="250" fill="#ffffff" stroke="#4caf50" stroke-width="2" rx="10"/>
+    <text x="210" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#4caf50">Decision Tree</text>
+    
+    <!-- Tree structure -->
+    <g id="tree">
+      <!-- Root node -->
+      <circle cx="210" cy="120" r="20" fill="url(#treeGradient)" stroke="#388e3c" stroke-width="2"/>
+      <text x="210" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#fff">x₁ &lt; 5?</text>
+      
+      <!-- Level 1 nodes -->
+      <circle cx="150" cy="170" r="18" fill="url(#treeGradient)" stroke="#388e3c" stroke-width="2"/>
+      <text x="150" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#fff">x₂ &lt; 3?</text>
+      
+      <circle cx="270" cy="170" r="18" fill="url(#treeGradient)" stroke="#388e3c" stroke-width="2"/>
+      <text x="270" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#fff">x₃ &lt; 7?</text>
+      
+      <!-- Leaf nodes -->
+      <rect x="90" y="210" width="30" height="20" fill="#81c784" stroke="#4caf50" rx="5"/>
+      <text x="105" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">A</text>
+      
+      <rect x="180" y="210" width="30" height="20" fill="#81c784" stroke="#4caf50" rx="5"/>
+      <text x="195" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">B</text>
+      
+      <rect x="240" y="210" width="30" height="20" fill="#81c784" stroke="#4caf50" rx="5"/>
+      <text x="255" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">A</text>
+      
+      <rect x="300" y="210" width="30" height="20" fill="#81c784" stroke="#4caf50" rx="5"/>
+      <text x="315" y="223" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fff">C</text>
+      
+      <!-- Tree edges -->
+      <line x1="195" y1="135" x2="165" y2="155" stroke="#388e3c" stroke-width="2"/>
+      <line x1="225" y1="135" x2="255" y2="155" stroke="#388e3c" stroke-width="2"/>
+      <line x1="135" y1="185" x2="110" y2="205" stroke="#388e3c" stroke-width="2"/>
+      <line x1="165" y1="185" x2="190" y2="205" stroke="#388e3c" stroke-width="2"/>
+      <line x1="255" y1="185" x2="250" y2="205" stroke="#388e3c" stroke-width="2"/>
+      <line x1="285" y1="185" x2="310" y2="205" stroke="#388e3c" stroke-width="2"/>
+      
+      <!-- Labels -->
+      <text x="170" y="150" font-family="Arial, sans-serif" font-size="8" fill="#666">Yes</text>
+      <text x="240" y="150" font-family="Arial, sans-serif" font-size="8" fill="#666">No</text>
+    </g>
+    
+    <!-- Information Gain Formula -->
+    <text x="50" y="260" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Information Gain:</text>
+    <text x="50" y="275" font-family="Arial, sans-serif" font-size="10" fill="#555">IG(S,A) = H(S) - Σ |Sv|/|S| × H(Sv)</text>
+    <text x="50" y="290" font-family="Arial, sans-serif" font-size="10" fill="#555">Entropy: H(S) = -Σ p(c) log₂ p(c)</text>
+  </g>
+  
+  <!-- K-Means Clustering Section -->
+  <g id="kmeans">
+    <rect x="410" y="60" width="360" height="250" fill="#ffffff" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="590" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1976d2">K-Means Clustering</text>
+    
+    <!-- Cluster 1 -->
+    <ellipse cx="480" cy="140" rx="50" ry="35" fill="url(#clusterGradient)" stroke="#1976d2" stroke-width="1" opacity="0.3"/>
+    <circle cx="480" cy="140" r="5" fill="#d32f2f" stroke="#b71c1c" stroke-width="2"/>
+    <text x="480" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d32f2f">μ₁</text>
+    
+    <!-- Data points cluster 1 -->
+    <circle cx="470" cy="125" r="3" fill="#1976d2"/>
+    <circle cx="490" cy="135" r="3" fill="#1976d2"/>
+    <circle cx="475" cy="155" r="3" fill="#1976d2"/>
+    <circle cx="485" cy="150" r="3" fill="#1976d2"/>
+    <circle cx="465" cy="145" r="3" fill="#1976d2"/>
+    
+    <!-- Cluster 2 -->
+    <ellipse cx="580" cy="160" rx="45" ry="40" fill="url(#clusterGradient)" stroke="#4caf50" stroke-width="1" opacity="0.3"/>
+    <circle cx="580" cy="160" r="5" fill="#d32f2f" stroke="#b71c1c" stroke-width="2"/>
+    <text x="580" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d32f2f">μ₂</text>
+    
+    <!-- Data points cluster 2 -->
+    <circle cx="570" cy="140" r="3" fill="#4caf50"/>
+    <circle cx="590" cy="175" r="3" fill="#4caf50"/>
+    <circle cx="575" cy="180" r="3" fill="#4caf50"/>
+    <circle cx="585" cy="145" r="3" fill="#4caf50"/>
+    <circle cx="595" cy="165" r="3" fill="#4caf50"/>
+    
+    <!-- Cluster 3 -->
+    <ellipse cx="520" cy="220" rx="40" ry="30" fill="url(#clusterGradient)" stroke="#ff9800" stroke-width="1" opacity="0.3"/>
+    <circle cx="520" cy="220" r="5" fill="#d32f2f" stroke="#b71c1c" stroke-width="2"/>
+    <text x="520" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d32f2f">μ₃</text>
+    
+    <!-- Data points cluster 3 -->
+    <circle cx="510" cy="210" r="3" fill="#ff9800"/>
+    <circle cx="530" cy="225" r="3" fill="#ff9800"/>
+    <circle cx="515" cy="235" r="3" fill="#ff9800"/>
+    <circle cx="525" cy="205" r="3" fill="#ff9800"/>
+    
+    <!-- K-means formulas -->
+    <text x="430" y="270" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Objective Function:</text>
+    <text x="430" y="285" font-family="Arial, sans-serif" font-size="10" fill="#555">J = Σᵢ Σⱼ wᵢⱼ ||xᵢ - μⱼ||²</text>
+    <text x="430" y="300" font-family="Arial, sans-serif" font-size="10" fill="#555">Update: μⱼ = (1/|Cⱼ|) Σₓ∈Cⱼ x</text>
+  </g>
+  
+  <!-- Support Vector Machine Section -->
+  <g id="svm">
+    <rect x="30" y="330" width="360" height="240" fill="#ffffff" stroke="#ff5722" stroke-width="2" rx="10"/>
+    <text x="210" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ff5722">Support Vector Machine</text>
+    
+    <!-- Decision boundary -->
+    <line x1="80" y1="380" x2="340" y2="460" stroke="#d32f2f" stroke-width="3"/>
+    
+    <!-- Margin lines -->
+    <line x1="70" y1="360" x2="330" y2="440" stroke="#ff5722" stroke-width="1" stroke-dasharray="5,5"/>
+    <line x1="90" y1="400" x2="350" y2="480" stroke="#ff5722" stroke-width="1" stroke-dasharray="5,5"/>
+    
+    <!-- Support vectors -->
+    <circle cx="120" cy="390" r="8" fill="none" stroke="#1976d2" stroke-width="3"/>
+    <circle cx="120" cy="390" r="4" fill="#1976d2"/>
+    
+    <circle cx="180" cy="420" r="8" fill="none" stroke="#1976d2" stroke-width="3"/>
+    <circle cx="180" cy="420" r="4" fill="#1976d2"/>
+    
+    <circle cx="260" cy="450" r="8" fill="none" stroke="#4caf50" stroke-width="3"/>
+    <circle cx="260" cy="450" r="4" fill="#4caf50"/>
+    
+    <circle cx="300" cy="470" r="8" fill="none" stroke="#4caf50" stroke-width="3"/>
+    <circle cx="300" cy="470" r="4" fill="#4caf50"/>
+    
+    <!-- Other data points -->
+    <circle cx="100" cy="370" r="4" fill="#1976d2"/>
+    <circle cx="140" cy="380" r="4" fill="#1976d2"/>
+    <circle cx="160" cy="395" r="4" fill="#1976d2"/>
+    <circle cx="280" cy="465" r="4" fill="#4caf50"/>
+    <circle cx="320" cy="485" r="4" fill="#4caf50"/>
+    <circle cx="340" cy="495" r="4" fill="#4caf50"/>
+    
+    <!-- Class labels -->
+    <text x="110" y="360" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Class -1</text>
+    <text x="300" y="510" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4caf50">Class +1</text>
+    
+    <!-- SVM formulas -->
+    <text x="50" y="530" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Optimization Problem:</text>
+    <text x="50" y="545" font-family="Arial, sans-serif" font-size="10" fill="#555">min ½||w||² + C Σᵢ ξᵢ</text>
+    <text x="50" y="560" font-family="Arial, sans-serif" font-size="10" fill="#555">s.t. yᵢ(w·xᵢ + b) ≥ 1 - ξᵢ, ξᵢ ≥ 0</text>
+  </g>
+  
+  <!-- Ensemble Methods Section -->
+  <g id="ensemble">
+    <rect x="410" y="330" width="360" height="240" fill="#ffffff" stroke="#9c27b0" stroke-width="2" rx="10"/>
+    <text x="590" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9c27b0">Ensemble Methods</text>
+    
+    <!-- Random Forest visualization -->
+    <g id="random-forest">
+      <text x="590" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Random Forest</text>
+      
+      <!-- Tree 1 -->
+      <rect x="450" y="390" width="50" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="475" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">Tree₁</text>
+      <circle cx="475" cy="415" r="3" fill="#4caf50"/>
+      <circle cx="465" cy="425" r="2" fill="#81c784"/>
+      <circle cx="485" cy="425" r="2" fill="#81c784"/>
+      <circle cx="460" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="470" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="480" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="490" cy="435" r="2" fill="#c8e6c9"/>
+      
+      <!-- Tree 2 -->
+      <rect x="520" y="390" width="50" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="545" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">Tree₂</text>
+      <circle cx="545" cy="415" r="3" fill="#4caf50"/>
+      <circle cx="535" cy="425" r="2" fill="#81c784"/>
+      <circle cx="555" cy="425" r="2" fill="#81c784"/>
+      <circle cx="530" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="540" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="550" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="560" cy="435" r="2" fill="#c8e6c9"/>
+      
+      <!-- Tree 3 -->
+      <rect x="590" y="390" width="50" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="615" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">Tree₃</text>
+      <circle cx="615" cy="415" r="3" fill="#4caf50"/>
+      <circle cx="605" cy="425" r="2" fill="#81c784"/>
+      <circle cx="625" cy="425" r="2" fill="#81c784"/>
+      <circle cx="600" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="610" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="620" cy="435" r="2" fill="#c8e6c9"/>
+      <circle cx="630" cy="435" r="2" fill="#c8e6c9"/>
+      
+      <!-- More trees indicator -->
+      <text x="665" y="420" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#666">...</text>
+      
+      <!-- Voting/Aggregation -->
+      <path d="M 475 460 Q 530 480, 585 460" stroke="#9c27b0" stroke-width="2" fill="none"/>
+      <path d="M 545 460 Q 570 480, 595 460" stroke="#9c27b0" stroke-width="2" fill="none"/>
+      <path d="M 615 460 Q 630 480, 645 460" stroke="#9c27b0" stroke-width="2" fill="none"/>
+      
+      <!-- Final prediction -->
+      <rect x="560" y="490" width="60" height="25" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2" rx="5"/>
+      <text x="590" y="505" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9c27b0">Vote</text>
+    </g>
+    
+    <!-- Ensemble formulas -->
+    <text x="430" y="540" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Ensemble Prediction:</text>
+    <text x="430" y="555" font-family="Arial, sans-serif" font-size="10" fill="#555">Classification: ŷ = mode{h₁(x), h₂(x), ..., hₘ(x)}</text>
+    <text x="430" y="570" font-family="Arial, sans-serif" font-size="10" fill="#555">Regression: ŷ = (1/M) Σᵢ hᵢ(x)</text>
+  </g>
+</svg>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#42a5f5;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="paperGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff3e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffcc02;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="citationGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#4caf50;stop-opacity:0.2" />
+    </radialGradient>
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#9c27b0;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#673ab7;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f9f9f9"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">AI References &amp; Literature</text>
+  
+  <!-- Historical Timeline Section -->
+  <g id="timeline">
+    <rect x="30" y="60" width="740" height="140" fill="#ffffff" stroke="#1976d2" stroke-width="2" rx="10"/>
+    <text x="400" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1976d2">Historical Timeline of AI</text>
+    
+    <!-- Timeline line -->
+    <line x1="70" y1="140" x2="730" y2="140" stroke="url(#timelineGradient)" stroke-width="4"/>
+    
+    <!-- Timeline markers -->
+    <!-- 1943 McCulloch-Pitts -->
+    <circle cx="100" cy="140" r="6" fill="#d32f2f"/>
+    <text x="100" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#d32f2f">1943</text>
+    <text x="100" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">McCulloch-Pitts</text>
+    <text x="100" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Neuron</text>
+    
+    <!-- 1957 Perceptron -->
+    <circle cx="180" cy="140" r="6" fill="#ff9800"/>
+    <text x="180" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ff9800">1957</text>
+    <text x="180" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Rosenblatt</text>
+    <text x="180" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Perceptron</text>
+    
+    <!-- 1986 Backpropagation -->
+    <circle cx="290" cy="140" r="6" fill="#4caf50"/>
+    <text x="290" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#4caf50">1986</text>
+    <text x="290" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Rumelhart et al.</text>
+    <text x="290" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Backprop</text>
+    
+    <!-- 1997 LSTM -->
+    <circle cx="400" cy="140" r="6" fill="#9c27b0"/>
+    <text x="400" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#9c27b0">1997</text>
+    <text x="400" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Hochreiter &amp;</text>
+    <text x="400" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Schmidhuber</text>
+    <text x="400" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">LSTM</text>
+    
+    <!-- 2006 Deep Learning -->
+    <circle cx="510" cy="140" r="6" fill="#607d8b"/>
+    <text x="510" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#607d8b">2006</text>
+    <text x="510" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Hinton et al.</text>
+    <text x="510" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Deep Learning</text>
+    
+    <!-- 2017 Transformer -->
+    <circle cx="620" cy="140" r="6" fill="#e91e63"/>
+    <text x="620" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#e91e63">2017</text>
+    <text x="620" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Vaswani et al.</text>
+    <text x="620" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">Attention</text>
+    
+    <!-- 2022 ChatGPT -->
+    <circle cx="700" cy="140" r="6" fill="#ff5722"/>
+    <text x="700" y="125" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ff5722">2022</text>
+    <text x="700" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">OpenAI</text>
+    <text x="700" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333">ChatGPT</text>
+  </g>
+  
+  <!-- Foundational Papers Section -->
+  <g id="foundational-papers">
+    <rect x="30" y="220" width="360" height="350" fill="#ffffff" stroke="#ff9800" stroke-width="2" rx="10"/>
+    <text x="210" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ff9800">Foundational Papers</text>
+    
+    <!-- Paper 1 -->
+    <rect x="50" y="260" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="275" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"Attention Is All You Need" (2017)</text>
+    <text x="60" y="290" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">Vaswani et al. - Introduced Transformer architecture</text>
+    <text x="60" y="295" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 50,000+</text>
+    
+    <!-- Paper 2 -->
+    <rect x="50" y="310" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="325" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"ImageNet Classification with Deep CNNs" (2012)</text>
+    <text x="60" y="340" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">Krizhevsky et al. - AlexNet breakthrough</text>
+    <text x="60" y="345" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 45,000+</text>
+    
+    <!-- Paper 3 -->
+    <rect x="50" y="360" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="375" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"Playing Atari with Deep RL" (2013)</text>
+    <text x="60" y="390" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">Mnih et al. - Deep Q-Networks (DQN)</text>
+    <text x="60" y="395" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 8,000+</text>
+    
+    <!-- Paper 4 -->
+    <rect x="50" y="410" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="425" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"Generative Adversarial Networks" (2014)</text>
+    <text x="60" y="440" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">Goodfellow et al. - GANs framework</text>
+    <text x="60" y="445" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 25,000+</text>
+    
+    <!-- Paper 5 -->
+    <rect x="50" y="460" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="475" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"BERT: Pre-training Language Representations" (2018)</text>
+    <text x="60" y="490" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">Devlin et al. - Bidirectional encoder</text>
+    <text x="60" y="495" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 35,000+</text>
+    
+    <!-- Paper 6 -->
+    <rect x="50" y="510" width="300" height="40" fill="url(#paperGradient)" stroke="#f57c00" stroke-width="1" rx="5"/>
+    <text x="60" y="525" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e65100">"ResNet: Deep Residual Learning" (2015)</text>
+    <text x="60" y="540" font-family="Arial, sans-serif" font-size="10" fill="#bf360c">He et al. - Skip connections</text>
+    <text x="60" y="545" font-family="Arial, sans-serif" font-size="9" fill="#795548">Citations: 40,000+</text>
+  </g>
+  
+  <!-- Mathematical Foundations Section -->
+  <g id="mathematical-foundations">
+    <rect x="410" y="220" width="360" height="180" fill="#ffffff" stroke="#4caf50" stroke-width="2" rx="10"/>
+    <text x="590" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#4caf50">Mathematical Foundations</text>
+    
+    <!-- Mathematical concepts -->
+    <g id="math-concepts">
+      <!-- Linear Algebra -->
+      <rect x="430" y="260" width="150" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="505" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2e7d32">Linear Algebra</text>
+      <text x="440" y="295" font-family="Arial, sans-serif" font-size="10" fill="#333">• Matrix Operations</text>
+      <text x="440" y="308" font-family="Arial, sans-serif" font-size="10" fill="#333">• Eigendecomposition</text>
+      
+      <!-- Calculus -->
+      <rect x="600" y="260" width="150" height="60" fill="#ffebee" stroke="#f44336" stroke-width="1" rx="5"/>
+      <text x="675" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#c62828">Calculus</text>
+      <text x="610" y="295" font-family="Arial, sans-serif" font-size="10" fill="#333">• Gradient Descent</text>
+      <text x="610" y="308" font-family="Arial, sans-serif" font-size="10" fill="#333">• Chain Rule</text>
+      
+      <!-- Probability -->
+      <rect x="430" y="330" width="150" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="1" rx="5"/>
+      <text x="505" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1565c0">Probability</text>
+      <text x="440" y="365" font-family="Arial, sans-serif" font-size="10" fill="#333">• Bayes' Theorem</text>
+      <text x="440" y="378" font-family="Arial, sans-serif" font-size="10" fill="#333">• Distributions</text>
+      
+      <!-- Optimization -->
+      <rect x="600" y="330" width="150" height="60" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1" rx="5"/>
+      <text x="675" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#7b1fa2">Optimization</text>
+      <text x="610" y="365" font-family="Arial, sans-serif" font-size="10" fill="#333">• Convex Optimization</text>
+      <text x="610" y="378" font-family="Arial, sans-serif" font-size="10" fill="#333">• Lagrangian</text>
+    </g>
+  </g>
+  
+  <!-- Key Textbooks Section -->
+  <g id="textbooks">
+    <rect x="410" y="420" width="360" height="150" fill="#ffffff" stroke="#9c27b0" stroke-width="2" rx="10"/>
+    <text x="590" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9c27b0">Essential Textbooks</text>
+    
+    <!-- Book 1 -->
+    <g id="book1">
+      <rect x="430" y="460" width="25" height="35" fill="url(#bookGradient)" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="465" y="470" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">"Deep Learning" (2016)</text>
+      <text x="465" y="485" font-family="Arial, sans-serif" font-size="10" fill="#555">Goodfellow, Bengio, Courville</text>
+      <text x="465" y="495" font-family="Arial, sans-serif" font-size="9" fill="#777">MIT Press - Comprehensive DL theory</text>
+    </g>
+    
+    <!-- Book 2 -->
+    <g id="book2">
+      <rect x="430" y="505" width="25" height="35" fill="url(#bookGradient)" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="465" y="515" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">"Pattern Recognition &amp; ML" (2006)</text>
+      <text x="465" y="530" font-family="Arial, sans-serif" font-size="10" fill="#555">Christopher Bishop</text>
+      <text x="465" y="540" font-family="Arial, sans-serif" font-size="9" fill="#777">Springer - Bayesian perspective</text>
+    </g>
+    
+    <!-- Book 3 -->
+    <g id="book3">
+      <rect x="640" y="460" width="25" height="35" fill="url(#bookGradient)" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="675" y="470" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">"Elements of Statistical Learning" (2009)</text>
+      <text x="675" y="485" font-family="Arial, sans-serif" font-size="10" fill="#555">Hastie, Tibshirani, Friedman</text>
+      <text x="675" y="495" font-family="Arial, sans-serif" font-size="9" fill="#777">Springer - Statistical methods</text>
+    </g>
+    
+    <!-- Book 4 -->
+    <g id="book4">
+      <rect x="640" y="505" width="25" height="35" fill="url(#bookGradient)" stroke="#7b1fa2" stroke-width="1"/>
+      <text x="675" y="515" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">"Hands-On ML" (2019)</text>
+      <text x="675" y="530" font-family="Arial, sans-serif" font-size="10" fill="#555">Aurélien Géron</text>
+      <text x="675" y="540" font-family="Arial, sans-serif" font-size="9" fill="#777">O'Reilly - Practical approach</text>
+    </g>
+  </g>
+  
+  <!-- Citation Network Visualization -->
+  <g id="citation-network">
+    <circle cx="150" cy="100" r="15" fill="url(#citationGradient)" opacity="0.7"/>
+    <circle cx="250" cy="120" r="12" fill="url(#citationGradient)" opacity="0.6"/>
+    <circle cx="350" cy="110" r="18" fill="url(#citationGradient)" opacity="0.8"/>
+    <circle cx="450" cy="100" r="10" fill="url(#citationGradient)" opacity="0.5"/>
+    
+    <!-- Citation links -->
+    <line x1="150" y1="100" x2="250" y2="120" stroke="#4caf50" stroke-width="1" opacity="0.4"/>
+    <line x1="250" y1="120" x2="350" y2="110" stroke="#4caf50" stroke-width="1" opacity="0.4"/>
+    <line x1="350" y1="110" x2="450" y2="100" stroke="#4caf50" stroke-width="1" opacity="0.4"/>
+    <line x1="150" y1="100" x2="350" y2="110" stroke="#4caf50" stroke-width="1" opacity="0.3"/>
+  </g>
+</svg>

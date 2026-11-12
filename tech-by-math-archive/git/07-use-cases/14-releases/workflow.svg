@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .develop { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .release { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .tag { fill: #9C27B0; stroke: #4A148C; stroke-width: 3; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 3,3; }
+      .tag-line { stroke: #9C27B0; stroke-width: 3; fill: none; }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Release Management Workflow</text>
+  
+  <!-- Main branch (production) -->
+  <text x="50" y="80" class="branch-label" fill="#2E7D32">main (production)</text>
+  <circle cx="100" cy="100" r="10" class="main"/>
+  <text x="100" y="125" text-anchor="middle" class="text">v1.0.0</text>
+  
+  <line x1="110" y1="100" x2="290" y2="100" class="branch-line"/>
+  <circle cx="300" cy="100" r="10" class="main"/>
+  <text x="300" y="125" text-anchor="middle" class="text">v1.1.0</text>
+  
+  <line x1="310" y1="100" x2="490" y2="100" class="branch-line"/>
+  <circle cx="500" cy="100" r="10" class="main"/>
+  <text x="500" y="125" text-anchor="middle" class="text">v1.2.0</text>
+  
+  <line x1="510" y1="100" x2="690" y2="100" class="branch-line"/>
+  <circle cx="700" cy="100" r="10" class="main"/>
+  <text x="700" y="125" text-anchor="middle" class="text">v2.0.0</text>
+  
+  <!-- Develop branch -->
+  <text x="50" y="180" class="branch-label" fill="#1976D2">develop</text>
+  <line x1="110" y1="100" x2="130" y2="200" class="branch-line"/>
+  <circle cx="140" cy="200" r="10" class="develop"/>
+  <text x="140" y="225" text-anchor="middle" class="text">dev1</text>
+  
+  <line x1="150" y1="200" x2="190" y2="200" class="branch-line"/>
+  <circle cx="200" cy="200" r="10" class="develop"/>
+  <text x="200" y="225" text-anchor="middle" class="text">dev2</text>
+  
+  <line x1="210" y1="200" x2="250" y2="200" class="branch-line"/>
+  <circle cx="260" cy="200" r="10" class="develop"/>
+  <text x="260" y="225" text-anchor="middle" class="text">dev3</text>
+  
+  <line x1="310" y1="100" x2="330" y2="200" class="merge-line"/>
+  <circle cx="340" cy="200" r="10" class="develop"/>
+  <text x="340" y="225" text-anchor="middle" class="text">sync</text>
+  
+  <line x1="350" y1="200" x2="390" y2="200" class="branch-line"/>
+  <circle cx="400" cy="200" r="10" class="develop"/>
+  <text x="400" y="225" text-anchor="middle" class="text">dev4</text>
+  
+  <line x1="410" y1="200" x2="450" y2="200" class="branch-line"/>
+  <circle cx="460" cy="200" r="10" class="develop"/>
+  <text x="460" y="225" text-anchor="middle" class="text">dev5</text>
+  
+  <line x1="510" y1="100" x2="530" y2="200" class="merge-line"/>
+  <circle cx="540" cy="200" r="10" class="develop"/>
+  <text x="540" y="225" text-anchor="middle" class="text">sync</text>
+  
+  <line x1="550" y1="200" x2="590" y2="200" class="branch-line"/>
+  <circle cx="600" cy="200" r="10" class="develop"/>
+  <text x="600" y="225" text-anchor="middle" class="text">dev6</text>
+  
+  <line x1="610" y1="200" x2="650" y2="200" class="branch-line"/>
+  <circle cx="660" cy="200" r="10" class="develop"/>
+  <text x="660" y="225" text-anchor="middle" class="text">dev7</text>
+  
+  <!-- Release branches -->
+  <text x="50" y="280" class="branch-label" fill="#FF9800">release/1.1.0</text>
+  <line x1="270" y1="200" x2="270" y2="300" class="branch-line"/>
+  <circle cx="270" cy="300" r="10" class="release"/>
+  <text x="270" y="325" text-anchor="middle" class="text">RC1</text>
+  
+  <line x1="280" y1="300" x2="290" y2="280" class="branch-line"/>
+  <circle cx="300" cy="270" r="8" class="release"/>
+  <text x="300" y="260" text-anchor="middle" class="text">fix</text>
+  
+  <line x1="310" y1="270" x2="290" y2="100" class="merge-line"/>
+  <line x1="310" y1="270" x2="330" y2="200" class="merge-line"/>
+  
+  <text x="350" y="380" class="branch-label" fill="#FF9800">release/1.2.0</text>
+  <line x1="470" y1="200" x2="470" y2="400" class="branch-line"/>
+  <circle cx="470" cy="400" r="10" class="release"/>
+  <text x="470" y="425" text-anchor="middle" class="text">RC1</text>
+  
+  <line x1="480" y1="400" x2="490" y2="380" class="branch-line"/>
+  <circle cx="500" cy="370" r="8" class="release"/>
+  <text x="500" y="360" text-anchor="middle" class="text">fix</text>
+  
+  <line x1="510" y1="370" x2="490" y2="100" class="merge-line"/>
+  <line x1="510" y1="370" x2="530" y2="200" class="merge-line"/>
+  
+  <text x="550" y="380" class="branch-label" fill="#FF9800">release/2.0.0</text>
+  <line x1="670" y1="200" x2="670" y2="400" class="branch-line"/>
+  <circle cx="670" cy="400" r="10" class="release"/>
+  <text x="670" y="425" text-anchor="middle" class="text">RC1</text>
+  
+  <line x1="680" y1="400" x2="690" y2="380" class="branch-line"/>
+  <circle cx="700" cy="370" r="8" class="release"/>
+  <text x="700" y="360" text-anchor="middle" class="text">fix</text>
+  
+  <line x1="710" y1="370" x2="690" y2="100" class="merge-line"/>
+  
+  <!-- Version tags -->
+  <line x1="100" y1="100" x2="100" y2="60" class="tag-line"/>
+  <rect x="85" y="45" width="30" height="15" fill="#9C27B0" opacity="0.3"/>
+  <text x="100" y="55" text-anchor="middle" class="text" fill="#fff">v1.0.0</text>
+  
+  <line x1="300" y1="100" x2="300" y2="60" class="tag-line"/>
+  <rect x="285" y="45" width="30" height="15" fill="#9C27B0" opacity="0.3"/>
+  <text x="300" y="55" text-anchor="middle" class="text" fill="#fff">v1.1.0</text>
+  
+  <line x1="500" y1="100" x2="500" y2="60" class="tag-line"/>
+  <rect x="485" y="45" width="30" height="15" fill="#9C27B0" opacity="0.3"/>
+  <text x="500" y="55" text-anchor="middle" class="text" fill="#fff">v1.2.0</text>
+  
+  <line x1="700" y1="100" x2="700" y2="60" class="tag-line"/>
+  <rect x="685" y="45" width="30" height="15" fill="#9C27B0" opacity="0.3"/>
+  <text x="700" y="55" text-anchor="middle" class="text" fill="#fff">v2.0.0</text>
+  
+  <!-- Release process -->
+  <rect x="750" y="80" width="140" height="300" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="760" y="100" class="title">Release Process</text>
+  <text x="760" y="120" class="text">1. Branch from develop</text>
+  <text x="760" y="135" class="text">2. Release candidate</text>
+  <text x="760" y="150" class="text">3. Testing &amp; bug fixes</text>
+  <text x="760" y="165" class="text">4. Merge to main</text>
+  <text x="760" y="180" class="text">5. Tag version</text>
+  <text x="760" y="195" class="text">6. Merge back to develop</text>
+  
+  <text x="760" y="220" class="branch-label" fill="#9C27B0">Semantic Versioning</text>
+  <text x="760" y="240" class="text">MAJOR.MINOR.PATCH</text>
+  <text x="760" y="255" class="text">• MAJOR: Breaking changes</text>
+  <text x="760" y="270" class="text">• MINOR: New features</text>
+  <text x="760" y="285" class="text">• PATCH: Bug fixes</text>
+  
+  <text x="760" y="310" class="text">Examples:</text>
+  <text x="760" y="325" class="text">1.0.0 → 1.1.0 (feature)</text>
+  <text x="760" y="340" class="text">1.1.0 → 1.2.0 (feature)</text>
+  <text x="760" y="355" class="text">1.2.0 → 2.0.0 (breaking)</text>
+</svg>

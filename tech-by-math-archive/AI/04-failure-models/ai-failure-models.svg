@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="overfitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f44336;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#d32f2f;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="underfitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9800;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#f57c00;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="goodfitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#388e3c;stop-opacity:0.8" />
+    </linearGradient>
+    <radialGradient id="adversarialGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#9c27b0;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#9c27b0;stop-opacity:0.2" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f8f8"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">AI Failure Models &amp; Analysis</text>
+  
+  <!-- Bias-Variance Tradeoff Section -->
+  <g id="bias-variance">
+    <rect x="30" y="60" width="360" height="250" fill="#ffffff" stroke="#e91e63" stroke-width="2" rx="10"/>
+    <text x="210" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#e91e63">Bias-Variance Tradeoff</text>
+    
+    <!-- Three scenarios -->
+    <!-- Underfitting (High Bias, Low Variance) -->
+    <g id="underfitting">
+      <rect x="50" y="100" width="90" height="120" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="5"/>
+      <text x="95" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff9800">Underfitting</text>
+      <text x="95" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">High Bias</text>
+      <text x="95" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Low Variance</text>
+      
+      <!-- Simple linear line through scattered data -->
+      <circle cx="70" cy="170" r="2" fill="#666"/>
+      <circle cx="85" cy="165" r="2" fill="#666"/>
+      <circle cx="100" cy="180" r="2" fill="#666"/>
+      <circle cx="115" cy="175" r="2" fill="#666"/>
+      <line x1="60" y1="172" x2="130" y2="172" stroke="#ff9800" stroke-width="2"/>
+      <text x="95" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Too Simple</text>
+    </g>
+    
+    <!-- Good Fit (Balanced) -->
+    <g id="goodfit">
+      <rect x="155" y="100" width="90" height="120" fill="#e8f5e8" stroke="#4caf50" stroke-width="1" rx="5"/>
+      <text x="200" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4caf50">Good Fit</text>
+      <text x="200" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Low Bias</text>
+      <text x="200" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Low Variance</text>
+      
+      <!-- Smooth curve through data -->
+      <circle cx="175" cy="170" r="2" fill="#666"/>
+      <circle cx="190" cy="165" r="2" fill="#666"/>
+      <circle cx="205" cy="180" r="2" fill="#666"/>
+      <circle cx="220" cy="175" r="2" fill="#666"/>
+      <path d="M 165 172 Q 190 160, 215 175 Q 225 180, 235 177" stroke="#4caf50" stroke-width="2" fill="none"/>
+      <text x="200" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Just Right</text>
+    </g>
+    
+    <!-- Overfitting (Low Bias, High Variance) -->
+    <g id="overfitting">
+      <rect x="260" y="100" width="90" height="120" fill="#ffebee" stroke="#f44336" stroke-width="1" rx="5"/>
+      <text x="305" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f44336">Overfitting</text>
+      <text x="305" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Low Bias</text>
+      <text x="305" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">High Variance</text>
+      
+      <!-- Complex wiggly curve through all data points -->
+      <circle cx="280" cy="170" r="2" fill="#666"/>
+      <circle cx="295" cy="165" r="2" fill="#666"/>
+      <circle cx="310" cy="180" r="2" fill="#666"/>
+      <circle cx="325" cy="175" r="2" fill="#666"/>
+      <path d="M 270 172 L 280 170 L 290 160 L 295 165 L 305 185 L 310 180 L 320 170 L 325 175 L 335 178" 
+            stroke="#f44336" stroke-width="2" fill="none"/>
+      <text x="305" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#555">Too Complex</text>
+    </g>
+    
+    <!-- Mathematical formulation -->
+    <text x="50" y="250" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Total Error Decomposition:</text>
+    <text x="50" y="265" font-family="Arial, sans-serif" font-size="10" fill="#555">E[MSE] = Bias² + Variance + Irreducible Error</text>
+    <text x="50" y="280" font-family="Arial, sans-serif" font-size="10" fill="#555">Bias² = (E[f̂(x)] - f(x))²</text>
+    <text x="50" y="295" font-family="Arial, sans-serif" font-size="10" fill="#555">Variance = E[(f̂(x) - E[f̂(x)])²]</text>
+  </g>
+  
+  <!-- Adversarial Attacks Section -->
+  <g id="adversarial">
+    <rect x="410" y="60" width="360" height="250" fill="#ffffff" stroke="#9c27b0" stroke-width="2" rx="10"/>
+    <text x="590" y="85" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#9c27b0">Adversarial Attacks</text>
+    
+    <!-- Original vs Adversarial Example -->
+    <g id="adversarial-example">
+      <!-- Original Image -->
+      <rect x="450" y="110" width="80" height="80" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="5"/>
+      <text x="490" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1976d2">Original</text>
+      <circle cx="490" cy="150" r="20" fill="#4caf50" opacity="0.7"/>
+      <text x="490" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Cat: 99.7%</text>
+      
+      <!-- Plus sign -->
+      <text x="545" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">+</text>
+      
+      <!-- Noise -->
+      <rect x="570" y="110" width="80" height="80" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="5"/>
+      <text x="610" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff9800">Noise ε</text>
+      
+      <!-- Noise pattern -->
+      <g fill="#ff9800" opacity="0.6">
+        <circle cx="580" cy="140" r="1"/>
+        <circle cx="590" cy="145" r="1"/>
+        <circle cx="600" cy="140" r="1"/>
+        <circle cx="610" cy="150" r="1"/>
+        <circle cx="620" cy="145" r="1"/>
+        <circle cx="630" cy="155" r="1"/>
+        <circle cx="640" cy="150" r="1"/>
+        <circle cx="585" cy="160" r="1"/>
+        <circle cx="595" cy="165" r="1"/>
+        <circle cx="605" cy="160" r="1"/>
+        <circle cx="615" cy="170" r="1"/>
+        <circle cx="625" cy="165" r="1"/>
+        <circle cx="635" cy="175" r="1"/>
+      </g>
+      
+      <text x="610" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">||ε||∞ &lt; 0.01</text>
+      
+      <!-- Equals sign -->
+      <text x="670" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#333">=</text>
+      
+      <!-- Adversarial Example -->
+      <rect x="690" y="110" width="80" height="80" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="5"/>
+      <text x="730" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f44336">Adversarial</text>
+      <ellipse cx="730" cy="150" rx="20" ry="18" fill="url(#adversarialGradient)"/>
+      <text x="730" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Dog: 89.3%</text>
+    </g>
+    
+    <!-- Attack Methods -->
+    <text x="430" y="220" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Attack Methods:</text>
+    <text x="430" y="235" font-family="Arial, sans-serif" font-size="10" fill="#555">• FGSM: x' = x + ε·sign(∇ₓL(θ,x,y))</text>
+    <text x="430" y="250" font-family="Arial, sans-serif" font-size="10" fill="#555">• PGD: x' = Π(x + α·sign(∇ₓL(θ,x,y)))</text>
+    <text x="430" y="265" font-family="Arial, sans-serif" font-size="10" fill="#555">• C&amp;W: minimize ||δ||₂ + c·f(x+δ)</text>
+    
+    <!-- Defense -->
+    <text x="430" y="290" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Defense: Adversarial Training</text>
+    <text x="430" y="305" font-family="Arial, sans-serif" font-size="10" fill="#555">min θ E[max δ L(θ, x+δ, y)]</text>
+  </g>
+  
+  <!-- Model Degradation Section -->
+  <g id="degradation">
+    <rect x="30" y="330" width="360" height="240" fill="#ffffff" stroke="#795548" stroke-width="2" rx="10"/>
+    <text x="210" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#795548">Model Degradation</text>
+    
+    <!-- Performance over time graph -->
+    <g id="degradation-chart">
+      <!-- Axes -->
+      <line x1="70" y1="380" x2="70" y2="520" stroke="#333" stroke-width="2"/>
+      <line x1="70" y1="520" x2="350" y2="520" stroke="#333" stroke-width="2"/>
+      
+      <!-- Y-axis labels -->
+      <text x="60" y="385" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#666">1.0</text>
+      <text x="60" y="420" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#666">0.8</text>
+      <text x="60" y="455" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#666">0.6</text>
+      <text x="60" y="490" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#666">0.4</text>
+      <text x="60" y="525" text-anchor="end" font-family="Arial, sans-serif" font-size="10" fill="#666">0.2</text>
+      
+      <!-- X-axis labels -->
+      <text x="100" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">0</text>
+      <text x="170" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">6</text>
+      <text x="240" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">12</text>
+      <text x="310" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">18</text>
+      
+      <!-- Axis labels -->
+      <text x="210" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Time (months)</text>
+      <text x="25" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333" transform="rotate(-90 25 450)">Accuracy</text>
+      
+      <!-- Performance degradation curve -->
+      <path d="M 100 390 L 130 395 L 160 405 L 190 420 L 220 440 L 250 465 L 280 485 L 310 500" 
+            stroke="#d32f2f" stroke-width="3" fill="none"/>
+      
+      <!-- Data points -->
+      <circle cx="100" cy="390" r="4" fill="#d32f2f"/>
+      <circle cx="130" cy="395" r="4" fill="#d32f2f"/>
+      <circle cx="160" cy="405" r="4" fill="#d32f2f"/>
+      <circle cx="190" cy="420" r="4" fill="#d32f2f"/>
+      <circle cx="220" cy="440" r="4" fill="#d32f2f"/>
+      <circle cx="250" cy="465" r="4" fill="#d32f2f"/>
+      <circle cx="280" cy="485" r="4" fill="#d32f2f"/>
+      <circle cx="310" cy="500" r="4" fill="#d32f2f"/>
+      
+      <!-- Performance with retraining -->
+      <path d="M 100 390 L 130 395 L 160 405 L 190 400 L 220 405 L 250 410 L 280 405 L 310 410" 
+            stroke="#4caf50" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+      
+      <text x="320" y="395" font-family="Arial, sans-serif" font-size="10" fill="#4caf50">With Retraining</text>
+      <text x="320" y="505" font-family="Arial, sans-serif" font-size="10" fill="#d32f2f">Without Retraining</text>
+    </g>
+  </g>
+  
+  <!-- Catastrophic Forgetting Section -->
+  <g id="catastrophic-forgetting">
+    <rect x="410" y="330" width="360" height="240" fill="#ffffff" stroke="#607d8b" stroke-width="2" rx="10"/>
+    <text x="590" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#607d8b">Catastrophic Forgetting</text>
+    
+    <!-- Task sequence visualization -->
+    <g id="task-sequence">
+      <!-- Task 1 -->
+      <rect x="440" y="380" width="60" height="40" fill="#e8f5e8" stroke="#4caf50" stroke-width="2" rx="5"/>
+      <text x="470" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4caf50">Task 1</text>
+      <text x="470" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">95% Acc</text>
+      
+      <!-- Arrow -->
+      <path d="M 510 400 L 530 400" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- Task 2 -->
+      <rect x="540" y="380" width="60" height="40" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="5"/>
+      <text x="570" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff9800">Task 2</text>
+      <text x="570" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">92% Acc</text>
+      
+      <!-- Arrow -->
+      <path d="M 610 400 L 630 400" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- Catastrophic Result -->
+      <rect x="640" y="380" width="60" height="40" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="5"/>
+      <text x="670" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#f44336">Task 1</text>
+      <text x="670" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">23% Acc</text>
+      <text x="670" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#f44336">Forgotten!</text>
+    </g>
+    
+    <!-- Solutions -->
+    <text x="430" y="450" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Mitigation Strategies:</text>
+    <text x="430" y="465" font-family="Arial, sans-serif" font-size="10" fill="#555">• Elastic Weight Consolidation (EWC)</text>
+    <text x="430" y="480" font-family="Arial, sans-serif" font-size="10" fill="#555">• Progressive Neural Networks</text>
+    <text x="430" y="495" font-family="Arial, sans-serif" font-size="10" fill="#555">• Memory Replay Systems</text>
+    <text x="430" y="510" font-family="Arial, sans-serif" font-size="10" fill="#555">• Multi-task Learning</text>
+    
+    <!-- EWC Formula -->
+    <text x="430" y="535" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">EWC Loss:</text>
+    <text x="430" y="550" font-family="Arial, sans-serif" font-size="10" fill="#555">L(θ) = L_B(θ) + λ/2 Σᵢ Fᵢ(θᵢ - θᵢ*)²</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

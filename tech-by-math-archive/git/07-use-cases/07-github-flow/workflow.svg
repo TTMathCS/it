@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+     refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+    <style>
+      .main { fill: #2E7D32; stroke: #1B5E20; stroke-width: 2; }
+      .feature { fill: #1976D2; stroke: #0D47A1; stroke-width: 2; }
+      .deploy { fill: #FF9800; stroke: #E65100; stroke-width: 2; }
+      .branch-line { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .merge-line { stroke: #1976D2; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .deploy-line { stroke: #FF9800; stroke-width: 2; fill: none; stroke-dasharray: 5,5; }
+      .text { font-family: 'Courier New', monospace; font-size: 10px; fill: #333; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; fill: #1976D2; font-weight: bold; }
+      .branch-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">GitHub Flow Workflow</text>
+  
+  <!-- Main branch (always deployable) -->
+  <text x="50" y="80" class="branch-label" fill="#2E7D32">main</text>
+  <circle cx="100" cy="100" r="12" class="main"/>
+  <text x="100" y="125" text-anchor="middle" class="text">A: Stable</text>
+  
+  <line x1="112" y1="100" x2="188" y2="100" class="branch-line"/>
+  <circle cx="200" cy="100" r="12" class="main"/>
+  <text x="200" y="125" text-anchor="middle" class="text">C: Deployed</text>
+  
+  <line x1="212" y1="100" x2="288" y2="100" class="branch-line"/>
+  <circle cx="300" cy="100" r="12" class="main"/>
+  <text x="300" y="125" text-anchor="middle" class="text">E: Production</text>
+  
+  <line x1="312" y1="100" x2="388" y2="100" class="branch-line"/>
+  <circle cx="400" cy="100" r="12" class="main"/>
+  <text x="400" y="125" text-anchor="middle" class="text">G: Live</text>
+  
+  <line x1="412" y1="100" x2="488" y2="100" class="branch-line"/>
+  <circle cx="500" cy="100" r="12" class="main"/>
+  <text x="500" y="125" text-anchor="middle" class="text">I: Updated</text>
+  
+  <line x1="512" y1="100" x2="588" y2="100" class="branch-line"/>
+  <circle cx="600" cy="100" r="12" class="main"/>
+  <text x="600" y="125" text-anchor="middle" class="text">K: Current</text>
+  
+  <!-- Feature branch 1 -->
+  <text x="50" y="180" class="branch-label" fill="#1976D2">feature/login</text>
+  <line x1="112" y1="100" x2="138" y2="200" class="branch-line"/>
+  <circle cx="150" cy="200" r="12" class="feature"/>
+  <text x="150" y="225" text-anchor="middle" class="text">B: Login UI</text>
+  
+  <!-- Merge feature 1 to main -->
+  <line x1="162" y1="200" x2="188" y2="100" class="merge-line"/>
+  
+  <!-- Feature branch 2 -->
+  <text x="50" y="280" class="branch-label" fill="#1976D2">feature/api</text>
+  <line x1="212" y1="100" x2="238" y2="300" class="branch-line"/>
+  <circle cx="250" cy="300" r="12" class="feature"/>
+  <text x="250" y="325" text-anchor="middle" class="text">D: REST API</text>
+  
+  <!-- Merge feature 2 to main -->
+  <line x1="262" y1="300" x2="288" y2="100" class="merge-line"/>
+  
+  <!-- Feature branch 3 -->
+  <text x="330" y="280" class="branch-label" fill="#1976D2">feature/auth</text>
+  <line x1="312" y1="100" x2="338" y2="300" class="branch-line"/>
+  <circle cx="350" cy="300" r="12" class="feature"/>
+  <text x="350" y="325" text-anchor="middle" class="text">F: OAuth</text>
+  
+  <!-- Merge feature 3 to main -->
+  <line x1="362" y1="300" x2="388" y2="100" class="merge-line"/>
+  
+  <!-- Feature branch 4 -->
+  <text x="430" y="280" class="branch-label" fill="#1976D2">feature/dashboard</text>
+  <line x1="412" y1="100" x2="438" y2="300" class="branch-line"/>
+  <circle cx="450" cy="300" r="12" class="feature"/>
+  <text x="450" y="325" text-anchor="middle" class="text">H: Dashboard</text>
+  
+  <!-- Merge feature 4 to main -->
+  <line x1="462" y1="300" x2="488" y2="100" class="merge-line"/>
+  
+  <!-- Feature branch 5 -->
+  <text x="530" y="280" class="branch-label" fill="#1976D2">feature/mobile</text>
+  <line x1="512" y1="100" x2="538" y2="300" class="branch-line"/>
+  <circle cx="550" cy="300" r="12" class="feature"/>
+  <text x="550" y="325" text-anchor="middle" class="text">J: Mobile</text>
+  
+  <!-- Merge feature 5 to main -->
+  <line x1="562" y1="300" x2="588" y2="100" class="merge-line"/>
+  
+  <!-- Deployment indicators -->
+  <text x="50" y="380" class="branch-label" fill="#FF9800">Deployments</text>
+  <line x1="112" y1="100" x2="112" y2="400" class="deploy-line"/>
+  <circle cx="112" cy="400" r="8" class="deploy"/>
+  <text x="112" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <line x1="212" y1="100" x2="212" y2="400" class="deploy-line"/>
+  <circle cx="212" cy="400" r="8" class="deploy"/>
+  <text x="212" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <line x1="312" y1="100" x2="312" y2="400" class="deploy-line"/>
+  <circle cx="312" cy="400" r="8" class="deploy"/>
+  <text x="312" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <line x1="412" y1="100" x2="412" y2="400" class="deploy-line"/>
+  <circle cx="412" cy="400" r="8" class="deploy"/>
+  <text x="412" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <line x1="512" y1="100" x2="512" y2="400" class="deploy-line"/>
+  <circle cx="512" cy="400" r="8" class="deploy"/>
+  <text x="512" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <line x1="612" y1="100" x2="612" y2="400" class="deploy-line"/>
+  <circle cx="612" cy="400" r="8" class="deploy"/>
+  <text x="612" y="420" text-anchor="middle" class="text">Deploy</text>
+  
+  <!-- Mathematical properties -->
+  <rect x="50" y="450" width="700" height="40" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="470" class="title">GitHub Flow Properties:</text>
+  <text x="60" y="485" class="text">• Single main branch always deployable • Short-lived feature branches • Continuous deployment</text>
+  
+</svg>
