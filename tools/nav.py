@@ -49,6 +49,7 @@ COURSE_ORDER = {
 ORDER = {
     "codility": ["your-test.md", "cheat-sheet.md", "how-codility-works.md", "test-day-plan.md", "mock-test-1.md", "sql-practice.md",
                  "python-practice.md", "mock-test-2.md", "mock-test-3.md", "mock-test-4.md",
+                 "mock-test-5.md", "mock-test-6.md", "flash-cards.md", "asked-aloud.md",
                  "common-mistakes.md", "codility-tasks.md"],
 }
 FRONT = ["fast-track.md", "cheat-sheet.md", "which-technique.md", "sample-database.md"]

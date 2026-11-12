@@ -7,11 +7,11 @@ and adjust once you have read the tasks:
 
 | Part | Share | In a 90-minute test | In a 120-minute test |
 |---|---|---|---|
-| Read all three tasks | 5% | 5 min | 5 min |
+| Read all three tasks | 5% | 5 min | 6 min |
 | SQL task 1 | 25% | 22 min | 30 min |
 | SQL task 2 | 25% | 22 min | 30 min |
 | Python task | 40% | 36 min | 48 min |
-| Final check of all three | 5% | 5 min | 7 min |
+| Final check of all three | 5% | 5 min | 6 min |
 
 If one task is stuck for more than about ten minutes past its share, leave a working partial answer, move on,
 and come back. A partial answer that runs earns the hidden tests it passes; a query with a syntax error earns
@@ -37,7 +37,7 @@ Then build the query **one step at a time**, running it after each step:
 4. Window functions, in a CTE (`WITH step AS (...)`), if the task needs "per group" ranking or "previous row".
 5. The final `SELECT` list with the right names, and `ORDER BY`.
 
-Then add your own test rows (see "Write your own edge cases" in every solution of this guide).
+Then add your own test rows (see the "Write your own edge cases" box in most SQL solutions of this guide).
 
 ## Which SQL dialect?
 
@@ -73,7 +73,7 @@ The table shows what differs. Every cell was checked on PostgreSQL 16 and SQLite
 | Year of a date | `EXTRACT(YEAR FROM d)` | `strftime('%Y', d)` (text) |
 | `CAST('2026-03-01 10:00' AS TIMESTAMP)` | a timestamp | **2026**: SQLite has no timestamp type; keep dates as text |
 | Bigger of two values | `GREATEST(a, b)` | `MAX(a, b)` |
-| Join text | `a \|\| b` or `CONCAT(a, b)` | the same |
+| Join text | `a \|\| b` or `CONCAT(a, b)` | `a \|\| b`; `CONCAT` from 3.44 |
 | Glue a group's text together | `STRING_AGG(x, ',')` | `GROUP_CONCAT(x, ',')`; `STRING_AGG` from 3.44 |
 | Case-insensitive match | `ILIKE`, or `LOWER(a) LIKE LOWER(b)` | `LIKE` already ignores case for A to Z |
 | Where NULLs go in `ORDER BY x` | last (first with `DESC`) | first (last with `DESC`) |

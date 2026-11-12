@@ -9,7 +9,7 @@ here are this guide's own short summaries, not Codility's text. Difficulty label
     1. The [demo test](https://app.codility.com/demo/take-sample-test/).
     2. The three SQL tasks below.
     3. Lessons 1 to 9 (one or two tasks each), then lessons 14 to 16. For a data engineering test this is plenty;
-       lessons 10 to 13 and 17 are more mathematical.
+       lessons 10 to 13 and 17 are more mathematical or harder than a data engineering test needs.
 
 ## SQL: Exercise 6
 
@@ -70,7 +70,7 @@ Codility tasks to try on the real grader.
 ## Other places to practise SQL
 
 Each page below was opened on 11 November 2026 to check what it offers and which database its editor runs.
-Remember that Codility gives you PostgreSQL or SQLite: on a site with another database, functions for dates and
+Codility's practice SQL tasks offer PostgreSQL or SQLite (check what your own test offers): on a site with another database, functions for dates and
 text differ (see the table in the [test-day plan](test-day-plan.md#which-sql-dialect)).
 
 | Site | Database | What it has |
@@ -81,5 +81,5 @@ text differ (see the table in the [test-day plan](test-day-plan.md#which-sql-dia
 | [SQLZoo](https://sqlzoo.net/wiki/SQL_Tutorial) | a choice of engines | Step-by-step tutorials with small exercises, including joins, `NULL`, self joins and window functions. Good for filling a gap quickly. |
 | [SQLite Fiddle](https://sqlite.org/fiddle/) | SQLite | Not a question site: an SQLite that runs in your browser, handy for trying the tasks in this guide with no install. |
 
-LeetCode's SQL questions are also widely used for practice, but its page refused the automated check, so it is
-not linked here.
+LeetCode also has many SQL questions; it isn't listed here because its page couldn't be checked when this list
+was made.

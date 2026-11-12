@@ -1416,7 +1416,7 @@ OK
 ```
 
 - A **column list** fills the listed columns; the others get their default, here `NULL` (1005).
-- **`BY NAME`** matches the query's column names to the table's, whatever their order (Databricks SQL and Databricks Runtime 13.3 LTS and above). Without it, columns match by position: the third query column, `customer_id`, landed on `order_date` and failed. A positional insert that does not fail, because the types happen to be compatible, silently puts values in the wrong columns, which is worse. One limit, from [INSERT](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-dml-insert-into) (last updated Oct 21, 2026): "For nested struct fields, resolution is by name on Parquet (and other non-Delta) tables and by position on Delta Lake Lake tables."
+- **`BY NAME`** matches the query's column names to the table's, whatever their order (Databricks SQL and Databricks Runtime 13.3 LTS and above). Without it, columns match by position: the third query column, `customer_id`, landed on `order_date` and failed. A positional insert that does not fail, because the types happen to be compatible, silently puts values in the wrong columns, which is worse. One limit, from [INSERT](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-syntax-dml-insert-into) (last updated Oct 21, 2026): "For nested struct fields, resolution is by name on Parquet (and other non-Delta) tables and by position on Delta Lake Lake [sic] tables."
 
 In PySpark, `df.write.mode("append").saveAsTable(...)` matches columns by name for a Delta table, while `df.write.insertInto(...)` matches by position.
 

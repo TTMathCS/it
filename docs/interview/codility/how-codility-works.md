@@ -1,9 +1,9 @@
 # How a Codility test works
 
-Everything on this page comes from Codility's own pages, read on 11 November 2026: the
+Everything about Codility on this page comes from Codility's own pages, read on 11 November 2026: the
 [candidate FAQ](https://app.codility.com/candidate-faq/) and the
-[SQL practice exercise](https://app.codility.com/programmers/trainings/6/). Where something is not stated
-there, this page says **unknown**.
+[SQL practice exercise](https://app.codility.com/programmers/trainings/6/); the SQLite version notes come from
+SQLite's release history. Where something is not stated there, this page says **unknown**.
 
 ## The invitation and the clock
 

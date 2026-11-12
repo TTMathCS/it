@@ -28,6 +28,10 @@ invitation, per [Codility's candidate FAQ](https://app.codility.com/candidate-fa
 | [Mock test 2](mock-test-2.md) | Timed rehearsal | 70 min |
 | [Mock test 3](mock-test-3.md) | Timed rehearsal, harder SQL | 75 min |
 | [Mock test 4](mock-test-4.md) | The last rehearsal | 75 min |
+| [Mock test 5](mock-test-5.md) | Extra rehearsal, SQL tested on SQLite | 80 min |
+| [Mock test 6](mock-test-6.md) | Extra rehearsal, SQL tested on SQLite | 80 min |
+| [Flash cards](flash-cards.md) | Quick questions for the last evening: SQL, Python, Databricks | 30 min |
+| [Asked aloud](asked-aloud.md) | 30 SQL and pipeline questions an interviewer may ask out loud | 30 min |
 | [The 15 most common mistakes](common-mistakes.md) | Read before the test | 10 min |
 | [Codility's own tasks](codility-tasks.md) | All three free SQL tasks on Codility's real grader, the lessons for Python, and other sites to practise on | as long as you have |
 
@@ -71,9 +75,10 @@ Sit every mock **timed**, in one go, and only then open the solutions.
     * **Day 2.** [SQL practice](sql-practice.md) groups A and B, and Codility's SqlSum and SqlEventsDelta.
     * **Day 3.** SQL practice groups C and D, and Codility's SqlWorldCup. Any topic that felt shaky: the matching
       chapter of the [SQL course](../../databases/sql/index.md).
-    * **Day 4.** [Python practice](python-practice.md) groups A and B, and Codility lessons 1 to 4.
+    * **Day 4.** [Python practice](python-practice.md) groups A and B, and Codility lessons 1 to 4 (the rest as time allows;
+      see [the order of work](codility-tasks.md)).
     * **Day 5.** [Mock test 2](mock-test-2.md). Then Python practice groups C and D.
-    * **Day 6.** [Mock test 3](mock-test-3.md). Then SQL practice group E and Python groups E to G.
+    * **Day 6.** [Mock test 3](mock-test-3.md). Then SQL practice groups E to G and Python groups E to I, as time allows.
     * **Day 7.** [Mock test 4](mock-test-4.md), [the 15 most common mistakes](common-mistakes.md), the cheat
       sheet. Stop early and rest.
 
@@ -89,8 +94,8 @@ Sit every mock **timed**, in one go, and only then open the solutions.
   compared with a slow but obviously correct answer, and the largest input the limits allow, timed. Each
   solution states its cost (for example O(N log N)) and names the slow answer that would fail the large
   hidden tests; where that slow answer is shown, it was run and timed.
-* **The Python version Codility runs is not known from outside;** the FAQ says it is shown in the Codility
-  interface. The answers here use only plain Python 3 that works on any recent version.
+* **This guide could not check which Python version Codility runs;** the editor shows it (open the demo test to
+  see it). The answers here use only plain Python 3 that works on any recent version.
 
 !!! note "About Codility's own tasks"
     Codility publishes free practice tasks. This guide links to them and describes them in its own words; it

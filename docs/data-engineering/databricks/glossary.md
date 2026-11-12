@@ -179,6 +179,12 @@ The folder where a streaming query keeps its offsets, commits, state and metadat
 Each query needs its own checkpoint; a new or deleted checkpoint makes the query start over. See
 [chapter 11](11-Structured-Streaming.md#113-checkpoints-what-is-inside-and-why-each-query-needs-its-own).
 
+### CI/CD
+
+Continuous integration and delivery: every change is tested on its own and then deployed the same way each time, by
+a script, not by hand. In Databricks this is usually Declarative Automation Bundles run from a Git provider. See
+[chapter 16](16-CICD-and-Testing.md#161-why-data-pipelines-need-cicd).
+
 ### Classic compute
 
 Compute you create, configure and manage yourself (all-purpose, job and classic pipeline compute), deployed in your
@@ -278,6 +284,12 @@ Photon and connectors; serverless compute and SQL warehouses are versioned by Da
 versions get fixes for years, and Databricks recommends the latest LTS for production job compute. See
 [chapter 6](06-Compute.md#67-databricks-runtime-versions).
 
+### DataFrame
+
+A table held by Spark: rows with named, typed columns, split into partitions across the cluster. You build it with
+Python calls or SQL, and nothing runs until an action asks for a result. See
+[chapter 3](03-Apache-Spark.md#33-sparksession-dataframes-schemas-and-row).
+
 ### DBU
 
 A Databricks unit, "units of processing capability per hour based on VM instance type", the basis of billing. On
@@ -369,6 +381,12 @@ The Spark process that runs your program or notebook cell, plans queries and sen
 A hidden Delta table each Lakeflow pipeline writes, with audit, data quality, progress and lineage events; you query
 it with `event_log()`. Delivery is best effort. See [chapter 13](13-Declarative-Pipelines.md#1310-monitoring-and-limitations)
 and [chapter 14](14-Data-Quality-and-CDC.md#144-expectation-metrics-in-the-event-log).
+
+### Event time and processing time
+
+Event time is when something really happened (a timestamp in the record); processing time is when Spark reads it.
+Windows and watermarks use event time, so late records still land in the right window. See
+[chapter 11](11-Structured-Streaming.md#116-event-time-watermarks-and-late-data).
 
 ### Exactly-once
 
@@ -519,8 +537,9 @@ risk (Databricks Runtime 13.3 LTS and above). A parameter marker alone cannot st
 ### Identity column
 
 A Delta `BIGINT` column whose values Delta assigns to each inserted row, declared `GENERATED ALWAYS AS IDENTITY` (or
-`BY DEFAULT`); the values are unique but not guaranteed to be contiguous. It is one way to make surrogate keys. In a pipeline, Databricks recommends them only on streaming tables, because a materialized
-view can recompute the values on refresh. See [chapter 10](10-Building-Gold.md#identity-columns-a-counter-for-each-new-row),
+`BY DEFAULT`); the values are unique but not guaranteed to be contiguous. It is one way to make surrogate keys. In a
+pipeline, Databricks recommends them only on streaming tables, because a materialized view can recompute the values on
+refresh. See [chapter 10](10-Building-Gold.md#identity-columns-a-counter-for-each-new-row),
 [chapter 19](19-Function-Toolbox.md#monotonically_increasing_id-is-not-a-sequence) and
 [chapter 13](13-Declarative-Pipelines.md#1312-practice-questions).
 
@@ -683,8 +702,14 @@ region, and its grants apply in all of them. See [chapter 5](05-Unity-Catalog.md
 ### Metric views
 
 A Unity Catalog object that defines business measures and dimensions once (in YAML) so that dashboards, Genie Agents
-and SQL queries compute them the same way; it is created with `CREATE VIEW ... WITH METRICS LANGUAGE YAML` and its measures are queried with the `MEASURE`
-function. See [chapter 10](10-Building-Gold.md#109-metric-views-the-semantic-layer).
+and SQL queries compute them the same way; it is created with `CREATE VIEW ... WITH METRICS LANGUAGE YAML` and its measures are
+queried with the `MEASURE` function. See [chapter 10](10-Building-Gold.md#109-metric-views-the-semantic-layer).
+
+### Micro-batch
+
+Structured Streaming's way of working: it collects the new input since the last run and processes it as one small
+batch, again and again. See
+[chapter 11](11-Structured-Streaming.md#111-the-model-an-unbounded-table-processed-in-micro-batches).
 
 ## N
 
@@ -742,6 +767,13 @@ which prevents SQL injection; one statement cannot mix the two kinds. `EXECUTE I
 and binds markers with `USING`. See [chapter 17](17-Databricks-SQL-vs-Standard.md#parameter-markers) and
 [chapter 21](21-Programming-in-SQL.md#215-dynamic-sql-without-sql-injection).
 
+### Parquet
+
+An open, column-based file format. A query reads only the columns it needs and can skip blocks using the min/max
+stored in each file; Delta tables are Parquet files plus a log. See
+[chapter 1](01-What-Is-Databricks.md#see-for-yourself-a-delta-table-is-parquet-files-plus-a-log),
+[chapter 4](04-Delta-Lake.md).
+
 ### Partition (Spark)
 
 A chunk of rows processed by one task. Too few partitions leave cores idle; too many create tiny tasks. See
@@ -770,6 +802,12 @@ pipeline infers the dependency graph and runs it in order. One run is called an 
 
 `PIVOT` turns row values into columns (one column per currency, for example); `UNPIVOT` turns columns back into rows.
 See [chapter 17](17-Databricks-SQL-vs-Standard.md#176-reshaping-pivot-unpivot-lateral-view-and-table-valued-functions).
+
+### Predicate pushdown and partition pruning
+
+Two ways to read less: pushdown hands the filter to the file reader so it skips data inside files, and pruning skips
+whole partition folders whose value cannot match. Look for `PushedFilters` in the plan. See chapter 3,
+[the four plans](03-Apache-Spark.md#the-four-plans) and [partition pruning](03-Apache-Spark.md#partitionby-on-write-and-partition-pruning).
 
 ### Predictive optimization
 
@@ -855,8 +893,8 @@ a new commit; the usual fix after a bad `DELETE`. The old data files must not ha
 
 ### Row filter
 
-A SQL function attached to a table that returns a Boolean for each row; rows where it returns false are hidden from
-that user, and a table can have one. A dynamic view does the same inside a view's SQL, with functions such as
+A SQL function attached to a table that returns a Boolean for each row; rows where it returns false or NULL are hidden
+from that user, and a table can have one. A dynamic view does the same inside a view's SQL, with functions such as
 `is_account_group_member()`. See [chapter 5](05-Unity-Catalog.md#57-row-level-security-and-column-masking) and
 [chapter 21](21-Programming-in-SQL.md#219-views-dynamic-views-row-filters-and-column-masks).
 
@@ -886,6 +924,12 @@ A slowly changing dimension that keeps history: a change closes the current row 
 `is_current = false`) and inserts a new current row. AUTO CDC stores the range in `__START_AT` and `__END_AT`. See
 [chapter 9](09-Building-Silver.md#910-scd-type-2-with-merge) and
 [chapter 14](14-Data-Quality-and-CDC.md#what-the-scd-type-2-target-looks-like).
+
+### Schema drift
+
+The source changes its shape without warning: new columns, renamed ones, a type that changes. Bronze keeps it
+(rescued data column, schema evolution) and silver decides what to accept. See
+[chapter 7](07-Medallion-Architecture.md#75-bronze-in-depth-schema-drift-and-raw-storage).
 
 ### Schema enforcement
 

@@ -2114,7 +2114,7 @@ Output (from `ex08_windows.out`, rows around the month change):
 The PySpark columns match the first five SQL rows. Notes:
 
 - `rowsBetween(-2, 0)` in PySpark is `ROWS BETWEEN 2 PRECEDING AND CURRENT ROW`; `Window.unboundedPreceding` and `Window.currentRow` are the named bounds.
-- The first two rows of a 3-row moving average average fewer than three values (59.90, then 154.45). If the report needs `NULL` until there are three values, add `CASE WHEN count(*) OVER (same window) = 3 THEN ... END`.
+- In the first two rows the 3-row moving average covers fewer than three values (59.90, then 154.45). If the report needs `NULL` until there are three values, add `CASE WHEN count(*) OVER (same window) = 3 THEN ... END`.
 - A running total that resets each month is a `PARTITION BY date_trunc('MONTH', ...)`: `month_to_date` restarts at order 1014.
 - `sum(amount) OVER ()` (empty window: all rows, no order) gives the grand total on every row, so a share of total needs no join.
 
