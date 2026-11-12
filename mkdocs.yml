@@ -63,6 +63,7 @@ extra_javascript:
   - javascripts/levels.js
   - javascripts/reader.js
   - javascripts/sql-play.js   # the SQL playground: PGlite (PostgreSQL in WebAssembly, Apache-2.0), self-hosted in assets/pglite/
+  - javascripts/py-play.js   # the Python run boxes on the Python practice tasks only: Pyodide 314.0.7 (MPL-2.0), self-hosted in assets/pyodide/
 
 markdown_extensions:
   - toc:

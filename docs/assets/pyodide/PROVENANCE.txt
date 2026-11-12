@@ -1,0 +1,24 @@
+Pyodide: Python compiled to WebAssembly, used by the Python run boxes (javascripts/py-play.js, py-worker.mjs).
+
+Package:    pyodide, version 314.0.7 (published 14 Sep 2026; the "latest" release on npm on 12 Nov 2026), pinned
+Project:    https://github.com/pyodide/pyodide, by the Pyodide project
+Licence:    MPL-2.0 (LICENSE.txt in this folder, from the project's repository at tag 314.0.7); CPython is under the PSF licence
+Source:     https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz
+Integrity:  sha512-0YvXxEhfEdpLfb/XkM2BFAeMROq0iMUX2bzzH9pOttyMcWkwq+HbE5uyuGD82LN7y2q+SNvi/6V5JEsOlD2R1A==
+            (the registry's published hash; the downloaded tarball was hashed again on 12 Nov 2026 and matched)
+SHA-256:    66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0 (the tarball)
+Checked:    12 Nov 2026. The package has no install scripts. The package name and repository were confirmed in the
+            official GitHub repository's src/js/package.json. Its signature (provenance) was NOT verified: the signing
+            service's host was blocked from the checking machine. pyodide.mjs names one outside address,
+            cdn.jsdelivr.net, used only to download optional packages; the boxes load no packages and set indexURL to
+            this folder, and a browser test on 12 Nov 2026 saw no request to any other site.
+
+Files copied unchanged from the tarball (only the core; no packages):
+  pyodide.mjs, pyodide.asm.mjs, pyodide.asm.wasm, python_stdlib.zip, pyodide-lock.json
+
+SHA-256 of each file here:
+6f1d60f7bf529beb300f0f47983c921d3982363640ba20af0e38efdddbc66109  pyodide.mjs
+f7cdc8ece80678ceb712f8e65ebe6d3a83203a180c399865f49612a051693635  pyodide.asm.mjs
+cc36e3cab04fdfc9a63ff13eb52eae2b911bf46c025cc7b281f394bd3de1d5e6  pyodide.asm.wasm
+fa1957e5777068fc4f7437f96d860ae2fbe9c19732ba06c84e004ec16dd7dd7a  python_stdlib.zip
+5dc2fc119108bc148c7457dc86e7675b5c87e1cafd420b9c34c1eaef7b36c010  pyodide-lock.json

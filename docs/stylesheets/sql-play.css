@@ -45,3 +45,10 @@
 .md-typeset .sqlplay-bad { background: rgba(255, 152, 0, 0.14); border-left: 3px solid #ff9800; }
 .sqlplay-openrow { margin: -0.6em 0 1em; text-align: right; }
 .md-typeset .sqlplay-openrow .md-button { padding: 0.2em 0.9em; font-size: 0.72rem; }
+/* Python boxes (javascripts/py-play.js) share the look above */
+.md-typeset .pyplay-out { margin: 0.3em 0 0; padding: 0.5em 0.7em; font-size: 0.75rem; max-height: 16em; overflow: auto; white-space: pre-wrap; }
+.md-typeset .pyplay .sqlplay-table table td, .md-typeset .pyplay .sqlplay-table table th { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 22em; min-width: 0 !important; }
+.md-typeset .pyplay .sqlplay-table table td:first-child, .md-typeset .pyplay .sqlplay-table table th:first-child {
+  width: 1.6em; min-width: 0 !important; padding: 0.3em 0.35em !important; text-align: center;
+}
+.md-typeset .pyplay .sqlplay-table table th { overflow-wrap: normal; }
