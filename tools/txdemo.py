@@ -33,6 +33,13 @@ DOCTORS = [
     "CREATE TABLE doctors (name VARCHAR(20) PRIMARY KEY, on_call INTEGER NOT NULL)",
     "INSERT INTO doctors VALUES ('Kim', 1), ('Lee', 1)",
 ]
+FLIGHT = [
+    "CREATE TABLE flights (id INTEGER PRIMARY KEY, seats INTEGER NOT NULL, seats_left INTEGER NOT NULL CHECK (seats_left >= 0))",
+    "CREATE TABLE bookings (flight_id INTEGER NOT NULL, passenger VARCHAR(20) NOT NULL)",
+    "INSERT INTO flights VALUES (1, 2, 1)",
+    "INSERT INTO bookings VALUES (1, 'Cai')",
+]
+COUNT_BOOKED = "SELECT COUNT(*) AS booked FROM bookings WHERE flight_id = 1"
 BOTH = "SELECT owner, balance FROM accounts ORDER BY id"
 
 # each step: (session, sql) or (session, sql, "bg") or (session, "join")
@@ -155,6 +162,52 @@ SCENARIOS = {
         ("A", "COMMIT"),
         ("B", "COMMIT"),
         ("A", "SELECT SUM(on_call) AS on_call FROM doctors"),
+    ]),
+    # Tech by Math tutorial 4: the last seat. Each checks "1 booked of 2 seats", each books: 3 bookings for 2 seats
+    "seat-rc": (FLIGHT, [
+        ("A", "BEGIN"),
+        ("B", "BEGIN"),
+        ("A", COUNT_BOOKED),
+        ("B", COUNT_BOOKED),
+        ("A", "INSERT INTO bookings VALUES (1, 'Ana')"),
+        ("B", "INSERT INTO bookings VALUES (1, 'Ben')"),
+        ("A", "COMMIT"),
+        ("B", "COMMIT"),
+        ("A", COUNT_BOOKED),
+    ]),
+    "seat-rr": (FLIGHT, [
+        ("A", "BEGIN ISOLATION LEVEL REPEATABLE READ"),
+        ("B", "BEGIN ISOLATION LEVEL REPEATABLE READ"),
+        ("A", COUNT_BOOKED),
+        ("B", COUNT_BOOKED),
+        ("A", "INSERT INTO bookings VALUES (1, 'Ana')"),
+        ("B", "INSERT INTO bookings VALUES (1, 'Ben')"),
+        ("A", "COMMIT"),
+        ("B", "COMMIT"),
+        ("A", COUNT_BOOKED),
+    ]),
+    "seat-serializable": (FLIGHT, [
+        ("A", "BEGIN ISOLATION LEVEL SERIALIZABLE"),
+        ("B", "BEGIN ISOLATION LEVEL SERIALIZABLE"),
+        ("A", COUNT_BOOKED),
+        ("B", COUNT_BOOKED),
+        ("A", "INSERT INTO bookings VALUES (1, 'Ana')"),
+        ("B", "INSERT INTO bookings VALUES (1, 'Ben')"),
+        ("A", "COMMIT"),
+        ("B", "COMMIT"),
+        ("A", COUNT_BOOKED),
+    ]),
+    # the fix by a conflict on one row: take the seat from the counter, which cannot go below 0
+    "seat-counter": (FLIGHT, [
+        ("A", "BEGIN"),
+        ("B", "BEGIN"),
+        ("A", "UPDATE flights SET seats_left = seats_left - 1 WHERE id = 1"),
+        ("B", "UPDATE flights SET seats_left = seats_left - 1 WHERE id = 1", "bg"),
+        ("A", "INSERT INTO bookings VALUES (1, 'Ana')"),
+        ("A", "COMMIT"),
+        ("B", "join"),
+        ("B", "ROLLBACK"),
+        ("A", COUNT_BOOKED),
     ]),
     # two sessions lock two rows in opposite order
     "deadlock": (ACCOUNTS, [

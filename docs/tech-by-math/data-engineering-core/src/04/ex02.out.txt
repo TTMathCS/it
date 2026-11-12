@@ -1,0 +1,5 @@
+Ben, try 1: 40001 could not serialize access due to read/write dependencies among transactions; trying again
+Ana, try 1: booked (saw 1 of 2)
+Ben, try 2: 40001 could not serialize access due to read/write dependencies among transactions; trying again
+Ben, try 3: 2 of 2 booked, the flight is full
+bookings: ('Ana, Cai', 2)

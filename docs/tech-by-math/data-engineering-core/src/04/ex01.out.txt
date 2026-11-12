@@ -1,0 +1,30 @@
+S1 lost update: r1(a) r2(a) w1(a) w2(a)
+   conflicting pairs: r1(a) before w2(a), r2(a) before w1(a), w1(a) before w2(a)
+   edges: T1 -> T2, T2 -> T1
+   cycle: not conflict-serializable
+S2 one after the other, item by item: r1(a) w1(a) r2(a) w2(a) r1(b) w1(b) r2(b) w2(b)
+   conflicting pairs: r1(a) before w2(a), w1(a) before r2(a), w1(a) before w2(a), r1(b) before w2(b), w1(b) before r2(b), w1(b) before w2(b)
+   edges: T1 -> T2
+   serializable, as T1 then T2
+S3 last seat (P = the set of bookings of flight 1): r1(P) r2(P) w1(P) w2(P)
+   conflicting pairs: r1(P) before w2(P), r2(P) before w1(P), w1(P) before w2(P)
+   edges: T1 -> T2, T2 -> T1
+   cycle: not conflict-serializable
+S4 doctors on call (write skew): r1(k) r1(l) r2(k) r2(l) w1(k) w2(l)
+   conflicting pairs: r1(l) before w2(l), r2(k) before w1(k)
+   edges: T1 -> T2, T2 -> T1
+   cycle: not conflict-serializable
+E2a: r1(x) w2(x) r3(x) w1(y) r2(y)
+   conflicting pairs: r1(x) before w2(x), w2(x) before r3(x), w1(y) before r2(y)
+   edges: T1 -> T2, T2 -> T3
+   serializable, as T1 then T2 then T3
+E2b: r1(x) r2(y) w3(x) w2(x) r1(z) w3(z)
+   conflicting pairs: r1(x) before w3(x), r1(x) before w2(x), w3(x) before w2(x), r1(z) before w3(z)
+   edges: T1 -> T2, T1 -> T3, T3 -> T2
+   serializable, as T1 then T3 then T2
+E2c: w1(x) r2(x) w2(y) r3(y) w3(z) r1(z)
+   conflicting pairs: w1(x) before r2(x), w2(y) before r3(y), w3(z) before r1(z)
+   edges: T1 -> T2, T2 -> T3, T3 -> T1
+   cycle: not conflict-serializable
+
+T1 = r(x) w(y), T2 = r(y) w(z), T3 = r(z) w(x): 90 interleavings, 42 with no cycle, graph test and brute force agree on 90 of 90
