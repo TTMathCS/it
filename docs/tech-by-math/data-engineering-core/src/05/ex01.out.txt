@@ -1,0 +1,21 @@
+as written: ['Oslo', 'Oslo', 'Oslo', 'Lagos', 'Lagos', 'Toronto', 'Toronto', 'Toronto', 'Toronto', 'Oslo', 'Oslo', 'Lagos']
+   plain text: 63 bytes = 504 bits
+   dictionary {0: 'Lagos', 1: 'Oslo', 2: 'Toronto'}; codes [1, 1, 1, 0, 0, 2, 2, 2, 2, 1, 1, 0]
+   bit-packed codes: 12 x 2 bits = 24 bits
+   runs (code, length): [(1, 3), (0, 2), (2, 4), (1, 2), (0, 1)] -> 5 runs; value changes: 4
+sorted: ['Lagos', 'Lagos', 'Lagos', 'Oslo', 'Oslo', 'Oslo', 'Oslo', 'Oslo', 'Toronto', 'Toronto', 'Toronto', 'Toronto']
+   plain text: 63 bytes = 504 bits
+   dictionary {0: 'Lagos', 1: 'Oslo', 2: 'Toronto'}; codes [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2]
+   bit-packed codes: 12 x 2 bits = 24 bits
+   runs (code, length): [(0, 3), (1, 5), (2, 4)] -> 3 runs; value changes: 2
+   entropy of the column's frequencies {'Lagos': 0.25, 'Oslo': 0.4166666666666667, 'Toronto': 0.3333333333333333}: 1.555 bits per value, 18.7 bits for 12 values
+
+days as loaded: groups [[5, 1, 9], [2, 12, 7], [3, 11, 6], [8, 4, 10]]
+   min/max per group: [(1, 9), (2, 12), (3, 11), (4, 10)]
+   WHERE day BETWEEN 7 AND 7: must read groups [0, 1, 2, 3], groups that really hold a match [1]
+   WHERE day BETWEEN 10 AND 12: must read groups [1, 2, 3], groups that really hold a match [1, 2, 3]
+
+days sorted: groups [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+   min/max per group: [(1, 3), (4, 6), (7, 9), (10, 12)]
+   WHERE day BETWEEN 7 AND 7: must read groups [2], groups that really hold a match [2]
+   WHERE day BETWEEN 10 AND 12: must read groups [3], groups that really hold a match [3]

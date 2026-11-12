@@ -1,0 +1,30 @@
+Part 1. File sizes for 1,000,000 orders
+   csv                                45,380,909 bytes     1.0 times smaller than the CSV
+   parquet, no compression            20,661,390 bytes     2.2 times smaller than the CSV
+   parquet, snappy (default)          13,825,131 bytes     3.3 times smaller than the CSV
+   parquet, zstd                       9,315,408 bytes     4.9 times smaller than the CSV
+   parquet, snappy, rows shuffled     15,914,666 bytes     2.9 times smaller than the CSV
+   parquet, zstd, order_id as deltas    6,431,065 bytes     7.1 times smaller than the CSV
+
+Part 2. Inside the snappy file: 1,000,000 rows, 20 row groups of 50,000 rows
+   column       encodings (row group 0)                      bytes before compression bytes stored
+   order_id     PLAIN, RLE, RLE_DICTIONARY                                  9,957,080    5,959,688
+   order_date   PLAIN, RLE, RLE_DICTIONARY                                      6,607        6,787
+   customer_id  PLAIN, RLE, RLE_DICTIONARY                                  8,252,808    5,516,277
+   city         PLAIN, RLE, RLE_DICTIONARY                                    766,637      760,143
+   status       PLAIN, RLE, RLE_DICTIONARY                                    244,891      228,386
+   amount       PLAIN, RLE, RLE_DICTIONARY                                  1,417,020    1,337,507
+   order_id in the tuned file: RLE, DELTA_BINARY_PACKED - 24,758 bytes before compression, 6,258 stored
+   distinct customer_id values in row group 0: 39341
+
+Part 3. Statistics kept for order_date, first 4 row groups (sorted file, then shuffled file)
+   parquet, snappy (default): [('2026-01-01', '2026-01-19'), ('2026-01-19', '2026-02-06'), ('2026-02-06', '2026-02-24'), ('2026-02-24', '2026-03-14')]
+   parquet, snappy, rows shuffled: [('2026-01-01', '2026-12-31'), ('2026-01-01', '2026-12-31'), ('2026-01-01', '2026-12-31'), ('2026-01-01', '2026-12-31')]
+
+Part 4. One day of orders: WHERE order_date = 2026-07-15
+   parquet, snappy (default): the day is in row group 10 of 0-19, range ('2026-07-02', '2026-07-20'); last row group ('2026-12-13', '2026-12-31')
+   parquet, snappy (default): row groups whose min/max include the day: 1 of 20; rows found 2,680; bytes read 755,667 of 13,825,131 (5.5%)
+   parquet, snappy, rows shuffled: row groups whose min/max include the day: 20 of 20; rows found 2,680; bytes read 15,963,796 of 15,914,666 (100.3%)
+
+Part 5. One column only: SELECT sum(amount) reads
+   sum 500,618,624; bytes read 1,403,043 of 13,825,131 (10.1%)

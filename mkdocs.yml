@@ -96,6 +96,7 @@ nav:
               - tech-by-math/data-engineering-core/02-Why-an-Index-Is-Fast.md
               - tech-by-math/data-engineering-core/03-How-the-Planner-Guesses.md
               - tech-by-math/data-engineering-core/04-When-Transactions-Are-the-Same.md
+              - tech-by-math/data-engineering-core/05-Column-Files.md
               - tech-by-math/data-engineering-core/06-Shuffles-and-Skew.md
       - "Databases":
           - databases/index.md
