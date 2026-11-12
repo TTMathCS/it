@@ -256,6 +256,7 @@ nav:
               - databases/sql/32-Mock-Tests.md
               - databases/sql/drills.md
               - databases/sql/analytics-workshop.md
+              - databases/sql/advanced-cases.md
               - databases/sql/glossary.md
       - "Data engineering":
           - data-engineering/index.md

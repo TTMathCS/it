@@ -41,6 +41,7 @@ that are tested most, in the order that builds fastest. Each step says what to b
 | 16 | [32. Mock tests](32-Mock-Tests.md) | Timed two-question tests in the format of a coding test. | Two questions in 40 minutes, timed |
 | 17 | [SQL drills](drills.md) | Short exercises with a Check button, one idea each. | 36 short exercises with Check: filters, GROUP BY, joins, subqueries, windows, dates |
 | 18 | [Analytics workshop](analytics-workshop.md) | Longer analytics tasks on payments and page views, the kind a data team asks. | Aggregate before joining, reconcile, deduplicate, sessions and a funnel |
+| 19 | [Advanced SQL: twelve hard cases](advanced-cases.md) | The hardest real-world cases: prices over time, FIFO, overlapping periods, cohorts, attribution, recursive walks. | Recognise each case from its wording and write it from a blank page |
 
 If there is time left, [12. UNION and friends](12-Set-Operations.md), [22. Duplicates and incremental
 loads](22-Duplicates-and-Incremental-Loads.md) and [19. Data modelling](19-Data-Modelling.md) are the topics a data
