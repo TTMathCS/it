@@ -97,6 +97,122 @@ FROM customers;
     customer_id)` after a join). "How many customers have an email" is `COUNT(email)`. "How many cities" is
     `COUNT(DISTINCT city)`, and the task should say whether an unknown city counts; by default it does not.
 
+### COUNT(1), and the SELECT 1 inside EXISTS { #count-one }
+
+Two more forms come up in other people's SQL, and in interview questions about it.
+
+**`COUNT(1)` is the same as `COUNT(*)`.** `COUNT(x)` counts the rows where `x` is not NULL, and `1` is never NULL, so
+every row counts. Some people believe `COUNT(1)` is faster; in PostgreSQL, SQLite and every other common database it
+is not. Write `COUNT(*)`: it says "count rows" most clearly.
+
+<!-- sql -->
+```sql
+SELECT COUNT(*)     AS count_star,
+       COUNT(1)     AS count_one,
+       COUNT(email) AS count_email
+FROM customers;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+| count_star | count_one | count_email |
+| --- | --- | --- |
+| 10 | 10 | 8 |
+<!-- /result -->
+
+**`COUNT(*)` after a `LEFT JOIN` counts a customer with no orders as 1.** The `LEFT JOIN` keeps that customer as one
+row with NULLs in the `orders` columns, and `COUNT(*)` counts the row. Count a column of the right-hand table
+instead; its NULL is not counted:
+
+<!-- sql -->
+```sql
+SELECT c.customer_id,
+       COUNT(*)          AS count_star,        -- wrong for "number of orders": 1 for customer 9
+       COUNT(o.order_id) AS orders              -- right: 0 for customer 9
+FROM customers c
+LEFT JOIN orders o ON o.customer_id = c.customer_id
+WHERE c.customer_id >= 8
+GROUP BY c.customer_id
+ORDER BY c.customer_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| customer_id | count_star | orders |
+| --- | --- | --- |
+| 8 | 1 | 1 |
+| 9 | 1 | 0 |
+| 10 | 1 | 1 |
+<!-- /result -->
+
+**`SELECT 1` is not a count.** Inside `EXISTS (...)` you will often see `SELECT 1`. `EXISTS` only asks whether the
+subquery finds **any** row; what the subquery selects is never looked at, so `1` is a placeholder (`SELECT *` or
+`SELECT order_id` would give the same answer). The database can stop at the first matching row. Customers who placed
+at least one order:
+
+<!-- sql -->
+```sql
+SELECT c.customer_id, c.name
+FROM customers c
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
+ORDER BY c.customer_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+| customer_id | name |
+| --- | --- |
+| 1 | Ana Silva |
+| 2 | Ben Okafor |
+| 3 | Chen Wei |
+| 4 | Dana Kim |
+| 5 | Eli Cohen |
+| 6 | Farah Haddad |
+| 7 | Gus Novak |
+| 8 | Hana Sato |
+| 10 | Ana Silva |
+<!-- /result -->
+
+The same rows come from counting, but the count has to find **every** order of each customer before it can compare
+with 0. Prefer `EXISTS` for "has at least one", and `NOT EXISTS` for "has none"
+([chapter 9](09-Self-Semi-and-Anti-Joins.md#semi)):
+
+<!-- sql same -->
+```sql
+SELECT c.customer_id, c.name
+FROM customers c
+WHERE (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.customer_id) > 0
+ORDER BY c.customer_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows as the other version. 9 rows.</p>
+
+| customer_id | name |
+| --- | --- |
+| 1 | Ana Silva |
+| 2 | Ben Okafor |
+| 3 | Chen Wei |
+| 4 | Dana Kim |
+| 5 | Eli Cohen |
+| 6 | Farah Haddad |
+| 7 | Gus Novak |
+| 8 | Hana Sato |
+| 10 | Ana Silva |
+<!-- /result -->
+
+| You write | It returns | Use it for |
+| --- | --- | --- |
+| `COUNT(*)` | the number of rows | "how many orders" |
+| `COUNT(1)` | the same as `COUNT(*)` | nothing new; prefer `COUNT(*)` |
+| `COUNT(col)` | rows where `col` is not NULL | "how many have an email"; the number of matches after a `LEFT JOIN` |
+| `COUNT(DISTINCT col)` | different non-NULL values | "how many different cities" |
+| `EXISTS (SELECT 1 ...)` | true or false: is there at least one row? | "customers who have an order" |
+| `NOT EXISTS (SELECT 1 ...)` | true when there is no row | "customers who never ordered" |
+
 ## 7.3 GROUP BY: one row per group { #group-by }
 
 `GROUP BY status` puts the rows into one group per different status, and each aggregate is worked out once per group.

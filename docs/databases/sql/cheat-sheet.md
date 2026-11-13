@@ -46,6 +46,22 @@ used in `ORDER BY`, which runs after.
 **Learn it fully:** [2. SELECT, WHERE, ORDER BY, LIMIT](02-Select-Where-Order-By-Limit.md) and
 [3. The order a query really runs in](03-The-Order-a-Query-Runs-In.md).
 
+## Looking at a table, and laying out a query { #describe }
+
+**What it is for:** finding out what a table holds before you query it, and writing queries you can read back.
+
+| Write | What it does | When you use it |
+| --- | --- | --- |
+| `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_name = 'orders' ORDER BY ordinal_position;` | Lists a table's columns and types (PostgreSQL, MySQL, SQL Server). | "Describe a table" in a Run box. `DESCRIBE orders` is MySQL only, and `\d orders` works only in the `psql` program. |
+| `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';` | Lists the tables. | "Which tables are there?" |
+| `SELECT * FROM pragma_table_info('orders');` | SQLite's way to list the columns. | The same question on SQLite. |
+| `SELECT * FROM orders LIMIT 5;` | A first look at a few rows, with the column names. | Any database, any time. |
+
+**Layout:** keywords in capitals, one clause per line, a name (`AS`) for every computed column, each `JOIN` on its own
+line, the table's alias on every column when there are several tables. Two or three plain columns may stay on one
+line; otherwise one column per line. The database ignores layout; you, finding a mistake under time pressure, do
+not. Examples: [describe a table](sample-database.md#describe) and [how to lay out a query](02-Select-Where-Order-By-Limit.md#layout).
+
 ## Filtering rows: WHERE { #filter }
 
 **What it is for:** keeping only the rows you want before anything else happens.
@@ -220,6 +236,7 @@ FROM orders;
 | `COUNT(*)` | Number of rows in the group. | "How many orders". |
 | `COUNT(col)` | Number of rows where `col` is not NULL. | "How many have a salary". |
 | `COUNT(DISTINCT col)` | Number of **different** values. | "How many different customers ordered" (one customer with 3 orders counts once). |
+| `COUNT(1)` | The same as `COUNT(*)` (1 is never NULL); not faster. | Nothing new: write `COUNT(*)`. `SELECT 1` inside `EXISTS (...)` is a placeholder, not a count ([7.2](07-Aggregation-Group-By-Having.md#count-one)). |
 | `SUM(col)`, `AVG(col)` | Total and average, skipping NULLs. | Revenue, average order size. |
 | `MIN(col)`, `MAX(col)` | Smallest and largest; work on numbers, dates and text. | First order date, highest price. |
 | `GROUP BY a, b` | One output row per different combination of `a` and `b`. | Any "per ..." or "for each ...". |

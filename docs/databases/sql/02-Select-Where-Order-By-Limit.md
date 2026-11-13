@@ -455,6 +455,100 @@ ORDER BY price, name;
 | Office chair | 149.00 |
 <!-- /result -->
 
+### How to lay out a query { #layout }
+
+The database ignores spaces, line breaks and the case of keywords, so any layout runs. Layout is for the people who
+read the query, and the first of them is you, ten minutes later, looking for a mistake. A common style, used in this
+course:
+
+| Rule | Example |
+| --- | --- |
+| Keywords in capitals, names in lower case | `SELECT`, `FROM`, `COUNT(*)`; `order_date` |
+| Each clause starts a new line, at the left edge | `SELECT` ... / `FROM` ... / `WHERE` ... / `GROUP BY` ... / `ORDER BY` ... |
+| A short list of plain columns may stay on one line | `SELECT name, price` |
+| Otherwise one column per line, indented, comma at the end of the line | as in the example below |
+| A name (`AS`) for every computed column | `COUNT(*) AS orders` |
+| Each `JOIN` on its own line, its `ON` on the same line or indented under it | `LEFT JOIN customers c ON c.customer_id = o.customer_id` |
+| With more than one table, a short alias per table and the alias on every column | `o.status`, `c.name` |
+| Each `AND` of a long `WHERE` on its own line | as in the example below |
+| A long query as named steps with `WITH`, each step indented inside its brackets | [chapter 11](11-CTEs-and-Recursive-CTEs.md) |
+
+**Columns on one line or one per line?** Both are correct. Two or three plain columns read well on one line. Once a
+column is an expression (`COUNT(*)`, a `CASE`, a calculation) or there are more than three, one per line is
+easier to read, to compare with the task's list of output columns, and to change. Whatever you choose, be consistent
+within a query.
+
+Here is a query written in one line, as it is often typed in a hurry:
+
+<!-- sql pg -->
+```sql
+select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+| status | count |
+| --- | --- |
+| cancelled | 2 |
+| pending | 2 |
+| shipped | 16 |
+<!-- /result -->
+
+It runs, but three things are hard to see. The join to `customers` does nothing: no column of `c` is used, and a
+`LEFT JOIN` keeps every order anyway, so the counts are the same without it. The count has no name, so each
+database invents one (PostgreSQL calls it `count`, SQLite `count(*)`). And there is no
+`ORDER BY`, so the order of the rows is luck. The same question, laid out and cleaned up:
+
+<!-- sql -->
+```sql
+SELECT
+    o.status,
+    COUNT(*) AS orders
+FROM orders o
+GROUP BY o.status
+ORDER BY o.status;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| status | orders |
+| --- | --- |
+| cancelled | 2 |
+| pending | 2 |
+| shipped | 16 |
+<!-- /result -->
+
+A longer query in the same style. Each line does one thing, so each can be checked against the task on its own:
+
+<!-- sql -->
+```sql
+SELECT
+    c.country,
+    COUNT(o.order_id)              AS shipped_orders,
+    COUNT(DISTINCT o.customer_id)  AS customers
+FROM customers c
+JOIN orders o
+    ON o.customer_id = c.customer_id
+WHERE o.status = 'shipped'
+  AND o.order_date >= '2026-02-01'
+GROUP BY c.country
+HAVING COUNT(o.order_id) >= 2
+ORDER BY shipped_orders DESC, c.country;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+| country | shipped_orders | customers |
+| --- | --- | --- |
+| Canada | 4 | 2 |
+<!-- /result -->
+
+Lining up the `AS` names, as above, is optional; some teams like it, some don't. In a timed test, do not spend
+minutes on layout: one clause per line and a name for every computed column is enough.
+
 ## 2.9 Summary { #summary }
 
 - `SELECT` the columns asked for, in the order asked; avoid `*` in answers. Name computed columns with `AS`.
@@ -464,6 +558,7 @@ ORDER BY price, name;
 - `DISTINCT` works on the whole row and treats NULLs as equal.
 - Always `ORDER BY`, with a tie-break that makes the order unique. NULLs sort differently by database.
 - `LIMIT` cuts ties arbitrarily; `FETCH FIRST ... WITH TIES` (PostgreSQL) or a ranking keeps them.
+- Lay a query out one clause per line, with a name for every computed column ([how to lay out a query](#layout)).
 
 ## Practice { #practice }
 

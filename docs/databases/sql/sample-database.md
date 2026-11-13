@@ -103,6 +103,105 @@ Every example in the course has a **Run this** button under it that opens the sa
 in it, and every exercise has a **Try it here** box with a **Check** button that compares your result with the
 answer's.
 
+## Describe a table from the Run box { #describe }
+
+"Which columns does `orders` have, and of what type?" Some databases answer `DESCRIBE orders` (that is MySQL), and the
+`psql` command line answers `\d orders`. Neither works here: PostgreSQL has no `DESCRIBE`, and `\d` is a command of
+the `psql` program, not SQL, so a Run box (or any editor that only sends SQL) rejects it.
+
+The SQL way is to ask the database's own catalogue, **`information_schema`**: a set of read-only views, part of the
+SQL standard, that describe every table and column. It works in PostgreSQL, MySQL and SQL Server.
+
+<!-- sql pg -->
+```sql
+SELECT column_name, data_type, character_maximum_length, is_nullable
+FROM information_schema.columns
+WHERE table_schema = 'public'
+  AND table_name   = 'orders'          -- the table's name, in lower case
+ORDER BY ordinal_position;             -- the order the columns were created in
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+| column_name | data_type | character_maximum_length | is_nullable |
+| --- | --- | --- | --- |
+| order_id | integer | *NULL* | NO |
+| customer_id | integer | *NULL* | YES |
+| order_date | date | *NULL* | NO |
+| status | character varying | 10 | NO |
+<!-- /result -->
+
+`data_type` is the type, `character_maximum_length` the length of a `VARCHAR`, and `is_nullable` says whether the
+column may hold NULL. Add `column_default` to see default values. Which tables are there at all:
+
+<!-- sql pg -->
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'          -- leave out the system's own tables
+ORDER BY table_name;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+
+| table_name |
+| --- |
+| customers |
+| employees |
+| logins |
+| order_items |
+| orders |
+| page_views |
+| payments |
+| products |
+<!-- /result -->
+
+SQLite has no `information_schema`. It describes a table with `PRAGMA table_info(orders)`, which can also be read as
+a table:
+
+<!-- sql sqlite -->
+```sql
+SELECT name, type, "notnull", pk
+FROM pragma_table_info('orders')
+ORDER BY cid;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on SQLite 3.53. 4 rows.</p>
+
+| name | type | notnull | pk |
+| --- | --- | --- | --- |
+| order_id | INTEGER | 0 | 1 |
+| customer_id | INTEGER | 0 | 0 |
+| order_date | DATE | 1 | 0 |
+| status | VARCHAR(10) | 1 | 0 |
+<!-- /result -->
+
+And the quickest look of all, on any database, is a few rows: the column names come with them.
+
+<!-- sql -->
+```sql
+SELECT *
+FROM orders
+ORDER BY order_id
+LIMIT 3;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| order_id | customer_id | order_date | status |
+| --- | --- | --- | --- |
+| 101 | 1 | 2026-01-03 | shipped |
+| 102 | 2 | 2026-01-03 | shipped |
+| 103 | 1 | 2026-01-15 | shipped |
+<!-- /result -->
+
+In a test, the task text already gives each table's `CREATE TABLE`; read it there. In the Run boxes of this course,
+the **Show tables** button lists the tables too.
+
 ## Load it yourself { #load }
 
 The whole database is one file, [shop.sql](shop.sql), that runs unchanged on both databases.
