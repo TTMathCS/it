@@ -405,8 +405,101 @@ ORDER BY city;
 <!-- /result -->
 
 Canada still appears once, because all three Canadian customers live in Toronto. Add a column that differs, such as
-`name`, and all three rows come back. `DISTINCT` also treats NULLs as equal to each other, so two customers with no
-city would give one NULL row.
+`name`, and all three rows come back.
+
+### DISTINCT and NULL { #distinct-null }
+
+**`SELECT DISTINCT` keeps NULL, as one row.** Every customer above has a country, so no NULL row appeared. `city` has
+a gap: Eli Cohen has no city.
+
+<!-- sql -->
+```sql
+SELECT DISTINCT city
+FROM customers
+ORDER BY city NULLS LAST;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+| city |
+| --- |
+| Lagos |
+| Lisbon |
+| Osaka |
+| Prague |
+| Seoul |
+| Shanghai |
+| Toronto |
+| *NULL* |
+<!-- /result -->
+
+Seven real cities plus one NULL row: 8 rows. All NULLs count as **one** value here, even though `NULL = NULL` is not
+true ([chapter 6](06-Null-and-Three-Valued-Logic.md#group-by)); three customers with no city would still give one NULL
+row. `GROUP BY` and `UNION` treat NULLs the same way.
+
+**`COUNT(DISTINCT city)` does not count it.** Like every aggregate except `COUNT(*)`, it skips NULLs. So the number
+of rows from `SELECT DISTINCT` can be one more than `COUNT(DISTINCT)`. One query shows every case on the 10
+customers (one with no city):
+
+<!-- sql -->
+```sql
+SELECT COUNT(*)             AS all_rows,
+       COUNT(city)          AS rows_with_a_city,
+       COUNT(DISTINCT city) AS different_cities,
+       (SELECT COUNT(*) FROM (SELECT DISTINCT city FROM customers) AS d) AS distinct_rows,
+       (SELECT COUNT(*) FROM (SELECT city FROM customers GROUP BY city) AS g) AS groups
+FROM customers;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+| all_rows | rows_with_a_city | different_cities | distinct_rows | groups |
+| --- | --- | --- | --- | --- |
+| 10 | 9 | 7 | 8 | 8 |
+<!-- /result -->
+
+| Query | What happens to NULL | Here |
+| --- | --- | --- |
+| `SELECT DISTINCT city` | kept, shown once | 8 rows: 7 cities and one NULL |
+| `GROUP BY city` | kept, as one group | 8 groups |
+| `COUNT(DISTINCT city)` | not counted | 7 |
+| `COUNT(city)` | not counted | 9 |
+| `COUNT(*)` | counted, it counts rows | 10 |
+
+A test asking "how many different cities" usually means 7. If unknown should count as a city of its own, say so and
+count the `SELECT DISTINCT` rows instead.
+
+**Where the NULL row goes.** Without `NULLS LAST`, PostgreSQL puts NULL **last** in ascending order and **first** in
+descending order; SQLite does the opposite. `NULLS FIRST` or `NULLS LAST` gives the same order on both
+([6.9](06-Null-and-Three-Valued-Logic.md#sorting)).
+
+**To leave it out,** filter it before `DISTINCT` runs:
+
+<!-- sql -->
+```sql
+SELECT DISTINCT city
+FROM customers
+WHERE city IS NOT NULL
+ORDER BY city;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+
+| city |
+| --- |
+| Lagos |
+| Lisbon |
+| Osaka |
+| Prague |
+| Seoul |
+| Shanghai |
+| Toronto |
+<!-- /result -->
+
+`WHERE city <> ''` would not do it: a comparison with NULL is unknown, never true, so only `IS NOT NULL` tests for it.
 
 !!! tip "Interview tip"
     Reaching for `DISTINCT` to make duplicates go away is often a sign that a join multiplied the rows
@@ -676,6 +769,8 @@ minutes on layout: one clause per line and a name for every computed column is e
 ## 2.9 Summary { #summary }
 
 - `SELECT` the columns asked for, in the order asked; avoid `*` in answers. Name computed columns with `AS`.
+- `SELECT DISTINCT` keeps NULL as one row; `COUNT(DISTINCT col)` skips it. `WHERE col IS NOT NULL` leaves it out.
+  See [DISTINCT and NULL](#distinct-null).
 - Single quotes for text, double quotes for names. SQLite forgives `"Toronto"`; PostgreSQL does not, and says
   `column "Toronto" does not exist`. A quote inside text is doubled: `'O''Brien'`. See [2.3](#quotes).
 - `AND` before `OR`: add parentheses whenever both appear.

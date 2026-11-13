@@ -42,6 +42,7 @@ it is explained. Interviewers often use these words without explaining them.*
 | Derived table | A subquery in `FROM`. | [10](10-Subqueries.md#derived) |
 | Dialect | One database's version of SQL. | [28](28-Dialect-Differences.md) |
 | Dimension table | A table describing the who, what, where of facts (customers, products, dates). | [19](19-Data-Modelling.md#star) |
+| DISTINCT | Removes duplicate rows from the result, comparing whole rows. It keeps NULL as one row; `COUNT(DISTINCT col)` skips NULL. | [2.5](02-Select-Where-Order-By-Limit.md#distinct), [NULL](02-Select-Where-Order-By-Limit.md#distinct-null) |
 | Dirty read | Seeing another transaction's change before it commits. | [20](20-Transactions-and-Isolation.md#isolation) |
 | ETL, ELT | Extract, transform, load: the order in which a pipeline cleans data; ELT loads first and transforms inside the warehouse. | [22](22-Duplicates-and-Incremental-Loads.md) |
 | EXPLAIN | Shows the plan the database chose for a query; `EXPLAIN ANALYZE` also runs it. | [25](25-Indexes-and-Explain.md#seq-scan) |

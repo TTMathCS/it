@@ -117,6 +117,18 @@ email). It is not 0 and not the empty text `''`. Most mistakes in SQL tests are 
 | `SUM`, `AVG`, `MIN`, `MAX` | Skip NULLs. `AVG` divides by the count of non-NULL values. | Know it, so an average over missing values does not surprise you. |
 | `ORDER BY x NULLS LAST` | Puts missing values at the end (PostgreSQL puts them **last** going up and **first** going down; SQLite the opposite). | When a task says where missing values go, or to get the same order on both. |
 
+**What happens to NULL** in `DISTINCT`, `GROUP BY` and the counts (on `customers`, where one of the 10 has no city):
+
+| Query | What happens to NULL | On `customers.city` |
+| --- | --- | --- |
+| `SELECT DISTINCT city` | kept, shown once | 8 rows: 7 cities and one NULL |
+| `GROUP BY city` | kept, as one group | 8 groups |
+| `COUNT(DISTINCT city)` | not counted | 7 |
+| `COUNT(city)` | not counted | 9 |
+| `COUNT(*)` | counted, it counts rows | 10 |
+
+The query that shows all five: [DISTINCT and NULL](02-Select-Where-Order-By-Limit.md#distinct-null).
+
 **Why `=` fails.** A comparison with NULL gives *unknown*, not true or false. `WHERE` keeps only rows where the
 test is **true**, so rows with unknown disappear quietly. The same rule breaks `NOT IN`: if the list holds a NULL,
 `x NOT IN (list)` is never true and the query returns nothing. Use `NOT EXISTS` instead (see Joins).
@@ -238,7 +250,7 @@ FROM orders;
 | --- | --- | --- |
 | `COUNT(*)` | Number of rows in the group. | "How many orders". |
 | `COUNT(col)` | Number of rows where `col` is not NULL. | "How many have a salary". |
-| `COUNT(DISTINCT col)` | Number of **different** values. | "How many different customers ordered" (one customer with 3 orders counts once). |
+| `COUNT(DISTINCT col)` | Number of **different** values, **not counting NULL**. | "How many different customers ordered" (one customer with 3 orders counts once). `SELECT DISTINCT col` keeps NULL as one row, so it can return one row more ([DISTINCT and NULL](02-Select-Where-Order-By-Limit.md#distinct-null)). |
 | `COUNT(1)` | The same as `COUNT(*)` (1 is never NULL); not faster. | Nothing new: write `COUNT(*)`. `SELECT 1` inside `EXISTS (...)` is a placeholder, not a count ([7.2](07-Aggregation-Group-By-Having.md#count-one)). |
 | `SUM(col)`, `AVG(col)` | Total and average, skipping NULLs. | Revenue, average order size. |
 | `MIN(col)`, `MAX(col)` | Smallest and largest; work on numbers, dates and text. | First order date, highest price. |

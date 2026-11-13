@@ -303,6 +303,9 @@ The gift card has no category and forms a group of its own. If a test asks for "
 whether that NULL group belongs in the answer; often it should be shown with a label:
 `COALESCE(category, 'Uncategorised')`. (`NULLS LAST` is explained in [section 6.9](#sorting).)
 
+`SELECT DISTINCT category` likewise gives one NULL row, but `COUNT(DISTINCT category)` skips it: 3, not 4.
+[DISTINCT and NULL](02-Select-Where-Order-By-Limit.md#distinct-null) runs both side by side.
+
 ## 6.8 NULL in joins and NOT IN { #joins-not-in }
 
 A join condition is a comparison, so NULL never matches anything, not even another NULL. Order 108 has no customer,
