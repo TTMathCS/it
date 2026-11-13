@@ -51,21 +51,23 @@ There are two kinds of duplicate, and the first question in any task is which on
 
 **Task:** Find the rows of `customer_feed` that are exact copies of each other, with how many copies.
 
-<!-- sql -->
-```sql
-SELECT customer_id, email, city, updated_at, COUNT(*) AS copies
-FROM customer_feed
-GROUP BY customer_id, email, city, updated_at
-HAVING COUNT(*) > 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, email, city, updated_at, COUNT(*) AS copies
+    FROM customer_feed
+    GROUP BY customer_id, email, city, updated_at
+    HAVING COUNT(*) > 1;
+    ```
 
-| customer_id | email | city | updated_at | copies |
-| --- | --- | --- | --- | --- |
-| 1 | ana@example.com | Toronto | 2026-05-01 09:00:00 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | email | city | updated_at | copies |
+    | --- | --- | --- | --- | --- |
+    | 1 | ana@example.com | Toronto | 2026-05-01 09:00:00 | 2 |
+    <!-- /result -->
 
 `GROUP BY` puts NULLs together, so two rows that are both NULL in `email` count as equal here, which is what you
 want when looking for copies (a plain `=` would not match them).
@@ -75,23 +77,25 @@ columns: different versions of the same customer.
 
 **Task:** Find the customer ids that appear more than once in `customer_feed`, with how many rows each, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, COUNT(*) AS rows_for_key
-FROM customer_feed
-GROUP BY customer_id
-HAVING COUNT(*) > 1
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, COUNT(*) AS rows_for_key
+    FROM customer_feed
+    GROUP BY customer_id
+    HAVING COUNT(*) > 1
+    ORDER BY customer_id;
+    ```
 
-| customer_id | rows_for_key |
-| --- | --- |
-| 1 | 3 |
-| 3 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | rows_for_key |
+    | --- | --- |
+    | 1 | 3 |
+    | 3 | 2 |
+    <!-- /result -->
 
 Customer 1 has three rows (the 1 May row twice, and a newer one from 3 May); customer 3 has two versions.
 
@@ -102,28 +106,30 @@ the newest. Number each key's rows newest first and keep number 1:
 
 **Task:** Keep only the newest row for each customer in `customer_feed`, by customer id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, email, city, updated_at
-FROM (
-  SELECT f.customer_id, f.email, f.city, f.updated_at,
-         ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-  FROM customer_feed f
-) numbered
-WHERE rn = 1
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, email, city, updated_at
+    FROM (
+      SELECT f.customer_id, f.email, f.city, f.updated_at,
+             ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
+      FROM customer_feed f
+    ) numbered
+    WHERE rn = 1
+    ORDER BY customer_id;
+    ```
 
-| customer_id | email | city | updated_at |
-| --- | --- | --- | --- |
-| 1 | ana@example.com | Vancouver | 2026-05-03 08:30:00 |
-| 2 | ben@example.com | Lagos | 2026-05-01 10:00:00 |
-| 3 | chen@example.com | Shanghai | 2026-05-04 07:15:00 |
-| 4 | dana@example.com | Seoul | 2026-05-04 07:15:00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id | email | city | updated_at |
+    | --- | --- | --- | --- |
+    | 1 | ana@example.com | Vancouver | 2026-05-03 08:30:00 |
+    | 2 | ben@example.com | Lagos | 2026-05-01 10:00:00 |
+    | 3 | chen@example.com | Shanghai | 2026-05-04 07:15:00 |
+    | 4 | dana@example.com | Seoul | 2026-05-04 07:15:00 |
+    <!-- /result -->
 
 This is the single most useful pattern in this chapter. Three details make it correct:
 
@@ -349,34 +355,36 @@ had not moved (the old value written in by hand):
 
 **Task:** Load only the feed rows changed since 2 May, newest version per customer, inserting new customers and updating existing ones.
 
-<!-- sql -->
-```sql
-INSERT INTO customers_current (customer_id, email, city, updated_at)
-SELECT customer_id, email, city, updated_at
-FROM (
-  SELECT f.customer_id, f.email, f.city, f.updated_at,
-         ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-  FROM customer_feed f
-  WHERE f.updated_at > '2026-05-02 00:00:00'
-) newest
-WHERE rn = 1
-ON CONFLICT (customer_id) DO UPDATE
-SET email = excluded.email, city = excluded.city, updated_at = excluded.updated_at
-WHERE excluded.updated_at > customers_current.updated_at;
+??? success "Solution"
 
-SELECT customer_id, email, city, updated_at FROM customers_current ORDER BY customer_id;
-```
+    <!-- sql -->
+    ```sql
+    INSERT INTO customers_current (customer_id, email, city, updated_at)
+    SELECT customer_id, email, city, updated_at
+    FROM (
+      SELECT f.customer_id, f.email, f.city, f.updated_at,
+             ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
+      FROM customer_feed f
+      WHERE f.updated_at > '2026-05-02 00:00:00'
+    ) newest
+    WHERE rn = 1
+    ON CONFLICT (customer_id) DO UPDATE
+    SET email = excluded.email, city = excluded.city, updated_at = excluded.updated_at
+    WHERE excluded.updated_at > customers_current.updated_at;
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    SELECT customer_id, email, city, updated_at FROM customers_current ORDER BY customer_id;
+    ```
 
-| customer_id | email | city | updated_at |
-| --- | --- | --- | --- |
-| 1 | ana@example.com | Vancouver | 2026-05-03 08:30:00 |
-| 2 | ben@example.com | Lagos | 2026-05-01 10:00:00 |
-| 3 | chen@example.com | Shanghai | 2026-05-04 07:15:00 |
-| 4 | dana@example.com | Seoul | 2026-05-04 07:15:00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id | email | city | updated_at |
+    | --- | --- | --- | --- |
+    | 1 | ana@example.com | Vancouver | 2026-05-03 08:30:00 |
+    | 2 | ben@example.com | Lagos | 2026-05-01 10:00:00 |
+    | 3 | chen@example.com | Shanghai | 2026-05-04 07:15:00 |
+    | 4 | dana@example.com | Seoul | 2026-05-04 07:15:00 |
+    <!-- /result -->
 
 Nothing changed. A plain `INSERT` in the same place would have failed on the primary key, or, on a table without
 one, doubled every row. The three usual ways to make a load idempotent:
@@ -391,34 +399,36 @@ On PostgreSQL 15+ the same load can be written as a `MERGE` ([chapter 17](17-Ins
 
 **Task:** The same incremental load as one `MERGE`.
 
-<!-- sql pg -->
-```sql
-MERGE INTO customers_current t
-USING (
-  SELECT customer_id, email, city, updated_at
-  FROM (
-    SELECT f.customer_id, f.email, f.city, f.updated_at,
-           ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-    FROM customer_feed f
-    WHERE f.updated_at > '2026-05-02 00:00:00'
-  ) numbered
-  WHERE rn = 1
-) s
-ON t.customer_id = s.customer_id
-WHEN MATCHED AND s.updated_at > t.updated_at THEN
-  UPDATE SET email = s.email, city = s.city, updated_at = s.updated_at
-WHEN NOT MATCHED THEN
-  INSERT (customer_id, email, city, updated_at) VALUES (s.customer_id, s.email, s.city, s.updated_at);
-SELECT COUNT(*) AS customers FROM customers_current;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    MERGE INTO customers_current t
+    USING (
+      SELECT customer_id, email, city, updated_at
+      FROM (
+        SELECT f.customer_id, f.email, f.city, f.updated_at,
+               ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
+        FROM customer_feed f
+        WHERE f.updated_at > '2026-05-02 00:00:00'
+      ) numbered
+      WHERE rn = 1
+    ) s
+    ON t.customer_id = s.customer_id
+    WHEN MATCHED AND s.updated_at > t.updated_at THEN
+      UPDATE SET email = s.email, city = s.city, updated_at = s.updated_at
+    WHEN NOT MATCHED THEN
+      INSERT (customer_id, email, city, updated_at) VALUES (s.customer_id, s.email, s.city, s.updated_at);
+    SELECT COUNT(*) AS customers FROM customers_current;
+    ```
 
-| customers |
-| --- |
-| 4 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | customers |
+    | --- |
+    | 4 |
+    <!-- /result -->
 
 ## 22.5 Late-arriving data { #late-data }
 
@@ -428,21 +438,23 @@ load reads `updated_at > '2026-05-04 07:15:00'` and never sees Ben's change:
 
 **Task:** A late row arrives for Ben; list the feed rows newer than the saved watermark.
 
-<!-- sql -->
-```sql
-INSERT INTO customer_feed VALUES (2, 'ben@example.com', 'Abuja', '2026-05-03 10:00:00');
-SELECT f.customer_id, f.city, f.updated_at
-FROM customer_feed f
-WHERE f.updated_at > (SELECT loaded_up_to FROM load_state WHERE table_name = 'customers');
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+    <!-- sql -->
+    ```sql
+    INSERT INTO customer_feed VALUES (2, 'ben@example.com', 'Abuja', '2026-05-03 10:00:00');
+    SELECT f.customer_id, f.city, f.updated_at
+    FROM customer_feed f
+    WHERE f.updated_at > (SELECT loaded_up_to FROM load_state WHERE table_name = 'customers');
+    ```
 
-| customer_id | city | updated_at |
-| --- | --- | --- |
-| *(no rows)* | | |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+
+    | customer_id | city | updated_at |
+    | --- | --- | --- |
+    | *(no rows)* | | |
+    <!-- /result -->
 
 No rows: the late change is lost for good. Two fixes, often used together:
 
@@ -531,32 +543,34 @@ INSERT INTO snapshot_today VALUES
 
 **Task:** Compare today's snapshot with `customers_current` and label each customer new, deleted, changed or unchanged.
 
-<!-- sql -->
-```sql
-SELECT COALESCE(s.customer_id, t.customer_id) AS customer_id,
-       CASE
-         WHEN t.customer_id IS NULL THEN 'new'
-         WHEN s.customer_id IS NULL THEN 'deleted'
-         WHEN s.email IS DISTINCT FROM t.email
-           OR s.city  IS DISTINCT FROM t.city THEN 'changed'
-         ELSE 'unchanged'
-       END AS change
-FROM snapshot_today s
-FULL OUTER JOIN customers_current t ON t.customer_id = s.customer_id
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COALESCE(s.customer_id, t.customer_id) AS customer_id,
+           CASE
+             WHEN t.customer_id IS NULL THEN 'new'
+             WHEN s.customer_id IS NULL THEN 'deleted'
+             WHEN s.email IS DISTINCT FROM t.email
+               OR s.city  IS DISTINCT FROM t.city THEN 'changed'
+             ELSE 'unchanged'
+           END AS change
+    FROM snapshot_today s
+    FULL OUTER JOIN customers_current t ON t.customer_id = s.customer_id
+    ORDER BY customer_id;
+    ```
 
-| customer_id | change |
-| --- | --- |
-| 1 | unchanged |
-| 2 | changed |
-| 3 | unchanged |
-| 4 | deleted |
-| 5 | new |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | customer_id | change |
+    | --- | --- |
+    | 1 | unchanged |
+    | 2 | changed |
+    | 3 | unchanged |
+    | 4 | deleted |
+    | 5 | new |
+    <!-- /result -->
 
 | Group | Test | What the load does |
 | --- | --- | --- |
@@ -651,29 +665,31 @@ nobody differs from the snapshot any more, and everybody has a current row.
 
 **Task:** Close the current history row of each customer whose city changed in the snapshot, and add a new current row.
 
-<!-- sql -->
-```sql
-UPDATE customer_history
-SET valid_to = '2026-05-10', is_current = FALSE
-WHERE is_current = TRUE
-  AND EXISTS (SELECT 1 FROM snapshot_today s
-              WHERE s.customer_id = customer_history.customer_id
-                AND s.city IS DISTINCT FROM customer_history.city);
-INSERT INTO customer_history (customer_id, city, valid_from, valid_to, is_current)
-SELECT s.customer_id, s.city, '2026-05-10', '9999-12-31', TRUE
-FROM snapshot_today s
-WHERE NOT EXISTS (SELECT 1 FROM customer_history h
-                  WHERE h.customer_id = s.customer_id AND h.is_current = TRUE);
-SELECT COUNT(*) AS versions FROM customer_history;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE customer_history
+    SET valid_to = '2026-05-10', is_current = FALSE
+    WHERE is_current = TRUE
+      AND EXISTS (SELECT 1 FROM snapshot_today s
+                  WHERE s.customer_id = customer_history.customer_id
+                    AND s.city IS DISTINCT FROM customer_history.city);
+    INSERT INTO customer_history (customer_id, city, valid_from, valid_to, is_current)
+    SELECT s.customer_id, s.city, '2026-05-10', '9999-12-31', TRUE
+    FROM snapshot_today s
+    WHERE NOT EXISTS (SELECT 1 FROM customer_history h
+                      WHERE h.customer_id = s.customer_id AND h.is_current = TRUE);
+    SELECT COUNT(*) AS versions FROM customer_history;
+    ```
 
-| versions |
-| --- |
-| 6 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | versions |
+    | --- |
+    | 6 |
+    <!-- /result -->
 
 Still six versions. This load does not handle a customer deleted from the snapshot (it would stay current
 forever); closing those is practice [22.4](#practice). On PostgreSQL and in lakehouses, both steps are often written

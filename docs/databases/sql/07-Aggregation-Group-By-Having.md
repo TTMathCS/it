@@ -26,23 +26,25 @@ the answer is one row.
 
 **Task:** For all products, show in one row: how many, the total of the prices, the average, the cheapest and the dearest price.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)        AS products,
-       SUM(price)      AS total_of_prices,
-       AVG(price)      AS average_price,
-       MIN(price)      AS cheapest,
-       MAX(price)      AS dearest
-FROM products;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)        AS products,
+           SUM(price)      AS total_of_prices,
+           AVG(price)      AS average_price,
+           MIN(price)      AS cheapest,
+           MAX(price)      AS dearest
+    FROM products;
+    ```
 
-| products | total_of_prices | average_price | cheapest | dearest |
-| --- | --- | --- | --- | --- |
-| 11 | 338.75 | 30.7954545454545455 | 3.25 | 149.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | products | total_of_prices | average_price | cheapest | dearest |
+    | --- | --- | --- | --- | --- |
+    | 11 | 338.75 | 30.7954545454545455 | 3.25 | 149.00 |
+    <!-- /result -->
 
 PostgreSQL returns a `NUMERIC` with many decimal places; SQLite returns a floating-point number. Round it
 when you show it: `ROUND(AVG(price), 2)`.
@@ -51,20 +53,22 @@ when you show it: `ROUND(AVG(price), 2)`.
 
 **Task:** Show the first and last customer name in alphabetical order, and the first and last signup date.
 
-<!-- sql -->
-```sql
-SELECT MIN(name) AS first_name, MAX(name) AS last_name,
-       MIN(signup_date) AS first_signup, MAX(signup_date) AS last_signup
-FROM customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT MIN(name) AS first_name, MAX(name) AS last_name,
+           MIN(signup_date) AS first_signup, MAX(signup_date) AS last_signup
+    FROM customers;
+    ```
 
-| first_name | last_name | first_signup | last_signup |
-| --- | --- | --- | --- |
-| Ana Silva | Ivan Petrov | 2025-11-03 | 2026-03-15 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | first_name | last_name | first_signup | last_signup |
+    | --- | --- | --- | --- |
+    | Ana Silva | Ivan Petrov | 2025-11-03 | 2026-03-15 |
+    <!-- /result -->
 
 **What every aggregate does with NULL:** it skips it. `SUM`, `AVG`, `MIN`, `MAX` and `COUNT(column)` look only at
 the values that are there. Only `COUNT(*)` counts rows whatever is in them.
@@ -73,23 +77,25 @@ the values that are there. Only `COUNT(*)` counts rows whatever is in them.
 
 **Task:** For customers, show in one row: customers, customers with an email, customers with a city, different cities and different names.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)             AS customers,
-       COUNT(email)         AS with_email,
-       COUNT(city)          AS with_city,
-       COUNT(DISTINCT city) AS different_cities,
-       COUNT(DISTINCT name) AS different_names
-FROM customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)             AS customers,
+           COUNT(email)         AS with_email,
+           COUNT(city)          AS with_city,
+           COUNT(DISTINCT city) AS different_cities,
+           COUNT(DISTINCT name) AS different_names
+    FROM customers;
+    ```
 
-| customers | with_email | with_city | different_cities | different_names |
-| --- | --- | --- | --- | --- |
-| 10 | 8 | 9 | 7 | 9 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customers | with_email | with_city | different_cities | different_names |
+    | --- | --- | --- | --- | --- |
+    | 10 | 8 | 9 | 7 | 9 |
+    <!-- /result -->
 
 - `COUNT(*)` counts **rows**: 10 customers.
 - `COUNT(email)` counts rows where `email` **is not NULL**: two customers have no email, so 8.
@@ -113,21 +119,23 @@ is not. Write `COUNT(*)`: it says "count rows" most clearly.
 
 **Task:** Count the customers three ways: `COUNT(*)`, `COUNT(1)` and `COUNT(email)`.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)     AS count_star,
-       COUNT(1)     AS count_one,
-       COUNT(email) AS count_email
-FROM customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)     AS count_star,
+           COUNT(1)     AS count_one,
+           COUNT(email) AS count_email
+    FROM customers;
+    ```
 
-| count_star | count_one | count_email |
-| --- | --- | --- |
-| 10 | 10 | 8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | count_star | count_one | count_email |
+    | --- | --- | --- |
+    | 10 | 10 | 8 |
+    <!-- /result -->
 
 **`COUNT(*)` after a `LEFT JOIN` counts a customer with no orders as 1.** The `LEFT JOIN` keeps that customer as one
 row with NULLs in the `orders` columns, and `COUNT(*)` counts the row. Count a column of the right-hand table
@@ -135,27 +143,29 @@ instead; its NULL is not counted:
 
 **Task:** For customers 8 to 10, show the id, `COUNT(*)` and the real number of orders, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id,
-       COUNT(*)          AS count_star,        -- wrong for "number of orders": 1 for customer 9
-       COUNT(o.order_id) AS orders              -- right: 0 for customer 9
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.customer_id
-WHERE c.customer_id >= 8
-GROUP BY c.customer_id
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id,
+           COUNT(*)          AS count_star,        -- wrong for "number of orders": 1 for customer 9
+           COUNT(o.order_id) AS orders              -- right: 0 for customer 9
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    WHERE c.customer_id >= 8
+    GROUP BY c.customer_id
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | count_star | orders |
-| --- | --- | --- |
-| 8 | 1 | 1 |
-| 9 | 1 | 0 |
-| 10 | 1 | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | count_star | orders |
+    | --- | --- | --- |
+    | 8 | 1 | 1 |
+    | 9 | 1 | 0 |
+    | 10 | 1 | 1 |
+    <!-- /result -->
 
 **`SELECT 1` is not a count.** Inside `EXISTS (...)` you will often see `SELECT 1`. `EXISTS` only asks whether the
 subquery finds **any** row; what the subquery selects is never looked at, so `1` is a placeholder (`SELECT *` or
@@ -164,29 +174,31 @@ at least one order:
 
 **Task:** List the customers who have at least one order: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 1 | Ana Silva |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-| 4 | Dana Kim |
-| 5 | Eli Cohen |
-| 6 | Farah Haddad |
-| 7 | Gus Novak |
-| 8 | Hana Sato |
-| 10 | Ana Silva |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    | 4 | Dana Kim |
+    | 5 | Eli Cohen |
+    | 6 | Farah Haddad |
+    | 7 | Gus Novak |
+    | 8 | Hana Sato |
+    | 10 | Ana Silva |
+    <!-- /result -->
 
 The same rows come from counting, but the count has to find **every** order of each customer before it can compare
 with 0. Prefer `EXISTS` for "has at least one", and `NOT EXISTS` for "has none"
@@ -231,79 +243,85 @@ ORDER BY c.customer_id;
 
 **Task:** Count the orders in each status, most orders first (ties by status).
 
-<!-- sql -->
-```sql
-SELECT status, COUNT(*) AS orders
-FROM orders
-GROUP BY status
-ORDER BY orders DESC, status;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT status, COUNT(*) AS orders
+    FROM orders
+    GROUP BY status
+    ORDER BY orders DESC, status;
+    ```
 
-| status | orders |
-| --- | --- |
-| shipped | 16 |
-| cancelled | 2 |
-| pending | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | status | orders |
+    | --- | --- |
+    | shipped | 16 |
+    | cancelled | 2 |
+    | pending | 2 |
+    <!-- /result -->
 
 The question "what is one row of the answer?" decides the GROUP BY. "Revenue of each order" means one row per
 order, so group `order_items` by `order_id`:
 
 **Task:** Show the 5 biggest orders by revenue: order id, number of lines, units and revenue, highest revenue first (ties by order id).
 
-<!-- sql -->
-```sql
-SELECT order_id,
-       COUNT(*)                   AS lines,
-       SUM(quantity)              AS units,
-       SUM(quantity * unit_price) AS revenue
-FROM order_items
-GROUP BY order_id
-ORDER BY revenue DESC, order_id
-LIMIT 5;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id,
+           COUNT(*)                   AS lines,
+           SUM(quantity)              AS units,
+           SUM(quantity * unit_price) AS revenue
+    FROM order_items
+    GROUP BY order_id
+    ORDER BY revenue DESC, order_id
+    LIMIT 5;
+    ```
 
-| order_id | lines | units | revenue |
-| --- | --- | --- | --- |
-| 112 | 2 | 2 | 181.00 |
-| 102 | 1 | 1 | 149.00 |
-| 120 | 1 | 1 | 139.00 |
-| 109 | 2 | 5 | 65.00 |
-| 106 | 2 | 2 | 56.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | lines | units | revenue |
+    | --- | --- | --- | --- |
+    | 112 | 2 | 2 | 181.00 |
+    | 102 | 1 | 1 | 149.00 |
+    | 120 | 1 | 1 | 139.00 |
+    | 109 | 2 | 5 | 65.00 |
+    | 106 | 2 | 2 | 56.50 |
+    <!-- /result -->
 
 **Several columns** make one group per combination:
 
 **Task:** Count the customers in each (country, city) pair, by country then city.
 
-<!-- sql -->
-```sql
-SELECT country, city, COUNT(*) AS customers
-FROM customers
-GROUP BY country, city
-ORDER BY country, city;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT country, city, COUNT(*) AS customers
+    FROM customers
+    GROUP BY country, city
+    ORDER BY country, city;
+    ```
 
-| country | city | customers |
-| --- | --- | --- |
-| Canada | Toronto | 3 |
-| China | Shanghai | 1 |
-| Czechia | Prague | 1 |
-| Israel | *NULL* | 1 |
-| Japan | Osaka | 1 |
-| Nigeria | Lagos | 1 |
-| Portugal | Lisbon | 1 |
-| South Korea | Seoul | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | country | city | customers |
+    | --- | --- | --- |
+    | Canada | Toronto | 3 |
+    | China | Shanghai | 1 |
+    | Czechia | Prague | 1 |
+    | Israel | *NULL* | 1 |
+    | Japan | Osaka | 1 |
+    | Nigeria | Lagos | 1 |
+    | Portugal | Lisbon | 1 |
+    | South Korea | Seoul | 1 |
+    <!-- /result -->
 
 Eli Cohen's city is NULL, and NULLs form **one group of their own**: Israel's row has a NULL city. GROUP BY treats
 all NULLs as equal to each other, even though `NULL = NULL` is not true in a WHERE or a join (chapter 6).
@@ -313,23 +331,25 @@ repeats the same expression:
 
 **Task:** Count the products priced 30 and up and those under 30, as `band` and `products`, by band.
 
-<!-- sql -->
-```sql
-SELECT CASE WHEN price >= 30 THEN '30 and up' ELSE 'under 30' END AS band,
-       COUNT(*) AS products
-FROM products
-GROUP BY CASE WHEN price >= 30 THEN '30 and up' ELSE 'under 30' END
-ORDER BY band;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT CASE WHEN price >= 30 THEN '30 and up' ELSE 'under 30' END AS band,
+           COUNT(*) AS products
+    FROM products
+    GROUP BY CASE WHEN price >= 30 THEN '30 and up' ELSE 'under 30' END
+    ORDER BY band;
+    ```
 
-| band | products |
-| --- | --- |
-| 30 and up | 3 |
-| under 30 | 8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | band | products |
+    | --- | --- |
+    | 30 and up | 3 |
+    | under 30 | 8 |
+    <!-- /result -->
 
 PostgreSQL and SQLite also accept `GROUP BY band` (the alias) or `GROUP BY 1` (the first SELECT column). Both are
 handy in a timed test, but neither is standard SQL, and SQL Server accepts neither.
@@ -375,25 +395,27 @@ with two or more of them.
 
 **Task:** List the customers with at least 2 shipped orders: customer id and shipped orders, most first (ties by customer id).
 
-<!-- sql -->
-```sql
-SELECT customer_id, COUNT(*) AS shipped_orders
-FROM orders
-WHERE status = 'shipped'
-GROUP BY customer_id
-HAVING COUNT(*) >= 2
-ORDER BY shipped_orders DESC, customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, COUNT(*) AS shipped_orders
+    FROM orders
+    WHERE status = 'shipped'
+    GROUP BY customer_id
+    HAVING COUNT(*) >= 2
+    ORDER BY shipped_orders DESC, customer_id;
+    ```
 
-| customer_id | shipped_orders |
-| --- | --- |
-| 1 | 5 |
-| 2 | 2 |
-| 4 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | shipped_orders |
+    | --- | --- |
+    | 1 | 5 |
+    | 2 | 2 |
+    | 4 | 2 |
+    <!-- /result -->
 
 An aggregate in WHERE is an error on both databases:
 
@@ -420,34 +442,36 @@ NULL, which COUNT skips):
 
 **Task:** For each customer with orders, show all orders and how many are shipped, cancelled and pending, by customer id.
 
-<!-- sql -->
-```sql
-SELECT customer_id,
-       COUNT(*)                                           AS orders,
-       SUM(CASE WHEN status = 'shipped'   THEN 1 ELSE 0 END) AS shipped,
-       COUNT(CASE WHEN status = 'cancelled' THEN 1 END)     AS cancelled,
-       COUNT(*) FILTER (WHERE status = 'pending')           AS pending
-FROM orders
-WHERE customer_id IS NOT NULL
-GROUP BY customer_id
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id,
+           COUNT(*)                                           AS orders,
+           SUM(CASE WHEN status = 'shipped'   THEN 1 ELSE 0 END) AS shipped,
+           COUNT(CASE WHEN status = 'cancelled' THEN 1 END)     AS cancelled,
+           COUNT(*) FILTER (WHERE status = 'pending')           AS pending
+    FROM orders
+    WHERE customer_id IS NOT NULL
+    GROUP BY customer_id
+    ORDER BY customer_id;
+    ```
 
-| customer_id | orders | shipped | cancelled | pending |
-| --- | --- | --- | --- | --- |
-| 1 | 5 | 5 | 0 | 0 |
-| 2 | 3 | 2 | 1 | 0 |
-| 3 | 2 | 1 | 1 | 0 |
-| 4 | 2 | 2 | 0 | 0 |
-| 5 | 2 | 1 | 0 | 1 |
-| 6 | 2 | 1 | 0 | 1 |
-| 7 | 1 | 1 | 0 | 0 |
-| 8 | 1 | 1 | 0 | 0 |
-| 10 | 1 | 1 | 0 | 0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | orders | shipped | cancelled | pending |
+    | --- | --- | --- | --- | --- |
+    | 1 | 5 | 5 | 0 | 0 |
+    | 2 | 3 | 2 | 1 | 0 |
+    | 3 | 2 | 1 | 1 | 0 |
+    | 4 | 2 | 2 | 0 | 0 |
+    | 5 | 2 | 1 | 0 | 1 |
+    | 6 | 2 | 1 | 0 | 1 |
+    | 7 | 1 | 1 | 0 | 0 |
+    | 8 | 1 | 1 | 0 | 0 |
+    | 10 | 1 | 1 | 0 | 0 |
+    <!-- /result -->
 
 All three styles give the same kind of count. `FILTER (WHERE ...)` is standard SQL and works on PostgreSQL and on
 SQLite 3.30 and later, but not on MySQL, SQL Server or Oracle; `SUM(CASE ...)` works everywhere, so it is the safe
@@ -480,19 +504,21 @@ Make one side a decimal first, by multiplying by `1.0` (or `100.0` for a percent
 
 **Task:** What percentage of all orders were cancelled, to 1 decimal place?
 
-<!-- sql -->
-```sql
-SELECT ROUND(100.0 * COUNT(CASE WHEN status = 'cancelled' THEN 1 END) / COUNT(*), 1) AS cancelled_pct
-FROM orders;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT ROUND(100.0 * COUNT(CASE WHEN status = 'cancelled' THEN 1 END) / COUNT(*), 1) AS cancelled_pct
+    FROM orders;
+    ```
 
-| cancelled_pct |
-| --- |
-| 10.0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | cancelled_pct |
+    | --- |
+    | 10.0 |
+    <!-- /result -->
 
 `AVG` itself is safe: it returns a decimal on both databases, even for whole numbers (not on SQL Server, where `AVG` of an integer column is an
 integer). The danger is only in `/`
@@ -502,21 +528,23 @@ between two whole numbers, including `SUM(...) / COUNT(...)` written out by hand
 
 **Task:** For Support, show the average of the known salaries, and the average if a missing salary counted as 0, both to 2 decimals.
 
-<!-- sql -->
-```sql
-SELECT ROUND(AVG(salary), 2)                  AS avg_known_salaries,
-       ROUND(SUM(salary) * 1.0 / COUNT(*), 2) AS avg_counting_missing_as_zero
-FROM employees
-WHERE department = 'Support';
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT ROUND(AVG(salary), 2)                  AS avg_known_salaries,
+           ROUND(SUM(salary) * 1.0 / COUNT(*), 2) AS avg_counting_missing_as_zero
+    FROM employees
+    WHERE department = 'Support';
+    ```
 
-| avg_known_salaries | avg_counting_missing_as_zero |
-| --- | --- |
-| 63500.00 | 42333.33 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | avg_known_salaries | avg_counting_missing_as_zero |
+    | --- | --- |
+    | 63500.00 | 42333.33 |
+    <!-- /result -->
 
 Leo Park's salary is not set. `AVG` averages the two known salaries; the second column divides by all three people.
 Which is right depends on the question; usually it is the first, and saying why earns credit.
@@ -550,25 +578,27 @@ Group by the **key** and show the name beside it:
 
 **Task:** Show the 3 customers with the most orders: id, name and orders, most first (ties by id).
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, COUNT(*) AS orders
-FROM customers c
-JOIN orders o ON o.customer_id = c.customer_id
-GROUP BY c.customer_id, c.name
-ORDER BY orders DESC, c.customer_id
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, COUNT(*) AS orders
+    FROM customers c
+    JOIN orders o ON o.customer_id = c.customer_id
+    GROUP BY c.customer_id, c.name
+    ORDER BY orders DESC, c.customer_id
+    LIMIT 3;
+    ```
 
-| customer_id | name | orders |
-| --- | --- | --- |
-| 1 | Ana Silva | 5 |
-| 2 | Ben Okafor | 3 |
-| 3 | Chen Wei | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | orders |
+    | --- | --- | --- |
+    | 1 | Ana Silva | 5 |
+    | 2 | Ben Okafor | 3 |
+    | 3 | Chen Wei | 2 |
+    <!-- /result -->
 
 ## 7.9 Summary { #summary }
 

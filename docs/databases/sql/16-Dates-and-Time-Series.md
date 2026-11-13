@@ -261,27 +261,29 @@ the last day:
 
 **Task:** For two events on 31 January 2026 (midnight and 15:30), show whether each counts as January by `BETWEEN` and by a half-open range.
 
-<!-- sql -->
-```sql
-WITH events AS (
-  SELECT 1 AS id, '2026-01-31 00:00:00' AS ts UNION ALL
-  SELECT 2,       '2026-01-31 15:30:00'
-)
-SELECT id, ts,
-       CASE WHEN ts BETWEEN '2026-01-01' AND '2026-01-31'      THEN 'yes' ELSE 'no' END AS in_between,
-       CASE WHEN ts >= '2026-01-01' AND ts < '2026-02-01'      THEN 'yes' ELSE 'no' END AS in_half_open
-FROM events
-ORDER BY id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH events AS (
+      SELECT 1 AS id, '2026-01-31 00:00:00' AS ts UNION ALL
+      SELECT 2,       '2026-01-31 15:30:00'
+    )
+    SELECT id, ts,
+           CASE WHEN ts BETWEEN '2026-01-01' AND '2026-01-31'      THEN 'yes' ELSE 'no' END AS in_between,
+           CASE WHEN ts >= '2026-01-01' AND ts < '2026-02-01'      THEN 'yes' ELSE 'no' END AS in_half_open
+    FROM events
+    ORDER BY id;
+    ```
 
-| id | ts | in_between | in_half_open |
-| --- | --- | --- | --- |
-| 1 | 2026-01-31 00:00:00 | no | yes |
-| 2 | 2026-01-31 15:30:00 | no | yes |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | id | ts | in_between | in_half_open |
+    | --- | --- | --- | --- |
+    | 1 | 2026-01-31 00:00:00 | no | yes |
+    | 2 | 2026-01-31 15:30:00 | no | yes |
+    <!-- /result -->
 
 Here the timestamps are text, so `BETWEEN` compares strings: `'2026-01-31 00:00:00'` is a longer string than
 `'2026-01-31'`, sorts after it, and both events fall outside. With a real `TIMESTAMP` column the answer changes a
@@ -289,27 +291,29 @@ little, because `'2026-01-31'` becomes midnight at the start of the 31st:
 
 **Task:** The same, with real timestamps on PostgreSQL.
 
-<!-- sql pg -->
-```sql
-WITH events AS (
-  SELECT 1 AS id, TIMESTAMP '2026-01-31 00:00:00' AS ts UNION ALL
-  SELECT 2,       TIMESTAMP '2026-01-31 15:30:00'
-)
-SELECT id, ts,
-       CASE WHEN ts BETWEEN '2026-01-01' AND '2026-01-31'      THEN 'yes' ELSE 'no' END AS in_between,
-       CASE WHEN ts >= '2026-01-01' AND ts < '2026-02-01'      THEN 'yes' ELSE 'no' END AS in_half_open
-FROM events
-ORDER BY id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH events AS (
+      SELECT 1 AS id, TIMESTAMP '2026-01-31 00:00:00' AS ts UNION ALL
+      SELECT 2,       TIMESTAMP '2026-01-31 15:30:00'
+    )
+    SELECT id, ts,
+           CASE WHEN ts BETWEEN '2026-01-01' AND '2026-01-31'      THEN 'yes' ELSE 'no' END AS in_between,
+           CASE WHEN ts >= '2026-01-01' AND ts < '2026-02-01'      THEN 'yes' ELSE 'no' END AS in_half_open
+    FROM events
+    ORDER BY id;
+    ```
 
-| id | ts | in_between | in_half_open |
-| --- | --- | --- | --- |
-| 1 | 2026-01-31 00:00:00 | yes | yes |
-| 2 | 2026-01-31 15:30:00 | no | yes |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+
+    | id | ts | in_between | in_half_open |
+    | --- | --- | --- | --- |
+    | 1 | 2026-01-31 00:00:00 | yes | yes |
+    | 2 | 2026-01-31 15:30:00 | no | yes |
+    <!-- /result -->
 
 Midnight is now inside, but the 3:30 pm event is still not "between 1 and 31 January". Either way `BETWEEN` loses part
 of the last day, and the half-open range is right for text and timestamps alike.
@@ -408,46 +412,48 @@ works on both databases:
 
 **Task:** For each month cohort (the month of a customer's first order), show how many customers it has and how many came back 1, 2 and 3 months later.
 
-<!-- sql -->
-```sql
-WITH o AS (
-  SELECT customer_id,
-         CAST(SUBSTR(CAST(order_date AS TEXT), 1, 4) AS INTEGER) * 12
-           + CAST(SUBSTR(CAST(order_date AS TEXT), 6, 2) AS INTEGER) AS month_no,
-         SUBSTR(CAST(order_date AS TEXT), 1, 7) AS month
-  FROM orders
-  WHERE customer_id IS NOT NULL AND status <> 'cancelled'
-),
-firsts AS (
-  SELECT customer_id, MIN(month_no) AS first_month_no, MIN(month) AS cohort
-  FROM o
-  GROUP BY customer_id
-),
-activity AS (
-  SELECT DISTINCT f.cohort, f.customer_id, o.month_no - f.first_month_no AS months_after
-  FROM firsts f
-  JOIN o ON o.customer_id = f.customer_id
-)
-SELECT cohort,
-       COUNT(DISTINCT customer_id)                        AS customers,
-       SUM(CASE WHEN months_after = 1 THEN 1 ELSE 0 END)  AS back_month_1,
-       SUM(CASE WHEN months_after = 2 THEN 1 ELSE 0 END)  AS back_month_2,
-       SUM(CASE WHEN months_after = 3 THEN 1 ELSE 0 END)  AS back_month_3
-FROM activity
-GROUP BY cohort
-ORDER BY cohort;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH o AS (
+      SELECT customer_id,
+             CAST(SUBSTR(CAST(order_date AS TEXT), 1, 4) AS INTEGER) * 12
+               + CAST(SUBSTR(CAST(order_date AS TEXT), 6, 2) AS INTEGER) AS month_no,
+             SUBSTR(CAST(order_date AS TEXT), 1, 7) AS month
+      FROM orders
+      WHERE customer_id IS NOT NULL AND status <> 'cancelled'
+    ),
+    firsts AS (
+      SELECT customer_id, MIN(month_no) AS first_month_no, MIN(month) AS cohort
+      FROM o
+      GROUP BY customer_id
+    ),
+    activity AS (
+      SELECT DISTINCT f.cohort, f.customer_id, o.month_no - f.first_month_no AS months_after
+      FROM firsts f
+      JOIN o ON o.customer_id = f.customer_id
+    )
+    SELECT cohort,
+           COUNT(DISTINCT customer_id)                        AS customers,
+           SUM(CASE WHEN months_after = 1 THEN 1 ELSE 0 END)  AS back_month_1,
+           SUM(CASE WHEN months_after = 2 THEN 1 ELSE 0 END)  AS back_month_2,
+           SUM(CASE WHEN months_after = 3 THEN 1 ELSE 0 END)  AS back_month_3
+    FROM activity
+    GROUP BY cohort
+    ORDER BY cohort;
+    ```
 
-| cohort | customers | back_month_1 | back_month_2 | back_month_3 |
-| --- | --- | --- | --- | --- |
-| 2026-01 | 3 | 2 | 2 | 1 |
-| 2026-02 | 3 | 1 | 1 | 0 |
-| 2026-03 | 2 | 0 | 0 | 0 |
-| 2026-04 | 1 | 0 | 0 | 0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | cohort | customers | back_month_1 | back_month_2 | back_month_3 |
+    | --- | --- | --- | --- | --- |
+    | 2026-01 | 3 | 2 | 2 | 1 |
+    | 2026-02 | 3 | 1 | 1 | 0 |
+    | 2026-03 | 2 | 0 | 0 | 0 |
+    | 2026-04 | 1 | 0 | 0 | 0 |
+    <!-- /result -->
 
 Read the first row: three customers placed their first (non-cancelled) order in January; of them, how many ordered
 again one, two and three months later. `DISTINCT` in `activity` makes a customer count once per month however many

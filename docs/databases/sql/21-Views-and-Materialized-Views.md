@@ -41,42 +41,46 @@ Now it reads like a table:
 
 **Task:** From the `customer_sales` view, show the top 3 customers by money spent: id, name, orders and spent.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, orders, spent
-FROM customer_sales
-ORDER BY spent DESC, customer_id
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, orders, spent
+    FROM customer_sales
+    ORDER BY spent DESC, customer_id
+    LIMIT 3;
+    ```
 
-| customer_id | name | orders | spent |
-| --- | --- | --- | --- |
-| 1 | Ana Silva | 5 | 289.00 |
-| 2 | Ben Okafor | 2 | 205.50 |
-| 4 | Dana Kim | 2 | 205.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | orders | spent |
+    | --- | --- | --- | --- |
+    | 1 | Ana Silva | 5 | 289.00 |
+    | 2 | Ben Okafor | 2 | 205.50 |
+    | 4 | Dana Kim | 2 | 205.50 |
+    <!-- /result -->
 
 A view stores no rows. Each query on it runs the view's query again, so it always shows the data as it is now. Here
 the price on order 102 is changed (inside a transaction that is rolled back), and Ben's total follows at once:
 
 **Task:** Change the price on order 102, then read Ben's total from the view.
 
-<!-- sql -->
-```sql
-UPDATE order_items SET unit_price = 100.00 WHERE order_id = 102;
-SELECT customer_id, name, spent FROM customer_sales WHERE customer_id = 2;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE order_items SET unit_price = 100.00 WHERE order_id = 102;
+    SELECT customer_id, name, spent FROM customer_sales WHERE customer_id = 2;
+    ```
 
-| customer_id | name | spent |
-| --- | --- | --- |
-| 2 | Ben Okafor | 156.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name | spent |
+    | --- | --- | --- |
+    | 2 | Ben Okafor | 156.50 |
+    <!-- /result -->
 
 Ben's 205.50 became 156.50. What views are for:
 
@@ -279,19 +283,21 @@ leaves it:
 
 **Task:** Move customer 9 to Ottawa through the `toronto_customers` view, then count the view's rows.
 
-<!-- sql pg -->
-```sql
-UPDATE toronto_customers SET city = 'Ottawa' WHERE customer_id = 9;
-SELECT COUNT(*) AS toronto_customers FROM toronto_customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    UPDATE toronto_customers SET city = 'Ottawa' WHERE customer_id = 9;
+    SELECT COUNT(*) AS toronto_customers FROM toronto_customers;
+    ```
 
-| toronto_customers |
-| --- |
-| 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | toronto_customers |
+    | --- |
+    | 2 |
+    <!-- /result -->
 
 Three became two. `WITH CHECK OPTION` forbids that: every row written through the view must still match its
 `WHERE`.
@@ -335,38 +341,42 @@ Change an order, and the materialized view still shows the old number:
 
 **Task:** Change a quantity on order 102, then read product 6's units from the materialized view.
 
-<!-- sql pg -->
-```sql
-UPDATE order_items SET quantity = 5 WHERE order_id = 102 AND product_id = 6;
-SELECT product_id, name, units FROM product_units WHERE product_id = 6;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    UPDATE order_items SET quantity = 5 WHERE order_id = 102 AND product_id = 6;
+    SELECT product_id, name, units FROM product_units WHERE product_id = 6;
+    ```
 
-| product_id | name | units |
-| --- | --- | --- |
-| 6 | Office chair | 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | product_id | name | units |
+    | --- | --- | --- |
+    | 6 | Office chair | 3 |
+    <!-- /result -->
 
 After a refresh it is right again:
 
 **Task:** The same change, then refresh the materialized view and read it again.
 
-<!-- sql pg -->
-```sql
-UPDATE order_items SET quantity = 5 WHERE order_id = 102 AND product_id = 6;
-REFRESH MATERIALIZED VIEW product_units;
-SELECT product_id, name, units FROM product_units WHERE product_id = 6;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    UPDATE order_items SET quantity = 5 WHERE order_id = 102 AND product_id = 6;
+    REFRESH MATERIALIZED VIEW product_units;
+    SELECT product_id, name, units FROM product_units WHERE product_id = 6;
+    ```
 
-| product_id | name | units |
-| --- | --- | --- |
-| 6 | Office chair | 7 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | product_id | name | units |
+    | --- | --- | --- |
+    | 6 | Office chair | 7 |
+    <!-- /result -->
 
 A plain `REFRESH` locks the materialized view: anyone reading it waits until the refresh ends. `REFRESH
 MATERIALIZED VIEW CONCURRENTLY` lets readers keep reading the old rows while the new ones are computed, but it needs
@@ -383,20 +393,22 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY product_units;
 
 **Task:** Refresh the materialized view without blocking readers, then count its rows.
 
-<!-- sql pg -->
-```sql
-CREATE UNIQUE INDEX product_units_id ON product_units (product_id);
-REFRESH MATERIALIZED VIEW CONCURRENTLY product_units;
-SELECT COUNT(*) AS products FROM product_units;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    CREATE UNIQUE INDEX product_units_id ON product_units (product_id);
+    REFRESH MATERIALIZED VIEW CONCURRENTLY product_units;
+    SELECT COUNT(*) AS products FROM product_units;
+    ```
 
-| products |
-| --- |
-| 10 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | products |
+    | --- |
+    | 10 |
+    <!-- /result -->
 
 PostgreSQL never refreshes a materialized view by itself. Something must run `REFRESH`: a scheduled job, or the
 last step of the pipeline that loads the tables. Data warehouses offer more. Databricks and Snowflake, for example,

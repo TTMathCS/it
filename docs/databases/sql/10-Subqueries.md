@@ -25,23 +25,25 @@ more than the average product":
 
 **Task:** List the products that cost more than the average product: name and price, dearest first (ties by name).
 
-<!-- sql -->
-```sql
-SELECT name, price
-FROM products
-WHERE price > (SELECT AVG(price) FROM products)
-ORDER BY price DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price
+    FROM products
+    WHERE price > (SELECT AVG(price) FROM products)
+    ORDER BY price DESC, name;
+    ```
 
-| name | price |
-| --- | --- |
-| Office chair | 149.00 |
-| Monitor stand | 32.00 |
-| Tea kettle | 32.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Office chair | 149.00 |
+    | Monitor stand | 32.00 |
+    | Tea kettle | 32.00 |
+    <!-- /result -->
 
 The database works out the inner query first (the average is 30.80 to two places) and then uses that number in the
 outer WHERE. You can't write `WHERE price > AVG(price)`: an aggregate is not allowed in WHERE (chapter 7), and even if
@@ -51,26 +53,28 @@ In SELECT, a scalar subquery adds the same value to every row; useful for "compa
 
 **Task:** For the Office products, show name, price, how far the price is above the average (2 decimals), and its share of all prices in percent (1 decimal), dearest first.
 
-<!-- sql -->
-```sql
-SELECT name, price,
-       ROUND(price - (SELECT AVG(price) FROM products), 2) AS above_average,
-       ROUND(100.0 * price / (SELECT SUM(price) FROM products), 1) AS pct_of_all_prices
-FROM products
-WHERE category = 'Office'
-ORDER BY price DESC;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price,
+           ROUND(price - (SELECT AVG(price) FROM products), 2) AS above_average,
+           ROUND(100.0 * price / (SELECT SUM(price) FROM products), 1) AS pct_of_all_prices
+    FROM products
+    WHERE category = 'Office'
+    ORDER BY price DESC;
+    ```
 
-| name | price | above_average | pct_of_all_prices |
-| --- | --- | --- | --- |
-| Office chair | 149.00 | 118.20 | 44.0 |
-| Monitor stand | 32.00 | 1.20 | 9.4 |
-| Fountain pen | 18.00 | -12.80 | 5.3 |
-| Notebook | 3.25 | -27.55 | 1.0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | name | price | above_average | pct_of_all_prices |
+    | --- | --- | --- | --- |
+    | Office chair | 149.00 | 118.20 | 44.0 |
+    | Monitor stand | 32.00 | 1.20 | 9.4 |
+    | Fountain pen | 18.00 | -12.80 | 5.3 |
+    | Notebook | 3.25 | -27.55 | 1.0 |
+    <!-- /result -->
 
 (A window function, `AVG(price) OVER ()`, does the same without a subquery: [chapter 13](13-Window-Functions-Ranking.md).)
 
@@ -81,27 +85,29 @@ cancelled order:
 
 **Task:** List the products that appear in a cancelled order: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT product_id, name
-FROM products
-WHERE product_id IN (
-  SELECT i.product_id
-  FROM order_items i
-  JOIN orders o ON o.order_id = i.order_id
-  WHERE o.status = 'cancelled'
-)
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT product_id, name
+    FROM products
+    WHERE product_id IN (
+      SELECT i.product_id
+      FROM order_items i
+      JOIN orders o ON o.order_id = i.order_id
+      WHERE o.status = 'cancelled'
+    )
+    ORDER BY product_id;
+    ```
 
-| product_id | name |
-| --- | --- |
-| 3 | Fountain pen |
-| 5 | Tea kettle |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | product_id | name |
+    | --- | --- |
+    | 3 | Fountain pen |
+    | 5 | Tea kettle |
+    <!-- /result -->
 
 Duplicates in the list don't matter to `IN`. `NOT IN` with a subquery has the NULL trap from
 [chapter 9](09-Self-Semi-and-Anti-Joins.md#anti): prefer `NOT EXISTS`.
@@ -162,29 +168,31 @@ subquery has to know which department the outer row is in. It refers to the oute
 
 **Task:** List the employees who earn more than the average of their own department: name, department and salary, by department, highest salary first, then name.
 
-<!-- sql -->
-```sql
-SELECT e.name, e.department, e.salary
-FROM employees e
-WHERE e.salary > (
-  SELECT AVG(x.salary)
-  FROM employees x
-  WHERE x.department = e.department
-)
-ORDER BY e.department, e.salary DESC, e.name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT e.name, e.department, e.salary
+    FROM employees e
+    WHERE e.salary > (
+      SELECT AVG(x.salary)
+      FROM employees x
+      WHERE x.department = e.department
+    )
+    ORDER BY e.department, e.salary DESC, e.name;
+    ```
 
-| name | department | salary |
-| --- | --- | --- |
-| Tom Becker | Engineering | 140000 |
-| Priya Nair | Engineering | 120000 |
-| Sam Lee | Engineering | 120000 |
-| Omar Aziz | Sales | 110000 |
-| Kwame Mensah | Support | 75000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | name | department | salary |
+    | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 |
+    | Priya Nair | Engineering | 120000 |
+    | Sam Lee | Engineering | 120000 |
+    | Omar Aziz | Sales | 110000 |
+    | Kwame Mensah | Support | 75000 |
+    <!-- /result -->
 
 This is a **correlated** subquery: `e.department` comes from outside. Think of it as run once for each outer row
 (the database may find a faster plan, but the answer is the same). Management has one person, who can't be above
@@ -227,25 +235,27 @@ to aggregate in two steps: first one row per order, then statistics over the ord
 
 **Task:** Over all orders, show the number of orders, the average order value (2 decimals) and the biggest order.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)              AS orders,
-       ROUND(AVG(total), 2)  AS avg_order_value,
-       MAX(total)            AS biggest_order
-FROM (
-  SELECT order_id, SUM(quantity * unit_price) AS total
-  FROM order_items
-  GROUP BY order_id
-) AS t;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)              AS orders,
+           ROUND(AVG(total), 2)  AS avg_order_value,
+           MAX(total)            AS biggest_order
+    FROM (
+      SELECT order_id, SUM(quantity * unit_price) AS total
+      FROM order_items
+      GROUP BY order_id
+    ) AS t;
+    ```
 
-| orders | avg_order_value | biggest_order |
-| --- | --- | --- |
-| 20 | 56.13 | 181.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | orders | avg_order_value | biggest_order |
+    | --- | --- | --- |
+    | 20 | 56.13 | 181.00 |
+    <!-- /result -->
 
 An aggregate of an aggregate (`AVG(SUM(...))`) is not allowed in one step; the derived table makes the step
 explicit.
@@ -279,20 +289,22 @@ for one of them. And a scalar subquery that returns **no** rows gives NULL, whic
 
 **Task:** List the products dearer than the Garden product (there is no Garden product).
 
-<!-- sql -->
-```sql
-SELECT name
-FROM products
-WHERE price > (SELECT price FROM products WHERE category = 'Garden');
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name
+    FROM products
+    WHERE price > (SELECT price FROM products WHERE category = 'Garden');
+    ```
 
-| name |
-| --- |
-| *(no rows)* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+
+    | name |
+    | --- |
+    | *(no rows)* |
+    <!-- /result -->
 
 There is no Garden category, so the subquery is NULL, every comparison is unknown, and no rows come back. No error.
 

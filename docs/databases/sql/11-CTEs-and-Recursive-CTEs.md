@@ -24,20 +24,22 @@ order you think it:
 
 **Task:** What is the average order value, to 2 decimals?
 
-<!-- sql -->
-```sql
-SELECT ROUND(AVG(total), 2) AS avg_order_value
-FROM (SELECT order_id, SUM(quantity * unit_price) AS total
-      FROM order_items GROUP BY order_id) AS t;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT ROUND(AVG(total), 2) AS avg_order_value
+    FROM (SELECT order_id, SUM(quantity * unit_price) AS total
+          FROM order_items GROUP BY order_id) AS t;
+    ```
 
-| avg_order_value |
-| --- |
-| 56.13 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | avg_order_value |
+    | --- |
+    | 56.13 |
+    <!-- /result -->
 
 <!-- sql same -->
 ```sql
@@ -62,40 +64,42 @@ Several CTEs are separated by commas, and each can use the ones before it. `WITH
 
 **Task:** For each customer with shipped orders, show name, number of shipped orders, revenue and average order value.
 
-<!-- sql -->
-```sql
-WITH order_totals AS (
-  SELECT o.order_id, o.customer_id, SUM(i.quantity * i.unit_price) AS total
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.status = 'shipped'
-  GROUP BY o.order_id, o.customer_id
-),
-customer_totals AS (
-  SELECT customer_id, COUNT(*) AS orders, SUM(total) AS revenue
-  FROM order_totals
-  WHERE customer_id IS NOT NULL
-  GROUP BY customer_id
-)
-SELECT c.name, ct.orders, ct.revenue,
-       ROUND(ct.revenue / ct.orders, 2) AS avg_order
-FROM customer_totals ct
-JOIN customers c ON c.customer_id = ct.customer_id
-ORDER BY ct.revenue DESC, c.customer_id
-LIMIT 5;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH order_totals AS (
+      SELECT o.order_id, o.customer_id, SUM(i.quantity * i.unit_price) AS total
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.status = 'shipped'
+      GROUP BY o.order_id, o.customer_id
+    ),
+    customer_totals AS (
+      SELECT customer_id, COUNT(*) AS orders, SUM(total) AS revenue
+      FROM order_totals
+      WHERE customer_id IS NOT NULL
+      GROUP BY customer_id
+    )
+    SELECT c.name, ct.orders, ct.revenue,
+           ROUND(ct.revenue / ct.orders, 2) AS avg_order
+    FROM customer_totals ct
+    JOIN customers c ON c.customer_id = ct.customer_id
+    ORDER BY ct.revenue DESC, c.customer_id
+    LIMIT 5;
+    ```
 
-| name | orders | revenue | avg_order |
-| --- | --- | --- | --- |
-| Ana Silva | 5 | 289.00 | 57.80 |
-| Ben Okafor | 2 | 205.50 | 102.75 |
-| Dana Kim | 2 | 205.50 | 102.75 |
-| Farah Haddad | 1 | 65.00 | 65.00 |
-| Hana Sato | 1 | 49.00 | 49.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | name | orders | revenue | avg_order |
+    | --- | --- | --- | --- |
+    | Ana Silva | 5 | 289.00 | 57.80 |
+    | Ben Okafor | 2 | 205.50 | 102.75 |
+    | Dana Kim | 2 | 205.50 | 102.75 |
+    | Farah Haddad | 1 | 65.00 | 65.00 |
+    | Hana Sato | 1 | 49.00 | 49.00 |
+    <!-- /result -->
 
 Step 1 makes one row per shipped order; step 2 one row per customer; the final SELECT adds names. Each step has one
 clear grain, which is exactly what prevents the fan-out mistakes of [chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md#fan-out).
@@ -106,30 +110,32 @@ the average order value:
 
 **Task:** List the orders whose value is above the average order value: order id and total, highest first (ties by order id).
 
-<!-- sql -->
-```sql
-WITH order_totals AS (
-  SELECT order_id, SUM(quantity * unit_price) AS total
-  FROM order_items
-  GROUP BY order_id
-)
-SELECT order_id, total
-FROM order_totals
-WHERE total > (SELECT AVG(total) FROM order_totals)
-ORDER BY total DESC, order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH order_totals AS (
+      SELECT order_id, SUM(quantity * unit_price) AS total
+      FROM order_items
+      GROUP BY order_id
+    )
+    SELECT order_id, total
+    FROM order_totals
+    WHERE total > (SELECT AVG(total) FROM order_totals)
+    ORDER BY total DESC, order_id;
+    ```
 
-| order_id | total |
-| --- | --- |
-| 112 | 181.00 |
-| 102 | 149.00 |
-| 120 | 139.00 |
-| 109 | 65.00 |
-| 106 | 56.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | total |
+    | --- | --- |
+    | 112 | 181.00 |
+    | 102 | 149.00 |
+    | 120 | 139.00 |
+    | 109 | 65.00 |
+    | 106 | 56.50 |
+    <!-- /result -->
 
 ## 11.2 Building a hard query in steps { #steps }
 
@@ -140,84 +146,88 @@ month, with that revenue. If two customers tie, show both."
 
 **Task:** List every shipped order with a customer: order id, customer id, month (YYYY-MM) and value, by month then order id.
 
-<!-- sql -->
-```sql
-WITH order_values AS (
-  SELECT o.order_id, o.customer_id,
-         SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
-         SUM(i.quantity * i.unit_price) AS total
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
-  GROUP BY o.order_id, o.customer_id, o.order_date
-)
-SELECT * FROM order_values ORDER BY month, order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 15 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH order_values AS (
+      SELECT o.order_id, o.customer_id,
+             SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
+             SUM(i.quantity * i.unit_price) AS total
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
+      GROUP BY o.order_id, o.customer_id, o.order_date
+    )
+    SELECT * FROM order_values ORDER BY month, order_id;
+    ```
 
-| order_id | customer_id | month | total |
-| --- | --- | --- | --- |
-| 101 | 1 | 2026-01 | 34.25 |
-| 102 | 2 | 2026-01 | 149.00 |
-| 103 | 1 | 2026-01 | 33.75 |
-| 105 | 4 | 2026-01 | 24.50 |
-| 106 | 2 | 2026-02 | 56.50 |
-| 107 | 5 | 2026-02 | 36.75 |
-| 109 | 6 | 2026-02 | 65.00 |
-| 110 | 1 | 2026-02 | 32.50 |
-| 111 | 7 | 2026-02 | 36.75 |
-| 112 | 4 | 2026-03 | 181.00 |
-| 114 | 8 | 2026-03 | 49.00 |
-| 115 | 1 | 2026-03 | 49.50 |
-| 117 | 10 | 2026-03 | 43.00 |
-| 118 | 3 | 2026-04 | 24.50 |
-| 120 | 1 | 2026-04 | 139.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 15 rows.</p>
+
+    | order_id | customer_id | month | total |
+    | --- | --- | --- | --- |
+    | 101 | 1 | 2026-01 | 34.25 |
+    | 102 | 2 | 2026-01 | 149.00 |
+    | 103 | 1 | 2026-01 | 33.75 |
+    | 105 | 4 | 2026-01 | 24.50 |
+    | 106 | 2 | 2026-02 | 56.50 |
+    | 107 | 5 | 2026-02 | 36.75 |
+    | 109 | 6 | 2026-02 | 65.00 |
+    | 110 | 1 | 2026-02 | 32.50 |
+    | 111 | 7 | 2026-02 | 36.75 |
+    | 112 | 4 | 2026-03 | 181.00 |
+    | 114 | 8 | 2026-03 | 49.00 |
+    | 115 | 1 | 2026-03 | 49.50 |
+    | 117 | 10 | 2026-03 | 43.00 |
+    | 118 | 3 | 2026-04 | 24.50 |
+    | 120 | 1 | 2026-04 | 139.00 |
+    <!-- /result -->
 
 **Step 2: one row per customer per month.** **Step 3: the best total in each month.** **Step 4: keep the
 customer-months that equal it.** Each step is a CTE; the last SELECT only reads from them.
 
 **Task:** For each month, find the customer (or customers, on a tie) with the most shipped revenue: month, customer id and revenue.
 
-<!-- sql -->
-```sql
-WITH order_values AS (
-  SELECT o.order_id, o.customer_id,
-         SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
-         SUM(i.quantity * i.unit_price) AS total
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
-  GROUP BY o.order_id, o.customer_id, o.order_date
-),
-customer_month AS (
-  SELECT month, customer_id, SUM(total) AS revenue
-  FROM order_values
-  GROUP BY month, customer_id
-),
-best AS (
-  SELECT month, MAX(revenue) AS top_revenue
-  FROM customer_month
-  GROUP BY month
-)
-SELECT cm.month, cm.customer_id, cm.revenue
-FROM customer_month cm
-JOIN best b ON b.month = cm.month AND cm.revenue = b.top_revenue
-ORDER BY cm.month, cm.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH order_values AS (
+      SELECT o.order_id, o.customer_id,
+             SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
+             SUM(i.quantity * i.unit_price) AS total
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
+      GROUP BY o.order_id, o.customer_id, o.order_date
+    ),
+    customer_month AS (
+      SELECT month, customer_id, SUM(total) AS revenue
+      FROM order_values
+      GROUP BY month, customer_id
+    ),
+    best AS (
+      SELECT month, MAX(revenue) AS top_revenue
+      FROM customer_month
+      GROUP BY month
+    )
+    SELECT cm.month, cm.customer_id, cm.revenue
+    FROM customer_month cm
+    JOIN best b ON b.month = cm.month AND cm.revenue = b.top_revenue
+    ORDER BY cm.month, cm.customer_id;
+    ```
 
-| month | customer_id | revenue |
-| --- | --- | --- |
-| 2026-01 | 2 | 149.00 |
-| 2026-02 | 6 | 65.00 |
-| 2026-03 | 4 | 181.00 |
-| 2026-04 | 1 | 139.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | month | customer_id | revenue |
+    | --- | --- | --- |
+    | 2026-01 | 2 | 149.00 |
+    | 2026-02 | 6 | 65.00 |
+    | 2026-03 | 4 | 181.00 |
+    | 2026-04 | 1 | 139.00 |
+    <!-- /result -->
 
 Each month here has a single winner, but the query is ready for a tie: the last join keeps **every** customer-month
 whose revenue equals the month's best, so two customers on the same top figure would both appear. `ORDER BY revenue
@@ -244,28 +254,30 @@ no rows. The keyword is `WITH RECURSIVE` in PostgreSQL, SQLite and MySQL; SQL Se
 
 **Task:** Make the numbers 1 to 5, one per row.
 
-<!-- sql -->
-```sql
-WITH RECURSIVE n AS (
-  SELECT 1 AS i                 -- anchor
-  UNION ALL
-  SELECT i + 1 FROM n           -- recursive part: the previous row plus one
-  WHERE i < 5                   -- the stop condition
-)
-SELECT i FROM n ORDER BY i;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH RECURSIVE n AS (
+      SELECT 1 AS i                 -- anchor
+      UNION ALL
+      SELECT i + 1 FROM n           -- recursive part: the previous row plus one
+      WHERE i < 5                   -- the stop condition
+    )
+    SELECT i FROM n ORDER BY i;
+    ```
 
-| i |
-| --- |
-| 1 |
-| 2 |
-| 3 |
-| 4 |
-| 5 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | i |
+    | --- |
+    | 1 |
+    | 2 |
+    | 3 |
+    | 4 |
+    | 5 |
+    <!-- /result -->
 
 Without `WHERE i < 5` it would never stop: the query runs until it is cancelled or the database runs out of space.
 Write the stop condition first, before anything else.
@@ -337,41 +349,43 @@ command-line tool, but not in most programs that use SQLite as a library, so the
 
 **Task:** List everyone under Maya Rossi at every level, with their level and their chain of managers, sorted by the chain.
 
-<!-- sql -->
-```sql
-WITH RECURSIVE chain AS (
-  SELECT employee_id, name, manager_id, 0 AS level, CAST(name AS TEXT) AS path
-  FROM employees
-  WHERE manager_id IS NULL                       -- anchor: the top of the tree
-  UNION ALL
-  SELECT e.employee_id, e.name, e.manager_id, c.level + 1,
-         c.path || ' > ' || e.name
-  FROM employees e
-  JOIN chain c ON e.manager_id = c.employee_id   -- each round goes one level down
-)
-SELECT level, name, path
-FROM chain
-ORDER BY path;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 12 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH RECURSIVE chain AS (
+      SELECT employee_id, name, manager_id, 0 AS level, CAST(name AS TEXT) AS path
+      FROM employees
+      WHERE manager_id IS NULL                       -- anchor: the top of the tree
+      UNION ALL
+      SELECT e.employee_id, e.name, e.manager_id, c.level + 1,
+             c.path || ' > ' || e.name
+      FROM employees e
+      JOIN chain c ON e.manager_id = c.employee_id   -- each round goes one level down
+    )
+    SELECT level, name, path
+    FROM chain
+    ORDER BY path;
+    ```
 
-| level | name | path |
-| --- | --- | --- |
-| 0 | Maya Rossi | Maya Rossi |
-| 1 | Kwame Mensah | Maya Rossi > Kwame Mensah |
-| 2 | Ella Novak | Maya Rossi > Kwame Mensah > Ella Novak |
-| 2 | Leo Park | Maya Rossi > Kwame Mensah > Leo Park |
-| 1 | Omar Aziz | Maya Rossi > Omar Aziz |
-| 2 | Nina Berg | Maya Rossi > Omar Aziz > Nina Berg |
-| 2 | Raj Patel | Maya Rossi > Omar Aziz > Raj Patel |
-| 2 | Zoe Martin | Maya Rossi > Omar Aziz > Zoe Martin |
-| 1 | Tom Becker | Maya Rossi > Tom Becker |
-| 2 | Lucia Gomez | Maya Rossi > Tom Becker > Lucia Gomez |
-| 2 | Priya Nair | Maya Rossi > Tom Becker > Priya Nair |
-| 2 | Sam Lee | Maya Rossi > Tom Becker > Sam Lee |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 12 rows.</p>
+
+    | level | name | path |
+    | --- | --- | --- |
+    | 0 | Maya Rossi | Maya Rossi |
+    | 1 | Kwame Mensah | Maya Rossi > Kwame Mensah |
+    | 2 | Ella Novak | Maya Rossi > Kwame Mensah > Ella Novak |
+    | 2 | Leo Park | Maya Rossi > Kwame Mensah > Leo Park |
+    | 1 | Omar Aziz | Maya Rossi > Omar Aziz |
+    | 2 | Nina Berg | Maya Rossi > Omar Aziz > Nina Berg |
+    | 2 | Raj Patel | Maya Rossi > Omar Aziz > Raj Patel |
+    | 2 | Zoe Martin | Maya Rossi > Omar Aziz > Zoe Martin |
+    | 1 | Tom Becker | Maya Rossi > Tom Becker |
+    | 2 | Lucia Gomez | Maya Rossi > Tom Becker > Lucia Gomez |
+    | 2 | Priya Nair | Maya Rossi > Tom Becker > Priya Nair |
+    | 2 | Sam Lee | Maya Rossi > Tom Becker > Sam Lee |
+    <!-- /result -->
 
 Each round joins `employees` to the rows found in the round before: round 0 is Maya, round 1 her three direct
 reports, round 2 theirs. Sorting by the path lists the tree in outline order.

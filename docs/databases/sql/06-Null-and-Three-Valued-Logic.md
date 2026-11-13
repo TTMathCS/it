@@ -25,23 +25,25 @@ or not yet set (Leo Park's salary). It is not a value itself, so it is not 0 and
 
 **Task:** Show customers 3, 5 and 8: id, name, email and city, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, email, city
-FROM customers
-WHERE customer_id IN (3, 5, 8)
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, email, city
+    FROM customers
+    WHERE customer_id IN (3, 5, 8)
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name | email | city |
-| --- | --- | --- | --- |
-| 3 | Chen Wei | *NULL* | Shanghai |
-| 5 | Eli Cohen | eli@example.com | *NULL* |
-| 8 | Hana Sato | *NULL* | Osaka |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | email | city |
+    | --- | --- | --- | --- |
+    | 3 | Chen Wei | *NULL* | Shanghai |
+    | 5 | Eli Cohen | eli@example.com | *NULL* |
+    | 8 | Hana Sato | *NULL* | Osaka |
+    <!-- /result -->
 
 An empty string `''` is a real value, a piece of text with no characters; a test checker treats it differently from
 NULL. One exception to know: Oracle stores `''` as NULL, so on Oracle the two cannot be told apart.
@@ -72,20 +74,22 @@ although two customers have no email:
 
 **Task:** Find the customers with no email: id and name. (This first try is wrong; see why below.)
 
-<!-- sql -->
-```sql
-SELECT customer_id, name
-FROM customers
-WHERE email = NULL;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name
+    FROM customers
+    WHERE email = NULL;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| *(no rows)* | |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | *(no rows)* | |
+    <!-- /result -->
 
 ## 6.3 IS NULL and IS DISTINCT FROM { #is-null }
 
@@ -93,22 +97,24 @@ WHERE email = NULL;
 
 **Task:** Find the customers with no email: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name
-FROM customers
-WHERE email IS NULL
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name
+    FROM customers
+    WHERE email IS NULL
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 3 | Chen Wei |
-| 8 | Hana Sato |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 3 | Chen Wei |
+    | 8 | Hana Sato |
+    <!-- /result -->
 
 Comparing two columns that may both be NULL needs a **null-safe** comparison, where two NULLs count as the same.
 `a IS NOT DISTINCT FROM b` is the standard form, and works on PostgreSQL and on SQLite (from 3.39):
@@ -183,27 +189,29 @@ If customers with no city belong in the answer, say so:
 
 **Task:** List the customers who do not live in Toronto, counting a missing city as "not Toronto": id, name and city, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, city
-FROM customers
-WHERE city <> 'Toronto' OR city IS NULL
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, city
+    FROM customers
+    WHERE city <> 'Toronto' OR city IS NULL
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name | city |
-| --- | --- | --- |
-| 2 | Ben Okafor | Lagos |
-| 3 | Chen Wei | Shanghai |
-| 4 | Dana Kim | Seoul |
-| 5 | Eli Cohen | *NULL* |
-| 7 | Gus Novak | Prague |
-| 8 | Hana Sato | Osaka |
-| 10 | Ana Silva | Lisbon |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+
+    | customer_id | name | city |
+    | --- | --- | --- |
+    | 2 | Ben Okafor | Lagos |
+    | 3 | Chen Wei | Shanghai |
+    | 4 | Dana Kim | Seoul |
+    | 5 | Eli Cohen | *NULL* |
+    | 7 | Gus Novak | Prague |
+    | 8 | Hana Sato | Osaka |
+    | 10 | Ana Silva | Lisbon |
+    <!-- /result -->
 
 `WHERE city IS DISTINCT FROM 'Toronto'` is the same in one condition. Which answer is right depends on the
 question; a test usually has a NULL in the data exactly to see whether you thought about it. Say which you chose.
@@ -217,24 +225,26 @@ Any arithmetic with NULL gives NULL, and so does `||`:
 
 **Task:** For employees 11 and 12, show name, salary, salary plus 5000, and a label `name: salary`.
 
-<!-- sql -->
-```sql
-SELECT name, salary,
-       salary + 5000          AS after_raise,
-       name || ': ' || salary AS label
-FROM employees
-WHERE employee_id IN (11, 12)
-ORDER BY employee_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, salary,
+           salary + 5000          AS after_raise,
+           name || ': ' || salary AS label
+    FROM employees
+    WHERE employee_id IN (11, 12)
+    ORDER BY employee_id;
+    ```
 
-| name | salary | after_raise | label |
-| --- | --- | --- | --- |
-| Ella Novak | 52000 | 57000 | Ella Novak: 52000 |
-| Leo Park | *NULL* | *NULL* | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | name | salary | after_raise | label |
+    | --- | --- | --- | --- |
+    | Ella Novak | 52000 | 57000 | Ella Novak: 52000 |
+    | Leo Park | *NULL* | *NULL* | *NULL* |
+    <!-- /result -->
 
 `COALESCE(x, default)` replaces NULL with a value: `COALESCE(salary, 0) + 5000`. Use it on purpose: turning an
 unknown salary into 0 changes averages and totals, and that may or may not be what the question means.
@@ -245,24 +255,26 @@ Aggregate functions **skip** NULLs, except `COUNT(*)`, which counts rows:
 
 **Task:** For the Support department, show in one row: employees, employees with a salary, total salary, average known salary and lowest salary.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)      AS employees,
-       COUNT(salary) AS with_salary,
-       SUM(salary)   AS payroll,
-       AVG(salary)   AS avg_known,
-       MIN(salary)   AS lowest
-FROM employees
-WHERE department = 'Support';
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)      AS employees,
+           COUNT(salary) AS with_salary,
+           SUM(salary)   AS payroll,
+           AVG(salary)   AS avg_known,
+           MIN(salary)   AS lowest
+    FROM employees
+    WHERE department = 'Support';
+    ```
 
-| employees | with_salary | payroll | avg_known | lowest |
-| --- | --- | --- | --- | --- |
-| 3 | 2 | 127000 | 63500.000000000000 | 52000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | employees | with_salary | payroll | avg_known | lowest |
+    | --- | --- | --- | --- | --- |
+    | 3 | 2 | 127000 | 63500.000000000000 | 52000 |
+    <!-- /result -->
 
 Three people, two known salaries. `AVG` is the average of the two known ones (63,500), not the total over three.
 [Chapter 7](07-Aggregation-Group-By-Having.md#division) shows the other average, counting a missing salary as 0.
@@ -271,22 +283,24 @@ When there are no values at all, `COUNT` gives 0 but `SUM`, `AVG`, `MIN` and `MA
 
 **Task:** For products over 1000 (there are none), show the count, the sum of prices, and the sum shown as 0 when there is nothing.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)               AS n,
-       SUM(price)             AS total,
-       COALESCE(SUM(price), 0) AS total_or_zero
-FROM products
-WHERE price > 1000;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)               AS n,
+           SUM(price)             AS total,
+           COALESCE(SUM(price), 0) AS total_or_zero
+    FROM products
+    WHERE price > 1000;
+    ```
 
-| n | total | total_or_zero |
-| --- | --- | --- |
-| 0 | *NULL* | 0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | n | total | total_or_zero |
+    | --- | --- | --- |
+    | 0 | *NULL* | 0 |
+    <!-- /result -->
 
 A question that asks for "total sales, 0 if none" needs the `COALESCE`.
 
@@ -296,24 +310,26 @@ A question that asks for "total sales, 0 if none" needs the `COALESCE`.
 
 **Task:** Count the products in each category, including the products with no category, with that group last.
 
-<!-- sql -->
-```sql
-SELECT category, COUNT(*) AS products
-FROM products
-GROUP BY category
-ORDER BY category NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT category, COUNT(*) AS products
+    FROM products
+    GROUP BY category
+    ORDER BY category NULLS LAST;
+    ```
 
-| category | products |
-| --- | --- |
-| Home | 4 |
-| Kitchen | 2 |
-| Office | 4 |
-| *NULL* | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | category | products |
+    | --- | --- |
+    | Home | 4 |
+    | Kitchen | 2 |
+    | Office | 4 |
+    | *NULL* | 1 |
+    <!-- /result -->
 
 The gift card has no category and forms a group of its own. If a test asks for "products per category", decide
 whether that NULL group belongs in the answer; often it should be shown with a label:
@@ -354,21 +370,23 @@ Use `NOT EXISTS`, which does not have the problem, or filter the NULLs out of th
 
 **Task:** List the customers who never placed an order: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 9 | Ivan Petrov |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 9 | Ivan Petrov |
+    <!-- /result -->
 
 [Chapter 9](09-Self-Semi-and-Anti-Joins.md#anti) compares all the ways to write an anti join. `IN` (without `NOT`) is
 safe: a NULL in the list just never matches.
@@ -381,24 +399,26 @@ smaller (first):
 
 **Task:** List customers 3 to 6 with their city, sorted by city.
 
-<!-- sql pg -->
-```sql
-SELECT customer_id, city
-FROM customers
-WHERE customer_id BETWEEN 3 AND 6
-ORDER BY city;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT customer_id, city
+    FROM customers
+    WHERE customer_id BETWEEN 3 AND 6
+    ORDER BY city;
+    ```
 
-| customer_id | city |
-| --- | --- |
-| 4 | Seoul |
-| 3 | Shanghai |
-| 6 | Toronto |
-| 5 | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | customer_id | city |
+    | --- | --- |
+    | 4 | Seoul |
+    | 3 | Shanghai |
+    | 6 | Toronto |
+    | 5 | *NULL* |
+    <!-- /result -->
 
 <!-- sql sqlite -->
 ```sql
@@ -423,24 +443,26 @@ ORDER BY city;
 
 **Task:** List customers 3 to 6 sorted by city, with the missing city last on every database.
 
-<!-- sql -->
-```sql
-SELECT customer_id, city
-FROM customers
-WHERE customer_id BETWEEN 3 AND 6
-ORDER BY city NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, city
+    FROM customers
+    WHERE customer_id BETWEEN 3 AND 6
+    ORDER BY city NULLS LAST;
+    ```
 
-| customer_id | city |
-| --- | --- |
-| 4 | Seoul |
-| 3 | Shanghai |
-| 6 | Toronto |
-| 5 | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id | city |
+    | --- | --- |
+    | 4 | Seoul |
+    | 3 | Shanghai |
+    | 6 | Toronto |
+    | 5 | *NULL* |
+    <!-- /result -->
 
 MySQL and SQL Server do not have `NULLS LAST`; there, sort by a flag first: `ORDER BY CASE WHEN city IS NULL THEN 1
 ELSE 0 END, city`, which works everywhere.

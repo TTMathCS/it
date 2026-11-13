@@ -25,24 +25,26 @@ the result is NULL (except on Oracle, which treats NULL as empty text here). `CO
 
 **Task:** For customers 2 and 3, show the name and email as one piece of text, `Name <email>`, built two ways.
 
-<!-- sql -->
-```sql
-SELECT customer_id,
-       name || ' <' || email || '>'      AS with_pipes,
-       CONCAT(name, ' <', email, '>')    AS with_concat
-FROM customers
-WHERE customer_id IN (2, 3)
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id,
+           name || ' <' || email || '>'      AS with_pipes,
+           CONCAT(name, ' <', email, '>')    AS with_concat
+    FROM customers
+    WHERE customer_id IN (2, 3)
+    ORDER BY customer_id;
+    ```
 
-| customer_id | with_pipes | with_concat |
-| --- | --- | --- |
-| 2 | Ben Okafor <ben@example.com> | Ben Okafor <ben@example.com> |
-| 3 | *NULL* | Chen Wei <> |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | with_pipes | with_concat |
+    | --- | --- | --- |
+    | 2 | Ben Okafor &lt;ben@example.com> | Ben Okafor &lt;ben@example.com> |
+    | 3 | *NULL* | Chen Wei &lt;> |
+    <!-- /result -->
 
 Chen Wei has no email, so `||` gives NULL for the whole value while `CONCAT` just leaves the email out. Neither is
 "right"; choose on purpose, or say what a missing part should look like with `COALESCE(email, 'no email')`.
@@ -54,25 +56,27 @@ NULLs there.)
 
 **Task:** For customers 1 and 6, show the name, its length, and the name in capitals and in small letters.
 
-<!-- sql -->
-```sql
-SELECT name,
-       LENGTH(name) AS chars,
-       UPPER(name)  AS upper_name,
-       LOWER(name)  AS lower_name
-FROM customers
-WHERE customer_id IN (1, 6)
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name,
+           LENGTH(name) AS chars,
+           UPPER(name)  AS upper_name,
+           LOWER(name)  AS lower_name
+    FROM customers
+    WHERE customer_id IN (1, 6)
+    ORDER BY customer_id;
+    ```
 
-| name | chars | upper_name | lower_name |
-| --- | --- | --- | --- |
-| Ana Silva | 9 | ANA SILVA | ana silva |
-| Farah Haddad | 12 | FARAH HADDAD | farah haddad |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | name | chars | upper_name | lower_name |
+    | --- | --- | --- | --- |
+    | Ana Silva | 9 | ANA SILVA | ana silva |
+    | Farah Haddad | 12 | FARAH HADDAD | farah haddad |
+    <!-- /result -->
 
 `LENGTH` counts characters (SQL Server calls it `LEN`, and it ignores trailing spaces). SQLite's built-in `UPPER`
 and `LOWER` change only the English letters A to Z; PostgreSQL also handles accented letters (`LOWER('À')` is `à`
@@ -85,24 +89,26 @@ not 0. Leave out the length to take everything to the end.
 
 **Task:** For customers 1 and 2, show the name, its first 3 letters, and everything from the 5th letter on.
 
-<!-- sql -->
-```sql
-SELECT name,
-       SUBSTR(name, 1, 3) AS first_three,
-       SUBSTR(name, 5)    AS from_fifth
-FROM customers
-WHERE customer_id IN (1, 2)
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name,
+           SUBSTR(name, 1, 3) AS first_three,
+           SUBSTR(name, 5)    AS from_fifth
+    FROM customers
+    WHERE customer_id IN (1, 2)
+    ORDER BY customer_id;
+    ```
 
-| name | first_three | from_fifth |
-| --- | --- | --- |
-| Ana Silva | Ana | Silva |
-| Ben Okafor | Ben | Okafor |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | name | first_three | from_fifth |
+    | --- | --- | --- |
+    | Ana Silva | Ana | Silva |
+    | Ben Okafor | Ben | Okafor |
+    <!-- /result -->
 
 PostgreSQL also has `LEFT(text, n)` and `RIGHT(text, n)`, and the standard form `SUBSTRING(text FROM 2 FOR 3)`;
 SQLite has neither (it accepts `SUBSTRING(text, 2, 3)` only as another name for `SUBSTR`), so `SUBSTR` is the
@@ -189,24 +195,26 @@ A handy trick: the number of times a letter appears is the length lost when you 
 
 **Task:** For the first 4 customers, count how many times the letter "a" (either case) appears in each name.
 
-<!-- sql -->
-```sql
-SELECT name, LENGTH(name) - LENGTH(REPLACE(LOWER(name), 'a', '')) AS letter_a
-FROM customers
-WHERE customer_id <= 4
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, LENGTH(name) - LENGTH(REPLACE(LOWER(name), 'a', '')) AS letter_a
+    FROM customers
+    WHERE customer_id <= 4
+    ORDER BY customer_id;
+    ```
 
-| name | letter_a |
-| --- | --- |
-| Ana Silva | 3 |
-| Ben Okafor | 1 |
-| Chen Wei | 0 |
-| Dana Kim | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | name | letter_a |
+    | --- | --- |
+    | Ana Silva | 3 |
+    | Ben Okafor | 1 |
+    | Chen Wei | 0 |
+    | Dana Kim | 2 |
+    <!-- /result -->
 
 ## 5.5 Comparing text and capital letters { #case-sensitive }
 
@@ -216,22 +224,24 @@ without caring about capitals, lower-case both sides:
 
 **Task:** Find the customers called "ANA SILVA", whatever the capitals: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name
-FROM customers
-WHERE LOWER(name) = LOWER('ANA SILVA')
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name
+    FROM customers
+    WHERE LOWER(name) = LOWER('ANA SILVA')
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 1 | Ana Silva |
-| 10 | Ana Silva |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 10 | Ana Silva |
+    <!-- /result -->
 
 Sorting text also depends on the database's **collation**, its rules for which letter comes first. Whether `'ab'`
 sorts before `'B'` differs between a plain byte order (capitals first) and a language-aware one. For a test this
@@ -243,23 +253,25 @@ rarely matters, because names usually start with a capital; when it does, sort b
 
 **Task:** List the products whose name contains an "o", any one letter, then a "k", alphabetically.
 
-<!-- sql -->
-```sql
-SELECT name
-FROM products
-WHERE name LIKE '%o_k%'
-ORDER BY name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name
+    FROM products
+    WHERE name LIKE '%o_k%'
+    ORDER BY name;
+    ```
 
-| name |
-| --- |
-| Bookend |
-| Notebook |
-| Wall clock |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name |
+    | --- |
+    | Bookend |
+    | Notebook |
+    | Wall clock |
+    <!-- /result -->
 
 `%o_k%` means "anything, an o, any one character, a k, anything": `Bookend` and `Notebook` match through "ook", and
 `Wall clock` through "ock".
@@ -272,21 +284,23 @@ Here is the trap. `LIKE` is case-sensitive on PostgreSQL, but **not** on SQLite 
 
 **Task:** List the customers whose name starts with "ana": id and name, by id.
 
-<!-- sql pg -->
-```sql
-SELECT customer_id, name
-FROM customers
-WHERE name LIKE 'ana%'
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 0 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT customer_id, name
+    FROM customers
+    WHERE name LIKE 'ana%'
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| *(no rows)* | |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 0 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | *(no rows)* | |
+    <!-- /result -->
 
 <!-- sql sqlite -->
 ```sql
@@ -313,22 +327,24 @@ every database:
 
 **Task:** List the customers whose name starts with "ana" in any capitals: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name
-FROM customers
-WHERE LOWER(name) LIKE 'ana%'
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name
+    FROM customers
+    WHERE LOWER(name) LIKE 'ana%'
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 1 | Ana Silva |
-| 10 | Ana Silva |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 10 | Ana Silva |
+    <!-- /result -->
 
 !!! tip "Interview tip"
     If a test question says "names starting with a" and does not mention capitals, ask yourself which it means, and
@@ -346,55 +362,59 @@ For patterns `LIKE` cannot express, PostgreSQL has regular expressions: `~` (mat
 
 **Task:** List the products whose name is exactly two words, a capitalised word and a small-letter word, alphabetically.
 
-<!-- sql pg -->
-```sql
-SELECT name
-FROM products
-WHERE name ~ '^[A-Z][a-z]+ [a-z]+$'
-ORDER BY name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 9 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT name
+    FROM products
+    WHERE name ~ '^[A-Z][a-z]+ [a-z]+$'
+    ORDER BY name;
+    ```
 
-| name |
-| --- |
-| Coffee mug |
-| Desk lamp |
-| Fountain pen |
-| Gift card |
-| Monitor stand |
-| Office chair |
-| Plant pot |
-| Tea kettle |
-| Wall clock |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 9 rows.</p>
+
+    | name |
+    | --- |
+    | Coffee mug |
+    | Desk lamp |
+    | Fountain pen |
+    | Gift card |
+    | Monitor stand |
+    | Office chair |
+    | Plant pot |
+    | Tea kettle |
+    | Wall clock |
+    <!-- /result -->
 
 The pattern means "a capital, some small letters, one space, some small letters, and nothing else": two-word product
 names. Three functions do most of the work:
 
 **Task:** For the first 4 customers with an email, show the email, a masked version (first letter then ***), the domain, and whether it looks valid.
 
-<!-- sql pg -->
-```sql
-SELECT email,
-       REGEXP_REPLACE(email, '^(.).*@', '\1***@') AS masked,
-       SUBSTRING(email FROM '@(.*)$')             AS domain,
-       email ~ '^[^@]+@[^@]+\.[a-z]+$'            AS looks_valid
-FROM customers
-WHERE email IS NOT NULL AND customer_id <= 4
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT email,
+           REGEXP_REPLACE(email, '^(.).*@', '\1***@') AS masked,
+           SUBSTRING(email FROM '@(.*)$')             AS domain,
+           email ~ '^[^@]+@[^@]+\.[a-z]+$'            AS looks_valid
+    FROM customers
+    WHERE email IS NOT NULL AND customer_id <= 4
+    ORDER BY customer_id;
+    ```
 
-| email | masked | domain | looks_valid |
-| --- | --- | --- | --- |
-| ana@example.com | a***@example.com | example.com | true |
-| ben@example.com | b***@example.com | example.com | true |
-| dana@example.com | d***@example.com | example.com | true |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | email | masked | domain | looks_valid |
+    | --- | --- | --- | --- |
+    | ana@example.com | a***@example.com | example.com | true |
+    | ben@example.com | b***@example.com | example.com | true |
+    | dana@example.com | d***@example.com | example.com | true |
+    <!-- /result -->
 
 `REGEXP_REPLACE` rewrites the match (`\1` is the first group in brackets); `SUBSTRING(... FROM pattern)` returns the
 part in brackets; `~` gives true or false. PostgreSQL also has `REGEXP_MATCHES`, `REGEXP_SPLIT_TO_TABLE` and, from
@@ -413,24 +433,26 @@ Server 2025), so older versions use `LIKE` with character ranges like `[0-9]`.
 
 **Task:** For each category, list its product names in one text, alphabetical and separated by commas, by category.
 
-<!-- sql -->
-```sql
-SELECT category, STRING_AGG(name, ', ' ORDER BY name) AS products
-FROM products
-WHERE category IS NOT NULL
-GROUP BY category
-ORDER BY category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT category, STRING_AGG(name, ', ' ORDER BY name) AS products
+    FROM products
+    WHERE category IS NOT NULL
+    GROUP BY category
+    ORDER BY category;
+    ```
 
-| category | products |
-| --- | --- |
-| Home | Bookend, Desk lamp, Plant pot, Wall clock |
-| Kitchen | Coffee mug, Tea kettle |
-| Office | Fountain pen, Monitor stand, Notebook, Office chair |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | category | products |
+    | --- | --- |
+    | Home | Bookend, Desk lamp, Plant pot, Wall clock |
+    | Kitchen | Coffee mug, Tea kettle |
+    | Office | Fountain pen, Monitor stand, Notebook, Office chair |
+    <!-- /result -->
 
 `STRING_AGG` with `ORDER BY` inside works on PostgreSQL and on SQLite from version 3.44. Older SQLite and MySQL
 call it `GROUP_CONCAT` (MySQL: `GROUP_CONCAT(name ORDER BY name SEPARATOR ', ')`); SQL Server writes

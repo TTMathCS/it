@@ -25,24 +25,26 @@ of text, a date, a price.
 
 **Task:** Show the first 4 customers by id: id, name, city, country and signup date.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, city, country, signup_date
-FROM customers
-ORDER BY customer_id
-LIMIT 4;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, city, country, signup_date
+    FROM customers
+    ORDER BY customer_id
+    LIMIT 4;
+    ```
 
-| customer_id | name | city | country | signup_date |
-| --- | --- | --- | --- | --- |
-| 1 | Ana Silva | Toronto | Canada | 2025-11-03 |
-| 2 | Ben Okafor | Lagos | Nigeria | 2025-12-10 |
-| 3 | Chen Wei | Shanghai | China | 2026-01-05 |
-| 4 | Dana Kim | Seoul | South Korea | 2026-01-05 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id | name | city | country | signup_date |
+    | --- | --- | --- | --- | --- |
+    | 1 | Ana Silva | Toronto | Canada | 2025-11-03 |
+    | 2 | Ben Okafor | Lagos | Nigeria | 2025-12-10 |
+    | 3 | Chen Wei | Shanghai | China | 2026-01-05 |
+    | 4 | Dana Kim | Seoul | South Korea | 2026-01-05 |
+    <!-- /result -->
 
 Every row of a table has the same columns. A fact that does not apply, or is not known, is stored as **NULL**, the
 marker for "no value": customer 5's city is NULL. [Chapter 6](06-Null-and-Three-Valued-Logic.md) is all about it.
@@ -162,23 +164,25 @@ is NULL, which the key allows:
 
 **Task:** Show orders 107 to 109: order id, customer id, order date and status, by order id.
 
-<!-- sql -->
-```sql
-SELECT order_id, customer_id, order_date, status
-FROM orders
-WHERE order_id BETWEEN 107 AND 109
-ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, customer_id, order_date, status
+    FROM orders
+    WHERE order_id BETWEEN 107 AND 109
+    ORDER BY order_id;
+    ```
 
-| order_id | customer_id | order_date | status |
-| --- | --- | --- | --- |
-| 107 | 5 | 2026-02-02 | shipped |
-| 108 | *NULL* | 2026-02-10 | shipped |
-| 109 | 6 | 2026-02-14 | shipped |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | order_id | customer_id | order_date | status |
+    | --- | --- | --- | --- |
+    | 107 | 5 | 2026-02-02 | shipped |
+    | 108 | *NULL* | 2026-02-10 | shipped |
+    | 109 | 6 | 2026-02-14 | shipped |
+    <!-- /result -->
 
 That one NULL is behind many wrong answers later: it vanishes from inner joins ([chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md))
 and it breaks `NOT IN` ([chapter 9](09-Self-Semi-and-Anti-Joins.md#anti)).
@@ -261,30 +265,32 @@ profiles gives at most 10 rows, never more; with a `LEFT JOIN`, the customers wi
 
 **Task:** List every customer with their phone and language from the profile table, keeping customers who have no profile, by customer id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, p.phone, p.language
-FROM customers c
-LEFT JOIN customer_profiles p ON p.customer_id = c.customer_id
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, p.phone, p.language
+    FROM customers c
+    LEFT JOIN customer_profiles p ON p.customer_id = c.customer_id
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name | phone | language |
-| --- | --- | --- | --- |
-| 1 | Ana Silva | +1 416 555 0101 | English |
-| 2 | Ben Okafor | +234 1 555 0102 | English |
-| 3 | Chen Wei | *NULL* | *NULL* |
-| 4 | Dana Kim | *NULL* | *NULL* |
-| 5 | Eli Cohen | +972 3 555 0105 | Hebrew |
-| 6 | Farah Haddad | *NULL* | *NULL* |
-| 7 | Gus Novak | *NULL* | *NULL* |
-| 8 | Hana Sato | *NULL* | *NULL* |
-| 9 | Ivan Petrov | *NULL* | *NULL* |
-| 10 | Ana Silva | +351 21 555 0110 | Portuguese |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+
+    | customer_id | name | phone | language |
+    | --- | --- | --- | --- |
+    | 1 | Ana Silva | +1 416 555 0101 | English |
+    | 2 | Ben Okafor | +234 1 555 0102 | English |
+    | 3 | Chen Wei | *NULL* | *NULL* |
+    | 4 | Dana Kim | *NULL* | *NULL* |
+    | 5 | Eli Cohen | +972 3 555 0105 | Hebrew |
+    | 6 | Farah Haddad | *NULL* | *NULL* |
+    | 7 | Gus Novak | *NULL* | *NULL* |
+    | 8 | Hana Sato | *NULL* | *NULL* |
+    | 9 | Ivan Petrov | *NULL* | *NULL* |
+    | 10 | Ana Silva | +351 21 555 0110 | Portuguese |
+    <!-- /result -->
 
 Joining the same 10 customers to `orders` (one-to-many) would give one row per order instead. That is why, before
 any join, it pays to ask "one-to-one or one-to-many?": it tells you whether the row count can grow and whether a
@@ -298,25 +304,27 @@ the other; in practice the application creates both rows in one transaction.
 
 **Task:** List the employees in Management and Sales with their id, name, department and manager's id, by employee id.
 
-<!-- sql -->
-```sql
-SELECT employee_id, name, department, manager_id
-FROM employees
-WHERE department IN ('Management', 'Sales')
-ORDER BY employee_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT employee_id, name, department, manager_id
+    FROM employees
+    WHERE department IN ('Management', 'Sales')
+    ORDER BY employee_id;
+    ```
 
-| employee_id | name | department | manager_id |
-| --- | --- | --- | --- |
-| 1 | Maya Rossi | Management | *NULL* |
-| 6 | Omar Aziz | Sales | 1 |
-| 7 | Nina Berg | Sales | 6 |
-| 8 | Raj Patel | Sales | 6 |
-| 9 | Zoe Martin | Sales | 6 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | employee_id | name | department | manager_id |
+    | --- | --- | --- | --- |
+    | 1 | Maya Rossi | Management | *NULL* |
+    | 6 | Omar Aziz | Sales | 1 |
+    | 7 | Nina Berg | Sales | 6 |
+    | 8 | Raj Patel | Sales | 6 |
+    | 9 | Zoe Martin | Sales | 6 |
+    <!-- /result -->
 
 Maya Rossi has no manager (NULL); Omar Aziz reports to her (1); Nina, Raj and Zoe report to Omar (6). Questions such
 as "employees who earn more than their manager" join this table to itself ([chapter 9](09-Self-Semi-and-Anti-Joins.md)),
@@ -328,22 +336,24 @@ Two different customers are called Ana Silva:
 
 **Task:** Find every customer called Ana Silva: id, name, email and city, by id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, email, city
-FROM customers
-WHERE name = 'Ana Silva'
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, email, city
+    FROM customers
+    WHERE name = 'Ana Silva'
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name | email | city |
-| --- | --- | --- | --- |
-| 1 | Ana Silva | ana@example.com | Toronto |
-| 10 | Ana Silva | ana.silva@example.com | Lisbon |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name | email | city |
+    | --- | --- | --- | --- |
+    | 1 | Ana Silva | ana@example.com | Toronto |
+    | 10 | Ana Silva | ana.silva@example.com | Lisbon |
+    <!-- /result -->
 
 Names repeat, change, and get typed differently. That is why tables use a made-up number as the key, a **surrogate
 key**, rather than a fact about the thing (a **natural key**, such as an email or a tax number). Natural keys still

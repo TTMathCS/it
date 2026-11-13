@@ -68,23 +68,25 @@ expression again, or compute it in an inner query and filter outside:
 
 **Task:** List the order lines worth more than 100 (quantity times unit price): order id, product id and `line_value`, by order id.
 
-<!-- sql -->
-```sql
-SELECT order_id, product_id, quantity * unit_price AS line_value
-FROM order_items
-WHERE quantity * unit_price > 100
-ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, product_id, quantity * unit_price AS line_value
+    FROM order_items
+    WHERE quantity * unit_price > 100
+    ORDER BY order_id;
+    ```
 
-| order_id | product_id | line_value |
-| --- | --- | --- |
-| 102 | 6 | 149.00 |
-| 112 | 6 | 149.00 |
-| 120 | 6 | 139.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | order_id | product_id | line_value |
+    | --- | --- | --- |
+    | 102 | 6 | 149.00 |
+    | 112 | 6 | 149.00 |
+    | 120 | 6 | 139.00 |
+    <!-- /result -->
 
 <!-- sql same -->
 ```sql
@@ -115,23 +117,25 @@ The second form, a **CTE** (`WITH ... AS`), names a step so the next one can use
 
 **Task:** Show the 3 most valuable order lines: order id, product id and `line_value`, highest first (ties by order id, then product id).
 
-<!-- sql -->
-```sql
-SELECT order_id, product_id, quantity * unit_price AS line_value
-FROM order_items
-ORDER BY line_value DESC, order_id, product_id
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, product_id, quantity * unit_price AS line_value
+    FROM order_items
+    ORDER BY line_value DESC, order_id, product_id
+    LIMIT 3;
+    ```
 
-| order_id | product_id | line_value |
-| --- | --- | --- |
-| 102 | 6 | 149.00 |
-| 112 | 6 | 149.00 |
-| 120 | 6 | 139.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | order_id | product_id | line_value |
+    | --- | --- | --- |
+    | 102 | 6 | 149.00 |
+    | 112 | 6 | 149.00 |
+    | 120 | 6 | 139.00 |
+    <!-- /result -->
 
 ## 3.3 Aggregates cannot go in WHERE { #aggregate-where }
 
@@ -155,48 +159,52 @@ A condition on a group belongs in `HAVING`, step 4, which runs after grouping:
 
 **Task:** List the customers with 3 or more orders: customer id and number of orders, by customer id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, COUNT(*) AS orders
-FROM orders
-GROUP BY customer_id
-HAVING COUNT(*) >= 3
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, COUNT(*) AS orders
+    FROM orders
+    GROUP BY customer_id
+    HAVING COUNT(*) >= 3
+    ORDER BY customer_id;
+    ```
 
-| customer_id | orders |
-| --- | --- |
-| 1 | 5 |
-| 2 | 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | orders |
+    | --- | --- |
+    | 1 | 5 |
+    | 2 | 3 |
+    <!-- /result -->
 
 A condition on single rows belongs in `WHERE`, even when the query also groups. "Customers with at least two
 **shipped** orders" filters rows by status first, then groups:
 
 **Task:** List the customers with at least 2 shipped orders: customer id and number of shipped orders, by customer id.
 
-<!-- sql -->
-```sql
-SELECT customer_id, COUNT(*) AS shipped_orders
-FROM orders
-WHERE status = 'shipped'
-GROUP BY customer_id
-HAVING COUNT(*) >= 2
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, COUNT(*) AS shipped_orders
+    FROM orders
+    WHERE status = 'shipped'
+    GROUP BY customer_id
+    HAVING COUNT(*) >= 2
+    ORDER BY customer_id;
+    ```
 
-| customer_id | shipped_orders |
-| --- | --- |
-| 1 | 5 |
-| 2 | 2 |
-| 4 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | shipped_orders |
+    | --- | --- |
+    | 1 | 5 |
+    | 2 | 2 |
+    | 4 | 2 |
+    <!-- /result -->
 
 `HAVING` can only see what exists after grouping: the grouped columns and aggregates. Using the alias `orders` in
 `HAVING` (`HAVING orders >= 3`) is the same alias problem as in `WHERE`: SQLite and MySQL accept it, PostgreSQL does
@@ -224,27 +232,29 @@ The fix is the same as for an alias: compute it in an inner query, filter in the
 
 **Task:** Show the 3 most expensive products (ties by name) using `ROW_NUMBER`: name and price, in rank order.
 
-<!-- sql -->
-```sql
-WITH ranked AS (
-  SELECT name, price, ROW_NUMBER() OVER (ORDER BY price DESC, name) AS rn
-  FROM products
-)
-SELECT name, price
-FROM ranked
-WHERE rn <= 3
-ORDER BY rn;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH ranked AS (
+      SELECT name, price, ROW_NUMBER() OVER (ORDER BY price DESC, name) AS rn
+      FROM products
+    )
+    SELECT name, price
+    FROM ranked
+    WHERE rn <= 3
+    ORDER BY rn;
+    ```
 
-| name | price |
-| --- | --- |
-| Office chair | 149.00 |
-| Monitor stand | 32.00 |
-| Tea kettle | 32.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Office chair | 149.00 |
+    | Monitor stand | 32.00 |
+    | Tea kettle | 32.00 |
+    <!-- /result -->
 
 This pattern, "rank in a CTE, filter outside", is behind most "top N per group" answers. Some databases
 (Snowflake, BigQuery, Databricks, DuckDB) add a `QUALIFY` clause that filters on a window function directly;

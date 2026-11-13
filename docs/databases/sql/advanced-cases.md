@@ -91,32 +91,34 @@ row.
 
 **Task:** For every sale, show sale id, product, date, quantity, the price in force on the day of the sale, and the revenue, by sale id.
 
-<!-- sql pg -->
-```sql
-SELECT s.sale_id, s.product_id, s.sold_on, s.qty,
-       h.price,
-       s.qty * h.price AS revenue
-FROM product_sales s
-LEFT JOIN price_history h
-       ON h.product_id = s.product_id
-      AND s.sold_on >= h.valid_from                          -- started on or before the sale
-      AND (h.valid_to IS NULL OR s.sold_on < h.valid_to)     -- and had not stopped yet
-ORDER BY s.sale_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 7 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT s.sale_id, s.product_id, s.sold_on, s.qty,
+           h.price,
+           s.qty * h.price AS revenue
+    FROM product_sales s
+    LEFT JOIN price_history h
+           ON h.product_id = s.product_id
+          AND s.sold_on >= h.valid_from                          -- started on or before the sale
+          AND (h.valid_to IS NULL OR s.sold_on < h.valid_to)     -- and had not stopped yet
+    ORDER BY s.sale_id;
+    ```
 
-| sale_id | product_id | sold_on | qty | price | revenue |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 2026-01-15 | 2 | 10.00 | 20.00 |
-| 2 | 1 | 2026-02-01 | 1 | 12.00 | 12.00 |
-| 3 | 1 | 2026-03-14 | 3 | 12.00 | 36.00 |
-| 4 | 1 | 2026-03-15 | 1 | 11.00 | 11.00 |
-| 5 | 2 | 2026-02-20 | 4 | 5.00 | 20.00 |
-| 6 | 3 | 2026-01-20 | 1 | *NULL* | *NULL* |
-| 7 | 3 | 2026-03-01 | 2 | 22.00 | 44.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 7 rows.</p>
+
+    | sale_id | product_id | sold_on | qty | price | revenue |
+    | --- | --- | --- | --- | --- | --- |
+    | 1 | 1 | 2026-01-15 | 2 | 10.00 | 20.00 |
+    | 2 | 1 | 2026-02-01 | 1 | 12.00 | 12.00 |
+    | 3 | 1 | 2026-03-14 | 3 | 12.00 | 36.00 |
+    | 4 | 1 | 2026-03-15 | 1 | 11.00 | 11.00 |
+    | 5 | 2 | 2026-02-20 | 4 | 5.00 | 20.00 |
+    | 6 | 3 | 2026-01-20 | 1 | *NULL* | *NULL* |
+    | 7 | 3 | 2026-03-01 | 2 | 22.00 | 44.00 |
+    <!-- /result -->
 
 Read the boundaries: sale 2 is on 1 February, the day the price changed, and gets the **new** price because
 `valid_from` is included and `valid_to` is not. Sale 6 happened before product 3 had any price, so the `LEFT JOIN`
@@ -209,44 +211,46 @@ ranges **overlap**, and the size of an overlap is `LEAST(end1, end2) - GREATEST(
 
 **Task:** For every sale, work out the cost of the units sold, taking units from the oldest lot first (FIFO): sale id, product, units and cost.
 
-<!-- sql pg -->
-```sql
-WITH lots AS (
-  SELECT lot_id, product_id, unit_cost,
-         SUM(qty) OVER w - qty AS from_unit,            -- units bought before this lot
-         SUM(qty) OVER w       AS to_unit               -- ... and including it
-  FROM stock_lots
-  WINDOW w AS (PARTITION BY product_id ORDER BY bought_on, lot_id ROWS UNBOUNDED PRECEDING)
-),
-sales AS (
-  SELECT sale_id, product_id,
-         SUM(qty) OVER w - qty AS from_unit,
-         SUM(qty) OVER w       AS to_unit
-  FROM stock_sales
-  WINDOW w AS (PARTITION BY product_id ORDER BY sold_on, sale_id ROWS UNBOUNDED PRECEDING)
-)
-SELECT s.sale_id, s.product_id,
-       SUM(LEAST(s.to_unit, l.to_unit) - GREATEST(s.from_unit, l.from_unit))               AS units,
-       SUM((LEAST(s.to_unit, l.to_unit) - GREATEST(s.from_unit, l.from_unit)) * l.unit_cost) AS cost
-FROM sales s
-JOIN lots l
-  ON l.product_id = s.product_id
- AND l.from_unit < s.to_unit          -- the two ranges overlap
- AND s.from_unit < l.to_unit
-GROUP BY s.sale_id, s.product_id
-ORDER BY s.sale_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH lots AS (
+      SELECT lot_id, product_id, unit_cost,
+             SUM(qty) OVER w - qty AS from_unit,            -- units bought before this lot
+             SUM(qty) OVER w       AS to_unit               -- ... and including it
+      FROM stock_lots
+      WINDOW w AS (PARTITION BY product_id ORDER BY bought_on, lot_id ROWS UNBOUNDED PRECEDING)
+    ),
+    sales AS (
+      SELECT sale_id, product_id,
+             SUM(qty) OVER w - qty AS from_unit,
+             SUM(qty) OVER w       AS to_unit
+      FROM stock_sales
+      WINDOW w AS (PARTITION BY product_id ORDER BY sold_on, sale_id ROWS UNBOUNDED PRECEDING)
+    )
+    SELECT s.sale_id, s.product_id,
+           SUM(LEAST(s.to_unit, l.to_unit) - GREATEST(s.from_unit, l.from_unit))               AS units,
+           SUM((LEAST(s.to_unit, l.to_unit) - GREATEST(s.from_unit, l.from_unit)) * l.unit_cost) AS cost
+    FROM sales s
+    JOIN lots l
+      ON l.product_id = s.product_id
+     AND l.from_unit < s.to_unit          -- the two ranges overlap
+     AND s.from_unit < l.to_unit
+    GROUP BY s.sale_id, s.product_id
+    ORDER BY s.sale_id;
+    ```
 
-| sale_id | product_id | units | cost |
-| --- | --- | --- | --- |
-| 1 | 1 | 6 | 24.00 |
-| 2 | 1 | 7 | 31.00 |
-| 3 | 1 | 4 | 22.00 |
-| 4 | 2 | 3 | 7.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | sale_id | product_id | units | cost |
+    | --- | --- | --- | --- |
+    | 1 | 1 | 6 | 24.00 |
+    | 2 | 1 | 7 | 31.00 |
+    | 3 | 1 | 4 | 22.00 |
+    | 4 | 2 | 3 | 7.50 |
+    <!-- /result -->
 
 Check sale 2 by hand: units 6 to 13 take units 6 to 10 of lot 1 (4 × 4.00 = 16.00) and units 10 to 13 of lot 2
 (3 × 5.00 = 15.00), 31.00 in all. `WINDOW w AS (...)` names a window once so that two columns can share it.
@@ -330,43 +334,45 @@ period). Turn that into a 1/0 flag, and a running `SUM` of the flags numbers the
 
 **Task:** For each customer, merge overlapping or touching subscriptions into continuous periods: customer, period number, start and end.
 
-<!-- sql pg -->
-```sql
-WITH ordered AS (
-  SELECT customer_id, start_date, end_date,
-         MAX(end_date) OVER (PARTITION BY customer_id ORDER BY start_date, end_date
-                             ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS covered_until
-  FROM subscriptions
-),
-flagged AS (
-  SELECT customer_id, start_date, end_date,
-         CASE WHEN covered_until IS NULL OR start_date > covered_until THEN 1 ELSE 0 END AS new_period
-  FROM ordered
-),
-numbered AS (
-  SELECT customer_id, start_date, end_date,
-         SUM(new_period) OVER (PARTITION BY customer_id ORDER BY start_date, end_date
-                               ROWS UNBOUNDED PRECEDING) AS period_no
-  FROM flagged
-)
-SELECT customer_id, period_no,
-       MIN(start_date) AS period_start,
-       MAX(end_date)   AS period_end
-FROM numbered
-GROUP BY customer_id, period_no
-ORDER BY customer_id, period_no;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH ordered AS (
+      SELECT customer_id, start_date, end_date,
+             MAX(end_date) OVER (PARTITION BY customer_id ORDER BY start_date, end_date
+                                 ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS covered_until
+      FROM subscriptions
+    ),
+    flagged AS (
+      SELECT customer_id, start_date, end_date,
+             CASE WHEN covered_until IS NULL OR start_date > covered_until THEN 1 ELSE 0 END AS new_period
+      FROM ordered
+    ),
+    numbered AS (
+      SELECT customer_id, start_date, end_date,
+             SUM(new_period) OVER (PARTITION BY customer_id ORDER BY start_date, end_date
+                                   ROWS UNBOUNDED PRECEDING) AS period_no
+      FROM flagged
+    )
+    SELECT customer_id, period_no,
+           MIN(start_date) AS period_start,
+           MAX(end_date)   AS period_end
+    FROM numbered
+    GROUP BY customer_id, period_no
+    ORDER BY customer_id, period_no;
+    ```
 
-| customer_id | period_no | period_start | period_end |
-| --- | --- | --- | --- |
-| 1 | 1 | 2026-01-01 | 2026-03-15 |
-| 1 | 2 | 2026-05-01 | 2026-06-01 |
-| 2 | 1 | 2026-02-01 | 2026-04-01 |
-| 3 | 1 | 2026-01-10 | 2026-01-11 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | customer_id | period_no | period_start | period_end |
+    | --- | --- | --- | --- |
+    | 1 | 1 | 2026-01-01 | 2026-03-15 |
+    | 1 | 2 | 2026-05-01 | 2026-06-01 |
+    | 2 | 1 | 2026-02-01 | 2026-04-01 |
+    | 3 | 1 | 2026-01-10 | 2026-01-11 |
+    <!-- /result -->
 
 `ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING` means "every earlier row, but not this one". The first row has no
 earlier row, so `covered_until` is NULL and it always starts a period. `start_date > covered_until` (not `>=`) makes
@@ -454,42 +460,44 @@ counting the rows of each CTE gives the funnel.
 
 **Task:** Count the users who viewed, then added to cart after viewing, then bought after adding to cart.
 
-<!-- sql pg -->
-```sql
-WITH viewed AS (
-  SELECT user_id, MIN(ts) AS view_ts
-  FROM funnel_events
-  WHERE step = 'view'
-  GROUP BY user_id
-),
-carted AS (
-  SELECT v.user_id, v.view_ts, MIN(e.ts) AS cart_ts
-  FROM viewed v
-  JOIN funnel_events e
-    ON e.user_id = v.user_id AND e.step = 'cart' AND e.ts > v.view_ts
-  GROUP BY v.user_id, v.view_ts
-),
-bought AS (
-  SELECT c.user_id, MIN(e.ts) AS buy_ts
-  FROM carted c
-  JOIN funnel_events e
-    ON e.user_id = c.user_id AND e.step = 'buy'
-   AND e.ts > c.cart_ts
-   AND e.ts <= c.view_ts + INTERVAL '1 hour'
-  GROUP BY c.user_id
-)
-SELECT (SELECT COUNT(*) FROM viewed) AS viewed,
-       (SELECT COUNT(*) FROM carted) AS carted,
-       (SELECT COUNT(*) FROM bought) AS bought;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH viewed AS (
+      SELECT user_id, MIN(ts) AS view_ts
+      FROM funnel_events
+      WHERE step = 'view'
+      GROUP BY user_id
+    ),
+    carted AS (
+      SELECT v.user_id, v.view_ts, MIN(e.ts) AS cart_ts
+      FROM viewed v
+      JOIN funnel_events e
+        ON e.user_id = v.user_id AND e.step = 'cart' AND e.ts > v.view_ts
+      GROUP BY v.user_id, v.view_ts
+    ),
+    bought AS (
+      SELECT c.user_id, MIN(e.ts) AS buy_ts
+      FROM carted c
+      JOIN funnel_events e
+        ON e.user_id = c.user_id AND e.step = 'buy'
+       AND e.ts > c.cart_ts
+       AND e.ts <= c.view_ts + INTERVAL '1 hour'
+      GROUP BY c.user_id
+    )
+    SELECT (SELECT COUNT(*) FROM viewed) AS viewed,
+           (SELECT COUNT(*) FROM carted) AS carted,
+           (SELECT COUNT(*) FROM bought) AS bought;
+    ```
 
-| viewed | carted | bought |
-| --- | --- | --- |
-| 5 | 3 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | viewed | carted | bought |
+    | --- | --- | --- |
+    | 5 | 3 | 2 |
+    <!-- /result -->
 
 User 2 bought without a cart, so the purchase does not count; user 3 put the item in the cart **before** viewing it;
 user 4 bought 90 minutes after the view, too late. Users 1 and 5 complete the funnel; user 6 never viewed and is not
@@ -561,53 +569,55 @@ divide by the cohort's size.
 
 **Task:** For each first-order month (cohort), show for each later month how many of its customers ordered again, the cohort size and the percentage.
 
-<!-- sql pg -->
-```sql
-WITH active AS (
-  SELECT DISTINCT customer_id, CAST(date_trunc('month', order_date) AS DATE) AS month
-  FROM orders
-  WHERE customer_id IS NOT NULL
-),
-cohort AS (
-  SELECT customer_id, MIN(month) AS cohort_month
-  FROM active
-  GROUP BY customer_id
-),
-activity AS (
-  SELECT c.cohort_month,
-         CAST((EXTRACT(YEAR FROM a.month) - EXTRACT(YEAR FROM c.cohort_month)) * 12
-              + EXTRACT(MONTH FROM a.month) - EXTRACT(MONTH FROM c.cohort_month) AS INTEGER) AS month_no,
-         a.customer_id
-  FROM active a
-  JOIN cohort c ON c.customer_id = a.customer_id
-),
-sizes AS (
-  SELECT cohort_month, COUNT(*) AS cohort_size
-  FROM cohort
-  GROUP BY cohort_month
-)
-SELECT a.cohort_month, a.month_no, COUNT(*) AS active, s.cohort_size,
-       ROUND(100.0 * COUNT(*) / s.cohort_size, 1) AS pct
-FROM activity a
-JOIN sizes s ON s.cohort_month = a.cohort_month
-GROUP BY a.cohort_month, a.month_no, s.cohort_size
-ORDER BY a.cohort_month, a.month_no;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH active AS (
+      SELECT DISTINCT customer_id, CAST(date_trunc('month', order_date) AS DATE) AS month
+      FROM orders
+      WHERE customer_id IS NOT NULL
+    ),
+    cohort AS (
+      SELECT customer_id, MIN(month) AS cohort_month
+      FROM active
+      GROUP BY customer_id
+    ),
+    activity AS (
+      SELECT c.cohort_month,
+             CAST((EXTRACT(YEAR FROM a.month) - EXTRACT(YEAR FROM c.cohort_month)) * 12
+                  + EXTRACT(MONTH FROM a.month) - EXTRACT(MONTH FROM c.cohort_month) AS INTEGER) AS month_no,
+             a.customer_id
+      FROM active a
+      JOIN cohort c ON c.customer_id = a.customer_id
+    ),
+    sizes AS (
+      SELECT cohort_month, COUNT(*) AS cohort_size
+      FROM cohort
+      GROUP BY cohort_month
+    )
+    SELECT a.cohort_month, a.month_no, COUNT(*) AS active, s.cohort_size,
+           ROUND(100.0 * COUNT(*) / s.cohort_size, 1) AS pct
+    FROM activity a
+    JOIN sizes s ON s.cohort_month = a.cohort_month
+    GROUP BY a.cohort_month, a.month_no, s.cohort_size
+    ORDER BY a.cohort_month, a.month_no;
+    ```
 
-| cohort_month | month_no | active | cohort_size | pct |
-| --- | --- | --- | --- | --- |
-| 2026-01-01 | 0 | 4 | 4 | 100.0 |
-| 2026-01-01 | 1 | 2 | 4 | 50.0 |
-| 2026-01-01 | 2 | 3 | 4 | 75.0 |
-| 2026-01-01 | 3 | 2 | 4 | 50.0 |
-| 2026-02-01 | 0 | 3 | 3 | 100.0 |
-| 2026-02-01 | 1 | 1 | 3 | 33.3 |
-| 2026-02-01 | 2 | 1 | 3 | 33.3 |
-| 2026-03-01 | 0 | 2 | 2 | 100.0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+
+    | cohort_month | month_no | active | cohort_size | pct |
+    | --- | --- | --- | --- | --- |
+    | 2026-01-01 | 0 | 4 | 4 | 100.0 |
+    | 2026-01-01 | 1 | 2 | 4 | 50.0 |
+    | 2026-01-01 | 2 | 3 | 4 | 75.0 |
+    | 2026-01-01 | 3 | 2 | 4 | 50.0 |
+    | 2026-02-01 | 0 | 3 | 3 | 100.0 |
+    | 2026-02-01 | 1 | 1 | 3 | 33.3 |
+    | 2026-02-01 | 2 | 1 | 3 | 33.3 |
+    | 2026-03-01 | 0 | 2 | 2 | 100.0 |
+    <!-- /result -->
 
 `date_trunc('month', d)` sets a date back to the first day of its month, so every order of one month gets the same
 value. The month number is written with years too (`* 12`), so that December to January counts as 1, not -11. Month
@@ -704,34 +714,36 @@ and can use that row's columns, so "the latest touch of **this** user before **t
 
 **Task:** For each conversion, name the last channel that touched the user in the 7 days before it, or 'direct' if none.
 
-<!-- sql pg -->
-```sql
-SELECT c.conv_id, c.user_id, c.revenue,
-       COALESCE(t.channel, 'direct') AS last_touch
-FROM conversions c
-LEFT JOIN LATERAL (
-  SELECT channel
-  FROM touches t
-  WHERE t.user_id = c.user_id
-    AND t.ts <= c.ts                              -- before (or at) the conversion
-    AND t.ts >  c.ts - INTERVAL '7 days'          -- but not more than 7 days before
-  ORDER BY t.ts DESC
-  LIMIT 1
-) t ON TRUE
-ORDER BY c.conv_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 5 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT c.conv_id, c.user_id, c.revenue,
+           COALESCE(t.channel, 'direct') AS last_touch
+    FROM conversions c
+    LEFT JOIN LATERAL (
+      SELECT channel
+      FROM touches t
+      WHERE t.user_id = c.user_id
+        AND t.ts <= c.ts                              -- before (or at) the conversion
+        AND t.ts >  c.ts - INTERVAL '7 days'          -- but not more than 7 days before
+      ORDER BY t.ts DESC
+      LIMIT 1
+    ) t ON TRUE
+    ORDER BY c.conv_id;
+    ```
 
-| conv_id | user_id | revenue | last_touch |
-| --- | --- | --- | --- |
-| 1 | 1 | 100.00 | email |
-| 2 | 1 | 50.00 | social |
-| 3 | 2 | 80.00 | direct |
-| 4 | 3 | 40.00 | direct |
-| 5 | 4 | 60.00 | search |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 5 rows.</p>
+
+    | conv_id | user_id | revenue | last_touch |
+    | --- | --- | --- | --- |
+    | 1 | 1 | 100.00 | email |
+    | 2 | 1 | 50.00 | social |
+    | 3 | 2 | 80.00 | direct |
+    | 4 | 3 | 40.00 | direct |
+    | 5 | 4 | 60.00 | search |
+    <!-- /result -->
 
 Conversion 2 is credited to the social post the day before, not the email two weeks earlier. Conversion 3's only
 touch was 10 days earlier and conversion 4's was a month earlier, so both are `'direct'`. Without `LATERAL` the same
@@ -790,36 +802,38 @@ called `Other`, placed last, so that the total stays right. This uses the shop's
 
 **Task:** Show the top 3 products by revenue and one 'Other' row for the rest, with revenue and share in percent, Other last.
 
-<!-- sql pg -->
-```sql
-WITH revenue AS (
-  SELECT p.product_id, p.name, SUM(i.quantity * i.unit_price) AS revenue
-  FROM order_items i
-  JOIN products p ON p.product_id = i.product_id
-  GROUP BY p.product_id, p.name
-),
-ranked AS (
-  SELECT name, revenue, ROW_NUMBER() OVER (ORDER BY revenue DESC, name) AS rn
-  FROM revenue
-)
-SELECT CASE WHEN rn <= 3 THEN name ELSE 'Other' END             AS product,
-       SUM(revenue)                                                AS revenue,
-       ROUND(100.0 * SUM(revenue) / (SELECT SUM(revenue) FROM revenue), 1) AS pct
-FROM ranked
-GROUP BY CASE WHEN rn <= 3 THEN name ELSE 'Other' END
-ORDER BY MIN(rn);
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH revenue AS (
+      SELECT p.product_id, p.name, SUM(i.quantity * i.unit_price) AS revenue
+      FROM order_items i
+      JOIN products p ON p.product_id = i.product_id
+      GROUP BY p.product_id, p.name
+    ),
+    ranked AS (
+      SELECT name, revenue, ROW_NUMBER() OVER (ORDER BY revenue DESC, name) AS rn
+      FROM revenue
+    )
+    SELECT CASE WHEN rn <= 3 THEN name ELSE 'Other' END             AS product,
+           SUM(revenue)                                                AS revenue,
+           ROUND(100.0 * SUM(revenue) / (SELECT SUM(revenue) FROM revenue), 1) AS pct
+    FROM ranked
+    GROUP BY CASE WHEN rn <= 3 THEN name ELSE 'Other' END
+    ORDER BY MIN(rn);
+    ```
 
-| product | revenue | pct |
-| --- | --- | --- |
-| Office chair | 437.00 | 38.9 |
-| Desk lamp | 122.50 | 10.9 |
-| Tea kettle | 94.00 | 8.4 |
-| Other | 469.00 | 41.8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | product | revenue | pct |
+    | --- | --- | --- |
+    | Office chair | 437.00 | 38.9 |
+    | Desk lamp | 122.50 | 10.9 |
+    | Tea kettle | 94.00 | 8.4 |
+    | Other | 469.00 | 41.8 |
+    <!-- /result -->
 
 The percentages add up to 100 (give or take rounding), which is the point of keeping `Other`. `ROW_NUMBER` with
 `name` as a tie-break guarantees exactly three named rows; with `RANK`, a tie for third place would name four.
@@ -875,37 +889,39 @@ allowed: PostgreSQL does not accept `DISTINCT` in a window function. Instead, ma
 
 **Task:** For each day from 1 to 10 March 2026, count the different customers who logged in during the 7 days ending that day.
 
-<!-- sql pg -->
-```sql
-WITH days AS (
-  SELECT CAST(d AS DATE) AS day
-  FROM generate_series(DATE '2026-03-01', DATE '2026-03-10', INTERVAL '1 day') AS g(d)
-)
-SELECT d.day,
-       COUNT(DISTINCT l.customer_id) AS active_7d
-FROM days d
-LEFT JOIN logins l
-       ON l.login_date BETWEEN d.day - 6 AND d.day      -- this day and the 6 before
-GROUP BY d.day
-ORDER BY d.day;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH days AS (
+      SELECT CAST(d AS DATE) AS day
+      FROM generate_series(DATE '2026-03-01', DATE '2026-03-10', INTERVAL '1 day') AS g(d)
+    )
+    SELECT d.day,
+           COUNT(DISTINCT l.customer_id) AS active_7d
+    FROM days d
+    LEFT JOIN logins l
+           ON l.login_date BETWEEN d.day - 6 AND d.day      -- this day and the 6 before
+    GROUP BY d.day
+    ORDER BY d.day;
+    ```
 
-| day | active_7d |
-| --- | --- |
-| 2026-03-01 | 2 |
-| 2026-03-02 | 2 |
-| 2026-03-03 | 3 |
-| 2026-03-04 | 3 |
-| 2026-03-05 | 3 |
-| 2026-03-06 | 3 |
-| 2026-03-07 | 3 |
-| 2026-03-08 | 4 |
-| 2026-03-09 | 4 |
-| 2026-03-10 | 4 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+
+    | day | active_7d |
+    | --- | --- |
+    | 2026-03-01 | 2 |
+    | 2026-03-02 | 2 |
+    | 2026-03-03 | 3 |
+    | 2026-03-04 | 3 |
+    | 2026-03-05 | 3 |
+    | 2026-03-06 | 3 |
+    | 2026-03-07 | 3 |
+    | 2026-03-08 | 4 |
+    | 2026-03-09 | 4 |
+    | 2026-03-10 | 4 |
+    <!-- /result -->
 
 `generate_series(start, stop, step)` makes one row per value; with dates and a 1-day interval, one row per day. The
 `LEFT JOIN` keeps a day that has no login in its window, and `COUNT(DISTINCT l.customer_id)` gives it 0 (a count
@@ -988,43 +1004,45 @@ is no 7).
 
 **Task:** Walk through the wallet transactions in order, declining any that would take the balance below 0: tx id, amount, outcome and balance after.
 
-<!-- sql pg -->
-```sql
-WITH RECURSIVE tx AS (
-  SELECT ROW_NUMBER() OVER (ORDER BY tx_id) AS n, tx_id, amount
-  FROM wallet_tx
-),
-walk AS (
-  SELECT n, tx_id, amount,
-         CASE WHEN amount < 0 THEN 'declined' ELSE 'ok' END AS outcome,
-         CASE WHEN amount < 0 THEN 0 ELSE amount END        AS balance
-  FROM tx
-  WHERE n = 1
-  UNION ALL
-  SELECT t.n, t.tx_id, t.amount,
-         CASE WHEN w.balance + t.amount < 0 THEN 'declined' ELSE 'ok' END,
-         CASE WHEN w.balance + t.amount < 0 THEN w.balance ELSE w.balance + t.amount END
-  FROM walk w
-  JOIN tx t ON t.n = w.n + 1                -- the next transaction
-)
-SELECT tx_id, amount, outcome, balance
-FROM walk
-ORDER BY n;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 7 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH RECURSIVE tx AS (
+      SELECT ROW_NUMBER() OVER (ORDER BY tx_id) AS n, tx_id, amount
+      FROM wallet_tx
+    ),
+    walk AS (
+      SELECT n, tx_id, amount,
+             CASE WHEN amount < 0 THEN 'declined' ELSE 'ok' END AS outcome,
+             CASE WHEN amount < 0 THEN 0 ELSE amount END        AS balance
+      FROM tx
+      WHERE n = 1
+      UNION ALL
+      SELECT t.n, t.tx_id, t.amount,
+             CASE WHEN w.balance + t.amount < 0 THEN 'declined' ELSE 'ok' END,
+             CASE WHEN w.balance + t.amount < 0 THEN w.balance ELSE w.balance + t.amount END
+      FROM walk w
+      JOIN tx t ON t.n = w.n + 1                -- the next transaction
+    )
+    SELECT tx_id, amount, outcome, balance
+    FROM walk
+    ORDER BY n;
+    ```
 
-| tx_id | amount | outcome | balance |
-| --- | --- | --- | --- |
-| 1 | 50.00 | ok | 50.00 |
-| 2 | -30.00 | ok | 20.00 |
-| 3 | -40.00 | declined | 20.00 |
-| 4 | 25.00 | ok | 45.00 |
-| 5 | -45.00 | ok | 0.00 |
-| 6 | -1.00 | declined | 0.00 |
-| 8 | 10.00 | ok | 10.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 7 rows.</p>
+
+    | tx_id | amount | outcome | balance |
+    | --- | --- | --- | --- |
+    | 1 | 50.00 | ok | 50.00 |
+    | 2 | -30.00 | ok | 20.00 |
+    | 3 | -40.00 | declined | 20.00 |
+    | 4 | 25.00 | ok | 45.00 |
+    | 5 | -45.00 | ok | 0.00 |
+    | 6 | -1.00 | declined | 0.00 |
+    | 8 | 10.00 | ok | 10.00 |
+    <!-- /result -->
 
 The step runs again and again, each time on the one row it made last, until there is no next transaction. Payment
 3 (40.00) is declined because only 20.00 is left; payment 6 (1.00) is declined at a balance of 0. Recursive CTEs
@@ -1084,37 +1102,39 @@ person below) pair at every depth, and an ordinary `GROUP BY` boss adds them up.
 
 **Task:** For each manager, count everyone below them at any depth and their total salary.
 
-<!-- sql pg -->
-```sql
-WITH RECURSIVE below AS (
-  SELECT manager_id AS boss, employee_id
-  FROM employees
-  WHERE manager_id IS NOT NULL                  -- every direct report
-  UNION ALL
-  SELECT b.boss, e.employee_id                  -- people who report to someone already below the boss
-  FROM below b
-  JOIN employees e ON e.manager_id = b.employee_id
-)
-SELECT m.name             AS manager,
-       COUNT(*)           AS team_size,
-       SUM(e.salary)      AS team_payroll
-FROM below b
-JOIN employees m ON m.employee_id = b.boss
-JOIN employees e ON e.employee_id = b.employee_id
-GROUP BY m.employee_id, m.name
-ORDER BY team_size DESC, manager;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH RECURSIVE below AS (
+      SELECT manager_id AS boss, employee_id
+      FROM employees
+      WHERE manager_id IS NOT NULL                  -- every direct report
+      UNION ALL
+      SELECT b.boss, e.employee_id                  -- people who report to someone already below the boss
+      FROM below b
+      JOIN employees e ON e.manager_id = b.employee_id
+    )
+    SELECT m.name             AS manager,
+           COUNT(*)           AS team_size,
+           SUM(e.salary)      AS team_payroll
+    FROM below b
+    JOIN employees m ON m.employee_id = b.boss
+    JOIN employees e ON e.employee_id = b.employee_id
+    GROUP BY m.employee_id, m.name
+    ORDER BY team_size DESC, manager;
+    ```
 
-| manager | team_size | team_payroll |
-| --- | --- | --- |
-| Maya Rossi | 11 | 917000 |
-| Omar Aziz | 3 | 205000 |
-| Tom Becker | 3 | 335000 |
-| Kwame Mensah | 2 | 52000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | manager | team_size | team_payroll |
+    | --- | --- | --- |
+    | Maya Rossi | 11 | 917000 |
+    | Omar Aziz | 3 | 205000 |
+    | Tom Becker | 3 | 335000 |
+    | Kwame Mensah | 2 | 52000 |
+    <!-- /result -->
 
 Maya Rossi is at the top, so everyone else is below her. `SUM(e.salary)` skips Leo Park, whose salary is NULL, while
 `COUNT(*)` still counts him: the two numbers answer different questions. If the data could contain a loop (A
@@ -1198,28 +1218,30 @@ higher, the numbers in between are missing: from `invoice_no + 1` to `next_no - 
 
 **Task:** List the gaps in the invoice numbers: each missing range from and to.
 
-<!-- sql pg -->
-```sql
-WITH paired AS (
-  SELECT invoice_no, LEAD(invoice_no) OVER (ORDER BY invoice_no) AS next_no
-  FROM invoices
-)
-SELECT invoice_no + 1 AS missing_from,
-       next_no - 1    AS missing_to
-FROM paired
-WHERE next_no - invoice_no > 1
-ORDER BY missing_from;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH paired AS (
+      SELECT invoice_no, LEAD(invoice_no) OVER (ORDER BY invoice_no) AS next_no
+      FROM invoices
+    )
+    SELECT invoice_no + 1 AS missing_from,
+           next_no - 1    AS missing_to
+    FROM paired
+    WHERE next_no - invoice_no > 1
+    ORDER BY missing_from;
+    ```
 
-| missing_from | missing_to |
-| --- | --- |
-| 4 | 4 |
-| 7 | 9 |
-| 15 | 15 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | missing_from | missing_to |
+    | --- | --- |
+    | 4 | 4 |
+    | 7 | 9 |
+    | 15 | 15 |
+    <!-- /result -->
 
 The last invoice has no next one (`next_no` is NULL), and `NULL - 17 > 1` is not true, so it adds no row. Numbers
 missing **before the first** invoice (if it were not 1) or after the last are outside what `LEAD` can see; when a
@@ -1301,27 +1323,29 @@ out the missing ones, and `[1]` takes the first element of the array.
 
 **Task:** Merge customer records that share an email (ignoring case and spaces), taking the newest non-missing name, phone and city, with the number of records merged.
 
-<!-- sql pg -->
-```sql
-SELECT LOWER(TRIM(email)) AS email,
-       (ARRAY_AGG(name  ORDER BY updated_at DESC) FILTER (WHERE name  IS NOT NULL))[1] AS name,
-       (ARRAY_AGG(phone ORDER BY updated_at DESC) FILTER (WHERE phone IS NOT NULL))[1] AS phone,
-       (ARRAY_AGG(city  ORDER BY updated_at DESC) FILTER (WHERE city  IS NOT NULL))[1] AS city,
-       COUNT(*) AS records
-FROM customer_records
-GROUP BY LOWER(TRIM(email))
-ORDER BY email;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT LOWER(TRIM(email)) AS email,
+           (ARRAY_AGG(name  ORDER BY updated_at DESC) FILTER (WHERE name  IS NOT NULL))[1] AS name,
+           (ARRAY_AGG(phone ORDER BY updated_at DESC) FILTER (WHERE phone IS NOT NULL))[1] AS phone,
+           (ARRAY_AGG(city  ORDER BY updated_at DESC) FILTER (WHERE city  IS NOT NULL))[1] AS city,
+           COUNT(*) AS records
+    FROM customer_records
+    GROUP BY LOWER(TRIM(email))
+    ORDER BY email;
+    ```
 
-| email | name | phone | city | records |
-| --- | --- | --- | --- | --- |
-| ana@example.com | Ana Silva | 555-0199 | Toronto | 3 |
-| ben@example.com | Benjamin | *NULL* | Lagos | 2 |
-| cy@example.com | Cy | *NULL* | *NULL* | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | email | name | phone | city | records |
+    | --- | --- | --- | --- | --- |
+    | ana@example.com | Ana Silva | 555-0199 | Toronto | 3 |
+    | ben@example.com | Benjamin | *NULL* | Lagos | 2 |
+    | cy@example.com | Cy | *NULL* | *NULL* | 1 |
+    <!-- /result -->
 
 Ana's newest record (3) has no name and no city, so those come from older records: the name from record 2, the city
 from record 2, the phone from record 3. Without the `FILTER`, the newest NULL would win. On databases without

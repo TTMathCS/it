@@ -26,23 +26,25 @@ islands), pivots, the median, "in every month", and "bought together".*
 
 **Task:** Find the second-highest different salary, as `second_highest`.
 
-<!-- sql -->
-```sql
-WITH levels AS (
-  SELECT DISTINCT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS dr
-  FROM employees
-  WHERE salary IS NOT NULL
-)
-SELECT salary AS second_highest FROM levels WHERE dr = 2;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    WITH levels AS (
+      SELECT DISTINCT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS dr
+      FROM employees
+      WHERE salary IS NOT NULL
+    )
+    SELECT salary AS second_highest FROM levels WHERE dr = 2;
+    ```
 
-| second_highest |
-| --- |
-| 140000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | second_highest |
+    | --- |
+    | 140000 |
+    <!-- /result -->
 
 **2. The largest below the largest** (only for N = 2):
 
@@ -125,23 +127,25 @@ subquery with no row gives NULL (chapter 10). Here, asking for the 10th-highest 
 
 **Task:** Find the 10th-highest different salary, giving NULL when there is no such salary.
 
-<!-- sql -->
-```sql
-SELECT (
-  SELECT DISTINCT salary FROM employees
-  WHERE salary IS NOT NULL
-  ORDER BY salary DESC
-  LIMIT 1 OFFSET 9
-) AS tenth_highest;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT (
+      SELECT DISTINCT salary FROM employees
+      WHERE salary IS NOT NULL
+      ORDER BY salary DESC
+      LIMIT 1 OFFSET 9
+    ) AS tenth_highest;
+    ```
 
-| tenth_highest |
-| --- |
-| *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | tenth_highest |
+    | --- |
+    | *NULL* |
+    <!-- /result -->
 
 One row, holding NULL. The `SELECT MAX(...) WHERE salary < (SELECT MAX ...)` version (way 2) also returns NULL
 rather than nothing, because an aggregate over no rows gives one row with NULL.
@@ -152,44 +156,48 @@ rather than nothing, because an aggregate over no rows gives one row with NULL.
 
 **Task:** Find the (customer, login date) pairs that appear more than once in `logins`, with how many copies.
 
-<!-- sql -->
-```sql
-SELECT customer_id, login_date, COUNT(*) AS copies
-FROM logins
-GROUP BY customer_id, login_date
-HAVING COUNT(*) > 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, login_date, COUNT(*) AS copies
+    FROM logins
+    GROUP BY customer_id, login_date
+    HAVING COUNT(*) > 1;
+    ```
 
-| customer_id | login_date | copies |
-| --- | --- | --- |
-| 2 | 2026-03-02 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | login_date | copies |
+    | --- | --- | --- |
+    | 2 | 2026-03-02 | 2 |
+    <!-- /result -->
 
 To see **every** duplicated row with its other columns, count with a window instead, so the rows are kept:
 
 **Task:** List every customer whose name is shared with another customer: id, name and city, by id.
 
-<!-- sql -->
-```sql
-WITH c AS (
-  SELECT customer_id, name, city,
-         COUNT(*) OVER (PARTITION BY name) AS same_name
-  FROM customers
-)
-SELECT customer_id, name, city FROM c WHERE same_name > 1 ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH c AS (
+      SELECT customer_id, name, city,
+             COUNT(*) OVER (PARTITION BY name) AS same_name
+      FROM customers
+    )
+    SELECT customer_id, name, city FROM c WHERE same_name > 1 ORDER BY customer_id;
+    ```
 
-| customer_id | name | city |
-| --- | --- | --- |
-| 1 | Ana Silva | Toronto |
-| 10 | Ana Silva | Lisbon |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name | city |
+    | --- | --- | --- |
+    | 1 | Ana Silva | Toronto |
+    | 10 | Ana Silva | Lisbon |
+    <!-- /result -->
 
 Two customers called Ana Silva, in different cities: "duplicate" depends on which columns you compare. Removing
 duplicates (keep one, delete the rest) is in [chapter 22](22-Duplicates-and-Incremental-Loads.md).
@@ -313,31 +321,33 @@ months down the side and categories across the top. Put a CASE inside each SUM, 
 
 **Task:** For each month, show revenue by category in columns (home, kitchen, office) and the total, one row per month.
 
-<!-- sql -->
-```sql
-SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
-       SUM(CASE WHEN p.category = 'Home'    THEN i.quantity * i.unit_price ELSE 0 END) AS home,
-       SUM(CASE WHEN p.category = 'Kitchen' THEN i.quantity * i.unit_price ELSE 0 END) AS kitchen,
-       SUM(CASE WHEN p.category = 'Office'  THEN i.quantity * i.unit_price ELSE 0 END) AS office,
-       SUM(i.quantity * i.unit_price) AS total
-FROM orders o
-JOIN order_items i ON i.order_id = o.order_id
-JOIN products p    ON p.product_id = i.product_id
-WHERE o.status = 'shipped'
-GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
-ORDER BY month;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
+           SUM(CASE WHEN p.category = 'Home'    THEN i.quantity * i.unit_price ELSE 0 END) AS home,
+           SUM(CASE WHEN p.category = 'Kitchen' THEN i.quantity * i.unit_price ELSE 0 END) AS kitchen,
+           SUM(CASE WHEN p.category = 'Office'  THEN i.quantity * i.unit_price ELSE 0 END) AS office,
+           SUM(i.quantity * i.unit_price) AS total
+    FROM orders o
+    JOIN order_items i ON i.order_id = o.order_id
+    JOIN products p    ON p.product_id = i.product_id
+    WHERE o.status = 'shipped'
+    GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
+    ORDER BY month;
+    ```
 
-| month | home | kitchen | office | total |
-| --- | --- | --- | --- | --- |
-| 2026-01 | 24.50 | 17.50 | 199.50 | 241.50 |
-| 2026-02 | 98.00 | 65.00 | 64.50 | 277.50 |
-| 2026-03 | 49.00 | 58.25 | 215.25 | 322.50 |
-| 2026-04 | 24.50 | 0 | 139.00 | 163.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | month | home | kitchen | office | total |
+    | --- | --- | --- | --- | --- |
+    | 2026-01 | 24.50 | 17.50 | 199.50 | 241.50 |
+    | 2026-02 | 98.00 | 65.00 | 64.50 | 277.50 |
+    | 2026-03 | 49.00 | 58.25 | 215.25 | 322.50 |
+    | 2026-04 | 24.50 | 0 | 139.00 | 163.50 |
+    <!-- /result -->
 
 The `ELSE 0` makes an empty cell 0; leave it out and an empty cell is NULL. The `total` includes the gift card,
 which has no category column of its own, so the three columns don't add up to it in February: check your columns
@@ -412,23 +422,25 @@ customer and compare with the number of months:
 
 **Task:** List the customers with a shipped order in every month from January to April 2026.
 
-<!-- sql -->
-```sql
-SELECT customer_id
-FROM orders
-WHERE status = 'shipped'
-  AND order_date >= '2026-01-01' AND order_date < '2026-05-01'
-GROUP BY customer_id
-HAVING COUNT(DISTINCT SUBSTR(CAST(order_date AS TEXT), 1, 7)) = 4;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id
+    FROM orders
+    WHERE status = 'shipped'
+      AND order_date >= '2026-01-01' AND order_date < '2026-05-01'
+    GROUP BY customer_id
+    HAVING COUNT(DISTINCT SUBSTR(CAST(order_date AS TEXT), 1, 7)) = 4;
+    ```
 
-| customer_id |
-| --- |
-| 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id |
+    | --- |
+    | 1 |
+    <!-- /result -->
 
 `COUNT(DISTINCT month)` is essential: Ana Silva has two January orders, and `COUNT(*) = 4` would be true for someone
 with four orders in one month. The double `NOT EXISTS` form of "for all" is in [chapter 9](09-Self-Semi-and-Anti-Joins.md#practice) (question 9.6).
@@ -440,27 +452,29 @@ with four orders in one month. The double `NOT EXISTS` form of "for all" is in [
 
 **Task:** List the pairs of products bought together in at least 2 orders, with how many orders, most first (ties by product ids).
 
-<!-- sql -->
-```sql
-SELECT a.product_id AS product_a, b.product_id AS product_b, COUNT(*) AS orders_together
-FROM order_items a
-JOIN order_items b
-  ON b.order_id = a.order_id
- AND a.product_id < b.product_id
-GROUP BY a.product_id, b.product_id
-HAVING COUNT(*) >= 2
-ORDER BY orders_together DESC, product_a, product_b;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT a.product_id AS product_a, b.product_id AS product_b, COUNT(*) AS orders_together
+    FROM order_items a
+    JOIN order_items b
+      ON b.order_id = a.order_id
+     AND a.product_id < b.product_id
+    GROUP BY a.product_id, b.product_id
+    HAVING COUNT(*) >= 2
+    ORDER BY orders_together DESC, product_a, product_b;
+    ```
 
-| product_a | product_b | orders_together |
-| --- | --- | --- |
-| 2 | 3 | 2 |
-| 2 | 4 | 2 |
-| 4 | 5 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | product_a | product_b | orders_together |
+    | --- | --- | --- |
+    | 2 | 3 | 2 |
+    | 2 | 4 | 2 |
+    | 4 | 5 | 2 |
+    <!-- /result -->
 
 Three pairs were bought together twice: the notebook (2) with the fountain pen (3), in orders 105 and 117; the
 notebook with the coffee mug (4), in 103 and 117; and the coffee mug with the tea kettle (5), in 109 and 115. Join to

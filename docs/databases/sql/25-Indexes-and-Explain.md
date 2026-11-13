@@ -493,7 +493,7 @@ Both databases support both.
 
     | id | parent | notused | detail |
     | --- | --- | --- | --- |
-    | 3 | 0 | 53 | SEARCH big_orders USING COVERING INDEX big_orders_euros (<expr>=?) |
+    | 3 | 0 | 53 | SEARCH big_orders USING COVERING INDEX big_orders_euros (&lt;expr>=?) |
     <!-- /result -->
 
 PostgreSQL needs the extra brackets around an expression in `CREATE INDEX` (a single function call such as
@@ -675,9 +675,9 @@ is used, and show the plan on both databases.
         | QUERY PLAN |
         | --- |
         | Bitmap Heap Scan on big_orders |
-        |   Recheck Cond: ((amount_cents >= 50000) AND (amount_cents < 50100)) |
+        |   Recheck Cond: ((amount_cents >= 50000) AND (amount_cents &lt; 50100)) |
         |   ->  Bitmap Index Scan on big_orders_amount |
-        |         Index Cond: ((amount_cents >= 50000) AND (amount_cents < 50100)) |
+        |         Index Cond: ((amount_cents >= 50000) AND (amount_cents &lt; 50100)) |
         <!-- /result -->
 
     === "SQLite"
@@ -694,7 +694,7 @@ is used, and show the plan on both databases.
 
         | id | parent | notused | detail |
         | --- | --- | --- | --- |
-        | 2 | 0 | 126 | SEARCH big_orders USING COVERING INDEX big_orders_amount (amount_cents>? AND amount_cents<?) |
+        | 2 | 0 | 126 | SEARCH big_orders USING COVERING INDEX big_orders_amount (amount_cents>? AND amount_cents&lt;?) |
         <!-- /result -->
 
     Both use the index for the range. Integer division makes the two conditions equal only for whole, non-negative

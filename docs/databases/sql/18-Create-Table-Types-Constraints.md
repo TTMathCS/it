@@ -21,29 +21,31 @@ between the two databases in this course: PostgreSQL enforces types, and SQLite,
 
 **Task:** Create a `shipments` table with a key, a link to orders, a positive weight, a default for `delivered`, and one shipment per order and carrier; add one shipment and show it.
 
-<!-- sql -->
-```sql
-CREATE TABLE shipments (
-  shipment_id INTEGER       PRIMARY KEY,
-  order_id    INTEGER       NOT NULL REFERENCES orders (order_id),
-  carrier     VARCHAR(20)   NOT NULL,
-  weight_kg   NUMERIC(6,2)  CHECK (weight_kg > 0),
-  shipped_on  DATE          NOT NULL,
-  delivered   BOOLEAN       NOT NULL DEFAULT FALSE,
-  UNIQUE (order_id, carrier)
-);
-INSERT INTO shipments (shipment_id, order_id, carrier, weight_kg, shipped_on)
-VALUES (1, 101, 'Canada Post', 1.20, '2026-01-04');
-SELECT shipment_id, order_id, carrier, weight_kg, shipped_on, delivered FROM shipments;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    CREATE TABLE shipments (
+      shipment_id INTEGER       PRIMARY KEY,
+      order_id    INTEGER       NOT NULL REFERENCES orders (order_id),
+      carrier     VARCHAR(20)   NOT NULL,
+      weight_kg   NUMERIC(6,2)  CHECK (weight_kg > 0),
+      shipped_on  DATE          NOT NULL,
+      delivered   BOOLEAN       NOT NULL DEFAULT FALSE,
+      UNIQUE (order_id, carrier)
+    );
+    INSERT INTO shipments (shipment_id, order_id, carrier, weight_kg, shipped_on)
+    VALUES (1, 101, 'Canada Post', 1.20, '2026-01-04');
+    SELECT shipment_id, order_id, carrier, weight_kg, shipped_on, delivered FROM shipments;
+    ```
 
-| shipment_id | order_id | carrier | weight_kg | shipped_on | delivered |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 101 | Canada Post | 1.20 | 2026-01-04 | false |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | shipment_id | order_id | carrier | weight_kg | shipped_on | delivered |
+    | --- | --- | --- | --- | --- | --- |
+    | 1 | 101 | Canada Post | 1.20 | 2026-01-04 | false |
+    <!-- /result -->
 
 Each column has a name, a type and optional constraints; constraints over several columns (here `UNIQUE (order_id,
 carrier)`) go after the columns. `delivered` was not given, so it took its default. (SQLite shows the `FALSE` as 0;
@@ -258,26 +260,28 @@ A foreign key can say what to do when the row it points at is deleted:
 
 **Task:** Make carts and cart items where deleting a cart deletes its items; delete cart 1 and list the items left.
 
-<!-- sql -->
-```sql
-CREATE TABLE carts (cart_id INTEGER PRIMARY KEY, owner VARCHAR(10));
-CREATE TABLE cart_items (
-  cart_id INTEGER REFERENCES carts (cart_id) ON DELETE CASCADE,
-  item    VARCHAR(10)
-);
-INSERT INTO carts VALUES (1, 'ana'), (2, 'bo');
-INSERT INTO cart_items VALUES (1, 'pen'), (1, 'cup'), (2, 'lamp');
-DELETE FROM carts WHERE cart_id = 1;
-SELECT cart_id, item FROM cart_items ORDER BY item;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    CREATE TABLE carts (cart_id INTEGER PRIMARY KEY, owner VARCHAR(10));
+    CREATE TABLE cart_items (
+      cart_id INTEGER REFERENCES carts (cart_id) ON DELETE CASCADE,
+      item    VARCHAR(10)
+    );
+    INSERT INTO carts VALUES (1, 'ana'), (2, 'bo');
+    INSERT INTO cart_items VALUES (1, 'pen'), (1, 'cup'), (2, 'lamp');
+    DELETE FROM carts WHERE cart_id = 1;
+    SELECT cart_id, item FROM cart_items ORDER BY item;
+    ```
 
-| cart_id | item |
-| --- | --- |
-| 2 | lamp |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | cart_id | item |
+    | --- | --- |
+    | 2 | lamp |
+    <!-- /result -->
 
 Cart 1's items went with it. On SQLite all of this needs `PRAGMA foreign_keys = ON` first; without it the foreign
 key is not checked at all. `CASCADE` is right for things that cannot exist alone (an order's lines); for
@@ -341,46 +345,50 @@ rows or to mean "order of arrival" exactly.
 
 **Task:** Save each customer's number of orders as a new table, then show the top 3.
 
-<!-- sql -->
-```sql
-CREATE TABLE customer_order_counts AS
-SELECT customer_id, COUNT(*) AS orders
-FROM orders
-WHERE customer_id IS NOT NULL
-GROUP BY customer_id;
-SELECT customer_id, orders FROM customer_order_counts ORDER BY orders DESC, customer_id LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    CREATE TABLE customer_order_counts AS
+    SELECT customer_id, COUNT(*) AS orders
+    FROM orders
+    WHERE customer_id IS NOT NULL
+    GROUP BY customer_id;
+    SELECT customer_id, orders FROM customer_order_counts ORDER BY orders DESC, customer_id LIMIT 3;
+    ```
 
-| customer_id | orders |
-| --- | --- |
-| 1 | 5 |
-| 2 | 3 |
-| 3 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | orders |
+    | --- | --- |
+    | 1 | 5 |
+    | 2 | 3 |
+    | 3 | 2 |
+    <!-- /result -->
 
 `ALTER TABLE` changes a table that already has data. Adding a column gives existing rows its default:
 
 **Task:** Add a `vip` column to customers (false by default), make customer 1 a VIP, then show the first 3 customers.
 
-<!-- sql -->
-```sql
-ALTER TABLE customers ADD COLUMN vip BOOLEAN NOT NULL DEFAULT FALSE;
-UPDATE customers SET vip = TRUE WHERE customer_id = 1;
-SELECT customer_id, name, vip FROM customers WHERE customer_id <= 3 ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    ALTER TABLE customers ADD COLUMN vip BOOLEAN NOT NULL DEFAULT FALSE;
+    UPDATE customers SET vip = TRUE WHERE customer_id = 1;
+    SELECT customer_id, name, vip FROM customers WHERE customer_id <= 3 ORDER BY customer_id;
+    ```
 
-| customer_id | name | vip |
-| --- | --- | --- |
-| 1 | Ana Silva | true |
-| 2 | Ben Okafor | false |
-| 3 | Chen Wei | false |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | vip |
+    | --- | --- | --- |
+    | 1 | Ana Silva | true |
+    | 2 | Ben Okafor | false |
+    | 3 | Chen Wei | false |
+    <!-- /result -->
 
 `ALTER TABLE ... RENAME COLUMN a TO b` and `DROP COLUMN` work on both (SQLite from 3.25 and 3.35). Changing a
 column's type, `ALTER COLUMN city TYPE VARCHAR(100)`, is PostgreSQL only; on SQLite you create a new table, copy

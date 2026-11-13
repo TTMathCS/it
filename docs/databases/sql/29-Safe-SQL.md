@@ -29,25 +29,27 @@ customers but must not see their emails, so they get the `customers_public` view
 
 **Task:** Let a support role see customers without their emails, then, as that role, list the Canadian customers.
 
-<!-- sql pg -->
-```sql
-CREATE ROLE support NOLOGIN;
-CREATE VIEW customers_public AS SELECT customer_id, name, city, country FROM customers;
-GRANT SELECT ON customers_public TO support;
+??? success "Solution"
 
-SET LOCAL ROLE support;
-SELECT customer_id, name, city FROM customers_public WHERE country = 'Canada' ORDER BY customer_id;
-```
+    <!-- sql pg -->
+    ```sql
+    CREATE ROLE support NOLOGIN;
+    CREATE VIEW customers_public AS SELECT customer_id, name, city, country FROM customers;
+    GRANT SELECT ON customers_public TO support;
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    SET LOCAL ROLE support;
+    SELECT customer_id, name, city FROM customers_public WHERE country = 'Canada' ORDER BY customer_id;
+    ```
 
-| customer_id | name | city |
-| --- | --- | --- |
-| 1 | Ana Silva | Toronto |
-| 6 | Farah Haddad | Toronto |
-| 9 | Ivan Petrov | Toronto |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | customer_id | name | city |
+    | --- | --- | --- |
+    | 1 | Ana Silva | Toronto |
+    | 6 | Farah Haddad | Toronto |
+    | 9 | Ivan Petrov | Toronto |
+    <!-- /result -->
 
 Reading the table itself is refused:
 
@@ -109,25 +111,27 @@ whatever query they write:
 
 **Task:** Let a role see only Canadian customers, whatever query it writes, then count what it sees.
 
-<!-- sql pg -->
-```sql
-CREATE ROLE support_ca NOLOGIN;
-GRANT SELECT ON customers TO support_ca;
-ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
-CREATE POLICY only_canada ON customers FOR SELECT TO support_ca
-  USING (country = 'Canada');
+??? success "Solution"
 
-SET LOCAL ROLE support_ca;
-SELECT COUNT(*) AS customers_visible FROM customers;
-```
+    <!-- sql pg -->
+    ```sql
+    CREATE ROLE support_ca NOLOGIN;
+    GRANT SELECT ON customers TO support_ca;
+    ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+    CREATE POLICY only_canada ON customers FOR SELECT TO support_ca
+      USING (country = 'Canada');
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+    SET LOCAL ROLE support_ca;
+    SELECT COUNT(*) AS customers_visible FROM customers;
+    ```
 
-| customers_visible |
-| --- |
-| 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
+
+    | customers_visible |
+    | --- |
+    | 3 |
+    <!-- /result -->
 
 Three of ten customers are visible, with no `WHERE` in the query. Superusers and roles with `BYPASSRLS` always bypass
 policies; the table's owner does too, unless `ALTER TABLE ... FORCE ROW LEVEL SECURITY` is set. Real policies usually compare with who is asking, for example

@@ -114,53 +114,57 @@ SQL standard, that describe every table and column. It works in PostgreSQL, MySQ
 
 **Task:** Describe the `orders` table: each column's name, type, maximum length and whether it may be NULL, in column order.
 
-<!-- sql pg -->
-```sql
-SELECT column_name, data_type, character_maximum_length, is_nullable
-FROM information_schema.columns
-WHERE table_schema = 'public'
-  AND table_name   = 'orders'          -- the table's name, in lower case
-ORDER BY ordinal_position;             -- the order the columns were created in
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT column_name, data_type, character_maximum_length, is_nullable
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name   = 'orders'          -- the table's name, in lower case
+    ORDER BY ordinal_position;             -- the order the columns were created in
+    ```
 
-| column_name | data_type | character_maximum_length | is_nullable |
-| --- | --- | --- | --- |
-| order_id | integer | *NULL* | NO |
-| customer_id | integer | *NULL* | YES |
-| order_date | date | *NULL* | NO |
-| status | character varying | 10 | NO |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | column_name | data_type | character_maximum_length | is_nullable |
+    | --- | --- | --- | --- |
+    | order_id | integer | *NULL* | NO |
+    | customer_id | integer | *NULL* | YES |
+    | order_date | date | *NULL* | NO |
+    | status | character varying | 10 | NO |
+    <!-- /result -->
 
 `data_type` is the type, `character_maximum_length` the length of a `VARCHAR`, and `is_nullable` says whether the
 column may hold NULL. Add `column_default` to see default values. Which tables are there at all:
 
 **Task:** List the tables of the database, alphabetically.
 
-<!-- sql pg -->
-```sql
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'          -- leave out the system's own tables
-ORDER BY table_name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT table_name
+    FROM information_schema.tables
+    WHERE table_schema = 'public'          -- leave out the system's own tables
+    ORDER BY table_name;
+    ```
 
-| table_name |
-| --- |
-| customers |
-| employees |
-| logins |
-| order_items |
-| orders |
-| page_views |
-| payments |
-| products |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+
+    | table_name |
+    | --- |
+    | customers |
+    | employees |
+    | logins |
+    | order_items |
+    | orders |
+    | page_views |
+    | payments |
+    | products |
+    <!-- /result -->
 
 SQLite has no `information_schema`. It describes a table with `PRAGMA table_info(orders)`, which can also be read as
 a table:
@@ -189,23 +193,25 @@ And the quickest look of all, on any database, is a few rows: the column names c
 
 **Task:** Show the first 3 orders, all columns, to see what the table looks like.
 
-<!-- sql -->
-```sql
-SELECT *
-FROM orders
-ORDER BY order_id
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT *
+    FROM orders
+    ORDER BY order_id
+    LIMIT 3;
+    ```
 
-| order_id | customer_id | order_date | status |
-| --- | --- | --- | --- |
-| 101 | 1 | 2026-01-03 | shipped |
-| 102 | 2 | 2026-01-03 | shipped |
-| 103 | 1 | 2026-01-15 | shipped |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | order_id | customer_id | order_date | status |
+    | --- | --- | --- | --- |
+    | 101 | 1 | 2026-01-03 | shipped |
+    | 102 | 2 | 2026-01-03 | shipped |
+    | 103 | 1 | 2026-01-15 | shipped |
+    <!-- /result -->
 
 In a test, the task text already gives each table's `CREATE TABLE`; read it there. In the Run boxes of this course,
 the **Show tables** button lists the tables too.

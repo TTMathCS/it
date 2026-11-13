@@ -23,26 +23,28 @@ Support staff with their department, in one labelled list:
 
 **Task:** In one list, show the Canadian customers with their city and the Support staff with their department, labelled 'customer' or 'employee', by label then name.
 
-<!-- sql -->
-```sql
-SELECT 'customer' AS who, name, city AS place FROM customers WHERE country = 'Canada'
-UNION ALL
-SELECT 'employee', name, department FROM employees WHERE department = 'Support'
-ORDER BY who, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT 'customer' AS who, name, city AS place FROM customers WHERE country = 'Canada'
+    UNION ALL
+    SELECT 'employee', name, department FROM employees WHERE department = 'Support'
+    ORDER BY who, name;
+    ```
 
-| who | name | place |
-| --- | --- | --- |
-| customer | Ana Silva | Toronto |
-| customer | Farah Haddad | Toronto |
-| customer | Ivan Petrov | Toronto |
-| employee | Ella Novak | Support |
-| employee | Kwame Mensah | Support |
-| employee | Leo Park | Support |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | who | name | place |
+    | --- | --- | --- |
+    | customer | Ana Silva | Toronto |
+    | customer | Farah Haddad | Toronto |
+    | customer | Ivan Petrov | Toronto |
+    | employee | Ella Novak | Support |
+    | employee | Kwame Mensah | Support |
+    | employee | Leo Park | Support |
+    <!-- /result -->
 
 The rules:
 
@@ -55,55 +57,59 @@ two halves of the table:
 
 **Task:** List the different cities of customers 1 to 5 and 6 to 10 together, each once, missing city last.
 
-<!-- sql -->
-```sql
-SELECT city FROM customers WHERE customer_id <= 5
-UNION
-SELECT city FROM customers WHERE customer_id > 5
-ORDER BY city NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT city FROM customers WHERE customer_id <= 5
+    UNION
+    SELECT city FROM customers WHERE customer_id > 5
+    ORDER BY city NULLS LAST;
+    ```
 
-| city |
-| --- |
-| Lagos |
-| Lisbon |
-| Osaka |
-| Prague |
-| Seoul |
-| Shanghai |
-| Toronto |
-| *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | city |
+    | --- |
+    | Lagos |
+    | Lisbon |
+    | Osaka |
+    | Prague |
+    | Seoul |
+    | Shanghai |
+    | Toronto |
+    | *NULL* |
+    <!-- /result -->
 
 **Task:** The same, but keep every row, duplicates included.
 
-<!-- sql -->
-```sql
-SELECT city FROM customers WHERE customer_id <= 5
-UNION ALL
-SELECT city FROM customers WHERE customer_id > 5
-ORDER BY city NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT city FROM customers WHERE customer_id <= 5
+    UNION ALL
+    SELECT city FROM customers WHERE customer_id > 5
+    ORDER BY city NULLS LAST;
+    ```
 
-| city |
-| --- |
-| Lagos |
-| Lisbon |
-| Osaka |
-| Prague |
-| Seoul |
-| Shanghai |
-| Toronto |
-| Toronto |
-| Toronto |
-| *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+
+    | city |
+    | --- |
+    | Lagos |
+    | Lisbon |
+    | Osaka |
+    | Prague |
+    | Seoul |
+    | Shanghai |
+    | Toronto |
+    | Toronto |
+    | Toronto |
+    | *NULL* |
+    <!-- /result -->
 
 UNION gave 8 rows, UNION ALL 10: Toronto three times became once. UNION removes duplicates **within** each half
 too, not just between them. For set operations two NULLs count as the same, so two unknown cities would also have
@@ -125,24 +131,26 @@ Customers who both ordered (any status) and logged in:
 
 **Task:** List the customers who both ordered (any status) and logged in: customer id, in order.
 
-<!-- sql -->
-```sql
-SELECT customer_id FROM orders WHERE customer_id IS NOT NULL
-INTERSECT
-SELECT customer_id FROM logins
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id FROM orders WHERE customer_id IS NOT NULL
+    INTERSECT
+    SELECT customer_id FROM logins
+    ORDER BY customer_id;
+    ```
 
-| customer_id |
-| --- |
-| 1 |
-| 2 |
-| 4 |
-| 6 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id |
+    | --- |
+    | 1 |
+    | 2 |
+    | 4 |
+    | 6 |
+    <!-- /result -->
 
 INTERSECT removes duplicates too, so each customer appears once. The same as a semi join with EXISTS (chapter 9),
 written as a set operation.
@@ -153,21 +161,23 @@ Customers who never ordered:
 
 **Task:** List the customers who never ordered: customer id, in order.
 
-<!-- sql -->
-```sql
-SELECT customer_id FROM customers
-EXCEPT
-SELECT customer_id FROM orders
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id FROM customers
+    EXCEPT
+    SELECT customer_id FROM orders
+    ORDER BY customer_id;
+    ```
 
-| customer_id |
-| --- |
-| 9 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id |
+    | --- |
+    | 9 |
+    <!-- /result -->
 
 Unlike `NOT IN`, this works despite the NULL in `orders.customer_id`: EXCEPT compares rows with "is the same as",
 under which NULL matches NULL, not with `=`. It is an anti join that can't fall into the NULL trap. Oracle called it
@@ -178,42 +188,44 @@ one price changed, one product missing and one new product. EXCEPT in both direc
 
 **Task:** Compare a staging copy of products with the real table and list every difference, saying which side each row is only on.
 
-<!-- sql -->
-```sql
-WITH staging AS (
-  SELECT product_id, name, category, price FROM products WHERE product_id <> 11
-  UNION ALL
-  SELECT 99, 'Desk mat', 'Office', 15.00
-),
-fixed_staging AS (
-  SELECT product_id, name, category,
-         CASE WHEN product_id = 4 THEN 9.25 ELSE price END AS price
-  FROM staging
-)
-SELECT 'only in products' AS side, product_id, name, price FROM (
-  SELECT product_id, name, price FROM products
-  EXCEPT
-  SELECT product_id, name, price FROM fixed_staging
-) AS a
-UNION ALL
-SELECT 'only in staging', product_id, name, price FROM (
-  SELECT product_id, name, price FROM fixed_staging
-  EXCEPT
-  SELECT product_id, name, price FROM products
-) AS b
-ORDER BY product_id, side;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH staging AS (
+      SELECT product_id, name, category, price FROM products WHERE product_id <> 11
+      UNION ALL
+      SELECT 99, 'Desk mat', 'Office', 15.00
+    ),
+    fixed_staging AS (
+      SELECT product_id, name, category,
+             CASE WHEN product_id = 4 THEN 9.25 ELSE price END AS price
+      FROM staging
+    )
+    SELECT 'only in products' AS side, product_id, name, price FROM (
+      SELECT product_id, name, price FROM products
+      EXCEPT
+      SELECT product_id, name, price FROM fixed_staging
+    ) AS a
+    UNION ALL
+    SELECT 'only in staging', product_id, name, price FROM (
+      SELECT product_id, name, price FROM fixed_staging
+      EXCEPT
+      SELECT product_id, name, price FROM products
+    ) AS b
+    ORDER BY product_id, side;
+    ```
 
-| side | product_id | name | price |
-| --- | --- | --- | --- |
-| only in products | 4 | Coffee mug | 8.75 |
-| only in staging | 4 | Coffee mug | 9.25 |
-| only in products | 11 | Bookend | 9.50 |
-| only in staging | 99 | Desk mat | 15.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | side | product_id | name | price |
+    | --- | --- | --- | --- |
+    | only in products | 4 | Coffee mug | 8.75 |
+    | only in staging | 4 | Coffee mug | 9.25 |
+    | only in products | 11 | Bookend | 9.50 |
+    | only in staging | 99 | Desk mat | 15.00 |
+    <!-- /result -->
 
 The changed coffee mug shows on both sides (old price and new); the bookend is only in the real table; the desk mat
 only in staging. [Chapter 23](23-Data-Quality-Checks.md) builds data-quality checks on this.
@@ -224,26 +236,28 @@ UNION ALL turns several columns into rows ("unpivot"). Each customer's email and
 
 **Task:** For the first 3 customers, show the email and the city as separate rows: customer id, field name and value, by customer then field.
 
-<!-- sql -->
-```sql
-SELECT customer_id, 'email' AS field, email AS value FROM customers WHERE customer_id <= 3
-UNION ALL
-SELECT customer_id, 'city', city FROM customers WHERE customer_id <= 3
-ORDER BY customer_id, field;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, 'email' AS field, email AS value FROM customers WHERE customer_id <= 3
+    UNION ALL
+    SELECT customer_id, 'city', city FROM customers WHERE customer_id <= 3
+    ORDER BY customer_id, field;
+    ```
 
-| customer_id | field | value |
-| --- | --- | --- |
-| 1 | city | Toronto |
-| 1 | email | ana@example.com |
-| 2 | city | Lagos |
-| 2 | email | ben@example.com |
-| 3 | city | Shanghai |
-| 3 | email | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | customer_id | field | value |
+    | --- | --- | --- |
+    | 1 | city | Toronto |
+    | 1 | email | ana@example.com |
+    | 2 | city | Lagos |
+    | 2 | email | ben@example.com |
+    | 3 | city | Shanghai |
+    | 3 | email | *NULL* |
+    <!-- /result -->
 
 The reverse, rows into columns ("pivot"), is done with CASE inside aggregates: [chapter 15](15-Classic-Interview-Patterns.md#pivot).
 

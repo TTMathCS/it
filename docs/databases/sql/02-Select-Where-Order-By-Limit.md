@@ -23,30 +23,32 @@ row, and ties at the edge of a `LIMIT`.*
 
 **Task:** List every product's name, category and price, in product id order.
 
-<!-- sql -->
-```sql
-SELECT name, category, price
-FROM products
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, category, price
+    FROM products
+    ORDER BY product_id;
+    ```
 
-| name | category | price |
-| --- | --- | --- |
-| Desk lamp | Home | 24.50 |
-| Notebook | Office | 3.25 |
-| Fountain pen | Office | 18.00 |
-| Coffee mug | Kitchen | 8.75 |
-| Tea kettle | Kitchen | 32.00 |
-| Office chair | Office | 149.00 |
-| Monitor stand | Office | 32.00 |
-| Plant pot | Home | 12.25 |
-| Wall clock | Home | 24.50 |
-| Gift card | *NULL* | 25.00 |
-| Bookend | Home | 9.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | category | price |
+    | --- | --- | --- |
+    | Desk lamp | Home | 24.50 |
+    | Notebook | Office | 3.25 |
+    | Fountain pen | Office | 18.00 |
+    | Coffee mug | Kitchen | 8.75 |
+    | Tea kettle | Kitchen | 32.00 |
+    | Office chair | Office | 149.00 |
+    | Monitor stand | Office | 32.00 |
+    | Plant pot | Home | 12.25 |
+    | Wall clock | Home | 24.50 |
+    | Gift card | *NULL* | 25.00 |
+    | Bookend | Home | 9.50 |
+    <!-- /result -->
 
 `SELECT *` returns every column in the table's order. It is handy for a first look and wrong in a test answer: a
 checker compares columns by position, and `*` returns columns the question did not ask for. List them.
@@ -57,23 +59,25 @@ A column in `SELECT` can be any expression. `AS` gives the result a name, an **a
 
 **Task:** For order 103, show each line's order id, product id and value (quantity times unit price) as `line_value`, by product id.
 
-<!-- sql -->
-```sql
-SELECT order_id, product_id,
-       quantity * unit_price AS line_value
-FROM order_items
-WHERE order_id = 103
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, product_id,
+           quantity * unit_price AS line_value
+    FROM order_items
+    WHERE order_id = 103
+    ORDER BY product_id;
+    ```
 
-| order_id | product_id | line_value |
-| --- | --- | --- |
-| 103 | 2 | 16.25 |
-| 103 | 4 | 17.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | order_id | product_id | line_value |
+    | --- | --- | --- |
+    | 103 | 2 | 16.25 |
+    | 103 | 4 | 17.50 |
+    <!-- /result -->
 
 `AS` can be left out (`quantity * unit_price line_value`), but writing it makes a missing comma easy to spot:
 `SELECT name category FROM products` is not an error, it returns one column, `name`, labelled `category`.
@@ -124,24 +128,26 @@ the quotes. The query itself was right:
 
 **Task:** List the employees who report to Tom Becker, found by his name: id, name and salary, by id.
 
-<!-- sql -->
-```sql
-SELECT e.employee_id, e.name, e.salary
-FROM employees e
-JOIN employees m ON e.manager_id = m.employee_id
-WHERE m.name = 'Tom Becker'
-ORDER BY e.employee_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT e.employee_id, e.name, e.salary
+    FROM employees e
+    JOIN employees m ON e.manager_id = m.employee_id
+    WHERE m.name = 'Tom Becker'
+    ORDER BY e.employee_id;
+    ```
 
-| employee_id | name | salary |
-| --- | --- | --- |
-| 3 | Priya Nair | 120000 |
-| 4 | Sam Lee | 120000 |
-| 5 | Lucia Gomez | 95000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | employee_id | name | salary |
+    | --- | --- | --- |
+    | 3 | Priya Nair | 120000 |
+    | 4 | Sam Lee | 120000 |
+    | 5 | Lucia Gomez | 95000 |
+    <!-- /result -->
 
 **Why it works in SQLite and MySQL.** SQLite, for compatibility with old MySQL code, treats a double-quoted word that
 is not a column name as text, so both queries above run there; the SQLite manual calls this a misfeature. MySQL by
@@ -178,24 +184,26 @@ capitals:
 
 **Task:** Show the first 3 customers by id, with the column headings "Customer ID" and "Full name".
 
-<!-- sql -->
-```sql
-SELECT customer_id AS "Customer ID",
-       name        AS "Full name"
-FROM customers
-ORDER BY customer_id
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id AS "Customer ID",
+           name        AS "Full name"
+    FROM customers
+    ORDER BY customer_id
+    LIMIT 3;
+    ```
 
-| Customer ID | Full name |
-| --- | --- |
-| 1 | Ana Silva |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | Customer ID | Full name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    <!-- /result -->
 
 The other case is a name that is a **reserved word**, a word SQL itself uses, such as `order`, `group`, `user` or
 `select`. A table called `order` sounds natural for a shop, but bare, the word confuses the parser:
@@ -240,25 +248,27 @@ works on every database in this course), `<`, `<=`, `>` and `>=`. They work on n
 
 **Task:** List the customers who signed up on or after 1 February 2026: id, name and signup date, earliest first (ties by id).
 
-<!-- sql -->
-```sql
-SELECT customer_id, name, signup_date
-FROM customers
-WHERE signup_date >= '2026-02-01'
-ORDER BY signup_date, customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name, signup_date
+    FROM customers
+    WHERE signup_date >= '2026-02-01'
+    ORDER BY signup_date, customer_id;
+    ```
 
-| customer_id | name | signup_date |
-| --- | --- | --- |
-| 6 | Farah Haddad | 2026-02-02 |
-| 7 | Gus Novak | 2026-02-14 |
-| 8 | Hana Sato | 2026-02-28 |
-| 9 | Ivan Petrov | 2026-03-03 |
-| 10 | Ana Silva | 2026-03-15 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | customer_id | name | signup_date |
+    | --- | --- | --- |
+    | 6 | Farah Haddad | 2026-02-02 |
+    | 7 | Gus Novak | 2026-02-14 |
+    | 8 | Hana Sato | 2026-02-28 |
+    | 9 | Ivan Petrov | 2026-03-03 |
+    | 10 | Ana Silva | 2026-03-15 |
+    <!-- /result -->
 
 The date is written as text in the ISO format `'YYYY-MM-DD'`. PostgreSQL turns it into a date because the column is
 a `DATE`; SQLite stores dates as text, and ISO dates sort correctly as text. Other formats (`'02/01/2026'`) are
@@ -297,23 +307,25 @@ Parentheses say what you mean:
 
 **Task:** List the Home or Kitchen products that cost more than 20: name, category and price, by product id.
 
-<!-- sql -->
-```sql
-SELECT name, category, price
-FROM products
-WHERE (category = 'Home' OR category = 'Kitchen') AND price > 20
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, category, price
+    FROM products
+    WHERE (category = 'Home' OR category = 'Kitchen') AND price > 20
+    ORDER BY product_id;
+    ```
 
-| name | category | price |
-| --- | --- | --- |
-| Desk lamp | Home | 24.50 |
-| Tea kettle | Kitchen | 32.00 |
-| Wall clock | Home | 24.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | category | price |
+    | --- | --- | --- |
+    | Desk lamp | Home | 24.50 |
+    | Tea kettle | Kitchen | 32.00 |
+    | Wall clock | Home | 24.50 |
+    <!-- /result -->
 
 Whenever a `WHERE` mixes `AND` and `OR`, add the parentheses even if you think you know the order. Readers (and
 markers) should not have to work it out.
@@ -324,47 +336,51 @@ markers) should not have to work it out.
 
 **Task:** The same task with `IN`: Home or Kitchen products over 20, by product id.
 
-<!-- sql -->
-```sql
-SELECT name, category, price
-FROM products
-WHERE category IN ('Home', 'Kitchen') AND price > 20
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, category, price
+    FROM products
+    WHERE category IN ('Home', 'Kitchen') AND price > 20
+    ORDER BY product_id;
+    ```
 
-| name | category | price |
-| --- | --- | --- |
-| Desk lamp | Home | 24.50 |
-| Tea kettle | Kitchen | 32.00 |
-| Wall clock | Home | 24.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | category | price |
+    | --- | --- | --- |
+    | Desk lamp | Home | 24.50 |
+    | Tea kettle | Kitchen | 32.00 |
+    | Wall clock | Home | 24.50 |
+    <!-- /result -->
 
 `BETWEEN a AND b` includes **both** ends: it means `>= a AND <= b`.
 
 **Task:** List the products priced from 12.25 to 25.00, both included: name and price, cheapest first (ties by name).
 
-<!-- sql -->
-```sql
-SELECT name, price
-FROM products
-WHERE price BETWEEN 12.25 AND 25.00
-ORDER BY price, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price
+    FROM products
+    WHERE price BETWEEN 12.25 AND 25.00
+    ORDER BY price, name;
+    ```
 
-| name | price |
-| --- | --- |
-| Plant pot | 12.25 |
-| Fountain pen | 18.00 |
-| Desk lamp | 24.50 |
-| Wall clock | 24.50 |
-| Gift card | 25.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Plant pot | 12.25 |
+    | Fountain pen | 18.00 |
+    | Desk lamp | 24.50 |
+    | Wall clock | 24.50 |
+    | Gift card | 25.00 |
+    <!-- /result -->
 
 The plant pot (12.25) and the gift card (25.00) sit exactly on the ends and are included. With timestamps,
 `BETWEEN` has a trap at the upper end; [chapter 16](16-Dates-and-Time-Series.md) shows it and the safer form
@@ -381,48 +397,52 @@ The plant pot (12.25) and the gift card (25.00) sit exactly on the ends and are 
 
 **Task:** List each country that has customers, once, in alphabetical order.
 
-<!-- sql -->
-```sql
-SELECT DISTINCT country
-FROM customers
-ORDER BY country;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT DISTINCT country
+    FROM customers
+    ORDER BY country;
+    ```
 
-| country |
-| --- |
-| Canada |
-| China |
-| Czechia |
-| Israel |
-| Japan |
-| Nigeria |
-| Portugal |
-| South Korea |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | country |
+    | --- |
+    | Canada |
+    | China |
+    | Czechia |
+    | Israel |
+    | Japan |
+    | Nigeria |
+    | Portugal |
+    | South Korea |
+    <!-- /result -->
 
 Ten customers, eight countries: Canada appears three times in the table and once here. `DISTINCT` applies to the
 **whole row**, not to the first column:
 
 **Task:** List each different (country, city) pair of the Canadian customers, by city.
 
-<!-- sql -->
-```sql
-SELECT DISTINCT country, city
-FROM customers
-WHERE country = 'Canada'
-ORDER BY city;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT DISTINCT country, city
+    FROM customers
+    WHERE country = 'Canada'
+    ORDER BY city;
+    ```
 
-| country | city |
-| --- | --- |
-| Canada | Toronto |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | country | city |
+    | --- | --- |
+    | Canada | Toronto |
+    <!-- /result -->
 
 Canada still appears once, because all three Canadian customers live in Toronto. Add a column that differs, such as
 `name`, and all three rows come back.
@@ -434,27 +454,29 @@ a gap: Eli Cohen has no city.
 
 **Task:** List each different city of the customers once, including "no city", with the missing city last.
 
-<!-- sql -->
-```sql
-SELECT DISTINCT city
-FROM customers
-ORDER BY city NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT DISTINCT city
+    FROM customers
+    ORDER BY city NULLS LAST;
+    ```
 
-| city |
-| --- |
-| Lagos |
-| Lisbon |
-| Osaka |
-| Prague |
-| Seoul |
-| Shanghai |
-| Toronto |
-| *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | city |
+    | --- |
+    | Lagos |
+    | Lisbon |
+    | Osaka |
+    | Prague |
+    | Seoul |
+    | Shanghai |
+    | Toronto |
+    | *NULL* |
+    <!-- /result -->
 
 Seven real cities plus one NULL row: 8 rows. All NULLs count as **one** value here, even though `NULL = NULL` is not
 true ([chapter 6](06-Null-and-Three-Valued-Logic.md#group-by)); three customers with no city would still give one NULL
@@ -466,23 +488,25 @@ customers (one with no city):
 
 **Task:** On customers, show in one row: all rows, rows with a city, different cities, rows of `SELECT DISTINCT city`, and groups of `GROUP BY city`.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)             AS all_rows,
-       COUNT(city)          AS rows_with_a_city,
-       COUNT(DISTINCT city) AS different_cities,
-       (SELECT COUNT(*) FROM (SELECT DISTINCT city FROM customers) AS d) AS distinct_rows,
-       (SELECT COUNT(*) FROM (SELECT city FROM customers GROUP BY city) AS g) AS groups
-FROM customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)             AS all_rows,
+           COUNT(city)          AS rows_with_a_city,
+           COUNT(DISTINCT city) AS different_cities,
+           (SELECT COUNT(*) FROM (SELECT DISTINCT city FROM customers) AS d) AS distinct_rows,
+           (SELECT COUNT(*) FROM (SELECT city FROM customers GROUP BY city) AS g) AS groups
+    FROM customers;
+    ```
 
-| all_rows | rows_with_a_city | different_cities | distinct_rows | groups |
-| --- | --- | --- | --- | --- |
-| 10 | 9 | 7 | 8 | 8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | all_rows | rows_with_a_city | different_cities | distinct_rows | groups |
+    | --- | --- | --- | --- | --- |
+    | 10 | 9 | 7 | 8 | 8 |
+    <!-- /result -->
 
 | Query | What happens to NULL | Here |
 | --- | --- | --- |
@@ -503,27 +527,29 @@ descending order; SQLite does the opposite. `NULLS FIRST` or `NULLS LAST` gives 
 
 **Task:** List each different known city once (leave out the missing one), alphabetically.
 
-<!-- sql -->
-```sql
-SELECT DISTINCT city
-FROM customers
-WHERE city IS NOT NULL
-ORDER BY city;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT DISTINCT city
+    FROM customers
+    WHERE city IS NOT NULL
+    ORDER BY city;
+    ```
 
-| city |
-| --- |
-| Lagos |
-| Lisbon |
-| Osaka |
-| Prague |
-| Seoul |
-| Shanghai |
-| Toronto |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+
+    | city |
+    | --- |
+    | Lagos |
+    | Lisbon |
+    | Osaka |
+    | Prague |
+    | Seoul |
+    | Shanghai |
+    | Toronto |
+    <!-- /result -->
 
 `WHERE city <> ''` would not do it: a comparison with NULL is unknown, never true, so only `IS NOT NULL` tests for it.
 
@@ -539,31 +565,33 @@ decides between rows that tie on the first:
 
 **Task:** List the employees with a known salary: name, department and salary, by department, highest salary first within it, then by name.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary
-FROM employees
-WHERE salary IS NOT NULL
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary
+    FROM employees
+    WHERE salary IS NOT NULL
+    ORDER BY department, salary DESC, name;
+    ```
 
-| name | department | salary |
-| --- | --- | --- |
-| Tom Becker | Engineering | 140000 |
-| Priya Nair | Engineering | 120000 |
-| Sam Lee | Engineering | 120000 |
-| Lucia Gomez | Engineering | 95000 |
-| Maya Rossi | Management | 180000 |
-| Omar Aziz | Sales | 110000 |
-| Nina Berg | Sales | 70000 |
-| Raj Patel | Sales | 70000 |
-| Zoe Martin | Sales | 65000 |
-| Kwame Mensah | Support | 75000 |
-| Ella Novak | Support | 52000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | department | salary |
+    | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 |
+    | Priya Nair | Engineering | 120000 |
+    | Sam Lee | Engineering | 120000 |
+    | Lucia Gomez | Engineering | 95000 |
+    | Maya Rossi | Management | 180000 |
+    | Omar Aziz | Sales | 110000 |
+    | Nina Berg | Sales | 70000 |
+    | Raj Patel | Sales | 70000 |
+    | Zoe Martin | Sales | 65000 |
+    | Kwame Mensah | Support | 75000 |
+    | Ella Novak | Support | 52000 |
+    <!-- /result -->
 
 Departments A to Z; within each department, highest salary first; for equal salaries (Priya Nair and Sam Lee, Nina
 Berg and Raj Patel), by name. Without that last column the order of the tied pairs would be up to the database.
@@ -572,26 +600,28 @@ You can sort by an alias from `SELECT`, by an expression, or by a column you do 
 
 **Task:** For orders 101, 103 and 105, list each line's order id, product id and `line_value`, highest value first (ties by order id, then product id).
 
-<!-- sql -->
-```sql
-SELECT order_id, product_id, quantity * unit_price AS line_value
-FROM order_items
-WHERE order_id IN (101, 103, 105)
-ORDER BY line_value DESC, order_id, product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, product_id, quantity * unit_price AS line_value
+    FROM order_items
+    WHERE order_id IN (101, 103, 105)
+    ORDER BY line_value DESC, order_id, product_id;
+    ```
 
-| order_id | product_id | line_value |
-| --- | --- | --- |
-| 101 | 1 | 24.50 |
-| 105 | 3 | 18.00 |
-| 103 | 4 | 17.50 |
-| 103 | 2 | 16.25 |
-| 101 | 2 | 9.75 |
-| 105 | 2 | 6.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | order_id | product_id | line_value |
+    | --- | --- | --- |
+    | 101 | 1 | 24.50 |
+    | 105 | 3 | 18.00 |
+    | 103 | 4 | 17.50 |
+    | 103 | 2 | 16.25 |
+    | 101 | 2 | 9.75 |
+    | 105 | 2 | 6.50 |
+    <!-- /result -->
 
 `ORDER BY 3` (the third column) also works, but it breaks silently when the column list changes; name the column.
 
@@ -605,43 +635,47 @@ shows them.
 
 **Task:** Show the 3 most expensive products: name and price, most expensive first (ties by name).
 
-<!-- sql -->
-```sql
-SELECT name, price
-FROM products
-ORDER BY price DESC, name
-LIMIT 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price
+    FROM products
+    ORDER BY price DESC, name
+    LIMIT 3;
+    ```
 
-| name | price |
-| --- | --- |
-| Office chair | 149.00 |
-| Monitor stand | 32.00 |
-| Tea kettle | 32.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Office chair | 149.00 |
+    | Monitor stand | 32.00 |
+    | Tea kettle | 32.00 |
+    <!-- /result -->
 
 **Task:** Show the next 3: products 4 to 6 in the same order.
 
-<!-- sql -->
-```sql
-SELECT name, price
-FROM products
-ORDER BY price DESC, name
-LIMIT 3 OFFSET 3;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price
+    FROM products
+    ORDER BY price DESC, name
+    LIMIT 3 OFFSET 3;
+    ```
 
-| name | price |
-| --- | --- |
-| Gift card | 25.00 |
-| Desk lamp | 24.50 |
-| Wall clock | 24.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Gift card | 25.00 |
+    | Desk lamp | 24.50 |
+    | Wall clock | 24.50 |
+    <!-- /result -->
 
 The second query is "page 2" with three rows a page. `LIMIT` without `ORDER BY` returns some rows, in no promised
 order; it is almost always a mistake.
@@ -661,23 +695,25 @@ SQLite does not. PostgreSQL 13 and later also have `WITH TIES`, which keeps ever
 
 **Task:** Show the 2 most expensive products, plus any product that ties on price with the second.
 
-<!-- sql pg -->
-```sql
-SELECT name, price
-FROM products
-ORDER BY price DESC
-FETCH FIRST 2 ROWS WITH TIES;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT name, price
+    FROM products
+    ORDER BY price DESC
+    FETCH FIRST 2 ROWS WITH TIES;
+    ```
 
-| name | price |
-| --- | --- |
-| Office chair | 149.00 |
-| Tea kettle | 32.00 |
-| Monitor stand | 32.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Office chair | 149.00 |
+    | Tea kettle | 32.00 |
+    | Monitor stand | 32.00 |
+    <!-- /result -->
 
 Asked for 2 rows, it returned 3, because the second and third tie. SQL Server writes `SELECT TOP 2 WITH TIES ...`.
 On SQLite, use a ranking function instead ([chapter 13](13-Window-Functions-Ranking.md)).
@@ -690,25 +726,27 @@ semicolon is usually optional for a single query, but it never hurts.
 
 **Task:** List the Office products: name and price, cheapest first (ties by name).
 
-<!-- sql -->
-```sql
--- Products in the Office category, cheapest first
-SELECT name, price
-FROM products
-WHERE category = 'Office'   /* exact match: 'office' would find nothing */
-ORDER BY price, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    -- Products in the Office category, cheapest first
+    SELECT name, price
+    FROM products
+    WHERE category = 'Office'   /* exact match: 'office' would find nothing */
+    ORDER BY price, name;
+    ```
 
-| name | price |
-| --- | --- |
-| Notebook | 3.25 |
-| Fountain pen | 18.00 |
-| Monitor stand | 32.00 |
-| Office chair | 149.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | name | price |
+    | --- | --- |
+    | Notebook | 3.25 |
+    | Fountain pen | 18.00 |
+    | Monitor stand | 32.00 |
+    | Office chair | 149.00 |
+    <!-- /result -->
 
 ### How to lay out a query { #layout }
 
@@ -737,20 +775,22 @@ Here is a query written in one line, as it is often typed in a hurry:
 
 **Task:** Count the orders in each status.
 
-<!-- sql pg -->
-```sql
-select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
+    ```
 
-| status | count |
-| --- | --- |
-| cancelled | 2 |
-| pending | 2 |
-| shipped | 16 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | status | count |
+    | --- | --- |
+    | cancelled | 2 |
+    | pending | 2 |
+    | shipped | 16 |
+    <!-- /result -->
 
 It runs, but three things are hard to see. The join to `customers` does nothing: no column of `c` is used, and a
 `LEFT JOIN` keeps every order anyway, so the counts are the same without it. The count has no name, so each
@@ -779,38 +819,39 @@ ORDER BY o.status;
 
 A longer query in the same style. Try it yourself first; this is the task:
 
-!!! question "Task"
-    For each **country**, count the **shipped** orders placed **on or after 1 February 2026**, and how many
-    **different customers** placed them. Show only countries with **at least 2** such orders. Columns: `country`,
-    `shipped_orders`, `customers`. Most shipped orders first; on a tie, by country name.
+**Task:** For each **country**, count the **shipped** orders placed **on or after 1 February 2026**, and how many
+**different customers** placed them. Show only countries with **at least 2** such orders. Columns: `country`,
+`shipped_orders`, `customers`. Most shipped orders first; on a tie, by country name.
 
-Each line of the answer does one thing, so each can be checked against one part of the task: the `JOIN` brings the
-country to each order, `WHERE` keeps shipped orders from February on, `GROUP BY` makes one row per country, `HAVING`
-drops the countries with fewer than 2, and `ORDER BY` sorts.
+??? success "Solution"
 
-<!-- sql -->
-```sql
-SELECT
-    c.country,
-    COUNT(o.order_id)              AS shipped_orders,
-    COUNT(DISTINCT o.customer_id)  AS customers
-FROM customers c
-JOIN orders o
-    ON o.customer_id = c.customer_id
-WHERE o.status = 'shipped'
-  AND o.order_date >= '2026-02-01'
-GROUP BY c.country
-HAVING COUNT(o.order_id) >= 2
-ORDER BY shipped_orders DESC, c.country;
-```
+    <!-- sql -->
+    ```sql
+    SELECT
+        c.country,
+        COUNT(o.order_id)              AS shipped_orders,
+        COUNT(DISTINCT o.customer_id)  AS customers
+    FROM customers c
+    JOIN orders o
+        ON o.customer_id = c.customer_id
+    WHERE o.status = 'shipped'
+      AND o.order_date >= '2026-02-01'
+    GROUP BY c.country
+    HAVING COUNT(o.order_id) >= 2
+    ORDER BY shipped_orders DESC, c.country;
+    ```
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
 
-| country | shipped_orders | customers |
-| --- | --- | --- |
-| Canada | 4 | 2 |
-<!-- /result -->
+    | country | shipped_orders | customers |
+    | --- | --- | --- |
+    | Canada | 4 | 2 |
+    <!-- /result -->
+
+    Each line of the answer does one thing, so each can be checked against one part of the task: the `JOIN` brings the
+    country to each order, `WHERE` keeps shipped orders from February on, `GROUP BY` makes one row per country, `HAVING`
+    drops the countries with fewer than 2, and `ORDER BY` sorts.
 
 Lining up the `AS` names, as above, is optional; some teams like it, some don't. In a timed test, do not spend
 minutes on layout: one clause per line and a name for every computed column is enough.

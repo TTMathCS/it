@@ -24,26 +24,28 @@ Each order holds a `customer_id`. To show the customer's name beside the order, 
 
 **Task:** For orders placed before 1 February 2026, show order id, order date and the customer's name, by order id.
 
-<!-- sql -->
-```sql
-SELECT o.order_id, o.order_date, c.name
-FROM orders o
-INNER JOIN customers c ON c.customer_id = o.customer_id
-WHERE o.order_date < '2026-02-01'
-ORDER BY o.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT o.order_id, o.order_date, c.name
+    FROM orders o
+    INNER JOIN customers c ON c.customer_id = o.customer_id
+    WHERE o.order_date < '2026-02-01'
+    ORDER BY o.order_id;
+    ```
 
-| order_id | order_date | name |
-| --- | --- | --- |
-| 101 | 2026-01-03 | Ana Silva |
-| 102 | 2026-01-03 | Ben Okafor |
-| 103 | 2026-01-15 | Ana Silva |
-| 104 | 2026-01-20 | Chen Wei |
-| 105 | 2026-01-28 | Dana Kim |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | order_date | name |
+    | --- | --- | --- |
+    | 101 | 2026-01-03 | Ana Silva |
+    | 102 | 2026-01-03 | Ben Okafor |
+    | 103 | 2026-01-15 | Ana Silva |
+    | 104 | 2026-01-20 | Chen Wei |
+    | 105 | 2026-01-28 | Dana Kim |
+    <!-- /result -->
 
 `o` and `c` are **aliases**: short names for the tables, so `o.order_id` means "order_id from orders". Use them in
 every query with more than one table; they make it clear where each column comes from, and a column name that exists
@@ -54,20 +56,22 @@ per pair found. An order with **no** matching customer produces no row at all. C
 
 **Task:** How many orders have a matching customer?
 
-<!-- sql -->
-```sql
-SELECT COUNT(*) AS orders_with_a_customer
-FROM orders o
-JOIN customers c ON c.customer_id = o.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*) AS orders_with_a_customer
+    FROM orders o
+    JOIN customers c ON c.customer_id = o.customer_id;
+    ```
 
-| orders_with_a_customer |
-| --- |
-| 19 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | orders_with_a_customer |
+    | --- |
+    | 19 |
+    <!-- /result -->
 
 There are 20 orders, but only 19 rows: the guest order 108 has `customer_id` NULL, NULL equals nothing, so it has no
 partner and disappears. `JOIN` on its own means `INNER JOIN`.
@@ -79,47 +83,51 @@ right-hand columns are filled with NULL.
 
 **Task:** For customers 7 to 10, list each of their orders (id and status), keeping customers with no orders, by customer id then order id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, o.order_id, o.status
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.customer_id
-WHERE c.customer_id >= 7
-ORDER BY c.customer_id, o.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, o.order_id, o.status
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    WHERE c.customer_id >= 7
+    ORDER BY c.customer_id, o.order_id;
+    ```
 
-| customer_id | name | order_id | status |
-| --- | --- | --- | --- |
-| 7 | Gus Novak | 111 | shipped |
-| 8 | Hana Sato | 114 | shipped |
-| 9 | Ivan Petrov | *NULL* | *NULL* |
-| 10 | Ana Silva | 117 | shipped |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | customer_id | name | order_id | status |
+    | --- | --- | --- | --- |
+    | 7 | Gus Novak | 111 | shipped |
+    | 8 | Hana Sato | 114 | shipped |
+    | 9 | Ivan Petrov | *NULL* | *NULL* |
+    | 10 | Ana Silva | 117 | shipped |
+    <!-- /result -->
 
 Ivan Petrov (9) has no orders, yet he is still in the result, with NULL in the order columns. That NULL is how you
 find "rows with no match": keep only the rows where a right-hand column that can't otherwise be NULL is NULL.
 
 **Task:** List the customers who have no orders: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.customer_id
-WHERE o.order_id IS NULL
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    WHERE o.order_id IS NULL
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 9 | Ivan Petrov |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 9 | Ivan Petrov |
+    <!-- /result -->
 
 This is the **anti join**, one of three ways to write "customers with no orders"; [chapter 9](09-Self-Semi-and-Anti-Joins.md)
 compares them. Test on `o.order_id`, the right table's key, which is never NULL in a real row.
@@ -157,26 +165,28 @@ still keeps every left row:
 
 **Task:** For customers 3, 6 and 9, list their shipped orders, keeping every one of the three customers even with none, by customer id then order id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, o.order_id
-FROM customers c
-LEFT JOIN orders o
-       ON o.customer_id = c.customer_id
-      AND o.status = 'shipped'
-WHERE c.customer_id IN (3, 6, 9)
-ORDER BY c.customer_id, o.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, o.order_id
+    FROM customers c
+    LEFT JOIN orders o
+           ON o.customer_id = c.customer_id
+          AND o.status = 'shipped'
+    WHERE c.customer_id IN (3, 6, 9)
+    ORDER BY c.customer_id, o.order_id;
+    ```
 
-| customer_id | name | order_id |
-| --- | --- | --- |
-| 3 | Chen Wei | 118 |
-| 6 | Farah Haddad | 109 |
-| 9 | Ivan Petrov | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | order_id |
+    | --- | --- | --- |
+    | 3 | Chen Wei | 118 |
+    | 6 | Farah Haddad | 109 |
+    | 9 | Ivan Petrov | *NULL* |
+    <!-- /result -->
 
 Chen Wei (3) keeps his shipped order 118 (his cancelled 104 is not a match), Farah Haddad (6) keeps 109 (116 is
 pending), and Ivan is back with NULL. The rule:
@@ -227,31 +237,33 @@ Count a column from the right-hand table instead. `COUNT(column)` skips NULLs, s
 
 **Task:** For every customer, show id, name and number of orders (0 when none), by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, COUNT(o.order_id) AS orders
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.customer_id
-GROUP BY c.customer_id, c.name
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, COUNT(o.order_id) AS orders
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    GROUP BY c.customer_id, c.name
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name | orders |
-| --- | --- | --- |
-| 1 | Ana Silva | 5 |
-| 2 | Ben Okafor | 3 |
-| 3 | Chen Wei | 2 |
-| 4 | Dana Kim | 2 |
-| 5 | Eli Cohen | 2 |
-| 6 | Farah Haddad | 2 |
-| 7 | Gus Novak | 1 |
-| 8 | Hana Sato | 1 |
-| 9 | Ivan Petrov | 0 |
-| 10 | Ana Silva | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+
+    | customer_id | name | orders |
+    | --- | --- | --- |
+    | 1 | Ana Silva | 5 |
+    | 2 | Ben Okafor | 3 |
+    | 3 | Chen Wei | 2 |
+    | 4 | Dana Kim | 2 |
+    | 5 | Eli Cohen | 2 |
+    | 6 | Farah Haddad | 2 |
+    | 7 | Gus Novak | 1 |
+    | 8 | Hana Sato | 1 |
+    | 9 | Ivan Petrov | 0 |
+    | 10 | Ana Silva | 1 |
+    <!-- /result -->
 
 The same goes for sums: `SUM` of nothing but NULLs is NULL, not 0. Wrap it, `COALESCE(SUM(x), 0)`, when the task wants
 a zero.
@@ -268,22 +280,24 @@ a customer with no orders and an order with no customer.
 
 **Task:** List both kinds of loose ends at once: customers with no orders, and orders with no customer.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name, o.order_id
-FROM customers c
-FULL JOIN orders o ON o.customer_id = c.customer_id
-WHERE c.customer_id IS NULL OR o.order_id IS NULL;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name, o.order_id
+    FROM customers c
+    FULL JOIN orders o ON o.customer_id = c.customer_id
+    WHERE c.customer_id IS NULL OR o.order_id IS NULL;
+    ```
 
-| customer_id | name | order_id |
-| --- | --- | --- |
-| *NULL* | *NULL* | 108 |
-| 9 | Ivan Petrov | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | name | order_id |
+    | --- | --- | --- |
+    | *NULL* | *NULL* | 108 |
+    | 9 | Ivan Petrov | *NULL* |
+    <!-- /result -->
 
 The WHERE keeps only the rows that found no partner: Ivan from the left, guest order 108 from the right. This is a
 standard way to compare two lists, for example yesterday's and today's copy of a table: what is only in one, what is
@@ -297,36 +311,38 @@ orders": build the full grid first, then LEFT JOIN the facts onto it.
 
 **Task:** For customers 1 and 4, count their orders in each month from January to March 2026, showing 0 for a month with none.
 
-<!-- sql -->
-```sql
-WITH months AS (
-  SELECT '2026-01' AS month UNION ALL
-  SELECT '2026-02' UNION ALL
-  SELECT '2026-03'
-)
-SELECT c.customer_id, m.month, COUNT(o.order_id) AS orders
-FROM customers c
-CROSS JOIN months m
-LEFT JOIN orders o
-       ON o.customer_id = c.customer_id
-      AND SUBSTR(CAST(o.order_date AS TEXT), 1, 7) = m.month
-WHERE c.customer_id IN (1, 4)
-GROUP BY c.customer_id, m.month
-ORDER BY c.customer_id, m.month;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH months AS (
+      SELECT '2026-01' AS month UNION ALL
+      SELECT '2026-02' UNION ALL
+      SELECT '2026-03'
+    )
+    SELECT c.customer_id, m.month, COUNT(o.order_id) AS orders
+    FROM customers c
+    CROSS JOIN months m
+    LEFT JOIN orders o
+           ON o.customer_id = c.customer_id
+          AND SUBSTR(CAST(o.order_date AS TEXT), 1, 7) = m.month
+    WHERE c.customer_id IN (1, 4)
+    GROUP BY c.customer_id, m.month
+    ORDER BY c.customer_id, m.month;
+    ```
 
-| customer_id | month | orders |
-| --- | --- | --- |
-| 1 | 2026-01 | 2 |
-| 1 | 2026-02 | 1 |
-| 1 | 2026-03 | 1 |
-| 4 | 2026-01 | 1 |
-| 4 | 2026-02 | 0 |
-| 4 | 2026-03 | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | customer_id | month | orders |
+    | --- | --- | --- |
+    | 1 | 2026-01 | 2 |
+    | 1 | 2026-02 | 1 |
+    | 1 | 2026-03 | 1 |
+    | 4 | 2026-01 | 1 |
+    | 4 | 2026-02 | 0 |
+    | 4 | 2026-03 | 1 |
+    <!-- /result -->
 
 Dana Kim (4) ordered nothing in February, and the grid still gives her a February row with 0. Without the cross join
 that row would simply be missing, and a chart or a "months with no orders" question would be wrong. A forgotten join
@@ -339,28 +355,30 @@ Joins chain: each new JOIN adds a table to the rows built so far. Revenue by pro
 
 **Task:** Show the revenue of shipped orders by product category, highest first.
 
-<!-- sql -->
-```sql
-SELECT p.category,
-       SUM(i.quantity * i.unit_price) AS revenue
-FROM orders o
-JOIN order_items i ON i.order_id = o.order_id
-JOIN products p    ON p.product_id = i.product_id
-WHERE o.status = 'shipped'
-GROUP BY p.category
-ORDER BY revenue DESC;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT p.category,
+           SUM(i.quantity * i.unit_price) AS revenue
+    FROM orders o
+    JOIN order_items i ON i.order_id = o.order_id
+    JOIN products p    ON p.product_id = i.product_id
+    WHERE o.status = 'shipped'
+    GROUP BY p.category
+    ORDER BY revenue DESC;
+    ```
 
-| category | revenue |
-| --- | --- |
-| Office | 618.25 |
-| Home | 196.00 |
-| Kitchen | 140.75 |
-| *NULL* | 50.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | category | revenue |
+    | --- | --- |
+    | Office | 618.25 |
+    | Home | 196.00 |
+    | Kitchen | 140.75 |
+    | *NULL* | 50.00 |
+    <!-- /result -->
 
 Read a chain of joins as a path through the diagram on the [sample database page](sample-database.md#tables):
 orders, to their items, to each item's product. Each step follows one arrow.
@@ -429,28 +447,30 @@ Aggregate each side first, then join the one-row-per-customer results:
 
 **Task:** For customers 1 and 2, show the number of orders and the number of logins, by customer id.
 
-<!-- sql -->
-```sql
-WITH o AS (SELECT customer_id, COUNT(*) AS orders FROM orders GROUP BY customer_id),
-     l AS (SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id)
-SELECT c.customer_id,
-       COALESCE(o.orders, 0) AS orders,
-       COALESCE(l.logins, 0) AS logins
-FROM customers c
-LEFT JOIN o ON o.customer_id = c.customer_id
-LEFT JOIN l ON l.customer_id = c.customer_id
-WHERE c.customer_id IN (1, 2)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH o AS (SELECT customer_id, COUNT(*) AS orders FROM orders GROUP BY customer_id),
+         l AS (SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id)
+    SELECT c.customer_id,
+           COALESCE(o.orders, 0) AS orders,
+           COALESCE(l.logins, 0) AS logins
+    FROM customers c
+    LEFT JOIN o ON o.customer_id = c.customer_id
+    LEFT JOIN l ON l.customer_id = c.customer_id
+    WHERE c.customer_id IN (1, 2)
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | orders | logins |
-| --- | --- | --- |
-| 1 | 5 | 6 |
-| 2 | 3 | 4 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | orders | logins |
+    | --- | --- | --- |
+    | 1 | 5 | 6 |
+    | 2 | 3 | 4 |
+    <!-- /result -->
 
 !!! tip "Interview tip: check the grain"
     Before and after each join, ask "what is one row now?" (one per customer, one per order, one per order item).
@@ -464,23 +484,25 @@ in the output:
 
 **Task:** For orders 101 and 102, show order id, customer id and customer name, by order id.
 
-<!-- sql -->
-```sql
-SELECT order_id, customer_id, name
-FROM orders
-JOIN customers USING (customer_id)
-WHERE order_id IN (101, 102)
-ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, customer_id, name
+    FROM orders
+    JOIN customers USING (customer_id)
+    WHERE order_id IN (101, 102)
+    ORDER BY order_id;
+    ```
 
-| order_id | customer_id | name |
-| --- | --- | --- |
-| 101 | 1 | Ana Silva |
-| 102 | 2 | Ben Okafor |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | order_id | customer_id | name |
+    | --- | --- | --- |
+    | 101 | 1 | Ana Silva |
+    | 102 | 2 | Ben Okafor |
+    <!-- /result -->
 
 `NATURAL JOIN` goes further and joins on **every** column whose name appears in both tables. That breaks silently:
 add a `created_at` column to both `orders` and `customers`, and `orders NATURAL JOIN customers` would match on it
@@ -491,26 +513,28 @@ A join condition doesn't have to be `=`. Here each product is paired with the ch
 
 **Task:** For the Kitchen products and the Desk lamp, list every cheaper product in the same category, by product then cheaper product.
 
-<!-- sql -->
-```sql
-SELECT a.name AS product, b.name AS cheaper_in_same_category
-FROM products a
-JOIN products b
-  ON b.category = a.category
- AND b.price < a.price
-WHERE a.category = 'Kitchen' OR a.name = 'Desk lamp'
-ORDER BY a.name, b.name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT a.name AS product, b.name AS cheaper_in_same_category
+    FROM products a
+    JOIN products b
+      ON b.category = a.category
+     AND b.price < a.price
+    WHERE a.category = 'Kitchen' OR a.name = 'Desk lamp'
+    ORDER BY a.name, b.name;
+    ```
 
-| product | cheaper_in_same_category |
-| --- | --- |
-| Desk lamp | Bookend |
-| Desk lamp | Plant pot |
-| Tea kettle | Coffee mug |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | product | cheaper_in_same_category |
+    | --- | --- |
+    | Desk lamp | Bookend |
+    | Desk lamp | Plant pot |
+    | Tea kettle | Coffee mug |
+    <!-- /result -->
 
 Joining a table to itself, as here, is a **self join**; chapter 9 is about it. Note that the wall clock costs the
 same as the desk lamp, so `<` leaves it out; `<=` would bring it back, along with the lamp paired with itself.

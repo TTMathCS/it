@@ -26,30 +26,32 @@ says what "previous" means, and PARTITION BY keeps each group separate.
 
 **Task:** For customers 1 and 2, show each order with the date of the customer's previous and next order, by customer then date.
 
-<!-- sql -->
-```sql
-SELECT customer_id, order_id, order_date,
-       LAG(order_date)  OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS previous_order,
-       LEAD(order_date) OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS next_order
-FROM orders
-WHERE customer_id IN (1, 2)
-ORDER BY customer_id, order_date, order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, order_id, order_date,
+           LAG(order_date)  OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS previous_order,
+           LEAD(order_date) OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS next_order
+    FROM orders
+    WHERE customer_id IN (1, 2)
+    ORDER BY customer_id, order_date, order_id;
+    ```
 
-| customer_id | order_id | order_date | previous_order | next_order |
-| --- | --- | --- | --- | --- |
-| 1 | 101 | 2026-01-03 | *NULL* | 2026-01-15 |
-| 1 | 103 | 2026-01-15 | 2026-01-03 | 2026-02-20 |
-| 1 | 110 | 2026-02-20 | 2026-01-15 | 2026-03-18 |
-| 1 | 115 | 2026-03-18 | 2026-02-20 | 2026-04-05 |
-| 1 | 120 | 2026-04-05 | 2026-03-18 | *NULL* |
-| 2 | 102 | 2026-01-03 | *NULL* | 2026-02-02 |
-| 2 | 106 | 2026-02-02 | 2026-01-03 | 2026-03-05 |
-| 2 | 113 | 2026-03-05 | 2026-02-02 | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | customer_id | order_id | order_date | previous_order | next_order |
+    | --- | --- | --- | --- | --- |
+    | 1 | 101 | 2026-01-03 | *NULL* | 2026-01-15 |
+    | 1 | 103 | 2026-01-15 | 2026-01-03 | 2026-02-20 |
+    | 1 | 110 | 2026-02-20 | 2026-01-15 | 2026-03-18 |
+    | 1 | 115 | 2026-03-18 | 2026-02-20 | 2026-04-05 |
+    | 1 | 120 | 2026-04-05 | 2026-03-18 | *NULL* |
+    | 2 | 102 | 2026-01-03 | *NULL* | 2026-02-02 |
+    | 2 | 106 | 2026-02-02 | 2026-01-03 | 2026-03-05 |
+    | 2 | 113 | 2026-03-05 | 2026-02-02 | *NULL* |
+    <!-- /result -->
 
 The first order of each customer has no previous one, so LAG gives NULL; the last has no next, so LEAD gives NULL.
 The partition stops customer 2's first order looking back at customer 1's last.
@@ -115,35 +117,37 @@ before:
 
 **Task:** For each month, show shipped revenue, the previous month's revenue, the change and the change in percent.
 
-<!-- sql -->
-```sql
-WITH monthly AS (
-  SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
-         SUM(i.quantity * i.unit_price) AS revenue
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.status = 'shipped'
-  GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
-)
-SELECT month, revenue,
-       LAG(revenue) OVER (ORDER BY month)            AS previous,
-       revenue - LAG(revenue) OVER (ORDER BY month)  AS change,
-       ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))
-             / LAG(revenue) OVER (ORDER BY month), 1) AS pct_change
-FROM monthly
-ORDER BY month;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH monthly AS (
+      SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
+             SUM(i.quantity * i.unit_price) AS revenue
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.status = 'shipped'
+      GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
+    )
+    SELECT month, revenue,
+           LAG(revenue) OVER (ORDER BY month)            AS previous,
+           revenue - LAG(revenue) OVER (ORDER BY month)  AS change,
+           ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))
+                 / LAG(revenue) OVER (ORDER BY month), 1) AS pct_change
+    FROM monthly
+    ORDER BY month;
+    ```
 
-| month | revenue | previous | change | pct_change |
-| --- | --- | --- | --- | --- |
-| 2026-01 | 241.50 | *NULL* | *NULL* | *NULL* |
-| 2026-02 | 277.50 | 241.50 | 36.00 | 14.9 |
-| 2026-03 | 322.50 | 277.50 | 45.00 | 16.2 |
-| 2026-04 | 163.50 | 322.50 | -159.00 | -49.3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | month | revenue | previous | change | pct_change |
+    | --- | --- | --- | --- | --- |
+    | 2026-01 | 241.50 | *NULL* | *NULL* | *NULL* |
+    | 2026-02 | 277.50 | 241.50 | 36.00 | 14.9 |
+    | 2026-03 | 322.50 | 277.50 | 45.00 | 16.2 |
+    | 2026-04 | 163.50 | 322.50 | -159.00 | -49.3 |
+    <!-- /result -->
 
 January has no previous month, so its change is NULL, which is the honest answer (not 0, and not 100%).
 
@@ -161,65 +165,69 @@ this one.
 
 **Task:** For each month, show shipped revenue and the running total so far, by month.
 
-<!-- sql -->
-```sql
-WITH monthly AS (
-  SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
-         SUM(i.quantity * i.unit_price) AS revenue
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.status = 'shipped'
-  GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
-)
-SELECT month, revenue,
-       SUM(revenue) OVER (ORDER BY month) AS revenue_to_date
-FROM monthly
-ORDER BY month;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH monthly AS (
+      SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
+             SUM(i.quantity * i.unit_price) AS revenue
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.status = 'shipped'
+      GROUP BY SUBSTR(CAST(o.order_date AS TEXT), 1, 7)
+    )
+    SELECT month, revenue,
+           SUM(revenue) OVER (ORDER BY month) AS revenue_to_date
+    FROM monthly
+    ORDER BY month;
+    ```
 
-| month | revenue | revenue_to_date |
-| --- | --- | --- |
-| 2026-01 | 241.50 | 241.50 |
-| 2026-02 | 277.50 | 519.00 |
-| 2026-03 | 322.50 | 841.50 |
-| 2026-04 | 163.50 | 1005.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | month | revenue | revenue_to_date |
+    | --- | --- | --- |
+    | 2026-01 | 241.50 | 241.50 |
+    | 2026-02 | 277.50 | 519.00 |
+    | 2026-03 | 322.50 | 841.50 |
+    | 2026-04 | 163.50 | 1005.00 |
+    <!-- /result -->
 
 With PARTITION BY the total restarts in each group: each customer's spending to date, order by order.
 
 **Task:** For customers 1 and 4, show each order's value and how much the customer had spent up to and including it, order by order.
 
-<!-- sql -->
-```sql
-WITH order_values AS (
-  SELECT o.customer_id, o.order_id, o.order_date, SUM(i.quantity * i.unit_price) AS total
-  FROM orders o
-  JOIN order_items i ON i.order_id = o.order_id
-  WHERE o.customer_id IN (1, 4)
-  GROUP BY o.customer_id, o.order_id, o.order_date
-)
-SELECT customer_id, order_id, order_date, total,
-       SUM(total) OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS spent_to_date
-FROM order_values
-ORDER BY customer_id, order_date, order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH order_values AS (
+      SELECT o.customer_id, o.order_id, o.order_date, SUM(i.quantity * i.unit_price) AS total
+      FROM orders o
+      JOIN order_items i ON i.order_id = o.order_id
+      WHERE o.customer_id IN (1, 4)
+      GROUP BY o.customer_id, o.order_id, o.order_date
+    )
+    SELECT customer_id, order_id, order_date, total,
+           SUM(total) OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS spent_to_date
+    FROM order_values
+    ORDER BY customer_id, order_date, order_id;
+    ```
 
-| customer_id | order_id | order_date | total | spent_to_date |
-| --- | --- | --- | --- | --- |
-| 1 | 101 | 2026-01-03 | 34.25 | 34.25 |
-| 1 | 103 | 2026-01-15 | 33.75 | 68.00 |
-| 1 | 110 | 2026-02-20 | 32.50 | 100.50 |
-| 1 | 115 | 2026-03-18 | 49.50 | 150.00 |
-| 1 | 120 | 2026-04-05 | 139.00 | 289.00 |
-| 4 | 105 | 2026-01-28 | 24.50 | 24.50 |
-| 4 | 112 | 2026-03-01 | 181.00 | 205.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+
+    | customer_id | order_id | order_date | total | spent_to_date |
+    | --- | --- | --- | --- | --- |
+    | 1 | 101 | 2026-01-03 | 34.25 | 34.25 |
+    | 1 | 103 | 2026-01-15 | 33.75 | 68.00 |
+    | 1 | 110 | 2026-02-20 | 32.50 | 100.50 |
+    | 1 | 115 | 2026-03-18 | 49.50 | 150.00 |
+    | 1 | 120 | 2026-04-05 | 139.00 | 289.00 |
+    | 4 | 105 | 2026-01-28 | 24.50 | 24.50 |
+    | 4 | 112 | 2026-03-01 | 181.00 | 205.50 |
+    <!-- /result -->
 
 ## 14.4 Frames: ROWS, RANGE and the tie trap { #frames }
 
@@ -268,31 +276,33 @@ BY, every row gets its own total:
 
 **Task:** For orders before 15 February 2026, show order id, date and how many orders had been placed so far, by date then id.
 
-<!-- sql -->
-```sql
-SELECT order_id, order_date,
-       COUNT(*) OVER (ORDER BY order_date, order_id
-                      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS orders_so_far
-FROM orders
-WHERE order_date < '2026-02-15'
-ORDER BY order_date, order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, order_date,
+           COUNT(*) OVER (ORDER BY order_date, order_id
+                          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS orders_so_far
+    FROM orders
+    WHERE order_date < '2026-02-15'
+    ORDER BY order_date, order_id;
+    ```
 
-| order_id | order_date | orders_so_far |
-| --- | --- | --- |
-| 101 | 2026-01-03 | 1 |
-| 102 | 2026-01-03 | 2 |
-| 103 | 2026-01-15 | 3 |
-| 104 | 2026-01-20 | 4 |
-| 105 | 2026-01-28 | 5 |
-| 106 | 2026-02-02 | 6 |
-| 107 | 2026-02-02 | 7 |
-| 108 | 2026-02-10 | 8 |
-| 109 | 2026-02-14 | 9 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | order_id | order_date | orders_so_far |
+    | --- | --- | --- |
+    | 101 | 2026-01-03 | 1 |
+    | 102 | 2026-01-03 | 2 |
+    | 103 | 2026-01-15 | 3 |
+    | 104 | 2026-01-20 | 4 |
+    | 105 | 2026-01-28 | 5 |
+    | 106 | 2026-02-02 | 6 |
+    | 107 | 2026-02-02 | 7 |
+    | 108 | 2026-02-10 | 8 |
+    | 109 | 2026-02-14 | 9 |
+    <!-- /result -->
 
 Neither is wrong in itself: RANGE answers "orders up to and including this **day**", ROWS answers "orders up to and
 including this **row**". Know which one the question asks for, and write the frame explicitly when it matters.
@@ -318,34 +328,36 @@ The frame words:
 
 **Task:** For each login day, show the logins and the average of that day and the two days before it (2 decimals), with how many days went into the average.
 
-<!-- sql -->
-```sql
-WITH daily AS (
-  SELECT login_date, COUNT(*) AS logins
-  FROM logins
-  GROUP BY login_date
-)
-SELECT login_date, logins,
-       ROUND(AVG(logins) OVER (ORDER BY login_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS avg_3_rows,
-       COUNT(*)          OVER (ORDER BY login_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)     AS rows_in_avg
-FROM daily
-ORDER BY login_date;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH daily AS (
+      SELECT login_date, COUNT(*) AS logins
+      FROM logins
+      GROUP BY login_date
+    )
+    SELECT login_date, logins,
+           ROUND(AVG(logins) OVER (ORDER BY login_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW), 2) AS avg_3_rows,
+           COUNT(*)          OVER (ORDER BY login_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)     AS rows_in_avg
+    FROM daily
+    ORDER BY login_date;
+    ```
 
-| login_date | logins | avg_3_rows | rows_in_avg |
-| --- | --- | --- | --- |
-| 2026-03-01 | 2 | 2.00 | 1 |
-| 2026-03-02 | 3 | 2.50 | 2 |
-| 2026-03-03 | 2 | 2.33 | 3 |
-| 2026-03-04 | 2 | 2.33 | 3 |
-| 2026-03-05 | 2 | 2.00 | 3 |
-| 2026-03-06 | 2 | 2.00 | 3 |
-| 2026-03-08 | 1 | 1.67 | 3 |
-| 2026-03-10 | 1 | 1.33 | 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | login_date | logins | avg_3_rows | rows_in_avg |
+    | --- | --- | --- | --- |
+    | 2026-03-01 | 2 | 2.00 | 1 |
+    | 2026-03-02 | 3 | 2.50 | 2 |
+    | 2026-03-03 | 2 | 2.33 | 3 |
+    | 2026-03-04 | 2 | 2.33 | 3 |
+    | 2026-03-05 | 2 | 2.00 | 3 |
+    | 2026-03-06 | 2 | 2.00 | 3 |
+    | 2026-03-08 | 1 | 1.67 | 3 |
+    | 2026-03-10 | 1 | 1.33 | 3 |
+    <!-- /result -->
 
 Two things to notice. The first two rows average fewer than three values (the `rows_in_avg` column shows it); a task
 may want those left NULL instead (`CASE WHEN rows_in_avg = 3 THEN ... END`). And this is three **rows**, not three
@@ -358,27 +370,29 @@ over four and five calendar days. For a true 3-day average, fill in the missing 
 
 **Task:** For Sales and Support, show each employee with the top earner of their department beside them, by department, highest salary first, then name.
 
-<!-- sql -->
-```sql
-SELECT department, name, salary,
-       FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC, name) AS top_earner
-FROM employees
-WHERE department IN ('Sales', 'Support') AND salary IS NOT NULL
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT department, name, salary,
+           FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC, name) AS top_earner
+    FROM employees
+    WHERE department IN ('Sales', 'Support') AND salary IS NOT NULL
+    ORDER BY department, salary DESC, name;
+    ```
 
-| department | name | salary | top_earner |
-| --- | --- | --- | --- |
-| Sales | Omar Aziz | 110000 | Omar Aziz |
-| Sales | Nina Berg | 70000 | Omar Aziz |
-| Sales | Raj Patel | 70000 | Omar Aziz |
-| Sales | Zoe Martin | 65000 | Omar Aziz |
-| Support | Kwame Mensah | 75000 | Kwame Mensah |
-| Support | Ella Novak | 52000 | Kwame Mensah |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | department | name | salary | top_earner |
+    | --- | --- | --- | --- |
+    | Sales | Omar Aziz | 110000 | Omar Aziz |
+    | Sales | Nina Berg | 70000 | Omar Aziz |
+    | Sales | Raj Patel | 70000 | Omar Aziz |
+    | Sales | Zoe Martin | 65000 | Omar Aziz |
+    | Support | Kwame Mensah | 75000 | Kwame Mensah |
+    | Support | Ella Novak | 52000 | Kwame Mensah |
+    <!-- /result -->
 
 `LAST_VALUE` looks like its mirror, and isn't, because of the default frame:
 
@@ -412,28 +426,30 @@ Extend the frame to the end of the partition:
 
 **Task:** The same, with the lowest earner of the department beside each employee.
 
-<!-- sql -->
-```sql
-SELECT department, name, salary,
-       LAST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC, name
-                              ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_earner
-FROM employees
-WHERE department IN ('Sales', 'Support') AND salary IS NOT NULL
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT department, name, salary,
+           LAST_VALUE(name) OVER (PARTITION BY department ORDER BY salary DESC, name
+                                  ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_earner
+    FROM employees
+    WHERE department IN ('Sales', 'Support') AND salary IS NOT NULL
+    ORDER BY department, salary DESC, name;
+    ```
 
-| department | name | salary | lowest_earner |
-| --- | --- | --- | --- |
-| Sales | Omar Aziz | 110000 | Zoe Martin |
-| Sales | Nina Berg | 70000 | Zoe Martin |
-| Sales | Raj Patel | 70000 | Zoe Martin |
-| Sales | Zoe Martin | 65000 | Zoe Martin |
-| Support | Kwame Mensah | 75000 | Ella Novak |
-| Support | Ella Novak | 52000 | Ella Novak |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | department | name | salary | lowest_earner |
+    | --- | --- | --- | --- |
+    | Sales | Omar Aziz | 110000 | Zoe Martin |
+    | Sales | Nina Berg | 70000 | Zoe Martin |
+    | Sales | Raj Patel | 70000 | Zoe Martin |
+    | Sales | Zoe Martin | 65000 | Zoe Martin |
+    | Support | Kwame Mensah | 75000 | Ella Novak |
+    | Support | Ella Novak | 52000 | Ella Novak |
+    <!-- /result -->
 
 Easier still: `FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary ASC, name)`, the first in the opposite
 order. `NTH_VALUE(x, n)` gives the n-th row's value and has the same frame trap.

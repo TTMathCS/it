@@ -66,28 +66,30 @@ Chain them to go deeper, with a number to pick an element of an array (counting 
 
 **Task:** For every event, pull out the type, the user's id (as a number), the user's country and the first item's SKU, by event id.
 
-<!-- sql -->
-```sql
-SELECT event_id,
-       payload ->> 'type'                                AS type,
-       CAST(payload -> 'user' ->> 'id' AS INTEGER)        AS user_id,
-       payload -> 'user' ->> 'country'                   AS country,
-       payload -> 'items' -> 0 ->> 'sku'                 AS first_sku
-FROM events
-ORDER BY event_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT event_id,
+           payload ->> 'type'                                AS type,
+           CAST(payload -> 'user' ->> 'id' AS INTEGER)        AS user_id,
+           payload -> 'user' ->> 'country'                   AS country,
+           payload -> 'items' -> 0 ->> 'sku'                 AS first_sku
+    FROM events
+    ORDER BY event_id;
+    ```
 
-| event_id | type | user_id | country | first_sku |
-| --- | --- | --- | --- | --- |
-| 1 | view | 1 | CA | *NULL* |
-| 2 | cart | 1 | CA | LAMP |
-| 3 | purchase | 1 | CA | LAMP |
-| 4 | view | 2 | *NULL* | *NULL* |
-| 5 | purchase | 2 | NG | CHAIR |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | event_id | type | user_id | country | first_sku |
+    | --- | --- | --- | --- | --- |
+    | 1 | view | 1 | CA | *NULL* |
+    | 2 | cart | 1 | CA | LAMP |
+    | 3 | purchase | 1 | CA | LAMP |
+    | 4 | view | 2 | *NULL* | *NULL* |
+    | 5 | purchase | 2 | NG | CHAIR |
+    <!-- /result -->
 
 Two things to notice:
 
@@ -98,25 +100,27 @@ Two things to notice:
 
 **Task:** For purchase events, show by country the number of purchases and the revenue, by country.
 
-<!-- sql -->
-```sql
-SELECT payload -> 'user' ->> 'country'               AS country,
-       COUNT(*)                                      AS purchases,
-       SUM(CAST(payload ->> 'total' AS NUMERIC(10,2))) AS revenue
-FROM events
-WHERE payload ->> 'type' = 'purchase'
-GROUP BY payload -> 'user' ->> 'country'
-ORDER BY country;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT payload -> 'user' ->> 'country'               AS country,
+           COUNT(*)                                      AS purchases,
+           SUM(CAST(payload ->> 'total' AS NUMERIC(10,2))) AS revenue
+    FROM events
+    WHERE payload ->> 'type' = 'purchase'
+    GROUP BY payload -> 'user' ->> 'country'
+    ORDER BY country;
+    ```
 
-| country | purchases | revenue |
-| --- | --- | --- |
-| CA | 1 | 34.25 |
-| NG | 1 | 149.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | country | purchases | revenue |
+    | --- | --- | --- |
+    | CA | 1 | 34.25 |
+    | NG | 1 | 149.00 |
+    <!-- /result -->
 
 Other ways to write the same path: PostgreSQL also has `payload #>> '{user,country}'` and
 `jsonb_extract_path_text(payload, 'user', 'country')`; SQLite has `json_extract(payload, '$.user.country')`, and its
@@ -400,22 +404,24 @@ Filtering on a field with `->>` works everywhere, but reads every document. Two 
 
 **Task:** List the events that contain an item with SKU "NOTE", by event id.
 
-<!-- sql pg -->
-```sql
-SELECT event_id
-FROM events
-WHERE payload @> '{"items": [{"sku": "NOTE"}]}'
-ORDER BY event_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT event_id
+    FROM events
+    WHERE payload @> '{"items": [{"sku": "NOTE"}]}'
+    ORDER BY event_id;
+    ```
 
-| event_id |
-| --- |
-| 2 |
-| 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+
+    | event_id |
+    | --- |
+    | 2 |
+    | 3 |
+    <!-- /result -->
 
 Events 2 and 3 contain an item with `sku` NOTE; `@>` matches inside arrays without exploding them. On SQLite the
 same question needs `EXISTS (SELECT 1 FROM json_each(payload, '$.items') j WHERE j.value ->> 'sku' = 'NOTE')`.
@@ -428,27 +434,29 @@ there. The useful parts:
 
 **Task:** For customers 1 and 2, show their order ids as one array, how many there are, and the first one.
 
-<!-- sql pg -->
-```sql
-SELECT c.customer_id,
-       ARRAY_AGG(o.order_id ORDER BY o.order_id)        AS order_ids,
-       CARDINALITY(ARRAY_AGG(o.order_id))               AS orders,
-       (ARRAY_AGG(o.order_id ORDER BY o.order_id))[1]   AS first_order
-FROM customers c
-JOIN orders o ON o.customer_id = c.customer_id
-WHERE c.customer_id IN (1, 2)
-GROUP BY c.customer_id
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT c.customer_id,
+           ARRAY_AGG(o.order_id ORDER BY o.order_id)        AS order_ids,
+           CARDINALITY(ARRAY_AGG(o.order_id))               AS orders,
+           (ARRAY_AGG(o.order_id ORDER BY o.order_id))[1]   AS first_order
+    FROM customers c
+    JOIN orders o ON o.customer_id = c.customer_id
+    WHERE c.customer_id IN (1, 2)
+    GROUP BY c.customer_id
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | order_ids | orders | first_order |
-| --- | --- | --- | --- |
-| 1 | {101,103,110,115,120} | 5 | 101 |
-| 2 | {102,106,113} | 3 | 102 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+
+    | customer_id | order_ids | orders | first_order |
+    | --- | --- | --- | --- |
+    | 1 | {101,103,110,115,120} | 5 | 101 |
+    | 2 | {102,106,113} | 3 | 102 |
+    <!-- /result -->
 
 `ARRAY_AGG(x ORDER BY x)` is an aggregate that collects a group's values into one array; `CARDINALITY(array)` is the
 number of elements in it; `array[1]` is its first element. PostgreSQL arrays count from **1**, not 0 like JSON arrays. `UNNEST` turns an array back into rows, and `= ANY(array)`
@@ -456,23 +464,25 @@ tests membership:
 
 **Task:** List products 2, 4 and 6 using an array: id and name, by id.
 
-<!-- sql pg -->
-```sql
-SELECT product_id, name
-FROM products
-WHERE product_id = ANY (ARRAY[2, 4, 6])
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT product_id, name
+    FROM products
+    WHERE product_id = ANY (ARRAY[2, 4, 6])
+    ORDER BY product_id;
+    ```
 
-| product_id | name |
-| --- | --- |
-| 2 | Notebook |
-| 4 | Coffee mug |
-| 6 | Office chair |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | product_id | name |
+    | --- | --- |
+    | 2 | Notebook |
+    | 4 | Coffee mug |
+    | 6 | Office chair |
+    <!-- /result -->
 
 ### Splitting a string into rows { #split-rows }
 

@@ -24,26 +24,28 @@ alias for the employee and one for the manager:
 
 **Task:** For each Engineering employee, show their name and salary next to their manager's name and salary, highest salary first (ties by name).
 
-<!-- sql -->
-```sql
-SELECT e.name AS employee, e.salary,
-       m.name AS manager,  m.salary AS manager_salary
-FROM employees e
-JOIN employees m ON m.employee_id = e.manager_id
-WHERE e.department = 'Engineering'
-ORDER BY e.salary DESC, e.name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT e.name AS employee, e.salary,
+           m.name AS manager,  m.salary AS manager_salary
+    FROM employees e
+    JOIN employees m ON m.employee_id = e.manager_id
+    WHERE e.department = 'Engineering'
+    ORDER BY e.salary DESC, e.name;
+    ```
 
-| employee | salary | manager | manager_salary |
-| --- | --- | --- | --- |
-| Tom Becker | 140000 | Maya Rossi | 180000 |
-| Priya Nair | 120000 | Tom Becker | 140000 |
-| Sam Lee | 120000 | Tom Becker | 140000 |
-| Lucia Gomez | 95000 | Tom Becker | 140000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | employee | salary | manager | manager_salary |
+    | --- | --- | --- | --- |
+    | Tom Becker | 140000 | Maya Rossi | 180000 |
+    | Priya Nair | 120000 | Tom Becker | 140000 |
+    | Sam Lee | 120000 | Tom Becker | 140000 |
+    | Lucia Gomez | 95000 | Tom Becker | 140000 |
+    <!-- /result -->
 
 It is an inner join, so Maya Rossi, who has no manager, would not appear (she is not in Engineering anyway). Use a
 LEFT JOIN when everyone must be listed.
@@ -52,27 +54,29 @@ LEFT JOIN when everyone must be listed.
 
 **Task:** For Engineering and Management, show each employee, their manager, and their manager's manager, by employee id.
 
-<!-- sql -->
-```sql
-SELECT e.name AS employee, m.name AS manager, g.name AS managers_manager
-FROM employees e
-LEFT JOIN employees m ON m.employee_id = e.manager_id
-LEFT JOIN employees g ON g.employee_id = m.manager_id
-WHERE e.department IN ('Engineering', 'Management')
-ORDER BY e.employee_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT e.name AS employee, m.name AS manager, g.name AS managers_manager
+    FROM employees e
+    LEFT JOIN employees m ON m.employee_id = e.manager_id
+    LEFT JOIN employees g ON g.employee_id = m.manager_id
+    WHERE e.department IN ('Engineering', 'Management')
+    ORDER BY e.employee_id;
+    ```
 
-| employee | manager | managers_manager |
-| --- | --- | --- |
-| Maya Rossi | *NULL* | *NULL* |
-| Tom Becker | Maya Rossi | *NULL* |
-| Priya Nair | Tom Becker | Maya Rossi |
-| Sam Lee | Tom Becker | Maya Rossi |
-| Lucia Gomez | Tom Becker | Maya Rossi |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | employee | manager | managers_manager |
+    | --- | --- | --- |
+    | Maya Rossi | *NULL* | *NULL* |
+    | Tom Becker | Maya Rossi | *NULL* |
+    | Priya Nair | Tom Becker | Maya Rossi |
+    | Sam Lee | Tom Becker | Maya Rossi |
+    | Lucia Gomez | Tom Becker | Maya Rossi |
+    <!-- /result -->
 
 Each extra level needs one more join. For a hierarchy of unknown depth, a recursive CTE walks it to the end
 ([chapter 11](11-CTEs-and-Recursive-CTEs.md#recursive)).
@@ -81,24 +85,26 @@ Each extra level needs one more join. For a hierarchy of unknown depth, a recurs
 
 **Task:** Find the employees who earn at least 85% of their manager's salary, with both salaries and the percentage (1 decimal), highest percentage first.
 
-<!-- sql -->
-```sql
-SELECT e.name AS employee, e.salary, m.name AS manager, m.salary AS manager_salary,
-       ROUND(100.0 * e.salary / m.salary, 1) AS pct_of_manager
-FROM employees e
-JOIN employees m ON m.employee_id = e.manager_id
-WHERE e.salary >= 0.85 * m.salary
-ORDER BY pct_of_manager DESC, e.name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT e.name AS employee, e.salary, m.name AS manager, m.salary AS manager_salary,
+           ROUND(100.0 * e.salary / m.salary, 1) AS pct_of_manager
+    FROM employees e
+    JOIN employees m ON m.employee_id = e.manager_id
+    WHERE e.salary >= 0.85 * m.salary
+    ORDER BY pct_of_manager DESC, e.name;
+    ```
 
-| employee | salary | manager | manager_salary | pct_of_manager |
-| --- | --- | --- | --- | --- |
-| Priya Nair | 120000 | Tom Becker | 140000 | 85.7 |
-| Sam Lee | 120000 | Tom Becker | 140000 | 85.7 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | employee | salary | manager | manager_salary | pct_of_manager |
+    | --- | --- | --- | --- | --- |
+    | Priya Nair | 120000 | Tom Becker | 140000 | 85.7 |
+    | Sam Lee | 120000 | Tom Becker | 140000 | 85.7 |
+    <!-- /result -->
 
 Leo Park's salary is NULL, so his comparison is unknown and WHERE drops him, which is what you want.
 
@@ -107,25 +113,27 @@ b.employee_id` stops a person being paired with themselves and stops each pair a
 
 **Task:** List every pair of employees who share Omar Aziz as manager, each pair once, with the manager's name.
 
-<!-- sql -->
-```sql
-SELECT a.name AS colleague_a, b.name AS colleague_b, m.name AS shared_manager
-FROM employees a
-JOIN employees b ON b.manager_id = a.manager_id AND a.employee_id < b.employee_id
-JOIN employees m ON m.employee_id = a.manager_id
-WHERE m.name = 'Omar Aziz'
-ORDER BY a.employee_id, b.employee_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT a.name AS colleague_a, b.name AS colleague_b, m.name AS shared_manager
+    FROM employees a
+    JOIN employees b ON b.manager_id = a.manager_id AND a.employee_id < b.employee_id
+    JOIN employees m ON m.employee_id = a.manager_id
+    WHERE m.name = 'Omar Aziz'
+    ORDER BY a.employee_id, b.employee_id;
+    ```
 
-| colleague_a | colleague_b | shared_manager |
-| --- | --- | --- |
-| Nina Berg | Raj Patel | Omar Aziz |
-| Nina Berg | Zoe Martin | Omar Aziz |
-| Raj Patel | Zoe Martin | Omar Aziz |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | colleague_a | colleague_b | shared_manager |
+    | --- | --- | --- |
+    | Nina Berg | Raj Patel | Omar Aziz |
+    | Nina Berg | Zoe Martin | Omar Aziz |
+    | Raj Patel | Zoe Martin | Omar Aziz |
+    <!-- /result -->
 
 ## 9.2 Semi joins: "at least one" { #semi }
 
@@ -171,34 +179,36 @@ per matching order:
 
 **Task:** List the customers with at least one shipped order: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE EXISTS (
-  SELECT 1
-  FROM orders o
-  WHERE o.customer_id = c.customer_id
-    AND o.status = 'shipped'
-)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE EXISTS (
+      SELECT 1
+      FROM orders o
+      WHERE o.customer_id = c.customer_id
+        AND o.status = 'shipped'
+    )
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 1 | Ana Silva |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-| 4 | Dana Kim |
-| 5 | Eli Cohen |
-| 6 | Farah Haddad |
-| 7 | Gus Novak |
-| 8 | Hana Sato |
-| 10 | Ana Silva |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    | 4 | Dana Kim |
+    | 5 | Eli Cohen |
+    | 6 | Farah Haddad |
+    | 7 | Gus Novak |
+    | 8 | Hana Sato |
+    | 10 | Ana Silva |
+    <!-- /result -->
 
 `EXISTS (subquery)` is true as soon as the subquery finds one row; what it selects doesn't matter, so `SELECT 1` is
 the custom. The subquery refers to `c.customer_id` from the outer query: it is **correlated**, run (in principle) once
@@ -208,29 +218,31 @@ The same with `IN`:
 
 **Task:** The same task with `IN`: customers with a shipped order, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE c.customer_id IN (SELECT o.customer_id FROM orders o WHERE o.status = 'shipped')
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE c.customer_id IN (SELECT o.customer_id FROM orders o WHERE o.status = 'shipped')
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 1 | Ana Silva |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-| 4 | Dana Kim |
-| 5 | Eli Cohen |
-| 6 | Farah Haddad |
-| 7 | Gus Novak |
-| 8 | Hana Sato |
-| 10 | Ana Silva |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 1 | Ana Silva |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    | 4 | Dana Kim |
+    | 5 | Eli Cohen |
+    | 6 | Farah Haddad |
+    | 7 | Gus Novak |
+    | 8 | Hana Sato |
+    | 10 | Ana Silva |
+    <!-- /result -->
 
 `IN` and `EXISTS` give the same answer here. For semi joins either is fine; the difference matters for their
 negations, next.
@@ -243,42 +255,46 @@ negations, next.
 
 **Task:** List the customers who never ordered: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 9 | Ivan Petrov |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 9 | Ivan Petrov |
+    <!-- /result -->
 
 **2. LEFT JOIN and IS NULL** (chapter 8): keep the rows where the join found nothing.
 
 **Task:** The same task with a `LEFT JOIN`: customers who never ordered, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-LEFT JOIN orders o ON o.customer_id = c.customer_id
-WHERE o.order_id IS NULL
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    LEFT JOIN orders o ON o.customer_id = c.customer_id
+    WHERE o.order_id IS NULL
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 9 | Ivan Petrov |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 9 | Ivan Petrov |
+    <!-- /result -->
 
 **3. NOT IN**, which looks the simplest and is broken on this data:
 
@@ -329,21 +345,23 @@ If you must use NOT IN, take the NULLs out of the list:
 
 **Task:** The same task with `NOT IN`: customers who never ordered, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE c.customer_id NOT IN (SELECT o.customer_id FROM orders o WHERE o.customer_id IS NOT NULL)
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE c.customer_id NOT IN (SELECT o.customer_id FROM orders o WHERE o.customer_id IS NOT NULL)
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 9 | Ivan Petrov |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 9 | Ivan Petrov |
+    <!-- /result -->
 
 !!! tip "Interview tip: say why you chose NOT EXISTS"
     Writing `NOT EXISTS` and adding one sentence, "NOT IN would return nothing if the subquery ever returned a
@@ -371,33 +389,35 @@ March 2026", among customers who signed up before March:
 
 **Task:** List the customers who signed up before March 2026 but had no shipped order in March 2026: id and name, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-WHERE c.signup_date < '2026-03-01'
-  AND NOT EXISTS (
-    SELECT 1
-    FROM orders o
-    WHERE o.customer_id = c.customer_id
-      AND o.status = 'shipped'
-      AND o.order_date >= '2026-03-01'
-      AND o.order_date <  '2026-04-01'
-  )
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    WHERE c.signup_date < '2026-03-01'
+      AND NOT EXISTS (
+        SELECT 1
+        FROM orders o
+        WHERE o.customer_id = c.customer_id
+          AND o.status = 'shipped'
+          AND o.order_date >= '2026-03-01'
+          AND o.order_date <  '2026-04-01'
+      )
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-| 5 | Eli Cohen |
-| 6 | Farah Haddad |
-| 7 | Gus Novak |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    | 5 | Eli Cohen |
+    | 6 | Farah Haddad |
+    | 7 | Gus Novak |
+    <!-- /result -->
 
 Ben Okafor (2) did order in March, but that order (113) was cancelled, so he counts as having no shipped March
 order. Farah Haddad's March order is pending. Put the status and date conditions outside the subquery and the
@@ -407,31 +427,33 @@ The LEFT JOIN version keeps the conditions in ON, for the reason in [chapter 8](
 
 **Task:** The same task with a `LEFT JOIN`, by id.
 
-<!-- sql -->
-```sql
-SELECT c.customer_id, c.name
-FROM customers c
-LEFT JOIN orders o
-       ON o.customer_id = c.customer_id
-      AND o.status = 'shipped'
-      AND o.order_date >= '2026-03-01'
-      AND o.order_date <  '2026-04-01'
-WHERE c.signup_date < '2026-03-01'
-  AND o.order_id IS NULL
-ORDER BY c.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT c.customer_id, c.name
+    FROM customers c
+    LEFT JOIN orders o
+           ON o.customer_id = c.customer_id
+          AND o.status = 'shipped'
+          AND o.order_date >= '2026-03-01'
+          AND o.order_date <  '2026-04-01'
+    WHERE c.signup_date < '2026-03-01'
+      AND o.order_id IS NULL
+    ORDER BY c.customer_id;
+    ```
 
-| customer_id | name |
-| --- | --- |
-| 2 | Ben Okafor |
-| 3 | Chen Wei |
-| 5 | Eli Cohen |
-| 6 | Farah Haddad |
-| 7 | Gus Novak |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | customer_id | name |
+    | --- | --- |
+    | 2 | Ben Okafor |
+    | 3 | Chen Wei |
+    | 5 | Eli Cohen |
+    | 6 | Farah Haddad |
+    | 7 | Gus Novak |
+    <!-- /result -->
 
 ## 9.5 Summary { #summary }
 

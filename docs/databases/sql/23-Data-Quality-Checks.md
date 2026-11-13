@@ -59,23 +59,25 @@ tests work exactly this way.
 
 **Task:** For `stg_orders`, count all rows and the missing values in each column.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)                      AS total_rows,
-       COUNT(*) - COUNT(order_id)    AS missing_order_id,
-       COUNT(*) - COUNT(customer_id) AS missing_customer_id,
-       COUNT(*) - COUNT(order_date)  AS missing_order_date,
-       COUNT(*) - COUNT(amount)      AS missing_amount
-FROM stg_orders;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)                      AS total_rows,
+           COUNT(*) - COUNT(order_id)    AS missing_order_id,
+           COUNT(*) - COUNT(customer_id) AS missing_customer_id,
+           COUNT(*) - COUNT(order_date)  AS missing_order_date,
+           COUNT(*) - COUNT(amount)      AS missing_amount
+    FROM stg_orders;
+    ```
 
-| total_rows | missing_order_id | missing_customer_id | missing_order_date | missing_amount |
-| --- | --- | --- | --- | --- |
-| 9 | 0 | 1 | 0 | 0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | total_rows | missing_order_id | missing_customer_id | missing_order_date | missing_amount |
+    | --- | --- | --- | --- | --- |
+    | 9 | 0 | 1 | 0 | 0 |
+    <!-- /result -->
 
 Files often say "missing" in other ways: an empty string, `'N/A'`, `'null'`, spaces. Count those too, or turn them
 into NULL while loading with `NULLIF(TRIM(x), '')` ([chapter 4](04-Expressions-Case-Numbers-Dates-Cast.md#coalesce-nullif)).
@@ -86,21 +88,23 @@ The key must appear once. As a check, return the keys that do not:
 
 **Task:** List the order ids that appear more than once in `stg_orders`, with how many copies.
 
-<!-- sql -->
-```sql
-SELECT order_id, COUNT(*) AS copies
-FROM stg_orders
-GROUP BY order_id
-HAVING COUNT(*) > 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, COUNT(*) AS copies
+    FROM stg_orders
+    GROUP BY order_id
+    HAVING COUNT(*) > 1;
+    ```
 
-| order_id | copies |
-| --- | --- |
-| 206 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | copies |
+    | --- | --- |
+    | 206 | 2 |
+    <!-- /result -->
 
 Order 206 is in the file twice with different amounts, so this is not a harmless exact copy: someone must decide
 which is right ([chapter 22](22-Duplicates-and-Incremental-Loads.md) shows how to keep one).
@@ -203,21 +207,23 @@ it. A valid `YYYY-MM-DD` date comes back unchanged.
 
 **Task:** List the staged orders whose status is not pending, shipped or cancelled.
 
-<!-- sql -->
-```sql
-SELECT order_id, status
-FROM stg_orders
-WHERE status NOT IN ('pending', 'shipped', 'cancelled');
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, status
+    FROM stg_orders
+    WHERE status NOT IN ('pending', 'shipped', 'cancelled');
+    ```
 
-| order_id | status |
-| --- | --- |
-| 202 | Shipped  |
-| 207 | refunded |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | order_id | status |
+    | --- | --- |
+    | 202 | Shipped  |
+    | 207 | refunded |
+    <!-- /result -->
 
 Two rows fail, for different reasons: `'refunded'` is a status nobody planned for (ask the business), and
 `'Shipped '` is a real status written badly (clean it: `LOWER(TRIM(status))`). Keep the two apart; the first needs a
@@ -229,21 +235,23 @@ Only test the range of values that are valid numbers, or the cast fails first:
 
 **Task:** List the staged orders whose amount is a valid number but not above 0.
 
-<!-- sql -->
-```sql
-SELECT order_id, amount
-FROM stg_orders
-WHERE TRIM(amount, '0123456789.-') = ''
-  AND CAST(amount AS NUMERIC(10,2)) <= 0;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, amount
+    FROM stg_orders
+    WHERE TRIM(amount, '0123456789.-') = ''
+      AND CAST(amount AS NUMERIC(10,2)) <= 0;
+    ```
 
-| order_id | amount |
-| --- | --- |
-| 207 | -5.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | amount |
+    | --- | --- |
+    | 207 | -5.00 |
+    <!-- /result -->
 
 `AND` does not promise to test its left side first in SQL. Here it works on both databases, but the safe way to
 cast only the valid rows is a `CASE`, which does test in order:
@@ -257,22 +265,24 @@ PostgreSQL refuses to compare text with an integer.
 
 **Task:** List the staged orders whose customer id does not exist in `customers`.
 
-<!-- sql -->
-```sql
-SELECT s.order_id, s.customer_id
-FROM stg_orders s
-LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
-WHERE s.customer_id IS NOT NULL
-  AND c.customer_id IS NULL;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT s.order_id, s.customer_id
+    FROM stg_orders s
+    LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
+    WHERE s.customer_id IS NOT NULL
+      AND c.customer_id IS NULL;
+    ```
 
-| order_id | customer_id |
-| --- | --- |
-| 204 | 99 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | customer_id |
+    | --- | --- |
+    | 204 | 99 |
+    <!-- /result -->
 
 Order 204 points at customer 99. The `IS NOT NULL` keeps a missing customer (order 203) out of this check: that is a
 completeness problem, already counted in [23.2](#completeness), and reporting it twice would make the failure counts
@@ -286,21 +296,23 @@ least one item:
 
 **Task:** List the shipped orders that have no items.
 
-<!-- sql -->
-```sql
-SELECT o.order_id, o.status
-FROM orders o
-WHERE o.status = 'shipped'
-  AND NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.order_id = o.order_id);
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT o.order_id, o.status
+    FROM orders o
+    WHERE o.status = 'shipped'
+      AND NOT EXISTS (SELECT 1 FROM order_items oi WHERE oi.order_id = o.order_id);
+    ```
 
-| order_id | status |
-| --- | --- |
-| *(no rows)* | |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
+
+    | order_id | status |
+    | --- | --- |
+    | *(no rows)* | |
+    <!-- /result -->
 
 No rows: the shop passes.
 
@@ -327,28 +339,30 @@ INSERT INTO load_history VALUES
 
 **Task:** Check whether today's load of orders is less than half or more than double the usual size, and show it if so.
 
-<!-- sql -->
-```sql
-SELECT today.load_date, today.row_count,
-       ROUND(AVG(earlier.row_count)) AS usual
-FROM load_history today
-JOIN load_history earlier
-  ON earlier.table_name = today.table_name
- AND earlier.load_date <  today.load_date
-WHERE today.load_date = '2026-06-05'
-  AND today.table_name = 'orders'
-GROUP BY today.load_date, today.row_count
-HAVING today.row_count < 0.5 * AVG(earlier.row_count)
-    OR today.row_count > 2.0 * AVG(earlier.row_count);
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT today.load_date, today.row_count,
+           ROUND(AVG(earlier.row_count)) AS usual
+    FROM load_history today
+    JOIN load_history earlier
+      ON earlier.table_name = today.table_name
+     AND earlier.load_date <  today.load_date
+    WHERE today.load_date = '2026-06-05'
+      AND today.table_name = 'orders'
+    GROUP BY today.load_date, today.row_count
+    HAVING today.row_count < 0.5 * AVG(earlier.row_count)
+        OR today.row_count > 2.0 * AVG(earlier.row_count);
+    ```
 
-| load_date | row_count | usual |
-| --- | --- | --- |
-| 2026-06-05 | 40 | 10085 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | load_date | row_count | usual |
+    | --- | --- | --- |
+    | 2026-06-05 | 40 | 10085 |
+    <!-- /result -->
 
 The thresholds (half and double here) are a choice; a busy shop on a holiday may really halve.
 
@@ -357,20 +371,22 @@ page shows the same result every day; a real check uses `CURRENT_DATE`.
 
 **Task:** Show the newest order date only if it is older than 4 June 2026 (the data is stale).
 
-<!-- sql -->
-```sql
-SELECT MAX(order_date) AS newest_order
-FROM orders
-HAVING MAX(order_date) < '2026-06-04';
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT MAX(order_date) AS newest_order
+    FROM orders
+    HAVING MAX(order_date) < '2026-06-04';
+    ```
 
-| newest_order |
-| --- |
-| 2026-04-05 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | newest_order |
+    | --- |
+    | 2026-04-05 |
+    <!-- /result -->
 
 The shop's newest order is from April, so it fails: nothing has arrived for two months. A `HAVING` without
 `GROUP BY` filters the single row of the whole-table aggregate, which turns any summary into a pass/fail check.
@@ -382,43 +398,45 @@ aggregate with no `GROUP BY` always returns exactly one row, so a check that pas
 
 **Task:** Run every check on `stg_orders` in one query: one row per check, with its number of failures.
 
-<!-- sql -->
-```sql
-SELECT 'missing customer_id' AS check_name, COUNT(*) AS failures
-FROM stg_orders WHERE customer_id IS NULL
-UNION ALL
-SELECT 'duplicate order_id', COUNT(*)
-FROM (SELECT order_id FROM stg_orders GROUP BY order_id HAVING COUNT(*) > 1) d
-UNION ALL
-SELECT 'amount not a number', COUNT(*)
-FROM stg_orders WHERE TRIM(amount, '0123456789.-') <> ''
-UNION ALL
-SELECT 'amount not positive', COUNT(*)
-FROM stg_orders
-WHERE CASE WHEN TRIM(amount, '0123456789.-') = '' THEN CAST(amount AS NUMERIC(10,2)) END <= 0
-UNION ALL
-SELECT 'unknown status', COUNT(*)
-FROM stg_orders WHERE LOWER(TRIM(status)) NOT IN ('pending', 'shipped', 'cancelled')
-UNION ALL
-SELECT 'unknown customer', COUNT(*)
-FROM stg_orders s
-LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
-WHERE s.customer_id IS NOT NULL AND c.customer_id IS NULL
-ORDER BY check_name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT 'missing customer_id' AS check_name, COUNT(*) AS failures
+    FROM stg_orders WHERE customer_id IS NULL
+    UNION ALL
+    SELECT 'duplicate order_id', COUNT(*)
+    FROM (SELECT order_id FROM stg_orders GROUP BY order_id HAVING COUNT(*) > 1) d
+    UNION ALL
+    SELECT 'amount not a number', COUNT(*)
+    FROM stg_orders WHERE TRIM(amount, '0123456789.-') <> ''
+    UNION ALL
+    SELECT 'amount not positive', COUNT(*)
+    FROM stg_orders
+    WHERE CASE WHEN TRIM(amount, '0123456789.-') = '' THEN CAST(amount AS NUMERIC(10,2)) END <= 0
+    UNION ALL
+    SELECT 'unknown status', COUNT(*)
+    FROM stg_orders WHERE LOWER(TRIM(status)) NOT IN ('pending', 'shipped', 'cancelled')
+    UNION ALL
+    SELECT 'unknown customer', COUNT(*)
+    FROM stg_orders s
+    LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
+    WHERE s.customer_id IS NOT NULL AND c.customer_id IS NULL
+    ORDER BY check_name;
+    ```
 
-| check_name | failures |
-| --- | --- |
-| amount not a number | 1 |
-| amount not positive | 1 |
-| duplicate order_id | 1 |
-| missing customer_id | 1 |
-| unknown customer | 1 |
-| unknown status | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 6 rows.</p>
+
+    | check_name | failures |
+    | --- | --- |
+    | amount not a number | 1 |
+    | amount not positive | 1 |
+    | duplicate order_id | 1 |
+    | missing customer_id | 1 |
+    | unknown customer | 1 |
+    | unknown status | 1 |
+    <!-- /result -->
 
 The status check cleans before comparing, so `'Shipped '` passes and only the truly unknown `'refunded'` fails. The
 date check is left out only because it is written differently on each database ([23.4](#is-date)).
@@ -435,41 +453,43 @@ row its first failing reason, or NULL when it passes every check:
 
 **Task:** For every staged order, give its first failing reason, or NULL when it passes every check.
 
-<!-- sql -->
-```sql
-SELECT s.order_id,
-       CASE
-         WHEN s.order_id IS NULL                              THEN 'missing order_id'
-         WHEN (SELECT COUNT(*) FROM stg_orders d
-               WHERE d.order_id = s.order_id) > 1             THEN 'duplicate order_id'
-         WHEN s.customer_id IS NULL                           THEN 'missing customer_id'
-         WHEN c.customer_id IS NULL                           THEN 'unknown customer'
-         WHEN s.order_date NOT LIKE '____-__-__'              THEN 'bad date format'
-         WHEN TRIM(s.amount, '0123456789.-') <> ''            THEN 'amount not a number'
-         WHEN CAST(s.amount AS NUMERIC(10,2)) <= 0            THEN 'amount not positive'
-         WHEN LOWER(TRIM(s.status)) NOT IN ('pending', 'shipped', 'cancelled')
-                                                              THEN 'unknown status'
-       END AS reject_reason
-FROM stg_orders s
-LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
-ORDER BY s.order_id, s.amount;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT s.order_id,
+           CASE
+             WHEN s.order_id IS NULL                              THEN 'missing order_id'
+             WHEN (SELECT COUNT(*) FROM stg_orders d
+                   WHERE d.order_id = s.order_id) > 1             THEN 'duplicate order_id'
+             WHEN s.customer_id IS NULL                           THEN 'missing customer_id'
+             WHEN c.customer_id IS NULL                           THEN 'unknown customer'
+             WHEN s.order_date NOT LIKE '____-__-__'              THEN 'bad date format'
+             WHEN TRIM(s.amount, '0123456789.-') <> ''            THEN 'amount not a number'
+             WHEN CAST(s.amount AS NUMERIC(10,2)) <= 0            THEN 'amount not positive'
+             WHEN LOWER(TRIM(s.status)) NOT IN ('pending', 'shipped', 'cancelled')
+                                                                  THEN 'unknown status'
+           END AS reject_reason
+    FROM stg_orders s
+    LEFT JOIN customers c ON c.customer_id = CAST(s.customer_id AS INTEGER)
+    ORDER BY s.order_id, s.amount;
+    ```
 
-| order_id | reject_reason |
-| --- | --- |
-| 201 | *NULL* |
-| 202 | *NULL* |
-| 203 | missing customer_id |
-| 204 | unknown customer |
-| 205 | *NULL* |
-| 206 | duplicate order_id |
-| 206 | duplicate order_id |
-| 207 | amount not positive |
-| 208 | bad date format |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | order_id | reject_reason |
+    | --- | --- |
+    | 201 | *NULL* |
+    | 202 | *NULL* |
+    | 203 | missing customer_id |
+    | 204 | unknown customer |
+    | 205 | *NULL* |
+    | 206 | duplicate order_id |
+    | 206 | duplicate order_id |
+    | 207 | amount not positive |
+    | 208 | bad date format |
+    <!-- /result -->
 
 `CASE` stops at the first true `WHEN`, which is what makes the cast in `'amount not positive'` safe: a row whose
 amount is not a number has already been caught one line above. One thing this does not catch: 31 June passes the
@@ -501,27 +521,29 @@ INSERT INTO target_daily VALUES
 
 **Task:** Compare the source and target daily totals and list only the days that are missing on one side or differ.
 
-<!-- sql -->
-```sql
-SELECT COALESCE(s.day, t.day) AS day,
-       s.orders  AS source_orders,  t.orders  AS target_orders,
-       s.revenue AS source_revenue, t.revenue AS target_revenue
-FROM source_daily s
-FULL OUTER JOIN target_daily t ON t.day = s.day
-WHERE s.day IS NULL OR t.day IS NULL
-   OR s.orders  <> t.orders
-   OR s.revenue <> t.revenue
-ORDER BY day;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COALESCE(s.day, t.day) AS day,
+           s.orders  AS source_orders,  t.orders  AS target_orders,
+           s.revenue AS source_revenue, t.revenue AS target_revenue
+    FROM source_daily s
+    FULL OUTER JOIN target_daily t ON t.day = s.day
+    WHERE s.day IS NULL OR t.day IS NULL
+       OR s.orders  <> t.orders
+       OR s.revenue <> t.revenue
+    ORDER BY day;
+    ```
 
-| day | source_orders | target_orders | source_revenue | target_revenue |
-| --- | --- | --- | --- | --- |
-| 2026-06-02 | 98 | 97 | 2875.00 | 2850.00 |
-| 2026-06-03 | 131 | *NULL* | 3900.25 | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | day | source_orders | target_orders | source_revenue | target_revenue |
+    | --- | --- | --- | --- | --- |
+    | 2026-06-02 | 98 | 97 | 2875.00 | 2850.00 |
+    | 2026-06-03 | 131 | *NULL* | 3900.25 | *NULL* |
+    <!-- /result -->
 
 2 June lost one order worth 25.00, and 3 June never arrived. `EXCEPT` both ways does the same row by row
 ([chapter 12](12-Set-Operations.md)).
@@ -531,25 +553,27 @@ missing, the smallest and largest. It tells you what checks to write.
 
 **Task:** Profile the `city` column of customers: rows, rows with a city, different cities, first and last city, shortest and longest length.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*)                     AS total_rows,
-       COUNT(city)                  AS with_city,
-       COUNT(DISTINCT city)         AS distinct_cities,
-       MIN(city)                    AS first_city,
-       MAX(city)                    AS last_city,
-       MIN(LENGTH(city))            AS shortest,
-       MAX(LENGTH(city))            AS longest
-FROM customers;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*)                     AS total_rows,
+           COUNT(city)                  AS with_city,
+           COUNT(DISTINCT city)         AS distinct_cities,
+           MIN(city)                    AS first_city,
+           MAX(city)                    AS last_city,
+           MIN(LENGTH(city))            AS shortest,
+           MAX(LENGTH(city))            AS longest
+    FROM customers;
+    ```
 
-| total_rows | with_city | distinct_cities | first_city | last_city | shortest | longest |
-| --- | --- | --- | --- | --- | --- | --- |
-| 10 | 9 | 7 | Lagos | Toronto | 5 | 8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | total_rows | with_city | distinct_cities | first_city | last_city | shortest | longest |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | 10 | 9 | 7 | Lagos | Toronto | 5 | 8 |
+    <!-- /result -->
 
 Add the most common values (`GROUP BY city ORDER BY COUNT(*) DESC`) and you know the column.
 

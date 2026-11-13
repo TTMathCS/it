@@ -27,34 +27,36 @@ function, each person keeps their row and gets their department's average beside
 
 **Task:** For every employee with a salary, show name, department, salary, the department's average (whole number), the difference from it, and the company's total payroll, by department, highest salary first, then name.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary,
-       ROUND(AVG(salary) OVER (PARTITION BY department), 0) AS dept_avg,
-       salary - ROUND(AVG(salary) OVER (PARTITION BY department), 0) AS vs_dept_avg,
-       SUM(salary) OVER () AS company_payroll
-FROM employees
-WHERE salary IS NOT NULL
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary,
+           ROUND(AVG(salary) OVER (PARTITION BY department), 0) AS dept_avg,
+           salary - ROUND(AVG(salary) OVER (PARTITION BY department), 0) AS vs_dept_avg,
+           SUM(salary) OVER () AS company_payroll
+    FROM employees
+    WHERE salary IS NOT NULL
+    ORDER BY department, salary DESC, name;
+    ```
 
-| name | department | salary | dept_avg | vs_dept_avg | company_payroll |
-| --- | --- | --- | --- | --- | --- |
-| Tom Becker | Engineering | 140000 | 118750 | 21250 | 1097000 |
-| Priya Nair | Engineering | 120000 | 118750 | 1250 | 1097000 |
-| Sam Lee | Engineering | 120000 | 118750 | 1250 | 1097000 |
-| Lucia Gomez | Engineering | 95000 | 118750 | -23750 | 1097000 |
-| Maya Rossi | Management | 180000 | 180000 | 0 | 1097000 |
-| Omar Aziz | Sales | 110000 | 78750 | 31250 | 1097000 |
-| Nina Berg | Sales | 70000 | 78750 | -8750 | 1097000 |
-| Raj Patel | Sales | 70000 | 78750 | -8750 | 1097000 |
-| Zoe Martin | Sales | 65000 | 78750 | -13750 | 1097000 |
-| Kwame Mensah | Support | 75000 | 63500 | 11500 | 1097000 |
-| Ella Novak | Support | 52000 | 63500 | -11500 | 1097000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | department | salary | dept_avg | vs_dept_avg | company_payroll |
+    | --- | --- | --- | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 | 118750 | 21250 | 1097000 |
+    | Priya Nair | Engineering | 120000 | 118750 | 1250 | 1097000 |
+    | Sam Lee | Engineering | 120000 | 118750 | 1250 | 1097000 |
+    | Lucia Gomez | Engineering | 95000 | 118750 | -23750 | 1097000 |
+    | Maya Rossi | Management | 180000 | 180000 | 0 | 1097000 |
+    | Omar Aziz | Sales | 110000 | 78750 | 31250 | 1097000 |
+    | Nina Berg | Sales | 70000 | 78750 | -8750 | 1097000 |
+    | Raj Patel | Sales | 70000 | 78750 | -8750 | 1097000 |
+    | Zoe Martin | Sales | 65000 | 78750 | -13750 | 1097000 |
+    | Kwame Mensah | Support | 75000 | 63500 | 11500 | 1097000 |
+    | Ella Novak | Support | 52000 | 63500 | -11500 | 1097000 |
+    <!-- /result -->
 
 `OVER (...)` turns an aggregate into a window function. Inside the brackets:
 
@@ -68,30 +70,32 @@ So "employees earning more than their department's average", solved with a subqu
 
 **Task:** List the employees who earn more than their department's average: name, department and salary, by department, highest salary first, then name.
 
-<!-- sql -->
-```sql
-WITH e AS (
-  SELECT name, department, salary,
-         AVG(salary) OVER (PARTITION BY department) AS dept_avg
-  FROM employees
-)
-SELECT name, department, salary
-FROM e
-WHERE salary > dept_avg
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH e AS (
+      SELECT name, department, salary,
+             AVG(salary) OVER (PARTITION BY department) AS dept_avg
+      FROM employees
+    )
+    SELECT name, department, salary
+    FROM e
+    WHERE salary > dept_avg
+    ORDER BY department, salary DESC, name;
+    ```
 
-| name | department | salary |
-| --- | --- | --- |
-| Tom Becker | Engineering | 140000 |
-| Priya Nair | Engineering | 120000 |
-| Sam Lee | Engineering | 120000 |
-| Omar Aziz | Sales | 110000 |
-| Kwame Mensah | Support | 75000 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | name | department | salary |
+    | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 |
+    | Priya Nair | Engineering | 120000 |
+    | Sam Lee | Engineering | 120000 |
+    | Omar Aziz | Sales | 110000 |
+    | Kwame Mensah | Support | 75000 |
+    <!-- /result -->
 
 **Where windows run.** In the order of chapter 3, window functions are computed **after** WHERE, GROUP BY and
 HAVING, and **before** ORDER BY and LIMIT. So they see only the rows that survived WHERE (Leo Park's NULL salary was
@@ -120,32 +124,34 @@ output (that is still the final ORDER BY).
 
 **Task:** Number the employees with a salary from highest paid to lowest (ties by name): name, department, salary and the number.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary,
-       ROW_NUMBER() OVER (ORDER BY salary DESC, name) AS rn
-FROM employees
-WHERE salary IS NOT NULL
-ORDER BY rn;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary,
+           ROW_NUMBER() OVER (ORDER BY salary DESC, name) AS rn
+    FROM employees
+    WHERE salary IS NOT NULL
+    ORDER BY rn;
+    ```
 
-| name | department | salary | rn |
-| --- | --- | --- | --- |
-| Maya Rossi | Management | 180000 | 1 |
-| Tom Becker | Engineering | 140000 | 2 |
-| Priya Nair | Engineering | 120000 | 3 |
-| Sam Lee | Engineering | 120000 | 4 |
-| Omar Aziz | Sales | 110000 | 5 |
-| Lucia Gomez | Engineering | 95000 | 6 |
-| Kwame Mensah | Support | 75000 | 7 |
-| Nina Berg | Sales | 70000 | 8 |
-| Raj Patel | Sales | 70000 | 9 |
-| Zoe Martin | Sales | 65000 | 10 |
-| Ella Novak | Support | 52000 | 11 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | department | salary | rn |
+    | --- | --- | --- | --- |
+    | Maya Rossi | Management | 180000 | 1 |
+    | Tom Becker | Engineering | 140000 | 2 |
+    | Priya Nair | Engineering | 120000 | 3 |
+    | Sam Lee | Engineering | 120000 | 4 |
+    | Omar Aziz | Sales | 110000 | 5 |
+    | Lucia Gomez | Engineering | 95000 | 6 |
+    | Kwame Mensah | Support | 75000 | 7 |
+    | Nina Berg | Sales | 70000 | 8 |
+    | Raj Patel | Sales | 70000 | 9 |
+    | Zoe Martin | Sales | 65000 | 10 |
+    | Ella Novak | Support | 52000 | 11 |
+    <!-- /result -->
 
 `ROW_NUMBER()` numbers the rows 1, 2, 3, ... in the window's order, with no gaps and no repeats. Two people earn
 120,000 (Priya Nair and Sam Lee); `, name` breaks the tie alphabetically. Without a tie-break, which of them gets 3
@@ -156,32 +162,34 @@ Add **PARTITION BY** and the numbering restarts in each group:
 
 **Task:** Number the employees within each department from highest paid to lowest (ties by name), by department then that number.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary,
-       ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC, name) AS rn_in_dept
-FROM employees
-WHERE salary IS NOT NULL
-ORDER BY department, rn_in_dept;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary,
+           ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC, name) AS rn_in_dept
+    FROM employees
+    WHERE salary IS NOT NULL
+    ORDER BY department, rn_in_dept;
+    ```
 
-| name | department | salary | rn_in_dept |
-| --- | --- | --- | --- |
-| Tom Becker | Engineering | 140000 | 1 |
-| Priya Nair | Engineering | 120000 | 2 |
-| Sam Lee | Engineering | 120000 | 3 |
-| Lucia Gomez | Engineering | 95000 | 4 |
-| Maya Rossi | Management | 180000 | 1 |
-| Omar Aziz | Sales | 110000 | 1 |
-| Nina Berg | Sales | 70000 | 2 |
-| Raj Patel | Sales | 70000 | 3 |
-| Zoe Martin | Sales | 65000 | 4 |
-| Kwame Mensah | Support | 75000 | 1 |
-| Ella Novak | Support | 52000 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | department | salary | rn_in_dept |
+    | --- | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 | 1 |
+    | Priya Nair | Engineering | 120000 | 2 |
+    | Sam Lee | Engineering | 120000 | 3 |
+    | Lucia Gomez | Engineering | 95000 | 4 |
+    | Maya Rossi | Management | 180000 | 1 |
+    | Omar Aziz | Sales | 110000 | 1 |
+    | Nina Berg | Sales | 70000 | 2 |
+    | Raj Patel | Sales | 70000 | 3 |
+    | Zoe Martin | Sales | 65000 | 4 |
+    | Kwame Mensah | Support | 75000 | 1 |
+    | Ella Novak | Support | 52000 | 2 |
+    <!-- /result -->
 
 ## 13.3 ROW_NUMBER, RANK and DENSE_RANK: ties { #ties }
 
@@ -189,31 +197,33 @@ The three ranking functions differ only in what they do with ties:
 
 **Task:** For Engineering and Sales, rank each employee by salary within the department three ways: `ROW_NUMBER`, `RANK` and `DENSE_RANK`.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary,
-       ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC, name) AS row_number,
-       RANK()       OVER (PARTITION BY department ORDER BY salary DESC)       AS rank,
-       DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC)       AS dense_rank
-FROM employees
-WHERE department IN ('Engineering', 'Sales')
-ORDER BY department, salary DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary,
+           ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC, name) AS row_number,
+           RANK()       OVER (PARTITION BY department ORDER BY salary DESC)       AS rank,
+           DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC)       AS dense_rank
+    FROM employees
+    WHERE department IN ('Engineering', 'Sales')
+    ORDER BY department, salary DESC, name;
+    ```
 
-| name | department | salary | row_number | rank | dense_rank |
-| --- | --- | --- | --- | --- | --- |
-| Tom Becker | Engineering | 140000 | 1 | 1 | 1 |
-| Priya Nair | Engineering | 120000 | 2 | 2 | 2 |
-| Sam Lee | Engineering | 120000 | 3 | 2 | 2 |
-| Lucia Gomez | Engineering | 95000 | 4 | 4 | 3 |
-| Omar Aziz | Sales | 110000 | 1 | 1 | 1 |
-| Nina Berg | Sales | 70000 | 2 | 2 | 2 |
-| Raj Patel | Sales | 70000 | 3 | 2 | 2 |
-| Zoe Martin | Sales | 65000 | 4 | 4 | 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | name | department | salary | row_number | rank | dense_rank |
+    | --- | --- | --- | --- | --- | --- |
+    | Tom Becker | Engineering | 140000 | 1 | 1 | 1 |
+    | Priya Nair | Engineering | 120000 | 2 | 2 | 2 |
+    | Sam Lee | Engineering | 120000 | 3 | 2 | 2 |
+    | Lucia Gomez | Engineering | 95000 | 4 | 4 | 3 |
+    | Omar Aziz | Sales | 110000 | 1 | 1 | 1 |
+    | Nina Berg | Sales | 70000 | 2 | 2 | 2 |
+    | Raj Patel | Sales | 70000 | 3 | 2 | 2 |
+    | Zoe Martin | Sales | 65000 | 4 | 4 | 3 |
+    <!-- /result -->
 
 | Function | Ties get | After a tie | Engineering |
 | --- | --- | --- | --- |
@@ -242,35 +252,37 @@ outside.
 
 **Task:** Show the top 2 earners of each department, keeping ties: department, name, salary and rank, by department, rank, then name.
 
-<!-- sql -->
-```sql
-WITH ranked AS (
-  SELECT name, department, salary,
-         RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk
-  FROM employees
-  WHERE salary IS NOT NULL
-)
-SELECT department, name, salary, rnk
-FROM ranked
-WHERE rnk <= 2
-ORDER BY department, rnk, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH ranked AS (
+      SELECT name, department, salary,
+             RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS rnk
+      FROM employees
+      WHERE salary IS NOT NULL
+    )
+    SELECT department, name, salary, rnk
+    FROM ranked
+    WHERE rnk <= 2
+    ORDER BY department, rnk, name;
+    ```
 
-| department | name | salary | rnk |
-| --- | --- | --- | --- |
-| Engineering | Tom Becker | 140000 | 1 |
-| Engineering | Priya Nair | 120000 | 2 |
-| Engineering | Sam Lee | 120000 | 2 |
-| Management | Maya Rossi | 180000 | 1 |
-| Sales | Omar Aziz | 110000 | 1 |
-| Sales | Nina Berg | 70000 | 2 |
-| Sales | Raj Patel | 70000 | 2 |
-| Support | Kwame Mensah | 75000 | 1 |
-| Support | Ella Novak | 52000 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | department | name | salary | rnk |
+    | --- | --- | --- | --- |
+    | Engineering | Tom Becker | 140000 | 1 |
+    | Engineering | Priya Nair | 120000 | 2 |
+    | Engineering | Sam Lee | 120000 | 2 |
+    | Management | Maya Rossi | 180000 | 1 |
+    | Sales | Omar Aziz | 110000 | 1 |
+    | Sales | Nina Berg | 70000 | 2 |
+    | Sales | Raj Patel | 70000 | 2 |
+    | Support | Kwame Mensah | 75000 | 1 |
+    | Support | Ella Novak | 52000 | 2 |
+    <!-- /result -->
 
 Engineering shows three people for "top 2": Tom Becker, and Priya Nair and Sam Lee tied for second. Sales likewise.
 With RANK that is correct for "the top two, ties included". With ROW_NUMBER, Engineering would show Tom and one of
@@ -341,35 +353,37 @@ also how you keep the newest version of each record when loading data ([chapter 
 
 **Task:** Show each customer's most recent order: customer id, order id, order date and status, by customer id.
 
-<!-- sql -->
-```sql
-WITH ranked AS (
-  SELECT o.*,
-         ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC, order_id DESC) AS rn
-  FROM orders o
-  WHERE customer_id IS NOT NULL
-)
-SELECT customer_id, order_id, order_date, status
-FROM ranked
-WHERE rn = 1
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH ranked AS (
+      SELECT o.*,
+             ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC, order_id DESC) AS rn
+      FROM orders o
+      WHERE customer_id IS NOT NULL
+    )
+    SELECT customer_id, order_id, order_date, status
+    FROM ranked
+    WHERE rn = 1
+    ORDER BY customer_id;
+    ```
 
-| customer_id | order_id | order_date | status |
-| --- | --- | --- | --- |
-| 1 | 120 | 2026-04-05 | shipped |
-| 2 | 113 | 2026-03-05 | cancelled |
-| 3 | 118 | 2026-04-01 | shipped |
-| 4 | 112 | 2026-03-01 | shipped |
-| 5 | 119 | 2026-04-02 | pending |
-| 6 | 116 | 2026-03-22 | pending |
-| 7 | 111 | 2026-02-21 | shipped |
-| 8 | 114 | 2026-03-09 | shipped |
-| 10 | 117 | 2026-03-25 | shipped |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | order_id | order_date | status |
+    | --- | --- | --- | --- |
+    | 1 | 120 | 2026-04-05 | shipped |
+    | 2 | 113 | 2026-03-05 | cancelled |
+    | 3 | 118 | 2026-04-01 | shipped |
+    | 4 | 112 | 2026-03-01 | shipped |
+    | 5 | 119 | 2026-04-02 | pending |
+    | 6 | 116 | 2026-03-22 | pending |
+    | 7 | 111 | 2026-02-21 | shipped |
+    | 8 | 114 | 2026-03-09 | shipped |
+    | 10 | 117 | 2026-03-25 | shipped |
+    <!-- /result -->
 
 Here ROW_NUMBER is right, because the question wants exactly one order per customer. Two orders on the same day
 would tie on date, so `order_id DESC` breaks the tie: the later id wins. Always ask yourself what decides between
@@ -386,33 +400,35 @@ revenue:
 
 **Task:** Rank the customers by shipped revenue, highest first: customer id, revenue and rank, by rank then customer id.
 
-<!-- sql -->
-```sql
-SELECT o.customer_id,
-       SUM(i.quantity * i.unit_price) AS revenue,
-       RANK() OVER (ORDER BY SUM(i.quantity * i.unit_price) DESC) AS revenue_rank
-FROM orders o
-JOIN order_items i ON i.order_id = o.order_id
-WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
-GROUP BY o.customer_id
-ORDER BY revenue_rank, o.customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT o.customer_id,
+           SUM(i.quantity * i.unit_price) AS revenue,
+           RANK() OVER (ORDER BY SUM(i.quantity * i.unit_price) DESC) AS revenue_rank
+    FROM orders o
+    JOIN order_items i ON i.order_id = o.order_id
+    WHERE o.status = 'shipped' AND o.customer_id IS NOT NULL
+    GROUP BY o.customer_id
+    ORDER BY revenue_rank, o.customer_id;
+    ```
 
-| customer_id | revenue | revenue_rank |
-| --- | --- | --- |
-| 1 | 289.00 | 1 |
-| 2 | 205.50 | 2 |
-| 4 | 205.50 | 2 |
-| 6 | 65.00 | 4 |
-| 8 | 49.00 | 5 |
-| 10 | 43.00 | 6 |
-| 5 | 36.75 | 7 |
-| 7 | 36.75 | 7 |
-| 3 | 24.50 | 9 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 9 rows.</p>
+
+    | customer_id | revenue | revenue_rank |
+    | --- | --- | --- |
+    | 1 | 289.00 | 1 |
+    | 2 | 205.50 | 2 |
+    | 4 | 205.50 | 2 |
+    | 6 | 65.00 | 4 |
+    | 8 | 49.00 | 5 |
+    | 10 | 43.00 | 6 |
+    | 5 | 36.75 | 7 |
+    | 7 | 36.75 | 7 |
+    | 3 | 24.50 | 9 |
+    <!-- /result -->
 
 `SUM(...)` inside the OVER's ORDER BY is the group's total, worked out by the GROUP BY. Customers 2 and 4 tie on
 205.50 and share rank 2; the next is 4th.
@@ -421,27 +437,29 @@ The share of each group in the total is a window over the grouped rows too:
 
 **Task:** For each category, show its revenue and its share of all revenue in percent (1 decimal), highest revenue first.
 
-<!-- sql -->
-```sql
-SELECT p.category,
-       SUM(i.quantity * i.unit_price) AS revenue,
-       ROUND(100.0 * SUM(i.quantity * i.unit_price) / SUM(SUM(i.quantity * i.unit_price)) OVER (), 1) AS pct
-FROM order_items i
-JOIN products p ON p.product_id = i.product_id
-WHERE p.category IS NOT NULL
-GROUP BY p.category
-ORDER BY revenue DESC;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT p.category,
+           SUM(i.quantity * i.unit_price) AS revenue,
+           ROUND(100.0 * SUM(i.quantity * i.unit_price) / SUM(SUM(i.quantity * i.unit_price)) OVER (), 1) AS pct
+    FROM order_items i
+    JOIN products p ON p.product_id = i.product_id
+    WHERE p.category IS NOT NULL
+    GROUP BY p.category
+    ORDER BY revenue DESC;
+    ```
 
-| category | revenue | pct |
-| --- | --- | --- |
-| Office | 654.25 | 62.5 |
-| Home | 220.50 | 21.1 |
-| Kitchen | 172.75 | 16.5 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | category | revenue | pct |
+    | --- | --- | --- |
+    | Office | 654.25 | 62.5 |
+    | Home | 220.50 | 21.1 |
+    | Kitchen | 172.75 | 16.5 |
+    <!-- /result -->
 
 `SUM(SUM(x)) OVER ()` reads oddly but is right: the inner SUM is each category's total (from GROUP BY), the outer SUM
 OVER () adds those totals up across all categories.
@@ -452,33 +470,35 @@ Three more functions answer "where does this row stand?":
 
 **Task:** For every product, show name, price, its quartile (1 to 4) by price, its percent rank and its cumulative share (2 decimals), cheapest first.
 
-<!-- sql -->
-```sql
-SELECT name, price,
-       NTILE(4)       OVER (ORDER BY price, product_id)  AS quartile,
-       ROUND(CAST(PERCENT_RANK() OVER (ORDER BY price) AS NUMERIC), 2) AS pct_rank,
-       ROUND(CAST(CUME_DIST()    OVER (ORDER BY price) AS NUMERIC), 2) AS cume_dist
-FROM products
-ORDER BY price, product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price,
+           NTILE(4)       OVER (ORDER BY price, product_id)  AS quartile,
+           ROUND(CAST(PERCENT_RANK() OVER (ORDER BY price) AS NUMERIC), 2) AS pct_rank,
+           ROUND(CAST(CUME_DIST()    OVER (ORDER BY price) AS NUMERIC), 2) AS cume_dist
+    FROM products
+    ORDER BY price, product_id;
+    ```
 
-| name | price | quartile | pct_rank | cume_dist |
-| --- | --- | --- | --- | --- |
-| Notebook | 3.25 | 1 | 0.00 | 0.09 |
-| Coffee mug | 8.75 | 1 | 0.10 | 0.18 |
-| Bookend | 9.50 | 1 | 0.20 | 0.27 |
-| Plant pot | 12.25 | 2 | 0.30 | 0.36 |
-| Fountain pen | 18.00 | 2 | 0.40 | 0.45 |
-| Desk lamp | 24.50 | 2 | 0.50 | 0.64 |
-| Wall clock | 24.50 | 3 | 0.50 | 0.64 |
-| Gift card | 25.00 | 3 | 0.70 | 0.73 |
-| Tea kettle | 32.00 | 3 | 0.80 | 0.91 |
-| Monitor stand | 32.00 | 4 | 0.80 | 0.91 |
-| Office chair | 149.00 | 4 | 1.00 | 1.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | price | quartile | pct_rank | cume_dist |
+    | --- | --- | --- | --- | --- |
+    | Notebook | 3.25 | 1 | 0.00 | 0.09 |
+    | Coffee mug | 8.75 | 1 | 0.10 | 0.18 |
+    | Bookend | 9.50 | 1 | 0.20 | 0.27 |
+    | Plant pot | 12.25 | 2 | 0.30 | 0.36 |
+    | Fountain pen | 18.00 | 2 | 0.40 | 0.45 |
+    | Desk lamp | 24.50 | 2 | 0.50 | 0.64 |
+    | Wall clock | 24.50 | 3 | 0.50 | 0.64 |
+    | Gift card | 25.00 | 3 | 0.70 | 0.73 |
+    | Tea kettle | 32.00 | 3 | 0.80 | 0.91 |
+    | Monitor stand | 32.00 | 4 | 0.80 | 0.91 |
+    | Office chair | 149.00 | 4 | 1.00 | 1.00 |
+    <!-- /result -->
 
 - `NTILE(4)` deals the rows into 4 buckets as evenly as possible; with 11 rows the first three get 3 and the last
   gets 2. Ties can land in different buckets, so it needs a tie-break.
@@ -494,27 +514,29 @@ When several functions share one window, name it once:
 
 **Task:** For Sales, show each employee's `RANK` and `DENSE_RANK` by salary, highest first, defining the window once.
 
-<!-- sql -->
-```sql
-SELECT name, department, salary,
-       RANK()       OVER w AS rnk,
-       DENSE_RANK() OVER w AS drnk
-FROM employees
-WHERE department = 'Sales'
-WINDOW w AS (PARTITION BY department ORDER BY salary DESC)
-ORDER BY rnk, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, department, salary,
+           RANK()       OVER w AS rnk,
+           DENSE_RANK() OVER w AS drnk
+    FROM employees
+    WHERE department = 'Sales'
+    WINDOW w AS (PARTITION BY department ORDER BY salary DESC)
+    ORDER BY rnk, name;
+    ```
 
-| name | department | salary | rnk | drnk |
-| --- | --- | --- | --- | --- |
-| Omar Aziz | Sales | 110000 | 1 | 1 |
-| Nina Berg | Sales | 70000 | 2 | 2 |
-| Raj Patel | Sales | 70000 | 2 | 2 |
-| Zoe Martin | Sales | 65000 | 4 | 3 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | name | department | salary | rnk | drnk |
+    | --- | --- | --- | --- | --- |
+    | Omar Aziz | Sales | 110000 | 1 | 1 |
+    | Nina Berg | Sales | 70000 | 2 | 2 |
+    | Raj Patel | Sales | 70000 | 2 | 2 |
+    | Zoe Martin | Sales | 65000 | 4 | 3 |
+    <!-- /result -->
 
 `WINDOW` goes after HAVING and before ORDER BY. PostgreSQL, SQLite and MySQL have it; SQL Server only since 2022.
 

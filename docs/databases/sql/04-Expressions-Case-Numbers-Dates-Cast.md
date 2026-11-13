@@ -131,63 +131,67 @@ does not run on SQLite. In a test, `CAST(... AS NUMERIC)` works on both.
 
 **Task:** Label every product 'premium' (100 or more), 'mid' (20 or more) or 'budget': name, price and `band`, most expensive first (ties by name).
 
-<!-- sql -->
-```sql
-SELECT name, price,
-       CASE
-         WHEN price >= 100 THEN 'premium'
-         WHEN price >= 20  THEN 'mid'
-         ELSE 'budget'
-       END AS band
-FROM products
-ORDER BY price DESC, name;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price,
+           CASE
+             WHEN price >= 100 THEN 'premium'
+             WHEN price >= 20  THEN 'mid'
+             ELSE 'budget'
+           END AS band
+    FROM products
+    ORDER BY price DESC, name;
+    ```
 
-| name | price | band |
-| --- | --- | --- |
-| Office chair | 149.00 | premium |
-| Monitor stand | 32.00 | mid |
-| Tea kettle | 32.00 | mid |
-| Gift card | 25.00 | mid |
-| Desk lamp | 24.50 | mid |
-| Wall clock | 24.50 | mid |
-| Fountain pen | 18.00 | budget |
-| Plant pot | 12.25 | budget |
-| Bookend | 9.50 | budget |
-| Coffee mug | 8.75 | budget |
-| Notebook | 3.25 | budget |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 11 rows.</p>
+
+    | name | price | band |
+    | --- | --- | --- |
+    | Office chair | 149.00 | premium |
+    | Monitor stand | 32.00 | mid |
+    | Tea kettle | 32.00 | mid |
+    | Gift card | 25.00 | mid |
+    | Desk lamp | 24.50 | mid |
+    | Wall clock | 24.50 | mid |
+    | Fountain pen | 18.00 | budget |
+    | Plant pot | 12.25 | budget |
+    | Bookend | 9.50 | budget |
+    | Coffee mug | 8.75 | budget |
+    | Notebook | 3.25 | budget |
+    <!-- /result -->
 
 Without `ELSE`, a row that matches no `WHEN` gets NULL. The **simple** form compares one expression with values:
 
 **Task:** For orders 112 to 116, show the status and a `stage`: 'done' for shipped, 'waiting' for pending, by order id.
 
-<!-- sql -->
-```sql
-SELECT order_id, status,
-       CASE status
-         WHEN 'shipped'   THEN 'done'
-         WHEN 'pending'   THEN 'waiting'
-       END AS stage
-FROM orders
-WHERE order_id BETWEEN 112 AND 116
-ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, status,
+           CASE status
+             WHEN 'shipped'   THEN 'done'
+             WHEN 'pending'   THEN 'waiting'
+           END AS stage
+    FROM orders
+    WHERE order_id BETWEEN 112 AND 116
+    ORDER BY order_id;
+    ```
 
-| order_id | status | stage |
-| --- | --- | --- |
-| 112 | shipped | done |
-| 113 | cancelled | *NULL* |
-| 114 | shipped | done |
-| 115 | shipped | done |
-| 116 | pending | waiting |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | status | stage |
+    | --- | --- | --- |
+    | 112 | shipped | done |
+    | 113 | cancelled | *NULL* |
+    | 114 | shipped | done |
+    | 115 | shipped | done |
+    | 116 | pending | waiting |
+    <!-- /result -->
 
 Order 113 is cancelled, which no `WHEN` names, so its stage is NULL. The simple form cannot test for NULL:
 `CASE x WHEN NULL THEN ...` never matches, because it compares with `=`. Use `CASE WHEN x IS NULL THEN ...`.
@@ -221,29 +225,31 @@ condition ([chapter 7](07-Aggregation-Group-By-Having.md#conditional)). A custom
 
 **Task:** List orders 112 to 119 with pending first, then shipped, then the rest; by order id within each.
 
-<!-- sql -->
-```sql
-SELECT order_id, status
-FROM orders
-WHERE order_id BETWEEN 112 AND 119
-ORDER BY CASE status WHEN 'pending' THEN 1 WHEN 'shipped' THEN 2 ELSE 3 END,
-         order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, status
+    FROM orders
+    WHERE order_id BETWEEN 112 AND 119
+    ORDER BY CASE status WHEN 'pending' THEN 1 WHEN 'shipped' THEN 2 ELSE 3 END,
+             order_id;
+    ```
 
-| order_id | status |
-| --- | --- |
-| 116 | pending |
-| 119 | pending |
-| 112 | shipped |
-| 114 | shipped |
-| 115 | shipped |
-| 117 | shipped |
-| 118 | shipped |
-| 113 | cancelled |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 8 rows.</p>
+
+    | order_id | status |
+    | --- | --- |
+    | 116 | pending |
+    | 119 | pending |
+    | 112 | shipped |
+    | 114 | shipped |
+    | 115 | shipped |
+    | 117 | shipped |
+    | 118 | shipped |
+    | 113 | cancelled |
+    <!-- /result -->
 
 All the `THEN` results of one `CASE` should be the same type. PostgreSQL refuses `CASE WHEN ... THEN 'none' ELSE
 price END` (text and a number); SQLite allows it. Cast one side so they match.
@@ -254,47 +260,51 @@ price END` (text and a number); SQLite allows it. Cast one side so they match.
 
 **Task:** For customers 3, 5 and 8, show the email or 'no email', and the city or, when it is missing, the country, as `place`.
 
-<!-- sql -->
-```sql
-SELECT customer_id, name,
-       COALESCE(email, 'no email') AS email,
-       COALESCE(city, country)     AS place
-FROM customers
-WHERE customer_id IN (3, 5, 8)
-ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT customer_id, name,
+           COALESCE(email, 'no email') AS email,
+           COALESCE(city, country)     AS place
+    FROM customers
+    WHERE customer_id IN (3, 5, 8)
+    ORDER BY customer_id;
+    ```
 
-| customer_id | name | email | place |
-| --- | --- | --- | --- |
-| 3 | Chen Wei | no email | Shanghai |
-| 5 | Eli Cohen | eli@example.com | Israel |
-| 8 | Hana Sato | no email | Osaka |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | customer_id | name | email | place |
+    | --- | --- | --- | --- |
+    | 3 | Chen Wei | no email | Shanghai |
+    | 5 | Eli Cohen | eli@example.com | Israel |
+    | 8 | Hana Sato | no email | Osaka |
+    <!-- /result -->
 
 `NULLIF(a, b)` does the opposite: it returns NULL when `a = b`, otherwise `a`. Its main use is a safe divisor:
 dividing by NULL gives NULL instead of an error.
 
 **Task:** For the numbers 0, 4 and 5, show 100 divided by each, with NULL instead of an error for 0.
 
-<!-- sql -->
-```sql
-SELECT n, 100 / NULLIF(n, 0) AS hundred_over_n
-FROM (SELECT 0 AS n UNION ALL SELECT 4 UNION ALL SELECT 5) AS t
-ORDER BY n;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT n, 100 / NULLIF(n, 0) AS hundred_over_n
+    FROM (SELECT 0 AS n UNION ALL SELECT 4 UNION ALL SELECT 5) AS t
+    ORDER BY n;
+    ```
 
-| n | hundred_over_n |
-| --- | --- |
-| 0 | *NULL* |
-| 4 | 25 |
-| 5 | 20 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | n | hundred_over_n |
+    | --- | --- |
+    | 0 | *NULL* |
+    | 4 | 25 |
+    | 5 | 20 |
+    <!-- /result -->
 
 (The `(SELECT 0 AS n UNION ALL ...)` builds a tiny table of three numbers on the spot; [chapter 12](12-Set-Operations.md)
 explains `UNION ALL`.) The pair `COALESCE(x / NULLIF(y, 0), 0)` turns "divide, but 0 when there is nothing to divide
@@ -307,21 +317,23 @@ by" into one line. [Chapter 6](06-Null-and-Three-Valued-Logic.md) covers NULL in
 
 **Task:** Turn the text '42' into a number, and product 2's price into text.
 
-<!-- sql -->
-```sql
-SELECT CAST('42' AS INTEGER)      AS from_text,
-       CAST(price AS TEXT)        AS price_text
-FROM products
-WHERE product_id = 2;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT CAST('42' AS INTEGER)      AS from_text,
+           CAST(price AS TEXT)        AS price_text
+    FROM products
+    WHERE product_id = 2;
+    ```
 
-| from_text | price_text |
-| --- | --- |
-| 42 | 3.25 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | from_text | price_text |
+    | --- | --- |
+    | 42 | 3.25 |
+    <!-- /result -->
 
 PostgreSQL is strict about types and SQLite is relaxed, and a few conversions give **different answers**.
 
@@ -484,22 +496,24 @@ A comparison is itself an expression with a true or false value, and it can be s
 
 **Task:** For the Kitchen products, show name, price and whether the price is over 20 (true or false), by product id.
 
-<!-- sql -->
-```sql
-SELECT name, price, price > 20 AS over_20
-FROM products
-WHERE category = 'Kitchen'
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT name, price, price > 20 AS over_20
+    FROM products
+    WHERE category = 'Kitchen'
+    ORDER BY product_id;
+    ```
 
-| name | price | over_20 |
-| --- | --- | --- |
-| Coffee mug | 8.75 | false |
-| Tea kettle | 32.00 | true |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | name | price | over_20 |
+    | --- | --- | --- |
+    | Coffee mug | 8.75 | false |
+    | Tea kettle | 32.00 | true |
+    <!-- /result -->
 
 PostgreSQL has a `boolean` type and shows `true` and `false` (`t` and `f` in its `psql` program). SQLite has no
 boolean type: a comparison gives 1 or 0, and `TRUE` and `FALSE` are just other names for 1 and 0. The rows above

@@ -26,27 +26,29 @@ details copied in. It is easy to query, and it goes wrong as soon as data change
 
 **Task:** Build one wide table of order lines with the customer and product details copied in, then count the rows holding Ana Silva's city.
 
-<!-- sql -->
-```sql
-CREATE TABLE order_lines_wide AS
-SELECT o.order_id, o.order_date, c.customer_id, c.name AS customer_name, c.city,
-       p.product_id, p.name AS product_name, p.price AS list_price, i.quantity, i.unit_price
-FROM orders o
-JOIN customers c   ON c.customer_id = o.customer_id
-JOIN order_items i ON i.order_id = o.order_id
-JOIN products p    ON p.product_id = i.product_id;
-SELECT COUNT(*) AS rows_holding_ana_city
-FROM order_lines_wide
-WHERE customer_id = 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    CREATE TABLE order_lines_wide AS
+    SELECT o.order_id, o.order_date, c.customer_id, c.name AS customer_name, c.city,
+           p.product_id, p.name AS product_name, p.price AS list_price, i.quantity, i.unit_price
+    FROM orders o
+    JOIN customers c   ON c.customer_id = o.customer_id
+    JOIN order_items i ON i.order_id = o.order_id
+    JOIN products p    ON p.product_id = i.product_id;
+    SELECT COUNT(*) AS rows_holding_ana_city
+    FROM order_lines_wide
+    WHERE customer_id = 1;
+    ```
 
-| rows_holding_ana_city |
-| --- |
-| 8 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | rows_holding_ana_city |
+    | --- |
+    | 8 |
+    <!-- /result -->
 
 Ana's city is now stored on eight rows. When she moves, all eight must change; miss one and the table contradicts
 itself. That is an **update anomaly**. Two more come with it: an **insert anomaly** (a new customer with no orders,
@@ -136,30 +138,32 @@ the facts.
 
 **Task:** From the star schema, show revenue by year, month and category for January and February 2026, highest revenue first within each month.
 
-<!-- sql -->
-```sql
-SELECT d.year, d.month, p.category, SUM(f.revenue) AS revenue
-FROM fact_sales f
-JOIN dim_date d    ON d.date_key = f.date_key
-JOIN dim_product p ON p.product_key = f.product_key
-WHERE d.year = 2026 AND d.month IN (1, 2)
-GROUP BY d.year, d.month, p.category
-ORDER BY d.year, d.month, revenue DESC, p.category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT d.year, d.month, p.category, SUM(f.revenue) AS revenue
+    FROM fact_sales f
+    JOIN dim_date d    ON d.date_key = f.date_key
+    JOIN dim_product p ON p.product_key = f.product_key
+    WHERE d.year = 2026 AND d.month IN (1, 2)
+    GROUP BY d.year, d.month, p.category
+    ORDER BY d.year, d.month, revenue DESC, p.category;
+    ```
 
-| year | month | category | revenue |
-| --- | --- | --- | --- |
-| 2026 | 1 | Office | 199.50 |
-| 2026 | 1 | Home | 24.50 |
-| 2026 | 1 | Kitchen | 17.50 |
-| 2026 | 2 | Home | 98.00 |
-| 2026 | 2 | Kitchen | 65.00 |
-| 2026 | 2 | Office | 64.50 |
-| 2026 | 2 | Uncategorised | 50.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 7 rows.</p>
+
+    | year | month | category | revenue |
+    | --- | --- | --- | --- |
+    | 2026 | 1 | Office | 199.50 |
+    | 2026 | 1 | Home | 24.50 |
+    | 2026 | 1 | Kitchen | 17.50 |
+    | 2026 | 2 | Home | 98.00 |
+    | 2026 | 2 | Kitchen | 65.00 |
+    | 2026 | 2 | Office | 64.50 |
+    | 2026 | 2 | Uncategorised | 50.00 |
+    <!-- /result -->
 
 Things to notice:
 
@@ -252,30 +256,32 @@ A far-future `valid_to` for the current row (instead of NULL) keeps every lookup
 
 **Task:** For customer 1's sales, show each order with the city the customer lived in on the day of the sale.
 
-<!-- sql -->
-```sql
-SELECT f.order_id, f.date_key, h.city, SUM(f.revenue) AS revenue
-FROM fact_sales f
-JOIN dim_customer_history h
-  ON h.customer_id = f.customer_key
- AND f.date_key >= h.valid_from
- AND f.date_key <  h.valid_to
-WHERE f.customer_key = 1
-GROUP BY f.order_id, f.date_key, h.city
-ORDER BY f.date_key, f.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT f.order_id, f.date_key, h.city, SUM(f.revenue) AS revenue
+    FROM fact_sales f
+    JOIN dim_customer_history h
+      ON h.customer_id = f.customer_key
+     AND f.date_key >= h.valid_from
+     AND f.date_key <  h.valid_to
+    WHERE f.customer_key = 1
+    GROUP BY f.order_id, f.date_key, h.city
+    ORDER BY f.date_key, f.order_id;
+    ```
 
-| order_id | date_key | city | revenue |
-| --- | --- | --- | --- |
-| 101 | 2026-01-03 | Toronto | 34.25 |
-| 103 | 2026-01-15 | Toronto | 33.75 |
-| 110 | 2026-02-20 | Vancouver | 32.50 |
-| 115 | 2026-03-18 | Vancouver | 49.50 |
-| 120 | 2026-04-05 | Vancouver | 139.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | date_key | city | revenue |
+    | --- | --- | --- | --- |
+    | 101 | 2026-01-03 | Toronto | 34.25 |
+    | 103 | 2026-01-15 | Toronto | 33.75 |
+    | 110 | 2026-02-20 | Vancouver | 32.50 |
+    | 115 | 2026-03-18 | Vancouver | 49.50 |
+    | 120 | 2026-04-05 | Vancouver | 139.00 |
+    <!-- /result -->
 
 Ana's January orders stay in Toronto; from 20 February they are in Vancouver. With a half-open range
 (`>= valid_from AND < valid_to`) every day falls in exactly one version; `BETWEEN` would put 15 February in both. In

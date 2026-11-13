@@ -39,26 +39,28 @@ Name the columns, then give the values in the same order. Several rows can go in
 
 **Task:** Add two products, 12 Desk organiser (Office, 14.50) and 13 Teapot (Kitchen, 27.00), then list products 11 and up.
 
-<!-- sql -->
-```sql
-INSERT INTO products (product_id, name, category, price)
-VALUES (12, 'Desk organiser', 'Office', 14.50),
-       (13, 'Teapot',         'Kitchen', 27.00);
-SELECT product_id, name, category, price
-FROM products
-WHERE product_id >= 11
-ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    INSERT INTO products (product_id, name, category, price)
+    VALUES (12, 'Desk organiser', 'Office', 14.50),
+           (13, 'Teapot',         'Kitchen', 27.00);
+    SELECT product_id, name, category, price
+    FROM products
+    WHERE product_id >= 11
+    ORDER BY product_id;
+    ```
 
-| product_id | name | category | price |
-| --- | --- | --- | --- |
-| 11 | Bookend | Home | 9.50 |
-| 12 | Desk organiser | Office | 14.50 |
-| 13 | Teapot | Kitchen | 27.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | product_id | name | category | price |
+    | --- | --- | --- | --- |
+    | 11 | Bookend | Home | 9.50 |
+    | 12 | Desk organiser | Office | 14.50 |
+    | 13 | Teapot | Kitchen | 27.00 |
+    <!-- /result -->
 
 `INSERT INTO products VALUES (...)` without the column list also works, but it depends on the table's column order,
 and it breaks the day someone adds a column. Columns you leave out get their default, or NULL.
@@ -67,28 +69,30 @@ and it breaks the day someone adds a column. Columns you leave out get their def
 
 **Task:** Make a `cancelled_orders` table and copy the cancelled orders into it, then list it by order id.
 
-<!-- sql -->
-```sql
-CREATE TABLE cancelled_orders (
-  order_id    INTEGER PRIMARY KEY,
-  customer_id INTEGER,
-  order_date  DATE NOT NULL
-);
-INSERT INTO cancelled_orders (order_id, customer_id, order_date)
-SELECT order_id, customer_id, order_date
-FROM orders
-WHERE status = 'cancelled';
-SELECT order_id, customer_id, order_date FROM cancelled_orders ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    CREATE TABLE cancelled_orders (
+      order_id    INTEGER PRIMARY KEY,
+      customer_id INTEGER,
+      order_date  DATE NOT NULL
+    );
+    INSERT INTO cancelled_orders (order_id, customer_id, order_date)
+    SELECT order_id, customer_id, order_date
+    FROM orders
+    WHERE status = 'cancelled';
+    SELECT order_id, customer_id, order_date FROM cancelled_orders ORDER BY order_id;
+    ```
 
-| order_id | customer_id | order_date |
-| --- | --- | --- |
-| 104 | 3 | 2026-01-20 |
-| 113 | 2 | 2026-03-05 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | order_id | customer_id | order_date |
+    | --- | --- | --- |
+    | 104 | 3 | 2026-01-20 |
+    | 113 | 2 | 2026-03-05 |
+    <!-- /result -->
 
 Rows that break a constraint are refused, and the **whole statement** fails, not just the bad row:
 
@@ -113,22 +117,24 @@ Product 14 was not added either. To skip bad rows instead of failing, see `ON CO
 
 **Task:** Raise every Kitchen price by 10%, rounded to cents, then list the Kitchen products.
 
-<!-- sql -->
-```sql
-UPDATE products
-SET price = ROUND(price * 1.10, 2)
-WHERE category = 'Kitchen';
-SELECT product_id, name, price FROM products WHERE category = 'Kitchen' ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE products
+    SET price = ROUND(price * 1.10, 2)
+    WHERE category = 'Kitchen';
+    SELECT product_id, name, price FROM products WHERE category = 'Kitchen' ORDER BY product_id;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 4 | Coffee mug | 9.63 |
-| 5 | Tea kettle | 35.20 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 4 | Coffee mug | 9.63 |
+    | 5 | Tea kettle | 35.20 |
+    <!-- /result -->
 
 !!! danger "UPDATE without WHERE changes every row"
     `UPDATE products SET price = 0;` is a valid statement. It sets all eleven prices to zero, at once, without asking.
@@ -140,21 +146,23 @@ before** the update, so swapping two columns works:
 
 **Task:** For customer 2, swap the city and country columns, then show the row.
 
-<!-- sql -->
-```sql
-UPDATE customers
-SET city = country, country = city
-WHERE customer_id = 2;
-SELECT customer_id, city, country FROM customers WHERE customer_id = 2;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE customers
+    SET city = country, country = city
+    WHERE customer_id = 2;
+    SELECT customer_id, city, country FROM customers WHERE customer_id = 2;
+    ```
 
-| customer_id | city | country |
-| --- | --- | --- |
-| 2 | Nigeria | Lagos |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | customer_id | city | country |
+    | --- | --- | --- |
+    | 2 | Nigeria | Lagos |
+    <!-- /result -->
 
 ### Updating from another table { #update-from }
 
@@ -163,23 +171,25 @@ portable way is a correlated subquery in `SET`:
 
 **Task:** Set each product's price to the lowest price it was ever sold at (products never sold keep theirs), then show products 5, 6 and 11.
 
-<!-- sql -->
-```sql
-UPDATE products
-SET price = (SELECT MIN(i.unit_price) FROM order_items i WHERE i.product_id = products.product_id)
-WHERE EXISTS (SELECT 1 FROM order_items i WHERE i.product_id = products.product_id);
-SELECT product_id, name, price FROM products WHERE product_id IN (5, 6, 11) ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE products
+    SET price = (SELECT MIN(i.unit_price) FROM order_items i WHERE i.product_id = products.product_id)
+    WHERE EXISTS (SELECT 1 FROM order_items i WHERE i.product_id = products.product_id);
+    SELECT product_id, name, price FROM products WHERE product_id IN (5, 6, 11) ORDER BY product_id;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 5 | Tea kettle | 30.00 |
-| 6 | Office chair | 139.00 |
-| 11 | Bookend | 9.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 5 | Tea kettle | 30.00 |
+    | 6 | Office chair | 139.00 |
+    | 11 | Bookend | 9.50 |
+    <!-- /result -->
 
 The `WHERE EXISTS` matters: without it, the bookend (never sold) would get `MIN` of no rows, which is NULL, and lose
 its price. The tea kettle (once sold at 30.00) and the office chair (once at 139.00) get their lowest prices.
@@ -217,42 +227,46 @@ tables are written with a subquery, which works on both databases:
 
 **Task:** Delete the logins of Canadian customers, then count the logins left per customer.
 
-<!-- sql -->
-```sql
-DELETE FROM logins
-WHERE customer_id IN (SELECT customer_id FROM customers WHERE country = 'Canada');
-SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    DELETE FROM logins
+    WHERE customer_id IN (SELECT customer_id FROM customers WHERE country = 'Canada');
+    SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id ORDER BY customer_id;
+    ```
 
-| customer_id | logins |
-| --- | --- |
-| 2 | 4 |
-| 4 | 4 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | customer_id | logins |
+    | --- | --- |
+    | 2 | 4 |
+    | 4 | 4 |
+    <!-- /result -->
 
 PostgreSQL also has `DELETE ... USING`, a join in the delete; SQLite does not:
 
 **Task:** The same delete, written as a join with `USING`.
 
-<!-- sql pg -->
-```sql
-DELETE FROM logins AS l
-USING customers AS c
-WHERE c.customer_id = l.customer_id AND c.country = 'Canada';
-SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id ORDER BY customer_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    DELETE FROM logins AS l
+    USING customers AS c
+    WHERE c.customer_id = l.customer_id AND c.country = 'Canada';
+    SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id ORDER BY customer_id;
+    ```
 
-| customer_id | logins |
-| --- | --- |
-| 2 | 4 |
-| 4 | 4 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
+
+    | customer_id | logins |
+    | --- | --- |
+    | 2 | 4 |
+    | 4 | 4 |
+    <!-- /result -->
 
 <!-- sql sqlite error -->
 ```sql
@@ -281,24 +295,26 @@ afterwards (for `DELETE`, as they were). It saves a second query and shows exact
 
 **Task:** Raise every Home price by 1 and show the changed rows in the same statement.
 
-<!-- sql -->
-```sql
-UPDATE products
-SET price = price + 1
-WHERE category = 'Home'
-RETURNING product_id, name, price;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    UPDATE products
+    SET price = price + 1
+    WHERE category = 'Home'
+    RETURNING product_id, name, price;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 1 | Desk lamp | 25.50 |
-| 8 | Plant pot | 13.25 |
-| 9 | Wall clock | 25.50 |
-| 11 | Bookend | 10.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 1 | Desk lamp | 25.50 |
+    | 8 | Plant pot | 13.25 |
+    | 9 | Wall clock | 25.50 |
+    | 11 | Bookend | 10.50 |
+    <!-- /result -->
 
 PostgreSQL has had it for years; SQLite since 3.35. SQL Server's version is `OUTPUT inserted.*`; MySQL has none.
 A common use is getting the id a database just generated: `INSERT ... RETURNING id`.
@@ -310,47 +326,51 @@ is an **upsert**. PostgreSQL and SQLite share the same syntax for it:
 
 **Task:** Load two products: update the price of product 1 if it exists, insert product 12 if not; then show both.
 
-<!-- sql -->
-```sql
-INSERT INTO products (product_id, name, category, price)
-VALUES (1,  'Desk lamp', 'Home',    26.00),     -- exists: update its price
-       (12, 'Teapot',    'Kitchen', 27.00)      -- new: insert it
-ON CONFLICT (product_id) DO UPDATE
-SET price = excluded.price;
-SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    INSERT INTO products (product_id, name, category, price)
+    VALUES (1,  'Desk lamp', 'Home',    26.00),     -- exists: update its price
+           (12, 'Teapot',    'Kitchen', 27.00)      -- new: insert it
+    ON CONFLICT (product_id) DO UPDATE
+    SET price = excluded.price;
+    SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER BY product_id;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 1 | Desk lamp | 26.00 |
-| 12 | Teapot | 27.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 1 | Desk lamp | 26.00 |
+    | 12 | Teapot | 27.00 |
+    <!-- /result -->
 
 `ON CONFLICT (product_id)` names the key to check; `excluded` is the row that was refused, so `excluded.price` is
 the new price. `DO NOTHING` instead skips the rows that already exist, which makes a load safe to repeat:
 
 **Task:** Load the same two products, but leave existing products untouched; then show both.
 
-<!-- sql -->
-```sql
-INSERT INTO products (product_id, name, category, price)
-VALUES (1,  'Desk lamp', 'Home',    26.00),
-       (12, 'Teapot',    'Kitchen', 27.00)
-ON CONFLICT (product_id) DO NOTHING;
-SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+    <!-- sql -->
+    ```sql
+    INSERT INTO products (product_id, name, category, price)
+    VALUES (1,  'Desk lamp', 'Home',    26.00),
+           (12, 'Teapot',    'Kitchen', 27.00)
+    ON CONFLICT (product_id) DO NOTHING;
+    SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER BY product_id;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 1 | Desk lamp | 24.50 |
-| 12 | Teapot | 27.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 2 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 1 | Desk lamp | 24.50 |
+    | 12 | Teapot | 27.00 |
+    <!-- /result -->
 
 The lamp kept its old price; only the teapot went in. Two rules:
 
@@ -404,36 +424,38 @@ tables). PostgreSQL has had it since version 15:
 
 **Task:** Apply a price feed to products in one statement: update matching products, delete discontinued ones, insert new ones.
 
-<!-- sql pg -->
-```sql
-CREATE TABLE price_feed (product_id INTEGER, name VARCHAR(50), category VARCHAR(20), price NUMERIC(8,2),
-                         discontinued BOOLEAN);
-INSERT INTO price_feed VALUES
-  (1,  'Desk lamp', 'Home',    26.00, FALSE),   -- price change
-  (2,  'Notebook',  'Office',   3.25, FALSE),   -- no change
-  (11, 'Bookend',   'Home',     9.50, TRUE),    -- to remove
-  (12, 'Teapot',    'Kitchen', 27.00, FALSE);   -- new
-MERGE INTO products AS t
-USING price_feed AS s
-ON t.product_id = s.product_id
-WHEN MATCHED AND s.discontinued THEN
-  DELETE
-WHEN MATCHED AND t.price <> s.price THEN
-  UPDATE SET price = s.price
-WHEN NOT MATCHED AND NOT s.discontinued THEN
-  INSERT (product_id, name, category, price) VALUES (s.product_id, s.name, s.category, s.price);
-SELECT product_id, name, price FROM products WHERE product_id IN (1, 2, 11, 12) ORDER BY product_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    CREATE TABLE price_feed (product_id INTEGER, name VARCHAR(50), category VARCHAR(20), price NUMERIC(8,2),
+                             discontinued BOOLEAN);
+    INSERT INTO price_feed VALUES
+      (1,  'Desk lamp', 'Home',    26.00, FALSE),   -- price change
+      (2,  'Notebook',  'Office',   3.25, FALSE),   -- no change
+      (11, 'Bookend',   'Home',     9.50, TRUE),    -- to remove
+      (12, 'Teapot',    'Kitchen', 27.00, FALSE);   -- new
+    MERGE INTO products AS t
+    USING price_feed AS s
+    ON t.product_id = s.product_id
+    WHEN MATCHED AND s.discontinued THEN
+      DELETE
+    WHEN MATCHED AND t.price <> s.price THEN
+      UPDATE SET price = s.price
+    WHEN NOT MATCHED AND NOT s.discontinued THEN
+      INSERT (product_id, name, category, price) VALUES (s.product_id, s.name, s.category, s.price);
+    SELECT product_id, name, price FROM products WHERE product_id IN (1, 2, 11, 12) ORDER BY product_id;
+    ```
 
-| product_id | name | price |
-| --- | --- | --- |
-| 1 | Desk lamp | 26.00 |
-| 2 | Notebook | 3.25 |
-| 12 | Teapot | 27.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
+
+    | product_id | name | price |
+    | --- | --- | --- |
+    | 1 | Desk lamp | 26.00 |
+    | 2 | Notebook | 3.25 |
+    | 12 | Teapot | 27.00 |
+    <!-- /result -->
 
 Each target row may be matched by at most one source row, and the first `WHEN` whose condition is true decides
 what happens to it. Matched rows can be updated or deleted; unmatched ones inserted. If two source rows match

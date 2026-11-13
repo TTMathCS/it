@@ -43,31 +43,33 @@ NULL.
 
 **Task:** For January and February, show revenue by month and category, plus a subtotal per month and a grand total.
 
-<!-- sql pg -->
-```sql
-SELECT month, category, SUM(revenue) AS revenue
-FROM sales
-WHERE month IN ('2026-01', '2026-02')
-GROUP BY ROLLUP (month, category)
-ORDER BY month, category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT month, category, SUM(revenue) AS revenue
+    FROM sales
+    WHERE month IN ('2026-01', '2026-02')
+    GROUP BY ROLLUP (month, category)
+    ORDER BY month, category;
+    ```
 
-| month | category | revenue |
-| --- | --- | --- |
-| 2026-01 | Home | 24.50 |
-| 2026-01 | Kitchen | 17.50 |
-| 2026-01 | Office | 199.50 |
-| 2026-01 | *NULL* | 241.50 |
-| 2026-02 | Home | 98.00 |
-| 2026-02 | Kitchen | 65.00 |
-| 2026-02 | Office | 64.50 |
-| 2026-02 | Other | 50.00 |
-| 2026-02 | *NULL* | 277.50 |
-| *NULL* | *NULL* | 519.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+
+    | month | category | revenue |
+    | --- | --- | --- |
+    | 2026-01 | Home | 24.50 |
+    | 2026-01 | Kitchen | 17.50 |
+    | 2026-01 | Office | 199.50 |
+    | 2026-01 | *NULL* | 241.50 |
+    | 2026-02 | Home | 98.00 |
+    | 2026-02 | Kitchen | 65.00 |
+    | 2026-02 | Office | 64.50 |
+    | 2026-02 | Other | 50.00 |
+    | 2026-02 | *NULL* | 277.50 |
+    | *NULL* | *NULL* | 519.00 |
+    <!-- /result -->
 
 PostgreSQL sorts NULLs last, so each month's subtotal comes after its categories and the grand total comes at the
 end. `ROLLUP` is hierarchical: with `(a, b, c)` it gives `(a, b, c)`, `(a, b)`, `(a)` and `()`; the order of the
@@ -80,33 +82,35 @@ is 1 when the column was rolled up in that row and 0 otherwise, so you can label
 
 **Task:** The same report, with the subtotal rows labelled 'All months' and 'All categories'.
 
-<!-- sql pg -->
-```sql
-SELECT CASE WHEN GROUPING(month) = 1 THEN 'All months' ELSE month END          AS month,
-       CASE WHEN GROUPING(category) = 1 THEN 'All categories' ELSE category END AS category,
-       SUM(revenue) AS revenue
-FROM sales
-WHERE month IN ('2026-01', '2026-02')
-GROUP BY ROLLUP (month, category)
-ORDER BY GROUPING(month), month, GROUPING(category), category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT CASE WHEN GROUPING(month) = 1 THEN 'All months' ELSE month END          AS month,
+           CASE WHEN GROUPING(category) = 1 THEN 'All categories' ELSE category END AS category,
+           SUM(revenue) AS revenue
+    FROM sales
+    WHERE month IN ('2026-01', '2026-02')
+    GROUP BY ROLLUP (month, category)
+    ORDER BY GROUPING(month), month, GROUPING(category), category;
+    ```
 
-| month | category | revenue |
-| --- | --- | --- |
-| 2026-01 | Home | 24.50 |
-| 2026-01 | Kitchen | 17.50 |
-| 2026-01 | Office | 199.50 |
-| 2026-01 | All categories | 241.50 |
-| 2026-02 | Home | 98.00 |
-| 2026-02 | Kitchen | 65.00 |
-| 2026-02 | Office | 64.50 |
-| 2026-02 | Other | 50.00 |
-| 2026-02 | All categories | 277.50 |
-| All months | All categories | 519.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 10 rows.</p>
+
+    | month | category | revenue |
+    | --- | --- | --- |
+    | 2026-01 | Home | 24.50 |
+    | 2026-01 | Kitchen | 17.50 |
+    | 2026-01 | Office | 199.50 |
+    | 2026-01 | All categories | 241.50 |
+    | 2026-02 | Home | 98.00 |
+    | 2026-02 | Kitchen | 65.00 |
+    | 2026-02 | Office | 64.50 |
+    | 2026-02 | Other | 50.00 |
+    | 2026-02 | All categories | 277.50 |
+    | All months | All categories | 519.00 |
+    <!-- /result -->
 
 Ordering by `GROUPING(...)` first is the reliable way to put subtotals after their details on every database,
 whatever it does with NULLs.
@@ -119,28 +123,30 @@ total per month and the total per category, without the detail rows:
 
 **Task:** Show the total per month and the total per category in one result, without the detail rows.
 
-<!-- sql pg -->
-```sql
-SELECT month, category, SUM(revenue) AS revenue
-FROM sales
-GROUP BY GROUPING SETS ((month), (category))
-ORDER BY GROUPING(month), month, category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT month, category, SUM(revenue) AS revenue
+    FROM sales
+    GROUP BY GROUPING SETS ((month), (category))
+    ORDER BY GROUPING(month), month, category;
+    ```
 
-| month | category | revenue |
-| --- | --- | --- |
-| 2026-01 | *NULL* | 241.50 |
-| 2026-02 | *NULL* | 277.50 |
-| 2026-03 | *NULL* | 322.50 |
-| 2026-04 | *NULL* | 163.50 |
-| *NULL* | Home | 196.00 |
-| *NULL* | Kitchen | 140.75 |
-| *NULL* | Office | 618.25 |
-| *NULL* | Other | 50.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+
+    | month | category | revenue |
+    | --- | --- | --- |
+    | 2026-01 | *NULL* | 241.50 |
+    | 2026-02 | *NULL* | 277.50 |
+    | 2026-03 | *NULL* | 322.50 |
+    | 2026-04 | *NULL* | 163.50 |
+    | *NULL* | Home | 196.00 |
+    | *NULL* | Kitchen | 140.75 |
+    | *NULL* | Office | 618.25 |
+    | *NULL* | Other | 50.00 |
+    <!-- /result -->
 
 The first four rows are per month (category rolled up), the rest per category (month rolled up).
 
@@ -160,37 +166,39 @@ that level does not group by, and glue them with `UNION ALL`. This runs on every
 
 **Task:** The month-and-category report with subtotals, written so it runs on every database.
 
-<!-- sql -->
-```sql
-SELECT month, category, SUM(revenue) AS revenue, 0 AS lvl
-FROM sales WHERE month IN ('2026-01', '2026-02')
-GROUP BY month, category
-UNION ALL
-SELECT month, 'All categories', SUM(revenue), 1
-FROM sales WHERE month IN ('2026-01', '2026-02')
-GROUP BY month
-UNION ALL
-SELECT 'All months', 'All categories', SUM(revenue), 2
-FROM sales WHERE month IN ('2026-01', '2026-02')
-ORDER BY lvl, month, category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT month, category, SUM(revenue) AS revenue, 0 AS lvl
+    FROM sales WHERE month IN ('2026-01', '2026-02')
+    GROUP BY month, category
+    UNION ALL
+    SELECT month, 'All categories', SUM(revenue), 1
+    FROM sales WHERE month IN ('2026-01', '2026-02')
+    GROUP BY month
+    UNION ALL
+    SELECT 'All months', 'All categories', SUM(revenue), 2
+    FROM sales WHERE month IN ('2026-01', '2026-02')
+    ORDER BY lvl, month, category;
+    ```
 
-| month | category | revenue | lvl |
-| --- | --- | --- | --- |
-| 2026-01 | Home | 24.50 | 0 |
-| 2026-01 | Kitchen | 17.50 | 0 |
-| 2026-01 | Office | 199.50 | 0 |
-| 2026-02 | Home | 98.00 | 0 |
-| 2026-02 | Kitchen | 65.00 | 0 |
-| 2026-02 | Office | 64.50 | 0 |
-| 2026-02 | Other | 50.00 | 0 |
-| 2026-01 | All categories | 241.50 | 1 |
-| 2026-02 | All categories | 277.50 | 1 |
-| All months | All categories | 519.00 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+
+    | month | category | revenue | lvl |
+    | --- | --- | --- | --- |
+    | 2026-01 | Home | 24.50 | 0 |
+    | 2026-01 | Kitchen | 17.50 | 0 |
+    | 2026-01 | Office | 199.50 | 0 |
+    | 2026-02 | Home | 98.00 | 0 |
+    | 2026-02 | Kitchen | 65.00 | 0 |
+    | 2026-02 | Office | 64.50 | 0 |
+    | 2026-02 | Other | 50.00 | 0 |
+    | 2026-01 | All categories | 241.50 | 1 |
+    | 2026-02 | All categories | 277.50 | 1 |
+    | All months | All categories | 519.00 | 2 |
+    <!-- /result -->
 
 The same totals as the `ROLLUP` above. The cost: the table is read once per level, where `ROLLUP` can do it in one
 pass, and the filter must be repeated in each part (a CTE avoids repeating it).
@@ -267,29 +275,31 @@ column is a conditional aggregate, so you must know the columns when you write t
 
 **Task:** Show revenue per category with one column per month (January to April) and a total, highest total first.
 
-<!-- sql -->
-```sql
-SELECT category,
-       SUM(CASE WHEN month = '2026-01' THEN revenue ELSE 0 END) AS jan,
-       SUM(CASE WHEN month = '2026-02' THEN revenue ELSE 0 END) AS feb,
-       SUM(CASE WHEN month = '2026-03' THEN revenue ELSE 0 END) AS mar,
-       SUM(CASE WHEN month = '2026-04' THEN revenue ELSE 0 END) AS apr,
-       SUM(revenue)                                             AS total
-FROM sales
-GROUP BY category
-ORDER BY total DESC, category;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT category,
+           SUM(CASE WHEN month = '2026-01' THEN revenue ELSE 0 END) AS jan,
+           SUM(CASE WHEN month = '2026-02' THEN revenue ELSE 0 END) AS feb,
+           SUM(CASE WHEN month = '2026-03' THEN revenue ELSE 0 END) AS mar,
+           SUM(CASE WHEN month = '2026-04' THEN revenue ELSE 0 END) AS apr,
+           SUM(revenue)                                             AS total
+    FROM sales
+    GROUP BY category
+    ORDER BY total DESC, category;
+    ```
 
-| category | jan | feb | mar | apr | total |
-| --- | --- | --- | --- | --- | --- |
-| Office | 199.50 | 64.50 | 215.25 | 139.00 | 618.25 |
-| Home | 24.50 | 98.00 | 49.00 | 24.50 | 196.00 |
-| Kitchen | 17.50 | 65.00 | 58.25 | 0 | 140.75 |
-| Other | 0 | 50.00 | 0 | 0 | 50.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | category | jan | feb | mar | apr | total |
+    | --- | --- | --- | --- | --- | --- |
+    | Office | 199.50 | 64.50 | 215.25 | 139.00 | 618.25 |
+    | Home | 24.50 | 98.00 | 49.00 | 24.50 | 196.00 |
+    | Kitchen | 17.50 | 65.00 | 58.25 | 0 | 140.75 |
+    | Other | 0 | 50.00 | 0 | 0 | 50.00 |
+    <!-- /result -->
 
 `ELSE 0` shows 0 for a month with no sales; leave it out to show NULL instead. SQL Server, Oracle, Snowflake and
 Databricks have a `PIVOT` clause that writes the same thing more briefly, and PostgreSQL has `crosstab()` in the
@@ -305,35 +315,37 @@ columns. The classic use is **top N per group**: each customer's two largest ord
 
 **Task:** For customers 1, 2 and 4, show each customer's two largest orders: id, name, order id and order total.
 
-<!-- sql pg -->
-```sql
-SELECT c.customer_id, c.name, t.order_id, t.order_total
-FROM customers c
-CROSS JOIN LATERAL (
-  SELECT o.order_id, SUM(oi.quantity * oi.unit_price) AS order_total
-  FROM orders o
-  JOIN order_items oi ON oi.order_id = o.order_id
-  WHERE o.customer_id = c.customer_id
-  GROUP BY o.order_id
-  ORDER BY order_total DESC, o.order_id
-  LIMIT 2
-) t
-WHERE c.customer_id IN (1, 2, 4)
-ORDER BY c.customer_id, t.order_total DESC, t.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 6 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT c.customer_id, c.name, t.order_id, t.order_total
+    FROM customers c
+    CROSS JOIN LATERAL (
+      SELECT o.order_id, SUM(oi.quantity * oi.unit_price) AS order_total
+      FROM orders o
+      JOIN order_items oi ON oi.order_id = o.order_id
+      WHERE o.customer_id = c.customer_id
+      GROUP BY o.order_id
+      ORDER BY order_total DESC, o.order_id
+      LIMIT 2
+    ) t
+    WHERE c.customer_id IN (1, 2, 4)
+    ORDER BY c.customer_id, t.order_total DESC, t.order_id;
+    ```
 
-| customer_id | name | order_id | order_total |
-| --- | --- | --- | --- |
-| 1 | Ana Silva | 120 | 139.00 |
-| 1 | Ana Silva | 115 | 49.50 |
-| 2 | Ben Okafor | 102 | 149.00 |
-| 2 | Ben Okafor | 106 | 56.50 |
-| 4 | Dana Kim | 112 | 181.00 |
-| 4 | Dana Kim | 105 | 24.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 6 rows.</p>
+
+    | customer_id | name | order_id | order_total |
+    | --- | --- | --- | --- |
+    | 1 | Ana Silva | 120 | 139.00 |
+    | 1 | Ana Silva | 115 | 49.50 |
+    | 2 | Ben Okafor | 102 | 149.00 |
+    | 2 | Ben Okafor | 106 | 56.50 |
+    | 4 | Dana Kim | 112 | 181.00 |
+    | 4 | Dana Kim | 105 | 24.50 |
+    <!-- /result -->
 
 `CROSS JOIN LATERAL` drops customers for whom the subquery returns nothing; `LEFT JOIN LATERAL (...) t ON true`
 keeps them, with NULLs. SQL Server and Oracle write the same idea as `CROSS APPLY` / `OUTER APPLY`. SQLite has no

@@ -29,25 +29,27 @@ has **two items** and **two payments**. Join both to the order and you get 2 × 
 
 **Task:** For order 106, show the items total and the amount paid. (This first try is wrong; see why.)
 
-<!-- sql -->
-```sql
-SELECT o.order_id,
-       SUM(i.quantity * i.unit_price) AS items_total,
-       SUM(p.amount)                  AS paid_total
-FROM orders o
-JOIN order_items i ON i.order_id = o.order_id
-JOIN payments p    ON p.order_id = o.order_id
-WHERE o.order_id = 106
-GROUP BY o.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT o.order_id,
+           SUM(i.quantity * i.unit_price) AS items_total,
+           SUM(p.amount)                  AS paid_total
+    FROM orders o
+    JOIN order_items i ON i.order_id = o.order_id
+    JOIN payments p    ON p.order_id = o.order_id
+    WHERE o.order_id = 106
+    GROUP BY o.order_id;
+    ```
 
-| order_id | items_total | paid_total |
-| --- | --- | --- |
-| 106 | 113.00 | 113.00 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | items_total | paid_total |
+    | --- | --- | --- |
+    | 106 | 113.00 | 113.00 |
+    <!-- /result -->
 
 The real numbers are 56.50 ordered and 56.50 paid. Each item row was repeated once per payment, and each payment
 once per item. This is called **fan-out**, and it gives no error: the numbers just look a little too big.
@@ -56,32 +58,34 @@ The fix is to **sum each "many" table on its own, one row per order, and join th
 
 **Task:** For order 106, show the items total and the amount paid, correctly.
 
-<!-- sql -->
-```sql
-WITH items AS (
-  SELECT order_id, SUM(quantity * unit_price) AS items_total
-  FROM order_items
-  GROUP BY order_id
-),
-paid AS (
-  SELECT order_id, SUM(amount) AS paid_total
-  FROM payments
-  GROUP BY order_id
-)
-SELECT o.order_id, i.items_total, p.paid_total
-FROM orders o
-JOIN items i ON i.order_id = o.order_id
-JOIN paid p  ON p.order_id = o.order_id
-WHERE o.order_id = 106;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    WITH items AS (
+      SELECT order_id, SUM(quantity * unit_price) AS items_total
+      FROM order_items
+      GROUP BY order_id
+    ),
+    paid AS (
+      SELECT order_id, SUM(amount) AS paid_total
+      FROM payments
+      GROUP BY order_id
+    )
+    SELECT o.order_id, i.items_total, p.paid_total
+    FROM orders o
+    JOIN items i ON i.order_id = o.order_id
+    JOIN paid p  ON p.order_id = o.order_id
+    WHERE o.order_id = 106;
+    ```
 
-| order_id | items_total | paid_total |
-| --- | --- | --- |
-| 106 | 56.50 | 56.50 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | items_total | paid_total |
+    | --- | --- | --- |
+    | 106 | 56.50 | 56.50 |
+    <!-- /result -->
 
 !!! tip "The rule"
     Before you join, ask: **how many rows per key** does each side have? If both sides of a join can have many rows
@@ -96,28 +100,30 @@ Per month, with `date_trunc` to cut each timestamp down to the first day of its 
 
 **Task:** For each month, show gross payments, refunds, net and the number of failed attempts.
 
-<!-- sql pg -->
-```sql
-SELECT date_trunc('month', paid_at)::date                       AS month,
-       SUM(amount) FILTER (WHERE status = 'paid')                AS gross,
-       SUM(amount) FILTER (WHERE status = 'refunded')            AS refunds,
-       SUM(amount) FILTER (WHERE status IN ('paid', 'refunded')) AS net,
-       COUNT(*)    FILTER (WHERE status = 'failed')              AS failed_attempts
-FROM payments
-GROUP BY 1
-ORDER BY 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    SELECT date_trunc('month', paid_at)::date                       AS month,
+           SUM(amount) FILTER (WHERE status = 'paid')                AS gross,
+           SUM(amount) FILTER (WHERE status = 'refunded')            AS refunds,
+           SUM(amount) FILTER (WHERE status IN ('paid', 'refunded')) AS net,
+           COUNT(*)    FILTER (WHERE status = 'failed')              AS failed_attempts
+    FROM payments
+    GROUP BY 1
+    ORDER BY 1;
+    ```
 
-| month | gross | refunds | net | failed_attempts |
-| --- | --- | --- | --- | --- |
-| 2026-01-01 | 273.50 | -32.00 | 241.50 | 1 |
-| 2026-02-01 | 277.50 | *NULL* | 277.50 | 0 |
-| 2026-03-01 | 322.50 | *NULL* | 322.50 | 0 |
-| 2026-04-01 | 302.50 | *NULL* | 302.50 | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
+
+    | month | gross | refunds | net | failed_attempts |
+    | --- | --- | --- | --- | --- |
+    | 2026-01-01 | 273.50 | -32.00 | 241.50 | 1 |
+    | 2026-02-01 | 277.50 | *NULL* | 277.50 | 0 |
+    | 2026-03-01 | 322.50 | *NULL* | 322.50 | 0 |
+    | 2026-04-01 | 302.50 | *NULL* | 302.50 | 1 |
+    <!-- /result -->
 
 `FILTER (WHERE ...)` is PostgreSQL's short way to aggregate only some rows. The portable way, which also works on
 SQLite, MySQL and SQL Server, is `SUM(CASE WHEN ... THEN amount END)`: the `CASE` gives `NULL` for the other rows,
@@ -125,28 +131,30 @@ and `SUM` skips `NULL`s. Note what it returns when **no** row matches: `NULL`, n
 
 **Task:** For each payment method, show attempts, paid, failed and the refunded amount, most attempts first.
 
-<!-- sql -->
-```sql
-SELECT method,
-       COUNT(*)                                              AS attempts,
-       SUM(CASE WHEN status = 'paid'   THEN 1 ELSE 0 END)    AS paid,
-       SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)    AS failed,
-       SUM(CASE WHEN status = 'refunded' THEN amount END)    AS refunded_amount
-FROM payments
-GROUP BY method
-ORDER BY attempts DESC, method NULLS LAST;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT method,
+           COUNT(*)                                              AS attempts,
+           SUM(CASE WHEN status = 'paid'   THEN 1 ELSE 0 END)    AS paid,
+           SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END)    AS failed,
+           SUM(CASE WHEN status = 'refunded' THEN amount END)    AS refunded_amount
+    FROM payments
+    GROUP BY method
+    ORDER BY attempts DESC, method NULLS LAST;
+    ```
 
-| method | attempts | paid | failed | refunded_amount |
-| --- | --- | --- | --- | --- |
-| card | 16 | 13 | 2 | -32.00 |
-| paypal | 4 | 4 | 0 | *NULL* |
-| gift | 1 | 1 | 0 | *NULL* |
-| *NULL* | 1 | 1 | 0 | *NULL* |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | method | attempts | paid | failed | refunded_amount |
+    | --- | --- | --- | --- | --- |
+    | card | 16 | 13 | 2 | -32.00 |
+    | paypal | 4 | 4 | 0 | *NULL* |
+    | gift | 1 | 1 | 0 | *NULL* |
+    | *NULL* | 1 | 1 | 0 | *NULL* |
+    <!-- /result -->
 
 Three things to see in this result:
 
@@ -170,45 +178,47 @@ payment side is joined with `LEFT JOIN`:
 
 **Task:** List the orders whose money received does not match the ordered amount, with the kind of problem.
 
-<!-- sql -->
-```sql
-WITH items AS (
-  SELECT order_id, SUM(quantity * unit_price) AS ordered
-  FROM order_items
-  GROUP BY order_id
-),
-received AS (
-  SELECT order_id, SUM(amount) AS received
-  FROM payments
-  WHERE status IN ('paid', 'refunded')
-  GROUP BY order_id
-)
-SELECT o.order_id, o.status, i.ordered,
-       COALESCE(r.received, 0) AS received,
-       CASE
-         WHEN r.order_id IS NULL      THEN 'no money received'
-         WHEN r.received = 0          THEN 'paid, then refunded'
-         WHEN r.received > i.ordered  THEN 'paid too much'
-         ELSE                              'paid too little'
-       END AS problem
-FROM orders o
-JOIN items i         ON i.order_id = o.order_id
-LEFT JOIN received r ON r.order_id = o.order_id
-WHERE COALESCE(r.received, 0) <> i.ordered
-ORDER BY o.order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH items AS (
+      SELECT order_id, SUM(quantity * unit_price) AS ordered
+      FROM order_items
+      GROUP BY order_id
+    ),
+    received AS (
+      SELECT order_id, SUM(amount) AS received
+      FROM payments
+      WHERE status IN ('paid', 'refunded')
+      GROUP BY order_id
+    )
+    SELECT o.order_id, o.status, i.ordered,
+           COALESCE(r.received, 0) AS received,
+           CASE
+             WHEN r.order_id IS NULL      THEN 'no money received'
+             WHEN r.received = 0          THEN 'paid, then refunded'
+             WHEN r.received > i.ordered  THEN 'paid too much'
+             ELSE                              'paid too little'
+           END AS problem
+    FROM orders o
+    JOIN items i         ON i.order_id = o.order_id
+    LEFT JOIN received r ON r.order_id = o.order_id
+    WHERE COALESCE(r.received, 0) <> i.ordered
+    ORDER BY o.order_id;
+    ```
 
-| order_id | status | ordered | received | problem |
-| --- | --- | --- | --- | --- |
-| 104 | cancelled | 32.00 | 0.00 | paid, then refunded |
-| 113 | cancelled | 36.00 | 0 | no money received |
-| 116 | pending | 25.00 | 0 | no money received |
-| 119 | pending | 24.50 | 0 | no money received |
-| 120 | shipped | 139.00 | 278.00 | paid too much |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | order_id | status | ordered | received | problem |
+    | --- | --- | --- | --- | --- |
+    | 104 | cancelled | 32.00 | 0.00 | paid, then refunded |
+    | 113 | cancelled | 36.00 | 0 | no money received |
+    | 116 | pending | 25.00 | 0 | no money received |
+    | 119 | pending | 24.50 | 0 | no money received |
+    | 120 | shipped | 139.00 | 278.00 | paid too much |
+    <!-- /result -->
 
 Read the result against the data: order 104 was paid and then fully refunded, so it received 0 for 32.00 of items
 (the order is cancelled, so that is expected; a real report would leave cancelled orders out). Orders 113 and
@@ -225,21 +235,23 @@ Two payments for the same order, amount, time and status are a **double charge**
 
 **Task:** Find the payments that appear more than once with the same order, time, amount and status, with how many copies.
 
-<!-- sql -->
-```sql
-SELECT order_id, paid_at, amount, status, COUNT(*) AS copies
-FROM payments
-GROUP BY order_id, paid_at, amount, status
-HAVING COUNT(*) > 1;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT order_id, paid_at, amount, status, COUNT(*) AS copies
+    FROM payments
+    GROUP BY order_id, paid_at, amount, status
+    HAVING COUNT(*) > 1;
+    ```
 
-| order_id | paid_at | amount | status | copies |
-| --- | --- | --- | --- | --- |
-| 120 | 2026-04-05 12:30:00 | 139.00 | paid | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | order_id | paid_at | amount | status | copies |
+    | --- | --- | --- | --- | --- |
+    | 120 | 2026-04-05 12:30:00 | 139.00 | paid | 2 |
+    <!-- /result -->
 
 To **keep one row of each group** (for example to build a clean table), number the rows inside each group with
 `ROW_NUMBER` and keep number 1. The `ORDER BY` inside the window says which copy survives: here the lowest
@@ -247,26 +259,28 @@ To **keep one row of each group** (for example to build a clean table), number t
 
 **Task:** For order 120, keep one row of each set of duplicate payments (the lowest payment id).
 
-<!-- sql -->
-```sql
-WITH numbered AS (
-  SELECT p.*,
-         ROW_NUMBER() OVER (PARTITION BY order_id, paid_at, amount, status
-                            ORDER BY payment_id) AS copy_no
-  FROM payments p
-)
-SELECT payment_id, order_id, paid_at, amount, status
-FROM numbered
-WHERE copy_no = 1 AND order_id = 120;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    WITH numbered AS (
+      SELECT p.*,
+             ROW_NUMBER() OVER (PARTITION BY order_id, paid_at, amount, status
+                                ORDER BY payment_id) AS copy_no
+      FROM payments p
+    )
+    SELECT payment_id, order_id, paid_at, amount, status
+    FROM numbered
+    WHERE copy_no = 1 AND order_id = 120;
+    ```
 
-| payment_id | order_id | paid_at | amount | status |
-| --- | --- | --- | --- | --- |
-| 21 | 120 | 2026-04-05 12:30:00 | 139.00 | paid |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | payment_id | order_id | paid_at | amount | status |
+    | --- | --- | --- | --- | --- |
+    | 21 | 120 | 2026-04-05 12:30:00 | 139.00 | paid |
+    <!-- /result -->
 
 `SELECT DISTINCT` would also remove the copy, but only if **every** column matches; the two rows still differ in
 `payment_id`, so `DISTINCT` keeps both. `ROW_NUMBER` lets you say which columns define "the same".
@@ -279,30 +293,32 @@ run: here the higher `payment_id` wins.
 
 **Task:** For orders 102, 104, 119 and 120, show the latest payment of each order.
 
-<!-- sql -->
-```sql
-WITH ranked AS (
-  SELECT order_id, payment_id, paid_at, status,
-         ROW_NUMBER() OVER (PARTITION BY order_id
-                            ORDER BY paid_at DESC, payment_id DESC) AS rn
-  FROM payments
-)
-SELECT order_id, payment_id, paid_at, status
-FROM ranked
-WHERE rn = 1 AND order_id IN (102, 104, 119, 120)
-ORDER BY order_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+    <!-- sql -->
+    ```sql
+    WITH ranked AS (
+      SELECT order_id, payment_id, paid_at, status,
+             ROW_NUMBER() OVER (PARTITION BY order_id
+                                ORDER BY paid_at DESC, payment_id DESC) AS rn
+      FROM payments
+    )
+    SELECT order_id, payment_id, paid_at, status
+    FROM ranked
+    WHERE rn = 1 AND order_id IN (102, 104, 119, 120)
+    ORDER BY order_id;
+    ```
 
-| order_id | payment_id | paid_at | status |
-| --- | --- | --- | --- |
-| 102 | 3 | 2026-01-03 18:44:00 | paid |
-| 104 | 6 | 2026-01-22 10:00:00 | refunded |
-| 119 | 20 | 2026-04-02 22:10:00 | failed |
-| 120 | 22 | 2026-04-05 12:30:00 | paid |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 4 rows.</p>
+
+    | order_id | payment_id | paid_at | status |
+    | --- | --- | --- | --- |
+    | 102 | 3 | 2026-01-03 18:44:00 | paid |
+    | 104 | 6 | 2026-01-22 10:00:00 | refunded |
+    | 119 | 20 | 2026-04-02 22:10:00 | failed |
+    | 120 | 22 | 2026-04-05 12:30:00 | paid |
+    <!-- /result -->
 
 Order 102's latest attempt is the PayPal payment that succeeded; order 104's is the refund; order 119's is its only,
 failed, attempt.
@@ -322,43 +338,45 @@ than 30 minutes between two pages of the same visitor starts a new session**. Th
 
 **Task:** Split each visitor's page views into sessions, where a gap of more than 30 minutes starts a new one: show the gap, the new-session flag and the session number.
 
-<!-- sql pg -->
-```sql
-WITH gaps AS (
-  SELECT view_id, visitor_id, viewed_at, page,
-         LAG(viewed_at) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS prev_at
-  FROM page_views
-),
-flags AS (
-  SELECT *,
-         CASE WHEN prev_at IS NULL
-                OR viewed_at - prev_at > INTERVAL '30 minutes' THEN 1 ELSE 0 END AS new_session
-  FROM gaps
-)
-SELECT visitor_id, view_id, viewed_at, page, viewed_at - prev_at AS gap, new_session,
-       SUM(new_session) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS session_no
-FROM flags
-WHERE visitor_id IN ('v1', 'v3')
-ORDER BY visitor_id, viewed_at, view_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 11 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH gaps AS (
+      SELECT view_id, visitor_id, viewed_at, page,
+             LAG(viewed_at) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS prev_at
+      FROM page_views
+    ),
+    flags AS (
+      SELECT *,
+             CASE WHEN prev_at IS NULL
+                    OR viewed_at - prev_at > INTERVAL '30 minutes' THEN 1 ELSE 0 END AS new_session
+      FROM gaps
+    )
+    SELECT visitor_id, view_id, viewed_at, page, viewed_at - prev_at AS gap, new_session,
+           SUM(new_session) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS session_no
+    FROM flags
+    WHERE visitor_id IN ('v1', 'v3')
+    ORDER BY visitor_id, viewed_at, view_id;
+    ```
 
-| visitor_id | view_id | viewed_at | page | gap | new_session | session_no |
-| --- | --- | --- | --- | --- | --- | --- |
-| v1 | 1 | 2026-04-05 12:00:00 | home | *NULL* | 1 | 1 |
-| v1 | 2 | 2026-04-05 12:03:10 | product | 0:03:10 | 0 | 1 |
-| v1 | 3 | 2026-04-05 12:10:00 | cart | 0:06:50 | 0 | 1 |
-| v1 | 4 | 2026-04-05 12:29:30 | checkout | 0:19:30 | 0 | 1 |
-| v1 | 5 | 2026-04-05 12:30:05 | thanks | 0:00:35 | 0 | 1 |
-| v1 | 6 | 2026-04-05 18:45:00 | home | 6:14:55 | 1 | 2 |
-| v1 | 7 | 2026-04-05 18:46:00 | product | 0:01:00 | 0 | 2 |
-| v3 | 13 | 2026-04-05 10:00:00 | home | *NULL* | 1 | 1 |
-| v3 | 14 | 2026-04-05 10:02:00 | product | 0:02:00 | 0 | 1 |
-| v3 | 15 | 2026-04-05 10:31:59 | product | 0:29:59 | 0 | 1 |
-| v3 | 16 | 2026-04-05 11:02:00 | checkout | 0:30:01 | 1 | 2 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 11 rows.</p>
+
+    | visitor_id | view_id | viewed_at | page | gap | new_session | session_no |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | v1 | 1 | 2026-04-05 12:00:00 | home | *NULL* | 1 | 1 |
+    | v1 | 2 | 2026-04-05 12:03:10 | product | 0:03:10 | 0 | 1 |
+    | v1 | 3 | 2026-04-05 12:10:00 | cart | 0:06:50 | 0 | 1 |
+    | v1 | 4 | 2026-04-05 12:29:30 | checkout | 0:19:30 | 0 | 1 |
+    | v1 | 5 | 2026-04-05 12:30:05 | thanks | 0:00:35 | 0 | 1 |
+    | v1 | 6 | 2026-04-05 18:45:00 | home | 6:14:55 | 1 | 2 |
+    | v1 | 7 | 2026-04-05 18:46:00 | product | 0:01:00 | 0 | 2 |
+    | v3 | 13 | 2026-04-05 10:00:00 | home | *NULL* | 1 | 1 |
+    | v3 | 14 | 2026-04-05 10:02:00 | product | 0:02:00 | 0 | 1 |
+    | v3 | 15 | 2026-04-05 10:31:59 | product | 0:29:59 | 0 | 1 |
+    | v3 | 16 | 2026-04-05 11:02:00 | checkout | 0:30:01 | 1 | 2 |
+    <!-- /result -->
 
 Look at `v3`: a gap of 29 minutes 59 seconds stays in session 1; the next gap, 30 minutes 1 second, starts session 2.
 Check the boundary the task asks for: "more than 30 minutes" is `>`, "30 minutes or more" is `>=`.
@@ -368,43 +386,45 @@ start, end, length and number of pages.
 
 **Task:** For each visitor and session, show start, end, length and number of pages.
 
-<!-- sql pg -->
-```sql
-WITH gaps AS (
-  SELECT visitor_id, viewed_at, view_id,
-         LAG(viewed_at) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS prev_at
-  FROM page_views
-),
-numbered AS (
-  SELECT *,
-         SUM(CASE WHEN prev_at IS NULL OR viewed_at - prev_at > INTERVAL '30 minutes' THEN 1 ELSE 0 END)
-           OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS session_no
-  FROM gaps
-)
-SELECT visitor_id, session_no,
-       MIN(viewed_at)                  AS started,
-       MAX(viewed_at)                  AS ended,
-       MAX(viewed_at) - MIN(viewed_at) AS length,
-       COUNT(*)                        AS pages
-FROM numbered
-GROUP BY visitor_id, session_no
-ORDER BY visitor_id, session_no;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+    <!-- sql pg -->
+    ```sql
+    WITH gaps AS (
+      SELECT visitor_id, viewed_at, view_id,
+             LAG(viewed_at) OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS prev_at
+      FROM page_views
+    ),
+    numbered AS (
+      SELECT *,
+             SUM(CASE WHEN prev_at IS NULL OR viewed_at - prev_at > INTERVAL '30 minutes' THEN 1 ELSE 0 END)
+               OVER (PARTITION BY visitor_id ORDER BY viewed_at, view_id) AS session_no
+      FROM gaps
+    )
+    SELECT visitor_id, session_no,
+           MIN(viewed_at)                  AS started,
+           MAX(viewed_at)                  AS ended,
+           MAX(viewed_at) - MIN(viewed_at) AS length,
+           COUNT(*)                        AS pages
+    FROM numbered
+    GROUP BY visitor_id, session_no
+    ORDER BY visitor_id, session_no;
+    ```
 
-| visitor_id | session_no | started | ended | length | pages |
-| --- | --- | --- | --- | --- | --- |
-| v1 | 1 | 2026-04-05 12:00:00 | 2026-04-05 12:30:05 | 0:30:05 | 5 |
-| v1 | 2 | 2026-04-05 18:45:00 | 2026-04-05 18:46:00 | 0:01:00 | 2 |
-| v2 | 1 | 2026-04-05 09:00:00 | 2026-04-05 09:20:00 | 0:20:00 | 4 |
-| v2 | 2 | 2026-04-05 09:55:00 | 2026-04-05 09:55:00 | 0:00:00 | 1 |
-| v3 | 1 | 2026-04-05 10:00:00 | 2026-04-05 10:31:59 | 0:31:59 | 3 |
-| v3 | 2 | 2026-04-05 11:02:00 | 2026-04-05 11:02:00 | 0:00:00 | 1 |
-| v4 | 1 | 2026-04-04 23:50:00 | 2026-04-05 00:12:00 | 0:22:00 | 3 |
-| v5 | 1 | 2026-04-05 14:00:00 | 2026-04-05 14:00:00 | 0:00:00 | 1 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16. 8 rows.</p>
+
+    | visitor_id | session_no | started | ended | length | pages |
+    | --- | --- | --- | --- | --- | --- |
+    | v1 | 1 | 2026-04-05 12:00:00 | 2026-04-05 12:30:05 | 0:30:05 | 5 |
+    | v1 | 2 | 2026-04-05 18:45:00 | 2026-04-05 18:46:00 | 0:01:00 | 2 |
+    | v2 | 1 | 2026-04-05 09:00:00 | 2026-04-05 09:20:00 | 0:20:00 | 4 |
+    | v2 | 2 | 2026-04-05 09:55:00 | 2026-04-05 09:55:00 | 0:00:00 | 1 |
+    | v3 | 1 | 2026-04-05 10:00:00 | 2026-04-05 10:31:59 | 0:31:59 | 3 |
+    | v3 | 2 | 2026-04-05 11:02:00 | 2026-04-05 11:02:00 | 0:00:00 | 1 |
+    | v4 | 1 | 2026-04-04 23:50:00 | 2026-04-05 00:12:00 | 0:22:00 | 3 |
+    | v5 | 1 | 2026-04-05 14:00:00 | 2026-04-05 14:00:00 | 0:00:00 | 1 |
+    <!-- /result -->
 
 Visitor `v4`'s session starts at 23:50 on 4 April and ends after midnight: the rule is about the **gap**, not the
 calendar day, so it stays one session. If a report counts "sessions per day", decide which day a session belongs to
@@ -421,30 +441,32 @@ visitor with a 1 or 0 for each step (`MAX` of a `CASE`: did **any** of their row
 
 **Task:** For each visitor, show 1 or 0 for whether they saw each page: home, product, cart, checkout, thanks.
 
-<!-- sql -->
-```sql
-SELECT visitor_id,
-       MAX(CASE WHEN page = 'home'     THEN 1 ELSE 0 END) AS saw_home,
-       MAX(CASE WHEN page = 'product'  THEN 1 ELSE 0 END) AS saw_product,
-       MAX(CASE WHEN page = 'cart'     THEN 1 ELSE 0 END) AS saw_cart,
-       MAX(CASE WHEN page = 'checkout' THEN 1 ELSE 0 END) AS saw_checkout,
-       MAX(CASE WHEN page = 'thanks'   THEN 1 ELSE 0 END) AS saw_thanks
-FROM page_views
-GROUP BY visitor_id
-ORDER BY visitor_id;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+    <!-- sql -->
+    ```sql
+    SELECT visitor_id,
+           MAX(CASE WHEN page = 'home'     THEN 1 ELSE 0 END) AS saw_home,
+           MAX(CASE WHEN page = 'product'  THEN 1 ELSE 0 END) AS saw_product,
+           MAX(CASE WHEN page = 'cart'     THEN 1 ELSE 0 END) AS saw_cart,
+           MAX(CASE WHEN page = 'checkout' THEN 1 ELSE 0 END) AS saw_checkout,
+           MAX(CASE WHEN page = 'thanks'   THEN 1 ELSE 0 END) AS saw_thanks
+    FROM page_views
+    GROUP BY visitor_id
+    ORDER BY visitor_id;
+    ```
 
-| visitor_id | saw_home | saw_product | saw_cart | saw_checkout | saw_thanks |
-| --- | --- | --- | --- | --- | --- |
-| v1 | 1 | 1 | 1 | 1 | 1 |
-| v2 | 1 | 1 | 1 | 0 | 0 |
-| v3 | 1 | 1 | 0 | 1 | 0 |
-| v4 | 1 | 1 | 1 | 0 | 0 |
-| v5 | 0 | 1 | 0 | 0 | 0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 5 rows.</p>
+
+    | visitor_id | saw_home | saw_product | saw_cart | saw_checkout | saw_thanks |
+    | --- | --- | --- | --- | --- | --- |
+    | v1 | 1 | 1 | 1 | 1 | 1 |
+    | v2 | 1 | 1 | 1 | 0 | 0 |
+    | v3 | 1 | 1 | 0 | 1 | 0 |
+    | v4 | 1 | 1 | 1 | 0 | 0 |
+    | v5 | 0 | 1 | 0 | 0 | 0 |
+    <!-- /result -->
 
 Then sum each column to get the funnel, and divide to get the conversion. Two habits: multiply by `100.0` (not
 `100`) so the division is not integer division, and divide by `NULLIF(x, 0)` so an empty step gives `NULL`
@@ -452,33 +474,35 @@ instead of an error.
 
 **Task:** Count the visitors, how many reached product, cart and checkout, how many bought, and the conversion percentage.
 
-<!-- sql -->
-```sql
-WITH steps AS (
-  SELECT visitor_id,
-         MAX(CASE WHEN page = 'product'  THEN 1 ELSE 0 END) AS product,
-         MAX(CASE WHEN page = 'cart'     THEN 1 ELSE 0 END) AS cart,
-         MAX(CASE WHEN page = 'checkout' THEN 1 ELSE 0 END) AS checkout,
-         MAX(CASE WHEN page = 'thanks'   THEN 1 ELSE 0 END) AS thanks
-  FROM page_views
-  GROUP BY visitor_id
-)
-SELECT COUNT(*)      AS visitors,
-       SUM(product)  AS reached_product,
-       SUM(cart)     AS reached_cart,
-       SUM(checkout) AS reached_checkout,
-       SUM(thanks)   AS bought,
-       ROUND(100.0 * SUM(thanks) / NULLIF(COUNT(*), 0), 1) AS conversion_pct
-FROM steps;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    WITH steps AS (
+      SELECT visitor_id,
+             MAX(CASE WHEN page = 'product'  THEN 1 ELSE 0 END) AS product,
+             MAX(CASE WHEN page = 'cart'     THEN 1 ELSE 0 END) AS cart,
+             MAX(CASE WHEN page = 'checkout' THEN 1 ELSE 0 END) AS checkout,
+             MAX(CASE WHEN page = 'thanks'   THEN 1 ELSE 0 END) AS thanks
+      FROM page_views
+      GROUP BY visitor_id
+    )
+    SELECT COUNT(*)      AS visitors,
+           SUM(product)  AS reached_product,
+           SUM(cart)     AS reached_cart,
+           SUM(checkout) AS reached_checkout,
+           SUM(thanks)   AS bought,
+           ROUND(100.0 * SUM(thanks) / NULLIF(COUNT(*), 0), 1) AS conversion_pct
+    FROM steps;
+    ```
 
-| visitors | reached_product | reached_cart | reached_checkout | bought | conversion_pct |
-| --- | --- | --- | --- | --- | --- |
-| 5 | 5 | 3 | 2 | 1 | 20.0 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | visitors | reached_product | reached_cart | reached_checkout | bought | conversion_pct |
+    | --- | --- | --- | --- | --- | --- |
+    | 5 | 5 | 3 | 2 | 1 | 20.0 |
+    <!-- /result -->
 
 This counts a step even when it was reached **out of order**: `v3` reached checkout without a cart. A stricter
 funnel counts a step only if the steps before it happened earlier; that needs the time of each step
@@ -493,21 +517,23 @@ subquery instead:
 
 **Task:** Count the page-view rows, and the events left after removing exact repeats.
 
-<!-- sql -->
-```sql
-SELECT COUNT(*) AS all_rows,
-       (SELECT COUNT(*)
-        FROM (SELECT DISTINCT visitor_id, viewed_at, page, product_id FROM page_views) d) AS distinct_events
-FROM page_views;
-```
+??? success "Solution"
 
-<!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+    <!-- sql -->
+    ```sql
+    SELECT COUNT(*) AS all_rows,
+           (SELECT COUNT(*)
+            FROM (SELECT DISTINCT visitor_id, viewed_at, page, product_id FROM page_views) d) AS distinct_events
+    FROM page_views;
+    ```
 
-| all_rows | distinct_events |
-| --- | --- |
-| 20 | 19 |
-<!-- /result -->
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+    | all_rows | distinct_events |
+    | --- | --- |
+    | 20 | 19 |
+    <!-- /result -->
 
 `DISTINCT` treats two `NULL` `product_id`s as equal, which is what you want here.
 

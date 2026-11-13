@@ -109,7 +109,7 @@ def show(v):
         return v.isoformat(sep=" ")
     if isinstance(v, list):  # a PostgreSQL array, printed the way PostgreSQL prints it
         return "{" + ",".join("NULL" if x is None else show(x) for x in v) + "}"
-    s = str(v).replace("|", "\\|").replace("\n", " ")
+    s = str(v).replace("|", "\\|").replace("\n", " ").replace("<", "&lt;")  # "<b@x>" would become a link
     return s if s else "*(empty text)*"
 
 
