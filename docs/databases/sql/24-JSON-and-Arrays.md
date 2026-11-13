@@ -64,6 +64,8 @@ Both databases have two arrow operators (SQLite since 3.38):
 
 Chain them to go deeper, with a number to pick an element of an array (counting from 0):
 
+**Task:** For every event, pull out the type, the user's id (as a number), the user's country and the first item's SKU, by event id.
+
 <!-- sql -->
 ```sql
 SELECT event_id,
@@ -93,6 +95,8 @@ Two things to notice:
 - **Cast what you extract.** On PostgreSQL `->>` always returns text, even for `1` or `34.25`; on SQLite it returns
   a number for a JSON number. `CAST(... AS INTEGER)` or `AS NUMERIC(10,2)` gives the same type on both, and is
   needed anyway before you compare or add numbers on PostgreSQL.
+
+**Task:** For purchase events, show by country the number of purchases and the revenue, by country.
 
 <!-- sql -->
 ```sql
@@ -394,6 +398,8 @@ Filtering on a field with `->>` works everywhere, but reads every document. Two 
 - **A GIN index on the whole document** (PostgreSQL only): `CREATE INDEX events_doc ON events USING GIN (payload);`
   serves the **containment** operator `@>`, "does the document contain this piece of JSON?", for any key:
 
+**Task:** List the events that contain an item with SKU "NOTE", by event id.
+
 <!-- sql pg -->
 ```sql
 SELECT event_id
@@ -420,6 +426,8 @@ same question needs `EXISTS (SELECT 1 FROM json_each(payload, '$.items') j WHERE
 PostgreSQL columns can hold arrays of any type: `INTEGER[]`, `TEXT[]`. SQLite has no array type; use a JSON array
 there. The useful parts:
 
+**Task:** For customers 1 and 2, show their order ids as one array, how many there are, and the first one.
+
 <!-- sql pg -->
 ```sql
 SELECT c.customer_id,
@@ -445,6 +453,8 @@ ORDER BY c.customer_id;
 `ARRAY_AGG(x ORDER BY x)` is an aggregate that collects a group's values into one array; `CARDINALITY(array)` is the
 number of elements in it; `array[1]` is its first element. PostgreSQL arrays count from **1**, not 0 like JSON arrays. `UNNEST` turns an array back into rows, and `= ANY(array)`
 tests membership:
+
+**Task:** List products 2, 4 and 6 using an array: id and name, by id.
 
 <!-- sql pg -->
 ```sql

@@ -25,6 +25,8 @@ and the ranking functions. Their biggest trap is ties, and the sample data is fu
 With GROUP BY, an average per department gives one row per department, and the people are gone. With a window
 function, each person keeps their row and gets their department's average beside it:
 
+**Task:** For every employee with a salary, show name, department, salary, the department's average (whole number), the difference from it, and the company's total payroll, by department, highest salary first, then name.
+
 <!-- sql -->
 ```sql
 SELECT name, department, salary,
@@ -63,6 +65,8 @@ ORDER BY department, salary DESC, name;
 
 So "employees earning more than their department's average", solved with a subquery in
 [chapter 10](10-Subqueries.md#correlated), can also be written by putting the window in a CTE and filtering outside:
+
+**Task:** List the employees who earn more than their department's average: name, department and salary, by department, highest salary first, then name.
 
 <!-- sql -->
 ```sql
@@ -114,6 +118,8 @@ filtered out of the first example before any average was taken), and they can't 
 The ranking functions need an order: who is first? It goes inside OVER, and has nothing to do with the order of the
 output (that is still the final ORDER BY).
 
+**Task:** Number the employees with a salary from highest paid to lowest (ties by name): name, department, salary and the number.
+
 <!-- sql -->
 ```sql
 SELECT name, department, salary,
@@ -148,6 +154,8 @@ any answer that depends on who is 3rd.
 
 Add **PARTITION BY** and the numbering restarts in each group:
 
+**Task:** Number the employees within each department from highest paid to lowest (ties by name), by department then that number.
+
 <!-- sql -->
 ```sql
 SELECT name, department, salary,
@@ -178,6 +186,8 @@ ORDER BY department, rn_in_dept;
 ## 13.3 ROW_NUMBER, RANK and DENSE_RANK: ties { #ties }
 
 The three ranking functions differ only in what they do with ties:
+
+**Task:** For Engineering and Sales, rank each employee by salary within the department three ways: `ROW_NUMBER`, `RANK` and `DENSE_RANK`.
 
 <!-- sql -->
 ```sql
@@ -229,6 +239,8 @@ with ties.
 
 The task: "the two highest-paid people in each department". The shape is always the same: rank in a CTE, filter
 outside.
+
+**Task:** Show the top 2 earners of each department, keeping ties: department, name, salary and rank, by department, rank, then name.
 
 <!-- sql -->
 ```sql
@@ -327,6 +339,8 @@ ORDER BY e.department, rnk, e.name;
 "Each customer's most recent order." This is the most common window question in data engineering, because it is
 also how you keep the newest version of each record when loading data ([chapter 22](22-Duplicates-and-Incremental-Loads.md)).
 
+**Task:** Show each customer's most recent order: customer id, order id, order date and status, by customer id.
+
 <!-- sql -->
 ```sql
 WITH ranked AS (
@@ -370,6 +384,8 @@ date. The window version doesn't have that problem.
 Because windows run after GROUP BY, a window function can rank the groups themselves. Customers ranked by shipped
 revenue:
 
+**Task:** Rank the customers by shipped revenue, highest first: customer id, revenue and rank, by rank then customer id.
+
 <!-- sql -->
 ```sql
 SELECT o.customer_id,
@@ -403,6 +419,8 @@ ORDER BY revenue_rank, o.customer_id;
 
 The share of each group in the total is a window over the grouped rows too:
 
+**Task:** For each category, show its revenue and its share of all revenue in percent (1 decimal), highest revenue first.
+
 <!-- sql -->
 ```sql
 SELECT p.category,
@@ -431,6 +449,8 @@ OVER () adds those totals up across all categories.
 ## 13.7 NTILE, PERCENT_RANK, CUME_DIST { #ntile }
 
 Three more functions answer "where does this row stand?":
+
+**Task:** For every product, show name, price, its quartile (1 to 4) by price, its percent rank and its cumulative share (2 decimals), cheapest first.
 
 <!-- sql -->
 ```sql
@@ -471,6 +491,8 @@ NUMERIC)` (chapter 4).
 ## 13.8 Naming a window: the WINDOW clause { #window-clause }
 
 When several functions share one window, name it once:
+
+**Task:** For Sales, show each employee's `RANK` and `DENSE_RANK` by salary, highest first, defining the window once.
 
 <!-- sql -->
 ```sql

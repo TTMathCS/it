@@ -27,6 +27,8 @@ The examples below create a role `support` and then act as it with `SET LOCAL RO
 the transaction (each example here is rolled back, so the role never really exists). Support staff may look up
 customers but must not see their emails, so they get the `customers_public` view and nothing else:
 
+**Task:** Let a support role see customers without their emails, then, as that role, list the Canadian customers.
+
 <!-- sql pg -->
 ```sql
 CREATE ROLE support NOLOGIN;
@@ -104,6 +106,8 @@ work. Grant to groups rather than to people, so that access follows the job, not
 Views and column grants hide columns. **Row-level security** (RLS) hides rows: a policy adds a condition to every
 query on the table, for every role it applies to. Here the Canadian support team sees only Canadian customers,
 whatever query they write:
+
+**Task:** Let a role see only Canadian customers, whatever query it writes, then count what it sees.
 
 <!-- sql pg -->
 ```sql

@@ -41,6 +41,8 @@ WHERE o.status = 'shipped';
 grand total), and returns all three levels in one result. In the extra rows, the columns that were rolled up are
 NULL.
 
+**Task:** For January and February, show revenue by month and category, plus a subtotal per month and a grand total.
+
 <!-- sql pg -->
 ```sql
 SELECT month, category, SUM(revenue) AS revenue
@@ -75,6 +77,8 @@ columns matters.
 
 A NULL in a rolled-up row means "all categories", but a real NULL in the data looks the same. `GROUPING(column)`
 is 1 when the column was rolled up in that row and 0 otherwise, so you can label the rows:
+
+**Task:** The same report, with the subtotal rows labelled 'All months' and 'All categories'.
 
 <!-- sql pg -->
 ```sql
@@ -112,6 +116,8 @@ whatever it does with NULLs.
 `CUBE (month, category)` gives **every** combination: `(month, category)`, `(month)`, `(category)` and `()`.
 `GROUPING SETS` lists exactly the groupings you want; `ROLLUP` and `CUBE` are shorthands for common lists. Here, the
 total per month and the total per category, without the detail rows:
+
+**Task:** Show the total per month and the total per category in one result, without the detail rows.
 
 <!-- sql pg -->
 ```sql
@@ -151,6 +157,8 @@ PostgreSQL, SQL Server, Oracle, Snowflake, Databricks and BigQuery have all thre
 
 Every grouping set is just another `GROUP BY`. Write one `SELECT` per level, put a label (or NULL) in the columns
 that level does not group by, and glue them with `UNION ALL`. This runs on every database:
+
+**Task:** The month-and-category report with subtotals, written so it runs on every database.
 
 <!-- sql -->
 ```sql
@@ -257,6 +265,8 @@ aggregate. The older way, `SUM(CASE WHEN ... THEN ... END)`, runs everywhere and
 A pivot turns the values of one column into column headings: one row per category, one column per month. Each
 column is a conditional aggregate, so you must know the columns when you write the query:
 
+**Task:** Show revenue per category with one column per month (January to April) and a total, highest total first.
+
 <!-- sql -->
 ```sql
 SELECT category,
@@ -292,6 +302,8 @@ runs. The reverse, **unpivot** (columns into rows), is a `UNION ALL` of one `SEL
 A subquery in `FROM` normally cannot refer to the other tables in the same `FROM`. With `LATERAL` it can: it runs
 once per row of the tables to its left, like a correlated subquery that may return several rows and several
 columns. The classic use is **top N per group**: each customer's two largest orders.
+
+**Task:** For customers 1, 2 and 4, show each customer's two largest orders: id, name, order id and order total.
 
 <!-- sql pg -->
 ```sql

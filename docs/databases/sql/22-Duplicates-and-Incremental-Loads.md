@@ -49,6 +49,8 @@ There are two kinds of duplicate, and the first question in any task is which on
 
 **Exact duplicates** are rows equal in every column. Group by all the columns and keep groups with more than one row:
 
+**Task:** Find the rows of `customer_feed` that are exact copies of each other, with how many copies.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, email, city, updated_at, COUNT(*) AS copies
@@ -70,6 +72,8 @@ want when looking for copies (a plain `=` would not match them).
 
 **Duplicates by key** are several rows for the same business key, here `customer_id`, that may differ in other
 columns: different versions of the same customer.
+
+**Task:** Find the customer ids that appear more than once in `customer_feed`, with how many rows each, by id.
 
 <!-- sql -->
 ```sql
@@ -95,6 +99,8 @@ Customer 1 has three rows (the 1 May row twice, and a newer one from 3 May); cus
 
 For exact duplicates, `SELECT DISTINCT` is enough. For duplicates by key you must say **which** row to keep, usually
 the newest. Number each key's rows newest first and keep number 1:
+
+**Task:** Keep only the newest row for each customer in `customer_feed`, by customer id.
 
 <!-- sql -->
 ```sql
@@ -317,6 +323,8 @@ ON CONFLICT (customer_id) DO NOTHING;
 <p class="sql-tested sql-error">SQLite 3.53: error: <code>near "DO": syntax error</code></p>
 <!-- /result -->
 
+**Task:** Load the feed into `customers_current`, skipping customers already there, then count the rows.
+
 <!-- sql sqlite -->
 ```sql
 INSERT INTO customers_current (customer_id, email, city, updated_at)
@@ -338,6 +346,8 @@ SELECT COUNT(*) AS customers FROM customers_current;
 Jobs fail and get re-run; schedulers retry; someone runs yesterday's load again by hand. A load is **idempotent**
 when running it twice gives the same result as running it once. Here the same load is run again as if the watermark
 had not moved (the old value written in by hand):
+
+**Task:** Load only the feed rows changed since 2 May, newest version per customer, inserting new customers and updating existing ones.
 
 <!-- sql -->
 ```sql
@@ -379,6 +389,8 @@ one, doubled every row. The three usual ways to make a load idempotent:
 
 On PostgreSQL 15+ the same load can be written as a `MERGE` ([chapter 17](17-Insert-Update-Delete-Merge.md#merge)):
 
+**Task:** The same incremental load as one `MERGE`.
+
 <!-- sql pg -->
 ```sql
 MERGE INTO customers_current t
@@ -413,6 +425,8 @@ SELECT COUNT(*) AS customers FROM customers_current;
 A watermark on the source's `updated_at` has a weakness. Suppose Ben moved to Abuja on 3 May at 10:00, but the
 source system only sent that row after the load above had run; the watermark is already 4 May 07:15. The next
 load reads `updated_at > '2026-05-04 07:15:00'` and never sees Ben's change:
+
+**Task:** A late row arrives for Ben; list the feed rows newer than the saved watermark.
 
 <!-- sql -->
 ```sql
@@ -514,6 +528,8 @@ INSERT INTO snapshot_today VALUES
 <!-- result -->
 <p class="sql-tested">These tables load on PostgreSQL 16 and SQLite 3.53.</p>
 <!-- /result -->
+
+**Task:** Compare today's snapshot with `customers_current` and label each customer new, deleted, changed or unchanged.
 
 <!-- sql -->
 ```sql
@@ -632,6 +648,8 @@ The order of the two steps is the trick. Step 1 leaves changed customers without
 a current row for exactly the customers who lack one, which is the changed ones plus the new ones. Unchanged
 customers (Ana) still have their current row and are skipped. Run the same load a second time and nothing happens:
 nobody differs from the snapshot any more, and everybody has a current row.
+
+**Task:** Close the current history row of each customer whose city changed in the snapshot, and add a new current row.
 
 <!-- sql -->
 ```sql

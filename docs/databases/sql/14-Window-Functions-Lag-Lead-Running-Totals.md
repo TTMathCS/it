@@ -24,6 +24,8 @@ window, which quietly changes running totals when dates tie and makes LAST_VALUE
 `LAG(x)` is the value of `x` in the **previous** row of the window; `LEAD(x)` in the **next**. The window's ORDER BY
 says what "previous" means, and PARTITION BY keeps each group separate.
 
+**Task:** For customers 1 and 2, show each order with the date of the customer's previous and next order, by customer then date.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, order_id, order_date,
@@ -111,6 +113,8 @@ gets whole days; SQLite turns dates into day numbers with `julianday`.
 First one row per month (a CTE), then LAG over the months. Shipped revenue per month and the change from the month
 before:
 
+**Task:** For each month, show shipped revenue, the previous month's revenue, the change and the change in percent.
+
 <!-- sql -->
 ```sql
 WITH monthly AS (
@@ -155,6 +159,8 @@ January has no previous month, so its change is NULL, which is the honest answer
 An aggregate with ORDER BY in its window becomes a **running** aggregate: the sum of every row from the start up to
 this one.
 
+**Task:** For each month, show shipped revenue and the running total so far, by month.
+
 <!-- sql -->
 ```sql
 WITH monthly AS (
@@ -183,6 +189,8 @@ ORDER BY month;
 <!-- /result -->
 
 With PARTITION BY the total restarts in each group: each customer's spending to date, order by order.
+
+**Task:** For customers 1 and 4, show each order's value and how much the customer had spent up to and including it, order by order.
 
 <!-- sql -->
 ```sql
@@ -258,6 +266,8 @@ running total of orders by date, where two orders share 3 January and two share 
 **ROWS** counts physical rows instead: "from the first row up to this row, exactly". With a tie-break in the ORDER
 BY, every row gets its own total:
 
+**Task:** For orders before 15 February 2026, show order id, date and how many orders had been placed so far, by date then id.
+
 <!-- sql -->
 ```sql
 SELECT order_id, order_date,
@@ -306,6 +316,8 @@ The frame words:
 
 "The average of this row and the two before it" is a frame of three rows:
 
+**Task:** For each login day, show the logins and the average of that day and the two days before it (2 decimals), with how many days went into the average.
+
 <!-- sql -->
 ```sql
 WITH daily AS (
@@ -343,6 +355,8 @@ over four and five calendar days. For a true 3-day average, fill in the missing 
 ## 14.6 FIRST_VALUE, LAST_VALUE, NTH_VALUE { #first-last }
 
 `FIRST_VALUE(x)` is `x` from the first row of the frame. The highest salary in each department, beside everyone:
+
+**Task:** For Sales and Support, show each employee with the top earner of their department beside them, by department, highest salary first, then name.
 
 <!-- sql -->
 ```sql
@@ -395,6 +409,8 @@ ORDER BY department, salary DESC, name;
     the row you're on.
 
 Extend the frame to the end of the partition:
+
+**Task:** The same, with the lowest earner of the department beside each employee.
 
 <!-- sql -->
 ```sql

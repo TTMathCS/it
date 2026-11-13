@@ -24,6 +24,8 @@ islands), pivots, the median, "in every month", and "bought together".*
 
 **1. DENSE_RANK** (chapter 13): rank the salary levels, keep level N.
 
+**Task:** Find the second-highest different salary, as `second_highest`.
+
 <!-- sql -->
 ```sql
 WITH levels AS (
@@ -121,6 +123,8 @@ WHERE (SELECT COUNT(DISTINCT x.salary) FROM employees x WHERE x.salary > e.salar
 above return **no row** in that case, which is not the same thing. Wrap the query as a scalar subquery: a scalar
 subquery with no row gives NULL (chapter 10). Here, asking for the 10th-highest of the 9 salary levels:
 
+**Task:** Find the 10th-highest different salary, giving NULL when there is no such salary.
+
 <!-- sql -->
 ```sql
 SELECT (
@@ -146,6 +150,8 @@ rather than nothing, because an aggregate over no rows gives one row with NULL.
 
 **Finding them** is a GROUP BY on the columns that should be unique, keeping groups with more than one row:
 
+**Task:** Find the (customer, login date) pairs that appear more than once in `logins`, with how many copies.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, login_date, COUNT(*) AS copies
@@ -163,6 +169,8 @@ HAVING COUNT(*) > 1;
 <!-- /result -->
 
 To see **every** duplicated row with its other columns, count with a window instead, so the rows are kept:
+
+**Task:** List every customer whose name is shared with another customer: id, name and city, by id.
 
 <!-- sql -->
 ```sql
@@ -303,6 +311,8 @@ which finds **gaps** in a sequence: wherever one island ends and the next starts
 "Revenue per month, with one column per category." The data has one row per (month, category); the answer wants
 months down the side and categories across the top. Put a CASE inside each SUM, one per output column:
 
+**Task:** For each month, show revenue by category in columns (home, kitchen, office) and the total, one row per month.
+
 <!-- sql -->
 ```sql
 SELECT SUBSTR(CAST(o.order_date AS TEXT), 1, 7) AS month,
@@ -400,6 +410,8 @@ even. Ties in salary don't matter here: tied rows have the same value. `PERCENTI
 "Customers who placed a shipped order in **every** month from January to April." Count the different months per
 customer and compare with the number of months:
 
+**Task:** List the customers with a shipped order in every month from January to April 2026.
+
 <!-- sql -->
 ```sql
 SELECT customer_id
@@ -425,6 +437,8 @@ with four orders in one month. The double `NOT EXISTS` form of "for all" is in [
 
 "Which pairs of products appear in the same order most often?" A self join of `order_items` on `order_id`, with
 `a.product_id < b.product_id` to count each pair once:
+
+**Task:** List the pairs of products bought together in at least 2 orders, with how many orders, most first (ties by product ids).
 
 <!-- sql -->
 ```sql

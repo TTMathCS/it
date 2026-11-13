@@ -23,6 +23,8 @@ A **table** holds one kind of thing. In the shop, `customers` holds customers an
 **row** is one of those things, and each **column** is one fact about it, with a **type**: a whole number, a piece
 of text, a date, a price.
 
+**Task:** Show the first 4 customers by id: id, name, city, country and signup date.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name, city, country, signup_date
@@ -158,6 +160,8 @@ INSERT INTO orders VALUES (121, 99, '2026-04-06', 'shipped');
 A foreign key can be NULL unless the column says `NOT NULL`. Order 108 was placed by a guest, so its `customer_id`
 is NULL, which the key allows:
 
+**Task:** Show orders 107 to 109: order id, customer id, order date and status, by order id.
+
 <!-- sql -->
 ```sql
 SELECT order_id, customer_id, order_date, status
@@ -255,6 +259,8 @@ When it is used:
 In a join it behaves differently from one-to-many: **the row count does not grow.** Joining 10 customers to their
 profiles gives at most 10 rows, never more; with a `LEFT JOIN`, the customers without a profile stay, with NULLs:
 
+**Task:** List every customer with their phone and language from the profile table, keeping customers who have no profile, by customer id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name, p.phone, p.language
@@ -290,6 +296,8 @@ the other; in practice the application creates both rows in one transaction.
 
 **A table that points at itself.** Each employee's `manager_id` is another employee's `employee_id`:
 
+**Task:** List the employees in Management and Sales with their id, name, department and manager's id, by employee id.
+
 <!-- sql -->
 ```sql
 SELECT employee_id, name, department, manager_id
@@ -317,6 +325,8 @@ and "everyone below Maya, at any depth" needs a recursive query ([chapter 11](11
 ## 1.6 A name is not a key { #name-not-key }
 
 Two different customers are called Ana Silva:
+
+**Task:** Find every customer called Ana Silva: id, name, email and city, by id.
 
 <!-- sql -->
 ```sql

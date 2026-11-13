@@ -23,6 +23,8 @@ one), and one that returns no rows at all.*
 A subquery that returns one column and at most one row can be used anywhere a single value can. "Products that cost
 more than the average product":
 
+**Task:** List the products that cost more than the average product: name and price, dearest first (ties by name).
+
 <!-- sql -->
 ```sql
 SELECT name, price
@@ -46,6 +48,8 @@ outer WHERE. You can't write `WHERE price > AVG(price)`: an aggregate is not all
 it were, the outer query has no groups to average.
 
 In SELECT, a scalar subquery adds the same value to every row; useful for "compared with the whole":
+
+**Task:** For the Office products, show name, price, how far the price is above the average (2 decimals), and its share of all prices in percent (1 decimal), dearest first.
 
 <!-- sql -->
 ```sql
@@ -74,6 +78,8 @@ ORDER BY price DESC;
 
 A subquery that returns one column and many rows makes a list for `IN`. Products that appear in at least one
 cancelled order:
+
+**Task:** List the products that appear in a cancelled order: id and name, by id.
 
 <!-- sql -->
 ```sql
@@ -154,6 +160,8 @@ reason as `NOT IN`. Using MAX and MIN is portable and easier to read.
 "Employees who earn more than the average **of their own department**." The average changes from row to row, so the
 subquery has to know which department the outer row is in. It refers to the outer query's alias:
 
+**Task:** List the employees who earn more than the average of their own department: name, department and salary, by department, highest salary first, then name.
+
 <!-- sql -->
 ```sql
 SELECT e.name, e.department, e.salary
@@ -217,6 +225,8 @@ test, any of the three is right; pick the one you can write without mistakes.
 A subquery in FROM is a temporary table that exists for this query only, often called a **derived table**. Use it
 to aggregate in two steps: first one row per order, then statistics over the orders.
 
+**Task:** Over all orders, show the number of orders, the average order value (2 decimals) and the biggest order.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)              AS orders,
@@ -266,6 +276,8 @@ order it returned the coffee mug; told to read the same table backwards, it retu
 stand instead. Same query, same data, different answer, and no warning. If
 a subquery might return several rows, decide what you mean: `IN (...)` for "any of them", `MAX(...)` or `MIN(...)`
 for one of them. And a scalar subquery that returns **no** rows gives NULL, which then compares as unknown:
+
+**Task:** List the products dearer than the Garden product (there is no Garden product).
 
 <!-- sql -->
 ```sql

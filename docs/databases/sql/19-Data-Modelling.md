@@ -24,6 +24,8 @@ and runs the queries.*
 Imagine the shop kept everything in one wide table, one row per order line with the customer's and product's
 details copied in. It is easy to query, and it goes wrong as soon as data changes:
 
+**Task:** Build one wide table of order lines with the customer and product details copied in, then count the rows holding Ana Silva's city.
+
 <!-- sql -->
 ```sql
 CREATE TABLE order_lines_wide AS
@@ -131,6 +133,8 @@ SELECT COUNT(*) AS fact_rows FROM fact_sales;
 
 Questions now have one shape: join the fact to the dimensions you need, filter and group by their columns, add up
 the facts.
+
+**Task:** From the star schema, show revenue by year, month and category for January and February 2026, highest revenue first within each month.
 
 <!-- sql -->
 ```sql
@@ -245,6 +249,8 @@ FROM dim_customer_history ORDER BY customer_sk;
 
 A far-future `valid_to` for the current row (instead of NULL) keeps every lookup a plain range test. A
 **point-in-time join** then finds the version that was true on the day of each sale:
+
+**Task:** For customer 1's sales, show each order with the city the customer lived in on the day of the sale.
 
 <!-- sql -->
 ```sql

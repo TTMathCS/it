@@ -89,6 +89,8 @@ INSERT INTO price_changes VALUES
 equality, and that is the whole idea. Because the ranges of one product never overlap, each sale finds at most one
 row.
 
+**Task:** For every sale, show sale id, product, date, quantity, the price in force on the day of the sale, and the revenue, by sale id.
+
 <!-- sql pg -->
 ```sql
 SELECT s.sale_id, s.product_id, s.sold_on, s.qty,
@@ -204,6 +206,8 @@ INSERT INTO stock_sales VALUES
 0 to 10 of product 1, lot 2 units 10 to 15, lot 3 units 15 to 25. The sales line up the same way: sale 1 takes units
 0 to 6, sale 2 units 6 to 13, sale 3 units 13 to 17. A sale takes from a lot exactly the units where their two
 ranges **overlap**, and the size of an overlap is `LEAST(end1, end2) - GREATEST(start1, start2)`. No loop is needed.
+
+**Task:** For every sale, work out the cost of the units sold, taking units from the oldest lot first (FIFO): sale id, product, units and cost.
 
 <!-- sql pg -->
 ```sql
@@ -323,6 +327,8 @@ period** when it begins after every earlier subscription has ended, that is afte
 earlier end dates (the maximum, not the previous row's end: a short subscription inside a long one must not end the
 period). Turn that into a 1/0 flag, and a running `SUM` of the flags numbers the periods. Then each period is one
 `GROUP BY`. This is gaps and islands for ranges instead of single days.
+
+**Task:** For each customer, merge overlapping or touching subscriptions into continuous periods: customer, period number, start and end.
 
 <!-- sql pg -->
 ```sql
@@ -446,6 +452,8 @@ joins the cart events that come **after** that view and keeps the first one. Ste
 cart and no later than one hour after the view. A user who fails a step simply has no row in the next CTE, so
 counting the rows of each CTE gives the funnel.
 
+**Task:** Count the users who viewed, then added to cart after viewing, then bought after adding to cart.
+
 <!-- sql pg -->
 ```sql
 WITH viewed AS (
@@ -550,6 +558,8 @@ that is still active N months later. This uses the shop's `orders` (any status).
 month count once). (2) Each customer's cohort is their first month. (3) For each activity row, the **month number**
 is the number of months since the cohort month (0 = the first month). Then count per cohort and month number, and
 divide by the cohort's size.
+
+**Task:** For each first-order month (cohort), show for each later month how many of its customers ordered again, the cohort size and the percentage.
 
 <!-- sql pg -->
 ```sql
@@ -692,6 +702,8 @@ INSERT INTO conversions VALUES
 and can use that row's columns, so "the latest touch of **this** user before **this** conversion" is a subquery with
 `ORDER BY ts DESC LIMIT 1`. `LEFT JOIN LATERAL ... ON TRUE` keeps conversions that find no touch.
 
+**Task:** For each conversion, name the last channel that touched the user in the 7 days before it, or 'direct' if none.
+
 <!-- sql pg -->
 ```sql
 SELECT c.conv_id, c.user_id, c.revenue,
@@ -776,6 +788,8 @@ called `Other`, placed last, so that the total stays right. This uses the shop's
 `'Other'` for the rest. Sorting by the smallest rank in each group keeps the top three in order and puts `Other`
 (whose smallest rank is 4) last.
 
+**Task:** Show the top 3 products by revenue and one 'Other' row for the rest, with revenue and share in percent, Other last.
+
 <!-- sql pg -->
 ```sql
 WITH revenue AS (
@@ -858,6 +872,8 @@ during that day and the 6 days before. This uses the shop's `logins` (1 to 10 Ma
 allowed: PostgreSQL does not accept `DISTINCT` in a window function. Instead, make a **calendar** of the days with
 `generate_series`, join each day to every login in its 7-day range, and count distinct customers with an ordinary
 `GROUP BY`. The calendar also gives a row to days with no logins at all.
+
+**Task:** For each day from 1 to 10 March 2026, count the different customers who logged in during the 7 days ending that day.
 
 <!-- sql pg -->
 ```sql
@@ -970,6 +986,8 @@ can carry a value from one row to the next. The **start** is the first transacti
 transaction to the row just made and decides with `CASE`. Number the rows first, since `tx_id` may have gaps (there
 is no 7).
 
+**Task:** Walk through the wallet transactions in order, declining any that would take the balance below 0: tx id, amount, outcome and balance after.
+
 <!-- sql pg -->
 ```sql
 WITH RECURSIVE tx AS (
@@ -1063,6 +1081,8 @@ report to them, the people who report to those, and so on. The shop's `employees
 **The technique: a recursive CTE of pairs.** Start with every direct pair (manager, employee). The step says: if B
 is below A, then everyone who reports to B is also below A. When no new pairs come, the CTE holds every (boss,
 person below) pair at every depth, and an ordinary `GROUP BY` boss adds them up.
+
+**Task:** For each manager, count everyone below them at any depth and their total salary.
 
 <!-- sql pg -->
 ```sql
@@ -1176,6 +1196,8 @@ INSERT INTO meetings VALUES
 **The technique.** Put each number next to the **next** one with `LEAD`. Where the next number is more than one
 higher, the numbers in between are missing: from `invoice_no + 1` to `next_no - 1`.
 
+**Task:** List the gaps in the invoice numbers: each missing range from and to.
+
 <!-- sql pg -->
 ```sql
 WITH paired AS (
@@ -1276,6 +1298,8 @@ INSERT INTO customer_records VALUES
 "the latest value that is not NULL". `MAX` gives the largest, not the latest. In PostgreSQL,
 `ARRAY_AGG(x ORDER BY updated_at DESC)` collects the group's values newest first, `FILTER (WHERE x IS NOT NULL)` leaves
 out the missing ones, and `[1]` takes the first element of the array.
+
+**Task:** Merge customer records that share an email (ignoring case and spaces), taking the newest non-missing name, phone and city, with the number of records merged.
 
 <!-- sql pg -->
 ```sql

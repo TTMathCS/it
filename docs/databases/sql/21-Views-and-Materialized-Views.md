@@ -39,6 +39,8 @@ GROUP BY c.customer_id, c.name;
 
 Now it reads like a table:
 
+**Task:** From the `customer_sales` view, show the top 3 customers by money spent: id, name, orders and spent.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name, orders, spent
@@ -59,6 +61,8 @@ LIMIT 3;
 
 A view stores no rows. Each query on it runs the view's query again, so it always shows the data as it is now. Here
 the price on order 102 is changed (inside a transaction that is rolled back), and Ben's total follows at once:
+
+**Task:** Change the price on order 102, then read Ben's total from the view.
 
 <!-- sql -->
 ```sql
@@ -273,6 +277,8 @@ SELECT customer_id, name, city FROM customers WHERE city = 'Toronto';
 A row can be changed so that it no longer belongs to the view. Ivan moves to Ottawa through the Toronto view, and
 leaves it:
 
+**Task:** Move customer 9 to Ottawa through the `toronto_customers` view, then count the view's rows.
+
 <!-- sql pg -->
 ```sql
 UPDATE toronto_customers SET city = 'Ottawa' WHERE customer_id = 9;
@@ -327,6 +333,8 @@ GROUP BY p.product_id, p.name;
 
 Change an order, and the materialized view still shows the old number:
 
+**Task:** Change a quantity on order 102, then read product 6's units from the materialized view.
+
 <!-- sql pg -->
 ```sql
 UPDATE order_items SET quantity = 5 WHERE order_id = 102 AND product_id = 6;
@@ -342,6 +350,8 @@ SELECT product_id, name, units FROM product_units WHERE product_id = 6;
 <!-- /result -->
 
 After a refresh it is right again:
+
+**Task:** The same change, then refresh the materialized view and read it again.
 
 <!-- sql pg -->
 ```sql
@@ -370,6 +380,8 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY product_units;
 <!-- result -->
 <p class="sql-tested sql-error">PostgreSQL 16: error: <code>cannot refresh materialized view "public.product_units" concurrently</code></p>
 <!-- /result -->
+
+**Task:** Refresh the materialized view without blocking readers, then count its rows.
 
 <!-- sql pg -->
 ```sql

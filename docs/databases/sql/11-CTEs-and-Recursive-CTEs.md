@@ -22,6 +22,8 @@ walks an org chart of any depth.*
 A CTE is a subquery moved to the front and given a name. These two queries are the same; the second reads in the
 order you think it:
 
+**Task:** What is the average order value, to 2 decimals?
+
 <!-- sql -->
 ```sql
 SELECT ROUND(AVG(total), 2) AS avg_order_value
@@ -57,6 +59,8 @@ FROM order_totals;
 <!-- /result -->
 
 Several CTEs are separated by commas, and each can use the ones before it. `WITH` is written once.
+
+**Task:** For each customer with shipped orders, show name, number of shipped orders, revenue and average order value.
 
 <!-- sql -->
 ```sql
@@ -100,6 +104,8 @@ clear grain, which is exactly what prevents the fan-out mistakes of [chapter 8](
 **A CTE can be used twice**, which a derived table can't without copying it out again. Orders whose value is above
 the average order value:
 
+**Task:** List the orders whose value is above the average order value: order id and total, highest first (ties by order id).
+
 <!-- sql -->
 ```sql
 WITH order_totals AS (
@@ -131,6 +137,8 @@ This is the method to use in a test. The task: "For each month, the customer wit
 month, with that revenue. If two customers tie, show both."
 
 **Step 1: one row per order, with its month and value.** Run it on its own and look at the rows.
+
+**Task:** List every shipped order with a customer: order id, customer id, month (YYYY-MM) and value, by month then order id.
 
 <!-- sql -->
 ```sql
@@ -170,6 +178,8 @@ SELECT * FROM order_values ORDER BY month, order_id;
 
 **Step 2: one row per customer per month.** **Step 3: the best total in each month.** **Step 4: keep the
 customer-months that equal it.** Each step is a CTE; the last SELECT only reads from them.
+
+**Task:** For each month, find the customer (or customers, on a tie) with the most shipped revenue: month, customer id and revenue.
 
 <!-- sql -->
 ```sql
@@ -231,6 +241,8 @@ The database runs the anchor, then the recursive part again and again on the new
 no rows. The keyword is `WITH RECURSIVE` in PostgreSQL, SQLite and MySQL; SQL Server and Oracle write plain `WITH`.
 
 **Counting from 1 to 5:**
+
+**Task:** Make the numbers 1 to 5, one per row.
 
 <!-- sql -->
 ```sql
@@ -322,6 +334,8 @@ PostgreSQL also has `generate_series(start, stop, step)` for exactly this; SQLit
 command-line tool, but not in most programs that use SQLite as a library, so the recursive CTE is the portable way.
 
 **Walking a hierarchy.** Everyone under Maya Rossi, at every level, with their level and the chain of managers:
+
+**Task:** List everyone under Maya Rossi at every level, with their level and their chain of managers, sorted by the chain.
 
 <!-- sql -->
 ```sql

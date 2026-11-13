@@ -259,6 +259,8 @@ WHERE order_date >= '2026-01-01' AND order_date < '2026-02-01'
 `BETWEEN '2026-01-01' AND '2026-01-31'` looks the same, and it is, for a pure date. With a timestamp it drops most of
 the last day:
 
+**Task:** For two events on 31 January 2026 (midnight and 15:30), show whether each counts as January by `BETWEEN` and by a half-open range.
+
 <!-- sql -->
 ```sql
 WITH events AS (
@@ -284,6 +286,8 @@ ORDER BY id;
 Here the timestamps are text, so `BETWEEN` compares strings: `'2026-01-31 00:00:00'` is a longer string than
 `'2026-01-31'`, sorts after it, and both events fall outside. With a real `TIMESTAMP` column the answer changes a
 little, because `'2026-01-31'` becomes midnight at the start of the 31st:
+
+**Task:** The same, with real timestamps on PostgreSQL.
 
 <!-- sql pg -->
 ```sql
@@ -401,6 +405,8 @@ question because it combines most of this course: a first-order CTE, month arith
 
 Months are turned into numbers (`year * 12 + month`) so that "months since the first order" is a subtraction that
 works on both databases:
+
+**Task:** For each month cohort (the month of a customer's first order), show how many customers it has and how many came back 1, 2 and 3 months later.
 
 <!-- sql -->
 ```sql

@@ -22,6 +22,8 @@ big.*
 
 Each order holds a `customer_id`. To show the customer's name beside the order, join the two tables on that column:
 
+**Task:** For orders placed before 1 February 2026, show order id, order date and the customer's name, by order id.
+
 <!-- sql -->
 ```sql
 SELECT o.order_id, o.order_date, c.name
@@ -50,6 +52,8 @@ in both tables (like `customer_id`) must be written with its table's alias in fr
 How to think about it: for each order, find the customer rows whose `customer_id` equals the order's; output one row
 per pair found. An order with **no** matching customer produces no row at all. Count the whole result:
 
+**Task:** How many orders have a matching customer?
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*) AS orders_with_a_customer
@@ -73,6 +77,8 @@ partner and disappears. `JOIN` on its own means `INNER JOIN`.
 A **LEFT JOIN** keeps every row of the left table (the one written first). Where nothing matches on the right, the
 right-hand columns are filled with NULL.
 
+**Task:** For customers 7 to 10, list each of their orders (id and status), keeping customers with no orders, by customer id then order id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name, o.order_id, o.status
@@ -95,6 +101,8 @@ ORDER BY c.customer_id, o.order_id;
 
 Ivan Petrov (9) has no orders, yet he is still in the result, with NULL in the order columns. That NULL is how you
 find "rows with no match": keep only the rows where a right-hand column that can't otherwise be NULL is NULL.
+
+**Task:** List the customers who have no orders: id and name, by id.
 
 <!-- sql -->
 ```sql
@@ -146,6 +154,8 @@ The task: "every customer, with their **shipped** orders; show customers with no
 
 Put the condition on the right-hand table **in the ON clause**. ON decides which rows match; the LEFT JOIN then
 still keeps every left row:
+
+**Task:** For customers 3, 6 and 9, list their shipped orders, keeping every one of the three customers even with none, by customer id then order id.
 
 <!-- sql -->
 ```sql
@@ -215,6 +225,8 @@ For an INNER JOIN, ON and WHERE give the same result; it makes no difference whe
 
 Count a column from the right-hand table instead. `COUNT(column)` skips NULLs, so Ivan's padded row counts 0:
 
+**Task:** For every customer, show id, name and number of orders (0 when none), by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name, COUNT(o.order_id) AS orders
@@ -254,6 +266,8 @@ no FULL JOIN.
 A **FULL JOIN** (FULL OUTER JOIN) keeps the unmatched rows of **both** sides. Customers and orders have one of each:
 a customer with no orders and an order with no customer.
 
+**Task:** List both kinds of loose ends at once: customers with no orders, and orders with no customer.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name, o.order_id
@@ -280,6 +294,8 @@ only in the other. ([Chapter 23](23-Data-Quality-Checks.md) uses it to reconcile
 A **CROSS JOIN** has no condition: every row on the left is paired with every row on the right. 3 rows by 4 rows
 gives 12. It sounds useless, and it is the right tool for "every customer for every month, even months with no
 orders": build the full grid first, then LEFT JOIN the facts onto it.
+
+**Task:** For customers 1 and 4, count their orders in each month from January to March 2026, showing 0 for a month with none.
 
 <!-- sql -->
 ```sql
@@ -320,6 +336,8 @@ missing ON.
 ## 8.7 Three tables and more { #many-tables }
 
 Joins chain: each new JOIN adds a table to the rows built so far. Revenue by product category, from shipped orders:
+
+**Task:** Show the revenue of shipped orders by product category, highest first.
 
 <!-- sql -->
 ```sql
@@ -409,6 +427,8 @@ of their logins:
 
 Aggregate each side first, then join the one-row-per-customer results:
 
+**Task:** For customers 1 and 2, show the number of orders and the number of logins, by customer id.
+
 <!-- sql -->
 ```sql
 WITH o AS (SELECT customer_id, COUNT(*) AS orders FROM orders GROUP BY customer_id),
@@ -442,6 +462,8 @@ ORDER BY c.customer_id;
 When the join columns have the same name on both sides, `USING (column)` is a shorter ON, and the column appears once
 in the output:
 
+**Task:** For orders 101 and 102, show order id, customer id and customer name, by order id.
+
 <!-- sql -->
 ```sql
 SELECT order_id, customer_id, name
@@ -466,6 +488,8 @@ as well as on `customer_id`, so almost every row would vanish. Write the conditi
 
 A join condition doesn't have to be `=`. Here each product is paired with the cheaper products in its category, a
 **non-equi join**:
+
+**Task:** For the Kitchen products and the Desk lamp, list every cheaper product in the same category, by product then cheaper product.
 
 <!-- sql -->
 ```sql

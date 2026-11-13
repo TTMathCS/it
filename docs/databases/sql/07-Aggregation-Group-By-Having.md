@@ -24,6 +24,8 @@ and the columns PostgreSQL refuses but SQLite lets through.*
 An **aggregate function** reads many rows and returns one value. Without GROUP BY, the whole table is one group, so
 the answer is one row.
 
+**Task:** For all products, show in one row: how many, the total of the prices, the average, the cheapest and the dearest price.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)        AS products,
@@ -47,6 +49,8 @@ when you show it: `ROUND(AVG(price), 2)`.
 
 `MIN` and `MAX` work on text and dates too: the first and last in sorting order.
 
+**Task:** Show the first and last customer name in alphabetical order, and the first and last signup date.
+
 <!-- sql -->
 ```sql
 SELECT MIN(name) AS first_name, MAX(name) AS last_name,
@@ -66,6 +70,8 @@ FROM customers;
 the values that are there. Only `COUNT(*)` counts rows whatever is in them.
 
 ## 7.2 Three ways to count { #count }
+
+**Task:** For customers, show in one row: customers, customers with an email, customers with a city, different cities and different names.
 
 <!-- sql -->
 ```sql
@@ -105,6 +111,8 @@ Two more forms come up in other people's SQL, and in interview questions about i
 every row counts. Some people believe `COUNT(1)` is faster; in PostgreSQL, SQLite and every other common database it
 is not. Write `COUNT(*)`: it says "count rows" most clearly.
 
+**Task:** Count the customers three ways: `COUNT(*)`, `COUNT(1)` and `COUNT(email)`.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)     AS count_star,
@@ -124,6 +132,8 @@ FROM customers;
 **`COUNT(*)` after a `LEFT JOIN` counts a customer with no orders as 1.** The `LEFT JOIN` keeps that customer as one
 row with NULLs in the `orders` columns, and `COUNT(*)` counts the row. Count a column of the right-hand table
 instead; its NULL is not counted:
+
+**Task:** For customers 8 to 10, show the id, `COUNT(*)` and the real number of orders, by id.
 
 <!-- sql -->
 ```sql
@@ -151,6 +161,8 @@ ORDER BY c.customer_id;
 subquery finds **any** row; what the subquery selects is never looked at, so `1` is a placeholder (`SELECT *` or
 `SELECT order_id` would give the same answer). The database can stop at the first matching row. Customers who placed
 at least one order:
+
+**Task:** List the customers who have at least one order: id and name, by id.
 
 <!-- sql -->
 ```sql
@@ -217,6 +229,8 @@ ORDER BY c.customer_id;
 
 `GROUP BY status` puts the rows into one group per different status, and each aggregate is worked out once per group.
 
+**Task:** Count the orders in each status, most orders first (ties by status).
+
 <!-- sql -->
 ```sql
 SELECT status, COUNT(*) AS orders
@@ -237,6 +251,8 @@ ORDER BY orders DESC, status;
 
 The question "what is one row of the answer?" decides the GROUP BY. "Revenue of each order" means one row per
 order, so group `order_items` by `order_id`:
+
+**Task:** Show the 5 biggest orders by revenue: order id, number of lines, units and revenue, highest revenue first (ties by order id).
 
 <!-- sql -->
 ```sql
@@ -263,6 +279,8 @@ LIMIT 5;
 <!-- /result -->
 
 **Several columns** make one group per combination:
+
+**Task:** Count the customers in each (country, city) pair, by country then city.
 
 <!-- sql -->
 ```sql
@@ -292,6 +310,8 @@ all NULLs as equal to each other, even though `NULL = NULL` is not true in a WHE
 
 **An expression** can be grouped on too. Here the price band is worked out with CASE and then grouped; the SELECT
 repeats the same expression:
+
+**Task:** Count the products priced 30 and up and those under 30, as `band` and `products`, by band.
 
 <!-- sql -->
 ```sql
@@ -353,6 +373,8 @@ Both filter, at different moments (chapter 3):
 "Customers with at least two **shipped** orders" needs both: WHERE keeps shipped orders, HAVING keeps customers
 with two or more of them.
 
+**Task:** List the customers with at least 2 shipped orders: customer id and shipped orders, most first (ties by customer id).
+
 <!-- sql -->
 ```sql
 SELECT customer_id, COUNT(*) AS shipped_orders
@@ -395,6 +417,8 @@ throws rows away before the work of grouping.
 
 To count several things in one pass, put a CASE inside the aggregate. A row that doesn't match adds 0 (or gives
 NULL, which COUNT skips):
+
+**Task:** For each customer with orders, show all orders and how many are shipped, cancelled and pending, by customer id.
 
 <!-- sql -->
 ```sql
@@ -454,6 +478,8 @@ habit. This is also how a **pivot** is written: one CASE per output column (more
 
 Make one side a decimal first, by multiplying by `1.0` (or `100.0` for a percentage), then round at the end:
 
+**Task:** What percentage of all orders were cancelled, to 1 decimal place?
+
 <!-- sql -->
 ```sql
 SELECT ROUND(100.0 * COUNT(CASE WHEN status = 'cancelled' THEN 1 END) / COUNT(*), 1) AS cancelled_pct
@@ -473,6 +499,8 @@ integer). The danger is only in `/`
 between two whole numbers, including `SUM(...) / COUNT(...)` written out by hand.
 
 **AVG skips NULLs**, which changes the answer when NULL means "zero":
+
+**Task:** For Support, show the average of the known salaries, and the average if a missing salary counted as 0, both to 2 decimals.
 
 <!-- sql -->
 ```sql
@@ -519,6 +547,8 @@ Which is right depends on the question; usually it is the first, and saying why 
     Ana Silva seems to have 6 orders. There are two Ana Silvas: customer 1 placed 5 and customer 10 placed 1.
 
 Group by the **key** and show the name beside it:
+
+**Task:** Show the 3 customers with the most orders: id, name and orders, most first (ties by id).
 
 <!-- sql -->
 ```sql

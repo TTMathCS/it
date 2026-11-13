@@ -37,6 +37,8 @@ on both, and the page says plainly which database supports which.*
 
 Name the columns, then give the values in the same order. Several rows can go in one statement:
 
+**Task:** Add two products, 12 Desk organiser (Office, 14.50) and 13 Teapot (Kitchen, 27.00), then list products 11 and up.
+
 <!-- sql -->
 ```sql
 INSERT INTO products (product_id, name, category, price)
@@ -62,6 +64,8 @@ ORDER BY product_id;
 and it breaks the day someone adds a column. Columns you leave out get their default, or NULL.
 
 `INSERT ... SELECT` copies the result of a query into a table, the everyday way to fill one table from another:
+
+**Task:** Make a `cancelled_orders` table and copy the cancelled orders into it, then list it by order id.
 
 <!-- sql -->
 ```sql
@@ -107,6 +111,8 @@ Product 14 was not added either. To skip bad rows instead of failing, see `ON CO
 
 `UPDATE` changes columns in the rows that match its `WHERE`:
 
+**Task:** Raise every Kitchen price by 10%, rounded to cents, then list the Kitchen products.
+
 <!-- sql -->
 ```sql
 UPDATE products
@@ -132,6 +138,8 @@ SELECT product_id, name, price FROM products WHERE category = 'Kitchen' ORDER BY
 Several columns change in one `SET`, separated by commas. Every expression on the right sees the row **as it was
 before** the update, so swapping two columns works:
 
+**Task:** For customer 2, swap the city and country columns, then show the row.
+
 <!-- sql -->
 ```sql
 UPDATE customers
@@ -152,6 +160,8 @@ SELECT customer_id, city, country FROM customers WHERE customer_id = 2;
 
 "Set each product's price to the lowest price it has ever been sold for" needs data from `order_items`. The
 portable way is a correlated subquery in `SET`:
+
+**Task:** Set each product's price to the lowest price it was ever sold at (products never sold keep theirs), then show products 5, 6 and 11.
 
 <!-- sql -->
 ```sql
@@ -205,6 +215,8 @@ row matches at most one.
 `DELETE` removes the rows that match its `WHERE` (and, like `UPDATE`, every row without one). Conditions on other
 tables are written with a subquery, which works on both databases:
 
+**Task:** Delete the logins of Canadian customers, then count the logins left per customer.
+
 <!-- sql -->
 ```sql
 DELETE FROM logins
@@ -222,6 +234,8 @@ SELECT customer_id, COUNT(*) AS logins FROM logins GROUP BY customer_id ORDER BY
 <!-- /result -->
 
 PostgreSQL also has `DELETE ... USING`, a join in the delete; SQLite does not:
+
+**Task:** The same delete, written as a join with `USING`.
 
 <!-- sql pg -->
 ```sql
@@ -265,6 +279,8 @@ be rolled back.
 `RETURNING` makes a changing statement also return rows: the rows it inserted, updated or deleted, as they are
 afterwards (for `DELETE`, as they were). It saves a second query and shows exactly what changed:
 
+**Task:** Raise every Home price by 1 and show the changed rows in the same statement.
+
 <!-- sql -->
 ```sql
 UPDATE products
@@ -292,6 +308,8 @@ A common use is getting the id a database just generated: `INSERT ... RETURNING 
 Loading data often means "add these rows; if a row with the same key is already there, update it instead". That
 is an **upsert**. PostgreSQL and SQLite share the same syntax for it:
 
+**Task:** Load two products: update the price of product 1 if it exists, insert product 12 if not; then show both.
+
 <!-- sql -->
 ```sql
 INSERT INTO products (product_id, name, category, price)
@@ -313,6 +331,8 @@ SELECT product_id, name, price FROM products WHERE product_id IN (1, 12) ORDER B
 
 `ON CONFLICT (product_id)` names the key to check; `excluded` is the row that was refused, so `excluded.price` is
 the new price. `DO NOTHING` instead skips the rows that already exist, which makes a load safe to repeat:
+
+**Task:** Load the same two products, but leave existing products untouched; then show both.
 
 <!-- sql -->
 ```sql
@@ -382,6 +402,8 @@ alias), SQL Server uses `MERGE`.
 in one statement. It is common in warehouses (SQL Server, Oracle, Snowflake, and Databricks's `MERGE INTO` on Delta
 tables). PostgreSQL has had it since version 15:
 
+**Task:** Apply a price feed to products in one statement: update matching products, delete discontinued ones, insert new ones.
+
 <!-- sql pg -->
 ```sql
 CREATE TABLE price_feed (product_id INTEGER, name VARCHAR(50), category VARCHAR(20), price NUMERIC(8,2),
@@ -447,6 +469,8 @@ choice on PostgreSQL when you only insert or update: it is safe when two session
 SQLite also has `INSERT OR REPLACE` (and its short form `REPLACE INTO`), which looks like an upsert but is not one:
 when the key exists, it **deletes** the old row and inserts the new one. Columns you did not give are not kept;
 they become NULL or their default:
+
+**Task:** Replace customer 1's row with only a name, country and signup date, and see what happens to the other columns.
 
 <!-- sql sqlite -->
 ```sql

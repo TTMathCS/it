@@ -21,6 +21,8 @@ UNION ALL does not, and the difference is both a correctness and a speed questio
 `UNION ALL` puts the rows of the second query under the rows of the first. Canadian customers with their city and
 Support staff with their department, in one labelled list:
 
+**Task:** In one list, show the Canadian customers with their city and the Support staff with their department, labelled 'customer' or 'employee', by label then name.
+
 <!-- sql -->
 ```sql
 SELECT 'customer' AS who, name, city AS place FROM customers WHERE country = 'Canada'
@@ -51,6 +53,8 @@ The rules:
 `UNION` (without ALL) also **removes duplicate rows** from the combined result. The cities where customers live, from
 two halves of the table:
 
+**Task:** List the different cities of customers 1 to 5 and 6 to 10 together, each once, missing city last.
+
 <!-- sql -->
 ```sql
 SELECT city FROM customers WHERE customer_id <= 5
@@ -73,6 +77,8 @@ ORDER BY city NULLS LAST;
 | Toronto |
 | *NULL* |
 <!-- /result -->
+
+**Task:** The same, but keep every row, duplicates included.
 
 <!-- sql -->
 ```sql
@@ -117,6 +123,8 @@ every value and SQLite before (DESC flips both). Saying where you want it makes 
 
 Customers who both ordered (any status) and logged in:
 
+**Task:** List the customers who both ordered (any status) and logged in: customer id, in order.
+
 <!-- sql -->
 ```sql
 SELECT customer_id FROM orders WHERE customer_id IS NOT NULL
@@ -143,6 +151,8 @@ written as a set operation.
 
 Customers who never ordered:
 
+**Task:** List the customers who never ordered: customer id, in order.
+
 <!-- sql -->
 ```sql
 SELECT customer_id FROM customers
@@ -165,6 +175,8 @@ under which NULL matches NULL, not with `=`. It is an anti join that can't fall 
 
 **Comparing two versions of a table** is the most common real use. Suppose a staging copy of `products` arrived with
 one price changed, one product missing and one new product. EXCEPT in both directions shows every difference:
+
+**Task:** Compare a staging copy of products with the real table and list every difference, saying which side each row is only on.
 
 <!-- sql -->
 ```sql
@@ -209,6 +221,8 @@ only in staging. [Chapter 23](23-Data-Quality-Checks.md) builds data-quality che
 ## 12.4 Columns into rows { #unpivot }
 
 UNION ALL turns several columns into rows ("unpivot"). Each customer's email and city as separate "fact" rows:
+
+**Task:** For the first 3 customers, show the email and the city as separate rows: customer id, field name and value, by customer then field.
 
 <!-- sql -->
 ```sql

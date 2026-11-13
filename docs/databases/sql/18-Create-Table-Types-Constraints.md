@@ -19,6 +19,8 @@ between the two databases in this course: PostgreSQL enforces types, and SQLite,
 
 ## 18.1 A table definition { #create }
 
+**Task:** Create a `shipments` table with a key, a link to orders, a positive weight, a default for `delivered`, and one shipment per order and carrier; add one shipment and show it.
+
 <!-- sql -->
 ```sql
 CREATE TABLE shipments (
@@ -254,6 +256,8 @@ A foreign key can say what to do when the row it points at is deleted:
 | `ON DELETE CASCADE` | deletes the children too |
 | `ON DELETE SET NULL` | sets the children's foreign key to NULL |
 
+**Task:** Make carts and cart items where deleting a cart deletes its items; delete cart 1 and list the items left.
+
 <!-- sql -->
 ```sql
 CREATE TABLE carts (cart_id INTEGER PRIMARY KEY, owner VARCHAR(10));
@@ -335,6 +339,8 @@ rows or to mean "order of arrival" exactly.
 
 `CREATE TABLE ... AS SELECT` makes a table from a query, columns and rows, but **without** keys or constraints:
 
+**Task:** Save each customer's number of orders as a new table, then show the top 3.
+
 <!-- sql -->
 ```sql
 CREATE TABLE customer_order_counts AS
@@ -356,6 +362,8 @@ SELECT customer_id, orders FROM customer_order_counts ORDER BY orders DESC, cust
 <!-- /result -->
 
 `ALTER TABLE` changes a table that already has data. Adding a column gives existing rows its default:
+
+**Task:** Add a `vip` column to customers (false by default), make customer 1 a VIP, then show the first 3 customers.
 
 <!-- sql -->
 ```sql

@@ -129,6 +129,8 @@ does not run on SQLite. In a test, `CAST(... AS NUMERIC)` works on both.
 
 `CASE` is SQL's "if". The **searched** form tests conditions in order and returns the first match:
 
+**Task:** Label every product 'premium' (100 or more), 'mid' (20 or more) or 'budget': name, price and `band`, most expensive first (ties by name).
+
 <!-- sql -->
 ```sql
 SELECT name, price,
@@ -160,6 +162,8 @@ ORDER BY price DESC, name;
 <!-- /result -->
 
 Without `ELSE`, a row that matches no `WHEN` gets NULL. The **simple** form compares one expression with values:
+
+**Task:** For orders 112 to 116, show the status and a `stage`: 'done' for shipped, 'waiting' for pending, by order id.
 
 <!-- sql -->
 ```sql
@@ -215,6 +219,8 @@ Order 113 is cancelled, which no `WHEN` names, so its stage is NULL. The simple 
 `CASE` can go anywhere an expression can: in `ORDER BY` for a custom order, and inside aggregates to count with a
 condition ([chapter 7](07-Aggregation-Group-By-Having.md#conditional)). A custom order:
 
+**Task:** List orders 112 to 119 with pending first, then shipped, then the rest; by order id within each.
+
 <!-- sql -->
 ```sql
 SELECT order_id, status
@@ -246,6 +252,8 @@ price END` (text and a number); SQLite allows it. Cast one side so they match.
 
 `COALESCE(a, b, ...)` returns the first argument that is not NULL: a default for missing values.
 
+**Task:** For customers 3, 5 and 8, show the email or 'no email', and the city or, when it is missing, the country, as `place`.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name,
@@ -268,6 +276,8 @@ ORDER BY customer_id;
 
 `NULLIF(a, b)` does the opposite: it returns NULL when `a = b`, otherwise `a`. Its main use is a safe divisor:
 dividing by NULL gives NULL instead of an error.
+
+**Task:** For the numbers 0, 4 and 5, show 100 divided by each, with NULL instead of an error for 0.
 
 <!-- sql -->
 ```sql
@@ -294,6 +304,8 @@ by" into one line. [Chapter 6](06-Null-and-Three-Valued-Logic.md) covers NULL in
 
 `CAST(value AS type)` converts a value. The common targets are `INTEGER`, `NUMERIC` (or `DECIMAL(p, s)`), `TEXT`
 (`VARCHAR` on some databases) and `DATE`.
+
+**Task:** Turn the text '42' into a number, and product 2's price into text.
 
 <!-- sql -->
 ```sql
@@ -469,6 +481,8 @@ A few more facts worth knowing now, all covered with examples in [chapter 16](16
 ## 4.7 True and false { #booleans }
 
 A comparison is itself an expression with a true or false value, and it can be selected:
+
+**Task:** For the Kitchen products, show name, price and whether the price is over 20 (true or false), by product id.
 
 <!-- sql -->
 ```sql

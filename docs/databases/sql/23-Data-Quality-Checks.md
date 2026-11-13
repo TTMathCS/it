@@ -57,6 +57,8 @@ tests work exactly this way.
 
 `COUNT(*)` counts rows; `COUNT(column)` counts non-NULL values. The difference is the number of NULLs:
 
+**Task:** For `stg_orders`, count all rows and the missing values in each column.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)                      AS total_rows,
@@ -81,6 +83,8 @@ into NULL while loading with `NULLIF(TRIM(x), '')` ([chapter 4](04-Expressions-C
 ## 23.3 Uniqueness { #uniqueness }
 
 The key must appear once. As a check, return the keys that do not:
+
+**Task:** List the order ids that appear more than once in `stg_orders`, with how many copies.
 
 <!-- sql -->
 ```sql
@@ -197,6 +201,8 @@ it. A valid `YYYY-MM-DD` date comes back unchanged.
 
 ### Allowed values { #allowed-values }
 
+**Task:** List the staged orders whose status is not pending, shipped or cancelled.
+
 <!-- sql -->
 ```sql
 SELECT order_id, status
@@ -220,6 +226,8 @@ person, the second a fix in the load.
 ### Ranges { #ranges }
 
 Only test the range of values that are valid numbers, or the cast fails first:
+
+**Task:** List the staged orders whose amount is a valid number but not above 0.
 
 <!-- sql -->
 ```sql
@@ -247,6 +255,8 @@ Every `customer_id` should exist in `customers`. The anti-join finds the ones th
 ([chapter 9](09-Self-Semi-and-Anti-Joins.md)). The staging column is text and the key is a number, so cast it;
 PostgreSQL refuses to compare text with an integer.
 
+**Task:** List the staged orders whose customer id does not exist in `customers`.
+
 <!-- sql -->
 ```sql
 SELECT s.order_id, s.customer_id
@@ -273,6 +283,8 @@ add up wrong.
 **Consistency** checks compare columns or tables that must agree: a ship date not before the order date, line items
 that add up to the order total, a country that matches the city. In the shop, every shipped order must have at
 least one item:
+
+**Task:** List the shipped orders that have no items.
 
 <!-- sql -->
 ```sql
@@ -313,6 +325,8 @@ INSERT INTO load_history VALUES
 <p class="sql-tested">These tables load on PostgreSQL 16 and SQLite 3.53.</p>
 <!-- /result -->
 
+**Task:** Check whether today's load of orders is less than half or more than double the usual size, and show it if so.
+
 <!-- sql -->
 ```sql
 SELECT today.load_date, today.row_count,
@@ -341,6 +355,8 @@ The thresholds (half and double here) are a choice; a busy shop on a holiday may
 **Freshness** checks ask whether the newest data is recent enough. Here "now" is written in as 5 June so that the
 page shows the same result every day; a real check uses `CURRENT_DATE`.
 
+**Task:** Show the newest order date only if it is older than 4 June 2026 (the data is stale).
+
 <!-- sql -->
 ```sql
 SELECT MAX(order_date) AS newest_order
@@ -363,6 +379,8 @@ The shop's newest order is from April, so it fails: nothing has arrived for two 
 
 Each check above can be turned into a count of failing rows. `UNION ALL` puts them together, one row per check. An
 aggregate with no `GROUP BY` always returns exactly one row, so a check that passes shows 0 instead of disappearing.
+
+**Task:** Run every check on `stg_orders` in one query: one row per check, with its number of failures.
 
 <!-- sql -->
 ```sql
@@ -414,6 +432,8 @@ check is which is part of the design, and worth saying in an interview.
 Stopping the whole load for one bad row is often too strict. The common alternative is to load the good rows and
 put the bad ones in a **rejects** (or quarantine) table with the reason, for someone to fix. One `CASE` gives each
 row its first failing reason, or NULL when it passes every check:
+
+**Task:** For every staged order, give its first failing reason, or NULL when it passes every check.
 
 <!-- sql -->
 ```sql
@@ -479,6 +499,8 @@ INSERT INTO target_daily VALUES
 <p class="sql-tested">These tables load on PostgreSQL 16 and SQLite 3.53.</p>
 <!-- /result -->
 
+**Task:** Compare the source and target daily totals and list only the days that are missing on one side or differ.
+
 <!-- sql -->
 ```sql
 SELECT COALESCE(s.day, t.day) AS day,
@@ -506,6 +528,8 @@ ORDER BY day;
 
 **Profiling** is the first look at a column you do not know yet: how many values, how many distinct, how many
 missing, the smallest and largest. It tells you what checks to write.
+
+**Task:** Profile the `city` column of customers: rows, rows with a city, different cities, first and last city, shortest and longest length.
 
 <!-- sql -->
 ```sql

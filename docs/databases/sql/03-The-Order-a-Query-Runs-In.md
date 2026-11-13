@@ -66,6 +66,8 @@ PostgreSQL follows the rule. SQLite bends it and looks up the alias, so the same
 dangerous: an answer tested on SQLite fails on PostgreSQL, SQL Server and Oracle. (MySQL refuses it too.) Write the
 expression again, or compute it in an inner query and filter outside:
 
+**Task:** List the order lines worth more than 100 (quantity times unit price): order id, product id and `line_value`, by order id.
+
 <!-- sql -->
 ```sql
 SELECT order_id, product_id, quantity * unit_price AS line_value
@@ -111,6 +113,8 @@ The second form, a **CTE** (`WITH ... AS`), names a step so the next one can use
 
 `ORDER BY` runs after `SELECT`, so there the alias works on every database:
 
+**Task:** Show the 3 most valuable order lines: order id, product id and `line_value`, highest first (ties by order id, then product id).
+
 <!-- sql -->
 ```sql
 SELECT order_id, product_id, quantity * unit_price AS line_value
@@ -149,6 +153,8 @@ GROUP BY customer_id;
 
 A condition on a group belongs in `HAVING`, step 4, which runs after grouping:
 
+**Task:** List the customers with 3 or more orders: customer id and number of orders, by customer id.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, COUNT(*) AS orders
@@ -169,6 +175,8 @@ ORDER BY customer_id;
 
 A condition on single rows belongs in `WHERE`, even when the query also groups. "Customers with at least two
 **shipped** orders" filters rows by status first, then groups:
+
+**Task:** List the customers with at least 2 shipped orders: customer id and number of shipped orders, by customer id.
 
 <!-- sql -->
 ```sql
@@ -213,6 +221,8 @@ WHERE ROW_NUMBER() OVER (ORDER BY price DESC, name) <= 3;
 <!-- /result -->
 
 The fix is the same as for an alias: compute it in an inner query, filter in the outer one.
+
+**Task:** Show the 3 most expensive products (ties by name) using `ROW_NUMBER`: name and price, in rank order.
 
 <!-- sql -->
 ```sql

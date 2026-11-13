@@ -23,6 +23,9 @@ differences. Results on MySQL, SQL Server and Oracle have not been tested here.
   most and puts them in the order to read them.
 - **Coming back after a while?** Read the [cheat sheet](cheat-sheet.md), then the chapters where it felt rusty.
 - **Starting out?** Read in order from chapter 1.
+- **Practise on the examples.** Each example starts with a **Task:** line that says, in plain words, what the
+  query must answer, which columns and in which order. Cover the query, write your own in its **Run this** box,
+  and compare the rows.
 - **Try everything, right on the page.** Every example has a **Run this** button and every exercise a **Try it
   here** box with **Check**: a real PostgreSQL running inside your browser, loaded with the
   [sample database](sample-database.md). Change the examples and see what happens. There is a free

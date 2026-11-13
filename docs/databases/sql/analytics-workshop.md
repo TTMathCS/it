@@ -27,6 +27,8 @@ sessions and funnels. Every example runs in your browser (press **Run this**), a
 The most common wrong total in analytics SQL comes from joining two "many" tables to the same parent. Order 106
 has **two items** and **two payments**. Join both to the order and you get 2 × 2 = 4 rows, so every sum is doubled:
 
+**Task:** For order 106, show the items total and the amount paid. (This first try is wrong; see why.)
+
 <!-- sql -->
 ```sql
 SELECT o.order_id,
@@ -51,6 +53,8 @@ The real numbers are 56.50 ordered and 56.50 paid. Each item row was repeated on
 once per item. This is called **fan-out**, and it gives no error: the numbers just look a little too big.
 
 The fix is to **sum each "many" table on its own, one row per order, and join the results**:
+
+**Task:** For order 106, show the items total and the amount paid, correctly.
 
 <!-- sql -->
 ```sql
@@ -90,6 +94,8 @@ sum of `paid` amounts plus the (negative) `refunded` amounts, and failed rows mu
 
 Per month, with `date_trunc` to cut each timestamp down to the first day of its month:
 
+**Task:** For each month, show gross payments, refunds, net and the number of failed attempts.
+
 <!-- sql pg -->
 ```sql
 SELECT date_trunc('month', paid_at)::date                       AS month,
@@ -116,6 +122,8 @@ ORDER BY 1;
 `FILTER (WHERE ...)` is PostgreSQL's short way to aggregate only some rows. The portable way, which also works on
 SQLite, MySQL and SQL Server, is `SUM(CASE WHEN ... THEN amount END)`: the `CASE` gives `NULL` for the other rows,
 and `SUM` skips `NULL`s. Note what it returns when **no** row matches: `NULL`, not 0.
+
+**Task:** For each payment method, show attempts, paid, failed and the refunded amount, most attempts first.
 
 <!-- sql -->
 ```sql
@@ -159,6 +167,8 @@ A data engineer is often asked: **does what we sold match what we were paid?** H
 of its items, and what was received is the sum of its paid and refunded payments. List every order where they
 differ, with the reason in words. Every order must be checked, including the ones with **no payment at all**, so the
 payment side is joined with `LEFT JOIN`:
+
+**Task:** List the orders whose money received does not match the ordered amount, with the kind of problem.
 
 <!-- sql -->
 ```sql
@@ -213,6 +223,8 @@ instead and the orders with no payment disappear, because their `status` would b
 Two payments for the same order, amount, time and status are a **double charge** (or the same event loaded twice).
 `GROUP BY` every column that should be unique, and keep the groups with more than one row:
 
+**Task:** Find the payments that appear more than once with the same order, time, amount and status, with how many copies.
+
 <!-- sql -->
 ```sql
 SELECT order_id, paid_at, amount, status, COUNT(*) AS copies
@@ -232,6 +244,8 @@ HAVING COUNT(*) > 1;
 To **keep one row of each group** (for example to build a clean table), number the rows inside each group with
 `ROW_NUMBER` and keep number 1. The `ORDER BY` inside the window says which copy survives: here the lowest
 `payment_id`.
+
+**Task:** For order 120, keep one row of each set of duplicate payments (the lowest payment id).
 
 <!-- sql -->
 ```sql
@@ -262,6 +276,8 @@ WHERE copy_no = 1 AND order_id = 120;
 "What is the **current** state of each order's payment?" is the latest attempt per order. Number the attempts per
 order from the newest, and keep number 1. A tie in time needs a tie-break, or the answer can change from run to
 run: here the higher `payment_id` wins.
+
+**Task:** For orders 102, 104, 119 and 120, show the latest payment of each order.
 
 <!-- sql -->
 ```sql
@@ -303,6 +319,8 @@ than 30 minutes between two pages of the same visitor starts a new session**. Th
 1. For each view, the time of the same visitor's **previous** view: `LAG(viewed_at)`.
 2. A flag: 1 if this view **starts** a session (no previous view, or the gap is more than 30 minutes), else 0.
 3. A **running sum** of the flag per visitor numbers the sessions: 1, 1, 1, 2, 2, ...
+
+**Task:** Split each visitor's page views into sessions, where a gap of more than 30 minutes starts a new one: show the gap, the new-session flag and the session number.
 
 <!-- sql pg -->
 ```sql
@@ -347,6 +365,8 @@ Check the boundary the task asks for: "more than 30 minutes" is `>`, "30 minutes
 
 With a session number on every row, one more `GROUP BY` gives a **sessions table**: one row per visit, with its
 start, end, length and number of pages.
+
+**Task:** For each visitor and session, show start, end, length and number of pages.
 
 <!-- sql pg -->
 ```sql
@@ -399,6 +419,8 @@ calendar day, so it stays one session. If a report counts "sessions per day", de
 A **funnel** counts how many visitors reached each step: home, product, cart, checkout, thanks. First, one row per
 visitor with a 1 or 0 for each step (`MAX` of a `CASE`: did **any** of their rows have that page?):
 
+**Task:** For each visitor, show 1 or 0 for whether they saw each page: home, product, cart, checkout, thanks.
+
 <!-- sql -->
 ```sql
 SELECT visitor_id,
@@ -427,6 +449,8 @@ ORDER BY visitor_id;
 Then sum each column to get the funnel, and divide to get the conversion. Two habits: multiply by `100.0` (not
 `100`) so the division is not integer division, and divide by `NULLIF(x, 0)` so an empty step gives `NULL`
 instead of an error.
+
+**Task:** Count the visitors, how many reached product, cart and checkout, how many bought, and the conversion percentage.
 
 <!-- sql -->
 ```sql
@@ -466,6 +490,8 @@ asks for.
 Views 9 and 10 are the same page, for the same visitor, at the same second: a page reload or a logging bug. Counting
 **distinct** combinations removes them. `COUNT(DISTINCT ...)` takes one column, so count the distinct rows of a
 subquery instead:
+
+**Task:** Count the page-view rows, and the events left after removing exact repeats.
 
 <!-- sql -->
 ```sql

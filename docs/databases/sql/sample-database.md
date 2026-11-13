@@ -112,6 +112,8 @@ the `psql` program, not SQL, so a Run box (or any editor that only sends SQL) re
 The SQL way is to ask the database's own catalogue, **`information_schema`**: a set of read-only views, part of the
 SQL standard, that describe every table and column. It works in PostgreSQL, MySQL and SQL Server.
 
+**Task:** Describe the `orders` table: each column's name, type, maximum length and whether it may be NULL, in column order.
+
 <!-- sql pg -->
 ```sql
 SELECT column_name, data_type, character_maximum_length, is_nullable
@@ -134,6 +136,8 @@ ORDER BY ordinal_position;             -- the order the columns were created in
 
 `data_type` is the type, `character_maximum_length` the length of a `VARCHAR`, and `is_nullable` says whether the
 column may hold NULL. Add `column_default` to see default values. Which tables are there at all:
+
+**Task:** List the tables of the database, alphabetically.
 
 <!-- sql pg -->
 ```sql
@@ -161,6 +165,8 @@ ORDER BY table_name;
 SQLite has no `information_schema`. It describes a table with `PRAGMA table_info(orders)`, which can also be read as
 a table:
 
+**Task:** Describe the `orders` table on SQLite: each column's name, type, NOT NULL flag and key flag.
+
 <!-- sql sqlite -->
 ```sql
 SELECT name, type, "notnull", pk
@@ -180,6 +186,8 @@ ORDER BY cid;
 <!-- /result -->
 
 And the quickest look of all, on any database, is a few rows: the column names come with them.
+
+**Task:** Show the first 3 orders, all columns, to see what the table looks like.
 
 <!-- sql -->
 ```sql

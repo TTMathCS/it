@@ -21,6 +21,8 @@ row, and ties at the edge of a `LIMIT`.*
 
 `SELECT` lists the columns you want, `FROM` names the table. Columns come back in the order you list them.
 
+**Task:** List every product's name, category and price, in product id order.
+
 <!-- sql -->
 ```sql
 SELECT name, category, price
@@ -52,6 +54,8 @@ checker compares columns by position, and `*` returns columns the question did n
 ## 2.2 Computed columns and aliases { #aliases }
 
 A column in `SELECT` can be any expression. `AS` gives the result a name, an **alias**:
+
+**Task:** For order 103, show each line's order id, product id and value (quantity times unit price) as `line_value`, by product id.
 
 <!-- sql -->
 ```sql
@@ -118,6 +122,8 @@ WHERE m.name = "Tom Becker";
 When you see **`column "..." does not exist`** and the word in the quotes is a value, not a column, the fix is
 the quotes. The query itself was right:
 
+**Task:** List the employees who report to Tom Becker, found by his name: id, name and salary, by id.
+
 <!-- sql -->
 ```sql
 SELECT e.employee_id, e.name, e.salary
@@ -169,6 +175,8 @@ A double quote inside single quotes needs nothing special: `'He said "hi"'`. Pos
 
 Only for a name that would not work bare. The common case is a column name for a report, with spaces and
 capitals:
+
+**Task:** Show the first 3 customers by id, with the column headings "Customer ID" and "Full name".
 
 <!-- sql -->
 ```sql
@@ -230,6 +238,8 @@ need quotes. SQLite ignores the case of names, so this one runs there.
 `WHERE` keeps the rows for which a condition is true. The comparison operators are `=`, `<>` (not equal; `!=` also
 works on every database in this course), `<`, `<=`, `>` and `>=`. They work on numbers, text and dates:
 
+**Task:** List the customers who signed up on or after 1 February 2026: id, name and signup date, earliest first (ties by id).
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name, signup_date
@@ -285,6 +295,8 @@ multiplication comes before addition. Forgetting that is the classic mistake:
 
 Parentheses say what you mean:
 
+**Task:** List the Home or Kitchen products that cost more than 20: name, category and price, by product id.
+
 <!-- sql -->
 ```sql
 SELECT name, category, price
@@ -310,6 +322,8 @@ markers) should not have to work it out.
 
 `IN` is a short way to write several `=` joined by `OR`:
 
+**Task:** The same task with `IN`: Home or Kitchen products over 20, by product id.
+
 <!-- sql -->
 ```sql
 SELECT name, category, price
@@ -329,6 +343,8 @@ ORDER BY product_id;
 <!-- /result -->
 
 `BETWEEN a AND b` includes **both** ends: it means `>= a AND <= b`.
+
+**Task:** List the products priced from 12.25 to 25.00, both included: name and price, cheapest first (ties by name).
 
 <!-- sql -->
 ```sql
@@ -363,6 +379,8 @@ The plant pot (12.25) and the gift card (25.00) sit exactly on the ends and are 
 
 `SELECT DISTINCT` removes duplicate rows from the result:
 
+**Task:** List each country that has customers, once, in alphabetical order.
+
 <!-- sql -->
 ```sql
 SELECT DISTINCT country
@@ -388,6 +406,8 @@ ORDER BY country;
 Ten customers, eight countries: Canada appears three times in the table and once here. `DISTINCT` applies to the
 **whole row**, not to the first column:
 
+**Task:** List each different (country, city) pair of the Canadian customers, by city.
+
 <!-- sql -->
 ```sql
 SELECT DISTINCT country, city
@@ -411,6 +431,8 @@ Canada still appears once, because all three Canadian customers live in Toronto.
 
 **`SELECT DISTINCT` keeps NULL, as one row.** Every customer above has a country, so no NULL row appeared. `city` has
 a gap: Eli Cohen has no city.
+
+**Task:** List each different city of the customers once, including "no city", with the missing city last.
 
 <!-- sql -->
 ```sql
@@ -441,6 +463,8 @@ row. `GROUP BY` and `UNION` treat NULLs the same way.
 **`COUNT(DISTINCT city)` does not count it.** Like every aggregate except `COUNT(*)`, it skips NULLs. So the number
 of rows from `SELECT DISTINCT` can be one more than `COUNT(DISTINCT)`. One query shows every case on the 10
 customers (one with no city):
+
+**Task:** On customers, show in one row: all rows, rows with a city, different cities, rows of `SELECT DISTINCT city`, and groups of `GROUP BY city`.
 
 <!-- sql -->
 ```sql
@@ -477,6 +501,8 @@ descending order; SQLite does the opposite. `NULLS FIRST` or `NULLS LAST` gives 
 
 **To leave it out,** filter it before `DISTINCT` runs:
 
+**Task:** List each different known city once (leave out the missing one), alphabetically.
+
 <!-- sql -->
 ```sql
 SELECT DISTINCT city
@@ -511,6 +537,8 @@ ORDER BY city;
 `ORDER BY` sorts the result: `ASC` (smallest first, the default) or `DESC`. With several columns, the second only
 decides between rows that tie on the first:
 
+**Task:** List the employees with a known salary: name, department and salary, by department, highest salary first within it, then by name.
+
 <!-- sql -->
 ```sql
 SELECT name, department, salary
@@ -541,6 +569,8 @@ Departments A to Z; within each department, highest salary first; for equal sala
 Berg and Raj Patel), by name. Without that last column the order of the tied pairs would be up to the database.
 
 You can sort by an alias from `SELECT`, by an expression, or by a column you do not show:
+
+**Task:** For orders 101, 103 and 105, list each line's order id, product id and `line_value`, highest value first (ties by order id, then product id).
 
 <!-- sql -->
 ```sql
@@ -573,6 +603,8 @@ shows them.
 
 `LIMIT n` keeps the first n rows of the sorted result; `OFFSET m` skips m rows first.
 
+**Task:** Show the 3 most expensive products: name and price, most expensive first (ties by name).
+
 <!-- sql -->
 ```sql
 SELECT name, price
@@ -590,6 +622,8 @@ LIMIT 3;
 | Monitor stand | 32.00 |
 | Tea kettle | 32.00 |
 <!-- /result -->
+
+**Task:** Show the next 3: products 4 to 6 in the same order.
 
 <!-- sql -->
 ```sql
@@ -625,6 +659,8 @@ order; it is almost always a mistake.
 `OFFSET m ROWS FETCH FIRST n ROWS ONLY`; PostgreSQL, Oracle (12c and later) and SQL Server (with `OFFSET`) accept it,
 SQLite does not. PostgreSQL 13 and later also have `WITH TIES`, which keeps every row that ties with the last one:
 
+**Task:** Show the 2 most expensive products, plus any product that ties on price with the second.
+
 <!-- sql pg -->
 ```sql
 SELECT name, price
@@ -651,6 +687,8 @@ On SQLite, use a ranking function instead ([chapter 13](13-Window-Functions-Rank
 `--` starts a comment to the end of the line; `/* ... */` can span lines. Line breaks and spaces do not matter to
 the database, so lay a query out one clause per line. A query that ends with `;` is complete; in a test editor the
 semicolon is usually optional for a single query, but it never hurts.
+
+**Task:** List the Office products: name and price, cheapest first (ties by name).
 
 <!-- sql -->
 ```sql
@@ -697,6 +735,8 @@ within a query.
 
 Here is a query written in one line, as it is often typed in a hurry:
 
+**Task:** Count the orders in each status.
+
 <!-- sql pg -->
 ```sql
 select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
@@ -737,7 +777,16 @@ ORDER BY o.status;
 | shipped | 16 |
 <!-- /result -->
 
-A longer query in the same style. Each line does one thing, so each can be checked against the task on its own:
+A longer query in the same style. Try it yourself first; this is the task:
+
+!!! question "Task"
+    For each **country**, count the **shipped** orders placed **on or after 1 February 2026**, and how many
+    **different customers** placed them. Show only countries with **at least 2** such orders. Columns: `country`,
+    `shipped_orders`, `customers`. Most shipped orders first; on a tie, by country name.
+
+Each line of the answer does one thing, so each can be checked against one part of the task: the `JOIN` brings the
+country to each order, `WHERE` keeps shipped orders from February on, `GROUP BY` makes one row per country, `HAVING`
+drops the countries with fewer than 2, and `ORDER BY` sorts.
 
 <!-- sql -->
 ```sql

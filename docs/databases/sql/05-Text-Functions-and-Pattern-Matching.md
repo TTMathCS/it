@@ -23,6 +23,8 @@ in function names, and in one place where the same query gives different rows: `
 `||` joins two pieces of text on PostgreSQL, SQLite and Oracle (the SQL standard spelling). If either side is NULL,
 the result is NULL (except on Oracle, which treats NULL as empty text here). `CONCAT(...)` joins any number of pieces and **skips** NULLs:
 
+**Task:** For customers 2 and 3, show the name and email as one piece of text, `Name <email>`, built two ways.
+
 <!-- sql -->
 ```sql
 SELECT customer_id,
@@ -49,6 +51,8 @@ a setting changes it, and `CONCAT` returns NULL if any piece is NULL; `CONCAT_WS
 NULLs there.)
 
 ## 5.2 Length and case { #length-case }
+
+**Task:** For customers 1 and 6, show the name, its length, and the name in capitals and in small letters.
 
 <!-- sql -->
 ```sql
@@ -78,6 +82,8 @@ there, but stays `À` on SQLite). PostgreSQL also has `INITCAP('ana silva')`, gi
 
 `SUBSTR(text, start, length)` takes `length` characters starting at position `start`. Positions count from **1**,
 not 0. Leave out the length to take everything to the end.
+
+**Task:** For customers 1 and 2, show the name, its first 3 letters, and everything from the 5th letter on.
 
 <!-- sql -->
 ```sql
@@ -181,6 +187,8 @@ Spaces at the ends are a classic reason for a join or a `GROUP BY` to miss: `'To
 
 A handy trick: the number of times a letter appears is the length lost when you remove it.
 
+**Task:** For the first 4 customers, count how many times the letter "a" (either case) appears in each name.
+
 <!-- sql -->
 ```sql
 SELECT name, LENGTH(name) - LENGTH(REPLACE(LOWER(name), 'a', '')) AS letter_a
@@ -206,6 +214,8 @@ ORDER BY customer_id;
 Server usually compare without regard to case, because of their default collation; check, never assume.) To compare
 without caring about capitals, lower-case both sides:
 
+**Task:** Find the customers called "ANA SILVA", whatever the capitals: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name
@@ -230,6 +240,8 @@ rarely matters, because names usually start with a capital; when it does, sort b
 ## 5.6 LIKE { #like }
 
 `LIKE` matches a pattern: `%` stands for any number of characters (including none) and `_` for exactly one.
+
+**Task:** List the products whose name contains an "o", any one letter, then a "k", alphabetically.
 
 <!-- sql -->
 ```sql
@@ -257,6 +269,8 @@ ORDER BY name;
 ### The same LIKE, different rows { #like-case }
 
 Here is the trap. `LIKE` is case-sensitive on PostgreSQL, but **not** on SQLite (for the letters A to Z):
+
+**Task:** List the customers whose name starts with "ana": id and name, by id.
 
 <!-- sql pg -->
 ```sql
@@ -297,6 +311,8 @@ SQLite with its default collation; SQL Server depends on its collation, usually 
 PostgreSQL's case-insensitive version is `ILIKE`, which SQLite does not have. The portable answer works the same on
 every database:
 
+**Task:** List the customers whose name starts with "ana" in any capitals: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name
@@ -328,6 +344,8 @@ A pattern that starts with `%` cannot use an ordinary index, so `LIKE '%son'` re
 For patterns `LIKE` cannot express, PostgreSQL has regular expressions: `~` (matches, case-sensitive), `~*`
 (case-insensitive), and `!~` and `!~*` for "does not match".
 
+**Task:** List the products whose name is exactly two words, a capitalised word and a small-letter word, alphabetically.
+
 <!-- sql pg -->
 ```sql
 SELECT name
@@ -354,6 +372,8 @@ ORDER BY name;
 
 The pattern means "a capital, some small letters, one space, some small letters, and nothing else": two-word product
 names. Three functions do most of the work:
+
+**Task:** For the first 4 customers with an email, show the email, a masked version (first letter then ***), the domain, and whether it looks valid.
 
 <!-- sql pg -->
 ```sql
@@ -390,6 +410,8 @@ Server 2025), so older versions use `LIKE` with character ranges like `[0-9]`.
 
 `STRING_AGG(text, separator)` is an aggregate: it glues the values of a group into one piece of text. Put an
 `ORDER BY` inside it, or the order of the pieces is not guaranteed:
+
+**Task:** For each category, list its product names in one text, alphabetical and separated by commas, by category.
 
 <!-- sql -->
 ```sql

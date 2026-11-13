@@ -23,6 +23,8 @@ city, a missing salary, a product with no category and an order with no customer
 NULL marks a value that is missing: not known (Chen Wei's email), not applicable (the top manager's `manager_id`),
 or not yet set (Leo Park's salary). It is not a value itself, so it is not 0 and not empty text `''`:
 
+**Task:** Show customers 3, 5 and 8: id, name, email and city, by id.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name, email, city
@@ -68,6 +70,8 @@ SELECT NULL = 1     AS eq_one,
 `WHERE` keeps a row only when its condition is TRUE. FALSE and UNKNOWN are both dropped. So this finds nothing,
 although two customers have no email:
 
+**Task:** Find the customers with no email: id and name. (This first try is wrong; see why below.)
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name
@@ -86,6 +90,8 @@ WHERE email = NULL;
 ## 6.3 IS NULL and IS DISTINCT FROM { #is-null }
 
 `IS NULL` and `IS NOT NULL` are the only tests that ask "is it missing?", and they are always TRUE or FALSE:
+
+**Task:** Find the customers with no email: id and name, by id.
 
 <!-- sql -->
 ```sql
@@ -175,6 +181,8 @@ The last rule is the trap. You might expect "not in Toronto" to return every cus
 
 If customers with no city belong in the answer, say so:
 
+**Task:** List the customers who do not live in Toronto, counting a missing city as "not Toronto": id, name and city, by id.
+
 <!-- sql -->
 ```sql
 SELECT customer_id, name, city
@@ -207,6 +215,8 @@ passes a `CHECK (salary > 0)`. Add `NOT NULL` if missing values are not allowed 
 
 Any arithmetic with NULL gives NULL, and so does `||`:
 
+**Task:** For employees 11 and 12, show name, salary, salary plus 5000, and a label `name: salary`.
+
 <!-- sql -->
 ```sql
 SELECT name, salary,
@@ -233,6 +243,8 @@ unknown salary into 0 changes averages and totals, and that may or may not be wh
 
 Aggregate functions **skip** NULLs, except `COUNT(*)`, which counts rows:
 
+**Task:** For the Support department, show in one row: employees, employees with a salary, total salary, average known salary and lowest salary.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)      AS employees,
@@ -257,6 +269,8 @@ Three people, two known salaries. `AVG` is the average of the two known ones (63
 
 When there are no values at all, `COUNT` gives 0 but `SUM`, `AVG`, `MIN` and `MAX` give **NULL**, not 0:
 
+**Task:** For products over 1000 (there are none), show the count, the sum of prices, and the sum shown as 0 when there is nothing.
+
 <!-- sql -->
 ```sql
 SELECT COUNT(*)               AS n,
@@ -279,6 +293,8 @@ A question that asks for "total sales, 0 if none" needs the `COALESCE`.
 ## 6.7 NULL in GROUP BY and DISTINCT { #group-by }
 
 `GROUP BY` and `DISTINCT` treat all NULLs as one group, even though `NULL = NULL` is not true:
+
+**Task:** Count the products in each category, including the products with no category, with that group last.
 
 <!-- sql -->
 ```sql
@@ -336,6 +352,8 @@ The same rule breaks `NOT IN` when the list contains a NULL. "Customers who neve
 
 Use `NOT EXISTS`, which does not have the problem, or filter the NULLs out of the list:
 
+**Task:** List the customers who never placed an order: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -360,6 +378,8 @@ safe: a NULL in the list just never matches.
 The SQL standard leaves it to each database whether NULLs sort first or last, and they disagree. PostgreSQL and
 Oracle treat NULL as larger than every value (last in ascending order); SQLite, MySQL and SQL Server treat it as
 smaller (first):
+
+**Task:** List customers 3 to 6 with their city, sorted by city.
 
 <!-- sql pg -->
 ```sql
@@ -400,6 +420,8 @@ ORDER BY city;
 <!-- /result -->
 
 `NULLS FIRST` or `NULLS LAST` after a sort column decides it, on PostgreSQL, Oracle and SQLite (from 3.30):
+
+**Task:** List customers 3 to 6 sorted by city, with the missing city last on every database.
 
 <!-- sql -->
 ```sql

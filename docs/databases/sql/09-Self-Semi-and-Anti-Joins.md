@@ -22,6 +22,8 @@ A **self join** joins a table to itself. The table appears twice under two alias
 `employees`, `manager_id` holds another employee's `employee_id`; to put each person beside their manager, use one
 alias for the employee and one for the manager:
 
+**Task:** For each Engineering employee, show their name and salary next to their manager's name and salary, highest salary first (ties by name).
+
 <!-- sql -->
 ```sql
 SELECT e.name AS employee, e.salary,
@@ -47,6 +49,8 @@ It is an inner join, so Maya Rossi, who has no manager, would not appear (she is
 LEFT JOIN when everyone must be listed.
 
 **Going up two levels** takes a third alias: each employee, their manager, and their manager's manager.
+
+**Task:** For Engineering and Management, show each employee, their manager, and their manager's manager, by employee id.
 
 <!-- sql -->
 ```sql
@@ -75,6 +79,8 @@ Each extra level needs one more join. For a hierarchy of unknown depth, a recurs
 
 **Comparing with the manager** is a classic test question. Who earns at least 85% of what their manager earns?
 
+**Task:** Find the employees who earn at least 85% of their manager's salary, with both salaries and the percentage (1 decimal), highest percentage first.
+
 <!-- sql -->
 ```sql
 SELECT e.name AS employee, e.salary, m.name AS manager, m.salary AS manager_salary,
@@ -98,6 +104,8 @@ Leo Park's salary is NULL, so his comparison is unknown and WHERE drops him, whi
 
 **Pairs from the same group**: employees who share a manager, each pair once. The condition `a.employee_id <
 b.employee_id` stops a person being paired with themselves and stops each pair appearing twice (A–B and B–A).
+
+**Task:** List every pair of employees who share Omar Aziz as manager, each pair once, with the manager's name.
 
 <!-- sql -->
 ```sql
@@ -161,6 +169,8 @@ per matching order:
 `SELECT DISTINCT` hides the duplicates afterwards. A **semi join** never makes them: it keeps each left row once if
 **at least one** match exists. SQL writes it with `EXISTS` or `IN`:
 
+**Task:** List the customers with at least one shipped order: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -196,6 +206,8 @@ per customer. The database is free to run it more cleverly, and modern ones do.
 
 The same with `IN`:
 
+**Task:** The same task with `IN`: customers with a shipped order, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -229,6 +241,8 @@ negations, next.
 
 **1. NOT EXISTS**, the safest:
 
+**Task:** List the customers who never ordered: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -246,6 +260,8 @@ ORDER BY c.customer_id;
 <!-- /result -->
 
 **2. LEFT JOIN and IS NULL** (chapter 8): keep the rows where the join found nothing.
+
+**Task:** The same task with a `LEFT JOIN`: customers who never ordered, by id.
 
 <!-- sql -->
 ```sql
@@ -311,6 +327,8 @@ PostgreSQL prints true and NULL (unknown); SQLite prints 1 and NULL, since it ha
 
 If you must use NOT IN, take the NULLs out of the list:
 
+**Task:** The same task with `NOT IN`: customers who never ordered, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -351,6 +369,8 @@ ORDER BY c.customer_id;
 The condition goes **inside** the subquery (or in the ON of the LEFT JOIN). "Customers with no shipped order in
 March 2026", among customers who signed up before March:
 
+**Task:** List the customers who signed up before March 2026 but had no shipped order in March 2026: id and name, by id.
+
 <!-- sql -->
 ```sql
 SELECT c.customer_id, c.name
@@ -384,6 +404,8 @@ order. Farah Haddad's March order is pending. Put the status and date conditions
 meaning changes completely.
 
 The LEFT JOIN version keeps the conditions in ON, for the reason in [chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md#on-vs-where):
+
+**Task:** The same task with a `LEFT JOIN`, by id.
 
 <!-- sql -->
 ```sql

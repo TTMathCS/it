@@ -173,6 +173,8 @@ What an index costs:
 `EXPLAIN ANALYZE` (PostgreSQL) runs the query and adds what really happened to each step. `TIMING OFF` and
 `SUMMARY OFF` leave out the milliseconds, which change from run to run; keep them on when you tune.
 
+**Task:** Show how PostgreSQL runs "customer 42's orders" on `big_orders`, with the real row counts.
+
 <!-- sql pg -->
 ```sql
 EXPLAIN (ANALYZE, COSTS OFF, TIMING OFF, SUMMARY OFF)
@@ -250,6 +252,8 @@ The planner knows the split from the statistics. There is no fixed cut-off; it d
 and the settings, but "more than a few percent of the rows" usually means a scan.
 
 SQLite takes the index even for `'shipped'`, for a different reason:
+
+**Task:** Add an index on status and show SQLite's plan for the shipped orders.
 
 <!-- sql sqlite -->
 ```sql
@@ -334,6 +338,8 @@ An index on several columns is sorted by the first column, then by the second wi
 sorted by last name, then first name. It helps a query that filters on the **first** column (or the first two, and
 so on): you can find all the Smiths, or Smith, John, but the book is no help for finding everyone named John.
 
+**Task:** Add an index on (status, customer_id) and show the plan for customer 42's pending orders.
+
 <!-- sql pg -->
 ```sql
 CREATE INDEX big_orders_status_cust ON big_orders (status, customer_id);
@@ -362,6 +368,8 @@ an unselective first column; do not design for it.)
 If an index holds every column a query uses, the table need not be read at all. SQLite calls this a covering index;
 PostgreSQL an **Index Only Scan**, and it can add extra, unsorted columns to an index just to cover queries:
 `CREATE INDEX ... (customer_id) INCLUDE (amount_cents)`. On SQLite, put the extra column in the index itself:
+
+**Task:** Add an index that holds both columns and show SQLite's plan for customer 42's total amount.
 
 <!-- sql sqlite -->
 ```sql
@@ -522,6 +530,8 @@ The planner has three ways to join two tables, and `EXPLAIN` names the one it pi
 
 One customer's orders: one row from `customers`, then an index lookup in `big_orders` per row: a nested loop.
 
+**Task:** Show the plan for customer 3's name with each of their orders.
+
 <!-- sql pg -->
 ```sql
 EXPLAIN (COSTS OFF)
@@ -546,6 +556,8 @@ WHERE c.customer_id = 3;
 <!-- /result -->
 
 Counting orders for every customer: every row of both tables is needed, so a hash join.
+
+**Task:** Show the plan for counting the orders of every customer.
 
 <!-- sql pg -->
 ```sql
