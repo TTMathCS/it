@@ -57,6 +57,7 @@ it is explained. Interviewers often use these words without explaining them.*
 | Hash join | A join that builds a hash table of the smaller input. | [25](25-Indexes-and-Explain.md#join-algorithms) |
 | HAVING | A filter on groups, run after `GROUP BY`; `WHERE` filters rows before grouping. | [7.5](07-Aggregation-Group-By-Having.md#having) |
 | Idempotent | Safe to run twice: the second run changes nothing. | [22](22-Duplicates-and-Incremental-Loads.md#idempotent) |
+| Identifier | The name of a table, column or alias. Written bare (`order_date`), or in **double** quotes when it has spaces, capitals or a reserved word (`"Full name"`). | [2.3](02-Select-Where-Order-By-Limit.md#double-quotes) |
 | Incremental load | Copying only what changed since the last load. | [22](22-Duplicates-and-Incremental-Loads.md#incremental) |
 | Index | A sorted structure of column values with pointers to rows, for fast lookups. | [25](25-Indexes-and-Explain.md#b-tree) |
 | Inner join | Keeps only the pairs of rows that match on the join condition; rows with no match on either side drop out. | [8.1](08-Joins-Inner-Left-Right-Full-Cross.md#inner) |
@@ -94,6 +95,7 @@ it is explained. Interviewers often use these words without explaining them.*
 | Read committed, repeatable read | Two isolation levels: read committed lets each statement see the latest commits; repeatable read keeps one snapshot for the whole transaction. | [20](20-Transactions-and-Isolation.md#read-committed) |
 | Reconciliation | Checking that two copies of data agree (row counts, totals, keys only on one side) after a load. | [23.9](23-Data-Quality-Checks.md#reconcile) |
 | Recursive CTE | A CTE that refers to itself, for hierarchies and sequences. | [11](11-CTEs-and-Recursive-CTEs.md#recursive) |
+| Reserved word | A word SQL itself uses (`order`, `group`, `user`, `select`); as a name it needs double quotes, so better to pick another name. | [2.3](02-Select-Where-Order-By-Limit.md#double-quotes) |
 | ROLLUP | Subtotals along a hierarchy, and a grand total. | [27](27-Grouping-Sets-Rollup-Cube-Lateral.md#rollup) |
 | Row-level security | Policies that limit which rows a role can see or change. | [29](29-Safe-SQL.md#rls) |
 | ROW_NUMBER, RANK, DENSE_RANK | Ranking window functions that differ on ties: 1,2,3,4 / 1,1,3,4 / 1,1,2,3. | [13.3](13-Window-Functions-Ranking.md#ties) |
@@ -116,6 +118,7 @@ it is explained. Interviewers often use these words without explaining them.*
 | SQL injection | Input pasted into SQL text that changes the query. | [29](29-Safe-SQL.md#injection) |
 | Staging table | Where raw data lands, often as text, before checks and loading. | [23](23-Data-Quality-Checks.md#batch) |
 | Star schema | A fact table in the middle, joined to dimension tables around it. | [19](19-Data-Modelling.md#star) |
+| String literal | A piece of text written in a query, in **single** quotes: `'Toronto'`. A quote inside it is doubled: `'O''Brien'`. | [2.3](02-Select-Where-Order-By-Limit.md#quotes) |
 | Subquery | A query inside another query, in `WHERE`, `FROM` or `SELECT`. | [10](10-Subqueries.md) |
 | Surrogate key | A meaningless number used as a key, instead of a natural key. | [19](19-Data-Modelling.md#star) |
 | Three-valued logic | TRUE, FALSE and UNKNOWN, the result of comparing with NULL. | [6](06-Null-and-Three-Valued-Logic.md#three-valued) |

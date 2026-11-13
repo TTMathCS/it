@@ -454,6 +454,27 @@ managers?
     <!-- /result -->
 
     Finding them by Tom's name instead of his id needs a join of the table with itself, the subject of
-    [chapter 9](09-Self-Semi-and-Anti-Joins.md).
+    [chapter 9](09-Self-Semi-and-Anti-Joins.md). The name goes in **single** quotes; `"Tom Becker"` in double quotes
+    means a column called Tom Becker, and PostgreSQL answers `column "Tom Becker" does not exist`
+    ([2.3](02-Select-Where-Order-By-Limit.md#quotes)):
+
+    <!-- sql -->
+    ```sql
+    SELECT e.employee_id, e.name, e.salary
+    FROM employees e
+    JOIN employees m ON e.manager_id = m.employee_id
+    WHERE m.name = 'Tom Becker'
+    ORDER BY e.employee_id;
+    ```
+
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | employee_id | name | salary |
+    | --- | --- | --- |
+    | 3 | Priya Nair | 120000 |
+    | 4 | Sam Lee | 120000 |
+    | 5 | Lucia Gomez | 95000 |
+    <!-- /result -->
 
 **Next:** [2. SELECT, WHERE, ORDER BY, LIMIT](02-Select-Where-Order-By-Limit.md).

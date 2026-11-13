@@ -46,7 +46,7 @@ used in `ORDER BY`, which runs after.
 **Learn it fully:** [2. SELECT, WHERE, ORDER BY, LIMIT](02-Select-Where-Order-By-Limit.md) and
 [3. The order a query really runs in](03-The-Order-a-Query-Runs-In.md).
 
-## Looking at a table, and laying out a query { #describe }
+## Looking at a table, quotes, and laying out a query { #describe }
 
 **What it is for:** finding out what a table holds before you query it, and writing queries you can read back.
 
@@ -56,6 +56,9 @@ used in `ORDER BY`, which runs after.
 | `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';` | Lists the tables. | "Which tables are there?" |
 | `SELECT * FROM pragma_table_info('orders');` | SQLite's way to list the columns. | The same question on SQLite. |
 | `SELECT * FROM orders LIMIT 5;` | A first look at a few rows, with the column names. | Any database, any time. |
+| `'Tom Becker'` (single quotes) | A piece of text, a value. | Every text value: `WHERE name = 'Tom Becker'`. |
+| `"Full name"` (double quotes) | A name: a column, table or alias. | Only a name with spaces, capitals or a reserved word: `AS "Full name"`. On PostgreSQL, `WHERE name = "Tom Becker"` fails with `column "Tom Becker" does not exist`. |
+| `'O''Brien'` | A single quote inside text, written twice. | Names and words with an apostrophe. |
 
 **Layout:** keywords in capitals, one clause per line, a name (`AS`) for every computed column, each `JOIN` on its own
 line, the table's alias on every column when there are several tables. Two or three plain columns may stay on one

@@ -76,8 +76,13 @@ ORDER BY product_id;
 
 ## 2.3 Single quotes and double quotes { #quotes }
 
+!!! tip "The rule in one line"
+    **Single quotes for values, double quotes for names.** `'Tom Becker'` is a piece of text. `"Tom Becker"` is the
+    name of a column, and PostgreSQL will look for a column with that name.
+
 In standard SQL, **single quotes** make a piece of text, a **string literal**: `'Toronto'`. **Double quotes**
-surround a **name**, such as a column or table name with a space or capital letters in it: `"Order Date"`.
+surround a **name** (an **identifier**: a column, table or alias name), and they are needed only when the name has a
+space, capital letters or a reserved word in it: `"Order Date"`.
 
 Mixing them up is one of the most common errors on PostgreSQL:
 
@@ -93,13 +98,132 @@ WHERE city = "Toronto";
 <p class="sql-tested sql-noerror">SQLite 3.53: no error, it runs and returns 3 rows.</p>
 <!-- /result -->
 
-PostgreSQL looked for a **column** called `Toronto` and found none. SQLite, for compatibility with old MySQL code,
-treats a double-quoted word that is not a column name as text, so the same query works there; the SQLite manual
-calls this a misfeature, and a test running PostgreSQL will fail it. Use single quotes for text, always. A single
-quote inside text is written twice: `'O''Brien'`.
+PostgreSQL looked for a **column** called `Toronto` and found none. The same happens with a name: here is "the
+employees who report to Tom Becker", written with a self-join ([chapter 9](09-Self-Semi-and-Anti-Joins.md)) and
+double quotes round the name:
 
-MySQL by default reads double quotes as text too, and quotes names with backticks: `` `order date` ``. SQL Server
-uses square brackets: `[order date]`. [Chapter 28](28-Dialect-Differences.md) collects these differences.
+<!-- sql pgerror -->
+```sql
+SELECT e.employee_id, e.name, e.salary
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE m.name = "Tom Becker";
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>column "Tom Becker" does not exist</code></p>
+<p class="sql-tested sql-noerror">SQLite 3.53: no error, it runs and returns 3 rows.</p>
+<!-- /result -->
+
+When you see **`column "..." does not exist`** and the word in the quotes is a value, not a column, the fix is
+the quotes. The query itself was right:
+
+<!-- sql -->
+```sql
+SELECT e.employee_id, e.name, e.salary
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE m.name = 'Tom Becker'
+ORDER BY e.employee_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| employee_id | name | salary |
+| --- | --- | --- |
+| 3 | Priya Nair | 120000 |
+| 4 | Sam Lee | 120000 |
+| 5 | Lucia Gomez | 95000 |
+<!-- /result -->
+
+**Why it works in SQLite and MySQL.** SQLite, for compatibility with old MySQL code, treats a double-quoted word that
+is not a column name as text, so both queries above run there; the SQLite manual calls this a misfeature. MySQL by
+default reads double quotes as text too, and quotes names with backticks: `` `order date` ``. SQL Server uses square
+brackets: `[order date]`. Anyone who learned SQL on MySQL or SQLite carries the habit over, and a test running
+PostgreSQL fails it. [Chapter 28](28-Dialect-Differences.md) collects these differences.
+
+### A quote inside text { #apostrophe }
+
+A single quote inside text is written **twice**: `'O''Brien'` is the seven letters `O'Brien`. Doubling is the
+standard way and works on every database:
+
+<!-- sql -->
+```sql
+SELECT 'O''Brien' AS surname,
+       LENGTH('O''Brien') AS letters;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
+
+| surname | letters |
+| --- | --- |
+| O'Brien | 7 |
+<!-- /result -->
+
+A double quote inside single quotes needs nothing special: `'He said "hi"'`. PostgreSQL also has
+**dollar quoting**, `$$O'Brien$$`, handy for long text full of quotes; it is PostgreSQL only.
+
+### When double quotes are needed { #double-quotes }
+
+Only for a name that would not work bare. The common case is a column name for a report, with spaces and
+capitals:
+
+<!-- sql -->
+```sql
+SELECT customer_id AS "Customer ID",
+       name        AS "Full name"
+FROM customers
+ORDER BY customer_id
+LIMIT 3;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+| Customer ID | Full name |
+| --- | --- |
+| 1 | Ana Silva |
+| 2 | Ben Okafor |
+| 3 | Chen Wei |
+<!-- /result -->
+
+The other case is a name that is a **reserved word**, a word SQL itself uses, such as `order`, `group`, `user` or
+`select`. A table called `order` sounds natural for a shop, but bare, the word confuses the parser:
+
+<!-- sql error -->
+```sql
+CREATE TABLE order (order_id INTEGER PRIMARY KEY);
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>syntax error at or near "order"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>near "order": syntax error</code></p>
+<!-- /result -->
+
+`CREATE TABLE "order"` works, but then every query must write `"order"` with the quotes. That is why the sample shop
+calls it `orders`. (After `AS`, PostgreSQL accepts most reserved words without quotes, but a plain name such as
+`order_no` is still clearer.)
+
+**Why to avoid double-quoted names when you can.** PostgreSQL turns every name you write **without** quotes into
+lower case, so `SELECT Name FROM customers` and `SELECT NAME FROM customers` both find the column `name`. With quotes
+the case is kept exactly, so `"Name"` is a different name, and it does not exist:
+
+<!-- sql pgerror -->
+```sql
+SELECT "Name"
+FROM customers;
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>column "Name" does not exist</code></p>
+<p class="sql-tested sql-noerror">SQLite 3.53: no error, it runs and returns 10 rows.</p>
+<!-- /result -->
+
+A table created as `CREATE TABLE "Orders"` must then be written `"Orders"`, with the quotes and the capital, in
+every query for ever. That is why database names are usually lower case with underscores (`order_date`), which never
+need quotes. SQLite ignores the case of names, so this one runs there.
 
 ## 2.4 WHERE: choosing rows { #where }
 
@@ -552,7 +676,8 @@ minutes on layout: one clause per line and a name for every computed column is e
 ## 2.9 Summary { #summary }
 
 - `SELECT` the columns asked for, in the order asked; avoid `*` in answers. Name computed columns with `AS`.
-- Single quotes for text, double quotes for names. SQLite forgives `"Toronto"`; PostgreSQL does not.
+- Single quotes for text, double quotes for names. SQLite forgives `"Toronto"`; PostgreSQL does not, and says
+  `column "Toronto" does not exist`. A quote inside text is doubled: `'O''Brien'`. See [2.3](#quotes).
 - `AND` before `OR`: add parentheses whenever both appear.
 - `IN (...)` for a list; `BETWEEN` includes both ends.
 - `DISTINCT` works on the whole row and treats NULLs as equal.
