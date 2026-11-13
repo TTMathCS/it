@@ -472,6 +472,36 @@
     }
     return /\border\s+by\b/i.test(flat.replace(/--[^\n]*/g, ""));
   }
+  // a course example whose task is a "Task: ..." paragraph just before its folded Solution: the task moves into the
+  // box as -- comment lines (short, for a phone), with the exact column names the answer returns
+  function taskOf(d) {
+    var p = d.previousElementSibling;
+    if (!p || p.tagName !== "P") return null;
+    var t = p.textContent.replace(/\s+/g, " ").trim();
+    if (!/^Task:\s/.test(t)) return null;
+    return { p: p, text: t.replace(/^Task:\s*/, "") };
+  }
+  function commentLines(text, width) {
+    var lines = [], cur = "";
+    text.split(" ").forEach(function (w) {
+      if (cur && (cur + " " + w).length > width) { lines.push(cur); cur = w; }
+      else cur = cur ? cur + " " + w : w;
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function taskStart(task, cols) {
+    // narrow lines on a phone, where the box shows about 32 characters
+    var width = (window.innerWidth || 1000) < 600 ? 29 : 66, out = ["-- Task:"];
+    commentLines(task.text, width).forEach(function (l) { out.push("-- " + l); });
+    if (cols && cols.length) {
+      out.push("--");
+      commentLines("Columns: " + cols.join(", "), width).forEach(function (l) { out.push("-- " + l); });
+    }
+    out.push("--");
+    out.push("-- Your query below:");
+    return out.join("\n") + "\n\n";
+  }
   function exerciseBoxes(content, marks) {
     content.querySelectorAll("details").forEach(function (d) {
       var sum = d.querySelector("summary");
@@ -490,12 +520,15 @@
       var exp = piped || htmlTable(t);
       if (exp.rows.length === 1 && /no rows/.test(exp.rows[0].join(" "))) exp.rows = [];
       var path = location.pathname.replace(/\.html$/, "");
-      var box = makeBox({ title: "Try it here", sub: "PostgreSQL in your browser, with the shop database",
-        start: "-- Your answer here. Ctrl+Enter (Cmd+Enter on a Mac) runs it.\n\n", shop: true,
+      var task = taskOf(d);
+      var box = makeBox({ title: task ? "Task" : "Try it here", sub: "PostgreSQL in your browser, with the shop database",
+        start: task ? taskStart(task, exp.cols) : "-- Your answer here. Ctrl+Enter (Cmd+Enter on a Mac) runs it.\n\n",
+        shop: true,
         extra: function () { return prelude(b.code); }, expected: exp, unordered: !topLevelOrderBy(b.code),
         key: "sqlplay:" + path + "#" + (d.previousElementSibling ? d.previousElementSibling.textContent.slice(0, 40) : i),
         help: "Check compares your result with the answer's result. Every run starts from the same shop data." });
       d.parentNode.insertBefore(box, d);
+      if (task) task.p.remove();
     });
   }
 

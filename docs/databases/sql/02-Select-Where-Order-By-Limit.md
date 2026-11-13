@@ -771,53 +771,54 @@ column is an expression (`COUNT(*)`, a `CASE`, a calculation) or there are more 
 easier to read, to compare with the task's list of output columns, and to change. Whatever you choose, be consistent
 within a query.
 
-Here is a query written in one line, as it is often typed in a hurry:
+**Before: a query that runs but is hard to read.** Here is one written in one line, as it is often typed in a hurry:
 
-**Task:** Count the orders in each status.
-
-??? success "Solution"
-
-    <!-- sql pg -->
-    ```sql
-    select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
-
-    | status | count |
-    | --- | --- |
-    | cancelled | 2 |
-    | pending | 2 |
-    | shipped | 16 |
-    <!-- /result -->
-
-It runs, but three things are hard to see. The join to `customers` does nothing: no column of `c` is used, and a
-`LEFT JOIN` keeps every order anyway, so the counts are the same without it. The count has no name, so each
-database invents one (PostgreSQL calls it `count`, SQLite `count(*)`). And there is no
-`ORDER BY`, so the order of the rows is luck. The same question, laid out and cleaned up:
-
-<!-- sql -->
+<!-- sql pg -->
 ```sql
-SELECT
-    o.status,
-    COUNT(*) AS orders
-FROM orders o
-GROUP BY o.status
-ORDER BY o.status;
+select o.status, count(*) from orders o left join customers c on o.customer_id = c.customer_id group by status
 ```
 
 <!-- result -->
-<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+<p class="sql-tested">Ran on PostgreSQL 16. 3 rows.</p>
 
-| status | orders |
+| status | count |
 | --- | --- |
 | cancelled | 2 |
 | pending | 2 |
 | shipped | 16 |
 <!-- /result -->
 
-A longer query in the same style. Try it yourself first; this is the task:
+It runs, but three things are hard to see. The join to `customers` does nothing: no column of `c` is used, and a
+`LEFT JOIN` keeps every order anyway, so the counts are the same without it. The count has no name, so each
+database invents one (PostgreSQL calls it `count`, SQLite `count(*)`). And there is no
+`ORDER BY`, so the order of the rows is luck.
+
+**Task:** Write the same question cleanly: count the orders in each status, laid out one clause per line. Columns:
+`status`, `orders`. In status order.
+
+??? success "Solution"
+
+    <!-- sql -->
+    ```sql
+    SELECT
+        status,
+        COUNT(*) AS orders
+    FROM orders
+    GROUP BY status
+    ORDER BY status;
+    ```
+
+    <!-- result -->
+    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 3 rows.</p>
+
+    | status | orders |
+    | --- | --- |
+    | cancelled | 2 |
+    | pending | 2 |
+    | shipped | 16 |
+    <!-- /result -->
+
+A longer one in the same style:
 
 **Task:** For each **country**, count the **shipped** orders placed **on or after 1 February 2026**, and how many
 **different customers** placed them. Show only countries with **at least 2** such orders. Columns: `country`,

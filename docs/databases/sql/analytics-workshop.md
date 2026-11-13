@@ -27,29 +27,25 @@ sessions and funnels. Every example runs in your browser (press **Run this**), a
 The most common wrong total in analytics SQL comes from joining two "many" tables to the same parent. Order 106
 has **two items** and **two payments**. Join both to the order and you get 2 × 2 = 4 rows, so every sum is doubled:
 
-**Task:** For order 106, show the items total and the amount paid. (This first try is wrong; see why.)
+<!-- sql -->
+```sql
+SELECT o.order_id,
+       SUM(i.quantity * i.unit_price) AS items_total,
+       SUM(p.amount)                  AS paid_total
+FROM orders o
+JOIN order_items i ON i.order_id = o.order_id
+JOIN payments p    ON p.order_id = o.order_id
+WHERE o.order_id = 106
+GROUP BY o.order_id;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
 
-    <!-- sql -->
-    ```sql
-    SELECT o.order_id,
-           SUM(i.quantity * i.unit_price) AS items_total,
-           SUM(p.amount)                  AS paid_total
-    FROM orders o
-    JOIN order_items i ON i.order_id = o.order_id
-    JOIN payments p    ON p.order_id = o.order_id
-    WHERE o.order_id = 106
-    GROUP BY o.order_id;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 1 row.</p>
-
-    | order_id | items_total | paid_total |
-    | --- | --- | --- |
-    | 106 | 113.00 | 113.00 |
-    <!-- /result -->
+| order_id | items_total | paid_total |
+| --- | --- | --- |
+| 106 | 113.00 | 113.00 |
+<!-- /result -->
 
 The real numbers are 56.50 ordered and 56.50 paid. Each item row was repeated once per payment, and each payment
 once per item. This is called **fan-out**, and it gives no error: the numbers just look a little too big.
@@ -264,10 +260,10 @@ To **keep one row of each group** (for example to build a clean table), number t
     <!-- sql -->
     ```sql
     WITH numbered AS (
-      SELECT p.*,
+      SELECT *,
              ROW_NUMBER() OVER (PARTITION BY order_id, paid_at, amount, status
                                 ORDER BY payment_id) AS copy_no
-      FROM payments p
+      FROM payments
     )
     SELECT payment_id, order_id, paid_at, amount, status
     FROM numbered

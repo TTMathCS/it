@@ -282,25 +282,21 @@ rarely matters, because names usually start with a capital; when it does, sort b
 
 Here is the trap. `LIKE` is case-sensitive on PostgreSQL, but **not** on SQLite (for the letters A to Z):
 
-**Task:** List the customers whose name starts with "ana": id and name, by id.
+<!-- sql pg -->
+```sql
+SELECT customer_id, name
+FROM customers
+WHERE name LIKE 'ana%'
+ORDER BY customer_id;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 0 rows.</p>
 
-    <!-- sql pg -->
-    ```sql
-    SELECT customer_id, name
-    FROM customers
-    WHERE name LIKE 'ana%'
-    ORDER BY customer_id;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 0 rows.</p>
-
-    | customer_id | name |
-    | --- | --- |
-    | *(no rows)* | |
-    <!-- /result -->
+| customer_id | name |
+| --- | --- |
+| *(no rows)* | |
+<!-- /result -->
 
 <!-- sql sqlite -->
 ```sql

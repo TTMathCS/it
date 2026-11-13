@@ -112,9 +112,9 @@ the newest. Number each key's rows newest first and keep number 1:
     ```sql
     SELECT customer_id, email, city, updated_at
     FROM (
-      SELECT f.customer_id, f.email, f.city, f.updated_at,
-             ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-      FROM customer_feed f
+      SELECT customer_id, email, city, updated_at,
+             ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC) AS rn
+      FROM customer_feed
     ) numbered
     WHERE rn = 1
     ORDER BY customer_id;
@@ -362,10 +362,10 @@ had not moved (the old value written in by hand):
     INSERT INTO customers_current (customer_id, email, city, updated_at)
     SELECT customer_id, email, city, updated_at
     FROM (
-      SELECT f.customer_id, f.email, f.city, f.updated_at,
-             ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-      FROM customer_feed f
-      WHERE f.updated_at > '2026-05-02 00:00:00'
+      SELECT customer_id, email, city, updated_at,
+             ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC) AS rn
+      FROM customer_feed
+      WHERE updated_at > '2026-05-02 00:00:00'
     ) newest
     WHERE rn = 1
     ON CONFLICT (customer_id) DO UPDATE
@@ -407,10 +407,10 @@ On PostgreSQL 15+ the same load can be written as a `MERGE` ([chapter 17](17-Ins
     USING (
       SELECT customer_id, email, city, updated_at
       FROM (
-        SELECT f.customer_id, f.email, f.city, f.updated_at,
-               ROW_NUMBER() OVER (PARTITION BY f.customer_id ORDER BY f.updated_at DESC) AS rn
-        FROM customer_feed f
-        WHERE f.updated_at > '2026-05-02 00:00:00'
+        SELECT customer_id, email, city, updated_at,
+               ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC) AS rn
+        FROM customer_feed
+        WHERE updated_at > '2026-05-02 00:00:00'
       ) numbered
       WHERE rn = 1
     ) s
@@ -443,9 +443,9 @@ load reads `updated_at > '2026-05-04 07:15:00'` and never sees Ben's change:
     <!-- sql -->
     ```sql
     INSERT INTO customer_feed VALUES (2, 'ben@example.com', 'Abuja', '2026-05-03 10:00:00');
-    SELECT f.customer_id, f.city, f.updated_at
-    FROM customer_feed f
-    WHERE f.updated_at > (SELECT loaded_up_to FROM load_state WHERE table_name = 'customers');
+    SELECT customer_id, city, updated_at
+    FROM customer_feed
+    WHERE updated_at > (SELECT loaded_up_to FROM load_state WHERE table_name = 'customers');
     ```
 
     <!-- result -->

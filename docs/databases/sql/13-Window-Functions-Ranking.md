@@ -358,9 +358,9 @@ also how you keep the newest version of each record when loading data ([chapter 
     <!-- sql -->
     ```sql
     WITH ranked AS (
-      SELECT o.*,
+      SELECT *,
              ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC, order_id DESC) AS rn
-      FROM orders o
+      FROM orders
       WHERE customer_id IS NOT NULL
     )
     SELECT customer_id, order_id, order_date, status

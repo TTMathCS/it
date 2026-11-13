@@ -72,24 +72,20 @@ SELECT NULL = 1     AS eq_one,
 `WHERE` keeps a row only when its condition is TRUE. FALSE and UNKNOWN are both dropped. So this finds nothing,
 although two customers have no email:
 
-**Task:** Find the customers with no email: id and name. (This first try is wrong; see why below.)
+<!-- sql -->
+```sql
+SELECT customer_id, name
+FROM customers
+WHERE email = NULL;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
 
-    <!-- sql -->
-    ```sql
-    SELECT customer_id, name
-    FROM customers
-    WHERE email = NULL;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 0 rows.</p>
-
-    | customer_id | name |
-    | --- | --- |
-    | *(no rows)* | |
-    <!-- /result -->
+| customer_id | name |
+| --- | --- |
+| *(no rows)* | |
+<!-- /result -->
 
 ## 6.3 IS NULL and IS DISTINCT FROM { #is-null }
 
@@ -397,28 +393,24 @@ The SQL standard leaves it to each database whether NULLs sort first or last, an
 Oracle treat NULL as larger than every value (last in ascending order); SQLite, MySQL and SQL Server treat it as
 smaller (first):
 
-**Task:** List customers 3 to 6 with their city, sorted by city.
+<!-- sql pg -->
+```sql
+SELECT customer_id, city
+FROM customers
+WHERE customer_id BETWEEN 3 AND 6
+ORDER BY city;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
 
-    <!-- sql pg -->
-    ```sql
-    SELECT customer_id, city
-    FROM customers
-    WHERE customer_id BETWEEN 3 AND 6
-    ORDER BY city;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 4 rows.</p>
-
-    | customer_id | city |
-    | --- | --- |
-    | 4 | Seoul |
-    | 3 | Shanghai |
-    | 6 | Toronto |
-    | 5 | *NULL* |
-    <!-- /result -->
+| customer_id | city |
+| --- | --- |
+| 4 | Seoul |
+| 3 | Shanghai |
+| 6 | Toronto |
+| 5 | *NULL* |
+<!-- /result -->
 
 <!-- sql sqlite -->
 ```sql

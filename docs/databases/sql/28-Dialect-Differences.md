@@ -82,22 +82,18 @@ Use `x / NULLIF(y, 0)` to get NULL on both ([chapter 4](04-Expressions-Case-Numb
 
 **LIKE and case.** PostgreSQL's `LIKE` is case-sensitive; SQLite's ignores the case of the letters A to Z:
 
-**Task:** Count the customers whose name starts with a small "a".
+<!-- sql pg -->
+```sql
+SELECT COUNT(*) AS names_starting_a FROM customers WHERE name LIKE 'a%';
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
 
-    <!-- sql pg -->
-    ```sql
-    SELECT COUNT(*) AS names_starting_a FROM customers WHERE name LIKE 'a%';
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
-
-    | names_starting_a |
-    | --- |
-    | 0 |
-    <!-- /result -->
+| names_starting_a |
+| --- |
+| 0 |
+<!-- /result -->
 
 <!-- sql sqlite -->
 ```sql
@@ -117,23 +113,19 @@ Write `LOWER(name) LIKE 'a%'` to get the same answer on both ([chapter 5](05-Tex
 **Where NULLs sort.** PostgreSQL puts NULLs last in ascending order, SQLite first. The same `ORDER BY` gives rows in
 a different order, which a test checker counts as wrong:
 
-**Task:** Show the first 2 customers by city.
+<!-- sql pg -->
+```sql
+SELECT customer_id, city FROM customers ORDER BY city LIMIT 2;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
 
-    <!-- sql pg -->
-    ```sql
-    SELECT customer_id, city FROM customers ORDER BY city LIMIT 2;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 2 rows.</p>
-
-    | customer_id | city |
-    | --- | --- |
-    | 2 | Lagos |
-    | 10 | Lisbon |
-    <!-- /result -->
+| customer_id | city |
+| --- | --- |
+| 2 | Lagos |
+| 10 | Lisbon |
+<!-- /result -->
 
 <!-- sql sqlite -->
 ```sql
@@ -156,22 +148,18 @@ NULL ([chapter 6](06-Null-and-Three-Valued-Logic.md#sorting)).
 floating-point number, which can land a cent away. The tax on a 9.50 item is the classic case
 ([chapter 4](04-Expressions-Case-Numbers-Dates-Cast.md#rounding)):
 
-**Task:** Show product 11's price with 13% tax, rounded to cents.
+<!-- sql pg -->
+```sql
+SELECT ROUND(price * 1.13, 2) AS with_tax FROM products WHERE product_id = 11;
+```
 
-??? success "Solution"
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
 
-    <!-- sql pg -->
-    ```sql
-    SELECT ROUND(price * 1.13, 2) AS with_tax FROM products WHERE product_id = 11;
-    ```
-
-    <!-- result -->
-    <p class="sql-tested">Ran on PostgreSQL 16. 1 row.</p>
-
-    | with_tax |
-    | --- |
-    | 10.74 |
-    <!-- /result -->
+| with_tax |
+| --- |
+| 10.74 |
+<!-- /result -->
 
 <!-- sql sqlite -->
 ```sql
