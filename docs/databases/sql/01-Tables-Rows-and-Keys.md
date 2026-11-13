@@ -2,8 +2,8 @@
 
 *Before the first query, the shape of the data. A relational database keeps everything in tables; every row in a
 table is one thing of the same kind, and keys tie the tables together. This chapter names the parts, shows the
-database refusing bad rows, and gives the words interviewers use: primary key, foreign key, one-to-many,
-many-to-many, DDL and DML.*
+database refusing bad rows, and gives the words interviewers use: primary key, foreign key, one-to-one,
+one-to-many, many-to-many, DDL and DML.*
 
 !!! abstract "In this chapter"
     **You will learn:**
@@ -11,7 +11,7 @@ many-to-many, DDL and DML.*
     - tables, rows and columns, and why a table has no built-in order
     - primary keys, including a key made of two columns
     - foreign keys, and how they stop an order for a customer who does not exist
-    - one-to-many, many-to-many and a table that points at itself
+    - one-to-one, one-to-many, many-to-many and a table that points at itself
     - why a name is not a key
     - the families of SQL statements: DDL, DML, DQL, DCL, TCL
 
@@ -196,7 +196,7 @@ SET NULL`; [chapter 18](18-Create-Table-Types-Constraints.md) shows both.
 
 ## 1.5 How tables relate { #relationships }
 
-Three shapes cover almost every database.
+Four shapes cover almost every database.
 
 **One-to-many.** One customer has many orders; each order has at most one customer. The foreign key sits on the
 "many" side: `orders.customer_id`.
@@ -204,6 +204,89 @@ Three shapes cover almost every database.
 **Many-to-many.** An order has many products and a product is in many orders. No single foreign key can say that, so
 a third table sits between them, one row per pair: `order_items`. It is called a **junction** (or bridge, or link)
 table, and it often carries facts about the pair, here the quantity and the price paid.
+
+<span id="one-to-one"></span>**One-to-one.** Each row on one side has at most one row on the other. The sample shop has no such pair, so here is
+a small extra table, made up for this example: `customer_profiles`, with at most one profile per customer.
+
+<!-- sql setup -->
+```sql
+CREATE TABLE customer_profiles (
+  customer_id INTEGER PRIMARY KEY REFERENCES customers (customer_id),
+  phone       TEXT NOT NULL,
+  language    TEXT NOT NULL
+);
+INSERT INTO customer_profiles VALUES
+  (1, '+1 416 555 0101', 'English'),
+  (2, '+234 1 555 0102', 'English'),
+  (5, '+972 3 555 0105', 'Hebrew'),
+  (10, '+351 21 555 0110', 'Portuguese');
+```
+
+<!-- result -->
+<p class="sql-tested">These tables load on PostgreSQL 16 and SQLite 3.53.</p>
+<!-- /result -->
+
+The trick is in the first line: `customer_id` is the **foreign key** (it must be a real customer) **and** the
+**primary key** (it cannot repeat). A foreign key that cannot repeat is what makes the relationship one-to-one. A
+second profile for customer 1 is refused:
+
+<!-- sql error -->
+```sql
+INSERT INTO customer_profiles VALUES (1, '+1 416 555 0199', 'French');
+```
+
+<!-- result -->
+<p class="sql-tested sql-error">PostgreSQL 16: error: <code>duplicate key value violates unique constraint "customer_profiles_pkey"</code></p>
+<p class="sql-tested sql-error">SQLite 3.53: error: <code>UNIQUE constraint failed: customer_profiles.customer_id</code></p>
+<!-- /result -->
+
+The other common way to write it: give the second table its own id, and make the foreign key `UNIQUE`
+(`customer_id INTEGER NOT NULL UNIQUE REFERENCES customers (customer_id)`). Without `UNIQUE` it would be one-to-many.
+
+When it is used:
+
+- **Optional details.** Only some customers fill in a profile. In a separate table, the others simply have no row,
+  instead of a row full of NULLs in `customers`.
+- **Sensitive details.** Salaries, health or identity documents go in their own table, so permissions can hide that
+  table while the main one stays readable ([chapter 29](29-Safe-SQL.md)).
+- **Large or rarely read columns,** such as a long biography or a photo, so that everyday queries on the main table
+  stay small and fast.
+
+In a join it behaves differently from one-to-many: **the row count does not grow.** Joining 10 customers to their
+profiles gives at most 10 rows, never more; with a `LEFT JOIN`, the customers without a profile stay, with NULLs:
+
+<!-- sql -->
+```sql
+SELECT c.customer_id, c.name, p.phone, p.language
+FROM customers c
+LEFT JOIN customer_profiles p ON p.customer_id = c.customer_id
+ORDER BY c.customer_id;
+```
+
+<!-- result -->
+<p class="sql-tested">Ran on PostgreSQL 16 and SQLite 3.53: same rows on both. 10 rows.</p>
+
+| customer_id | name | phone | language |
+| --- | --- | --- | --- |
+| 1 | Ana Silva | +1 416 555 0101 | English |
+| 2 | Ben Okafor | +234 1 555 0102 | English |
+| 3 | Chen Wei | *NULL* | *NULL* |
+| 4 | Dana Kim | *NULL* | *NULL* |
+| 5 | Eli Cohen | +972 3 555 0105 | Hebrew |
+| 6 | Farah Haddad | *NULL* | *NULL* |
+| 7 | Gus Novak | *NULL* | *NULL* |
+| 8 | Hana Sato | *NULL* | *NULL* |
+| 9 | Ivan Petrov | *NULL* | *NULL* |
+| 10 | Ana Silva | +351 21 555 0110 | Portuguese |
+<!-- /result -->
+
+Joining the same 10 customers to `orders` (one-to-many) would give one row per order instead. That is why, before
+any join, it pays to ask "one-to-one or one-to-many?": it tells you whether the row count can grow and whether a
+total can be counted twice ([chapter 8](08-Joins-Inner-Left-Right-Full-Cross.md)).
+
+Strictly, this is "one to zero-or-one": a customer may have no profile. A rule that **every** customer must have
+exactly one profile, both ways round, cannot be written with plain keys, because each row would have to exist before
+the other; in practice the application creates both rows in one transaction.
 
 **A table that points at itself.** Each employee's `manager_id` is another employee's `employee_id`:
 
@@ -289,7 +372,8 @@ capitals so they stand out. Text inside quotes **is** case-sensitive in a compar
 - A primary key is unique and never NULL; it can be one column or several (composite).
 - A foreign key must match a key in the table it refers to, or be NULL. SQLite enforces it only with
   `PRAGMA foreign_keys = ON`.
-- One-to-many puts the foreign key on the many side; many-to-many needs a junction table; a table can point at
+- One-to-one is a foreign key that is also unique (or the primary key), and a join over it never adds rows;
+  one-to-many puts the foreign key on the many side; many-to-many needs a junction table; a table can point at
   itself.
 - Names are not keys. Group and join by ids.
 

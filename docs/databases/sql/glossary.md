@@ -83,6 +83,8 @@ it is explained. Interviewers often use these words without explaining them.*
 | NULL | "No value" or "unknown"; comparisons with it are UNKNOWN. | [6](06-Null-and-Three-Valued-Logic.md#meaning) |
 | OLTP, OLAP | Systems for many small transactions versus systems for large analytic queries. | [19](19-Data-Modelling.md#oltp-olap) |
 | One big table (OBT) | A single wide table with the facts and their dimension columns already joined in, so reports need no joins. | [19](19-Data-Modelling.md) |
+| One-to-many | A relationship where one row (a customer) has many rows on the other side (orders); the foreign key sits on the many side. | [1.5](01-Tables-Rows-and-Keys.md#relationships) |
+| One-to-one | A relationship where each row has at most one row on the other side (a customer and a profile); made with a foreign key that is also unique or the primary key. A join over it never adds rows. | [1.5](01-Tables-Rows-and-Keys.md#one-to-one) |
 | Partition (window) | The group a window function works within (`PARTITION BY`). | [13](13-Window-Functions-Ranking.md#aggregate-windows) |
 | Partitioning (table) | Storing a big table in parts by a column such as date, so filters skip parts. | [25](25-Indexes-and-Explain.md#index-types) |
 | Phantom | New rows appearing when the same query runs again in one transaction. | [20](20-Transactions-and-Isolation.md#isolation) |
